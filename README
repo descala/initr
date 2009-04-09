@@ -1,0 +1,32 @@
+== Initr plugin
+
+Initr automates the lifecycle of computer systems. From provision to operations, puts and keeps the nodes on track. It uses Puppet as enabling technology.
+
+== Installation
+
+=== Adding plugin support to Redmine
+
+To add plugin support to Redmine, install engines plugin:
+   See: http://rails-engines.org/
+
+=== Plugin installation
+
+1. Copy the plugin directory into the vendor/plugins directory
+
+2. Migrate plugin:
+   rake db:migrate_plugins
+
+3. Edit application's config/routes.rb and paste lines from plugin's routes.rb
+
+4. Configure puppet_production database at application's config/database.yml
+
+5. Start Redmine
+
+Installed plugins are listed on 'Admin -> Information' screen.
+
+=== Initr plugins installation ===
+
+1. copy or soft link initr plugin directory to redmine vendor/plugins directory
+
+2. execute migrations:
+   rake db:migrate_plugins
