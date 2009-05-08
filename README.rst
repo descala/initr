@@ -2,7 +2,11 @@
 Initr plugin
 ============
 
-Initr automates the lifecycle of computer systems. From provision to operations, puts and keeps the nodes on track. It uses `Puppet`_ as enabling technology.
+Initr automates the lifecycle of computer systems.
+
+From provision to operations, puts and keeps the nodes on track.
+
+It uses `Puppet`_ as enabling technology.
 
 Prerequisites
 -------------
@@ -11,15 +15,12 @@ Prerequisites
 
 * You also will need a Puppetmaster configured with `storeconfigs`_.
 
-* Configure in Redmine databases.yml puppetmaster database(s) for your environment(s) called "puppet_#{RAILS_ENV}"
+* Configure in Redmine databases.yml puppetmaster database(s) for your environment(s) called ``puppet_#{RAILS_ENV}``
 
 * You'll need to configure puppetmaster `external nodes`_ to call the script provided in bin/external_node.sh which gets node classes and parameters from an initr url.
 
-Installation
-------------
-
 Initr installation
-~~~~~~~~~~~~~~~~~~
+------------------
 
 1. Copy (or link) initr directory into Redmine vendor/plugins directory
 
@@ -30,10 +31,11 @@ Initr installation
 4. Restart Redmine and check that it lists initr plugin on 'Admin -> Information' screen.
 
 Initr daemon
-~~~~~~~~~~~~
+------------
 
-Initr uses delayed jobs to do some root tasks, you should start daemon
-provided in bin/delayed_jobs_daemon.rb. Simply run:
+Initr uses delayed jobs to do some root tasks, you should start daemon provided in bin/delayed_jobs_daemon.rb.
+
+Simply run:
 ::
  
  ruby bin/delayed_jobs_daemon.rb start
@@ -41,25 +43,22 @@ provided in bin/delayed_jobs_daemon.rb. Simply run:
 you can see daemon output at Redmine's ``tmp/pids/delayed_jobs_worker.rb.output``
 
 Initr plugins installation
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 1. Copy or soft link each initr directory at puppet/modules/\*/ to Redmine vendor/plugins directory
 
-Another alternative is to add this line in environment.rb:
-::
- 
- config.plugin_paths = ["#{RAILS_ROOT}/vendor/plugins", "#{RAILS_ROOT}/vendor/plugins/initr/puppet/modules/"]
+  Another alternative is to add this line in environment.rb:
+  ::
+   
+   config.plugin_paths = ["#{RAILS_ROOT}/vendor/plugins", "#{RAILS_ROOT}/vendor/plugins/initr/puppet/modules/"]
 
-2. Execute migrations:
-
-``rake db:migrate:plugins``
+2. Execute migrations with ``rake db:migrate:plugins``
 
 3. Restart Redmine
 
 
-
 Detailed plugin installation example
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------
 
 Steps followed to install puppetmaster, redmine and initr on a CentOS 5.3 machine:
 ::
