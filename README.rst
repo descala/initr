@@ -2,7 +2,7 @@
 Initr plugin
 ============
 
-Initr automates the lifecycle of computer systems. From provision to operations, puts and keeps the nodes on track. It uses Puppet as enabling technology.
+Initr automates the lifecycle of computer systems. From provision to operations, puts and keeps the nodes on track. It uses `Puppet`_ as enabling technology.
 
 Prerequisites
 -------------
@@ -206,3 +206,4 @@ Steps followed to install puppetmaster, redmine and initr on a CentOS 5.3 machin
 .. _external nodes: http://reductivelabs.com/trac/puppet/wiki/ExternalNodes
 .. _delayed_job: http://github.com/tobi/delayed_job
 .. _Redmine: http://www.redmine.org
+.. _Puppet: http://puppet.reductivelabs.com
