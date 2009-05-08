@@ -1,0 +1,13 @@
+<h2><%=@node.fqdn%></h2>
+
+<h3>Edit domain</h3>
+
+<% form_for 'initr_webserver1_domain', @domain do |f| -%>
+  <p><%= f.error_messages %></p>
+  <%= render :partial => 'initr_webserver1_domain', :locals => {:form => f} %>
+  <p>
+  <%= submit_tag("Edit")%>
+  </p>
+<% end -%>
+
+<%= link_to "Cancel", { :action => 'configure', :id => @webserver } %>

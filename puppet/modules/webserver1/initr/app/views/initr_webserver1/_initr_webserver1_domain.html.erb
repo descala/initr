@@ -1,0 +1,103 @@
+<table width="100%">
+  <tr>
+    <td valign="top">
+      <table>
+        <tr>
+          <td colspan="2"><h4>Domain config</h4></td>
+        </tr>
+        <tr>
+          <td>Domain:</td><td><%= form.text_field :name %></td>
+        </tr>
+        <tr>
+          <td>Admin username:</td><td><%= form.text_field :username %></td>
+        </tr>
+        <tr>
+          <td>Password:</td><td><%= form.text_field :password %></td>
+        </tr>
+        <tr>
+          <td>Crypted password:</td><td><%= form.text_field :crypted_password, :disabled => true %></td>
+        </tr>
+        <tr>
+          <td>Database:</td><td><%= form.text_field :dbname %></td>
+        </tr>
+        <tr>
+          <td>Shell access</td><td><%= form.check_box :shell %></td>
+        </tr>
+        <tr>
+          <td colspan="2"><h4>DNS config</h4></td>
+        </tr>
+        <tr>
+          <td>IP WWW:</td><td><%= form.text_field :www_ip %></td>
+        </tr>
+        <tr>
+          <td>IP MX:</td><td><%= form.text_field :mx_ip %></td>
+        </tr>
+        <tr>
+          <td>IP MAIL:</td><td><%= form.text_field :mail_ip %></td>
+        </tr>
+        <tr>
+          <td>DNS serial:</td><td><%= form.text_field :serial, :disabled => true %></td>
+        </tr>
+      </table>
+    </td>
+    <% unless @domain.new_record? -%>
+    <td valign="top">
+      <table>
+        <tr>
+          <td colspan="2"><h4>Current settings</h4></td>
+        </tr>
+        <tr>
+          <td>Awstats url:</td><td><%= link_to "http://#{@domain.name}/awstats", "http://#{@domain.username}:#{@domain.password}@#{@domain.name}/awstats" %></td>
+        </tr>
+        <tr>
+          <td>Awstats user:</td><td><%= @domain.username %></td>
+        </tr>
+        <tr>
+          <td>Awstats password:</td><td><%= @domain.password %></td>
+        </tr>
+        <tr>
+          <td>Database name:</td><td><%= @domain.dbname %></td>
+        </tr>
+        <tr>
+          <td>Database user:</td><td><%= @domain.username %></td>
+        </tr>
+        <tr>
+          <td>Database password:</td><td><%= @domain.password %></td>
+        </tr>
+        <% unless @domain.serial.nil? -%>
+        <tr>
+          <td colspan="2">
+            <h5>DNS zone</h5>
+            <table>
+              <tr>
+                <td><%= @domain.name %></td><td><%= @domain.www_ip %></td>
+              </tr>
+              <tr>
+                <td>www.<%= @domain.name %></td><td><%= @domain.www_ip %></td>
+              </tr>
+              <tr>
+                <td>ftp.<%= @domain.name %></td><td><%= @domain.www_ip %></td>
+              </tr>
+              <tr>
+                <td>mailmx.<%= @domain.name %></td><td><%= @domain.mx_ip %> (MX)</td>
+              </tr>
+              <tr>
+                <td>webmail.<%= @domain.name %></td><td><%= @domain.mail_ip %></td>
+              </tr>
+              <tr>
+                <td>mail.<%= @domain.name %></td><td><%= @domain.mail_ip %></td>
+              </tr>
+              <tr>
+                <td>smtp.<%= @domain.name %></td><td><%= @domain.mail_ip %></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <% end -%>
+      </table>
+    </td>
+    <% end -%>
+  </tr>
+</table>
+
+

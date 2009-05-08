@@ -1,0 +1,8 @@
+<h2><%=@node.name%></h2>
+
+<h3>Classes</h3>
+<%= render :partial => 'klass/klasses', :locals => { :klasses => @klasses } %>
+
+
+<h3>Facts</h3>
+<%= render :partial => 'facts', :locals => { :f => @facts } %>

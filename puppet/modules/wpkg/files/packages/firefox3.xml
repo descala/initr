@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+  <package 
+	id="firefox3"
+	name="Mozilla Firefox 3"
+	revision="309"
+	reboot="false"
+	priority="10">
+ 
+	<check type="uninstall" condition="exists" path="Mozilla Firefox (3.0.9)" />
+	<install cmd="taskkill /F /IM Firefox.exe">
+		<exit code="0" />
+		<exit code="128" />
+	</install>
+	<install cmd="%SOFTWARE%\Internet\firefox\Firefox Setup 3.0.9.exe /S" />
+	<upgrade cmd="taskkill /F /IM Firefox.exe">
+		<exit code="0" />
+		<exit code="128" />
+	</upgrade>
+	<upgrade cmd="%SOFTWARE%\Internet\firefox\Firefox Setup 3.0.9.exe /S" />
+	<remove cmd="taskkill /F /IM Firefox.exe">
+		<exit code="0" />
+		<exit code="128" />
+	</remove>
+	<remove cmd="%PROGRAMFILES%\Mozilla Firefox\uninstall\helper.exe /S" />
+  </package>
+</packages>
+

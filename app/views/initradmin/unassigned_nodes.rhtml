@@ -1,0 +1,19 @@
+<table>
+  <th>Node</th>
+  <th>Assign to project</th>
+
+  <% @nodes.each do |@node| %>
+
+      <tr>
+        <td><%= @node.fqdn %></td>
+        <td>
+	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
+          <%= collection_select(:node, :project_id, @projects, :id,
+          :name, {:prompt => true}, :onchange => "confirm('Assign to #{@node.name}?') && submit()" ) -%>
+	  <% end %>
+        </td>
+      </tr>
+
+  <% end %>
+
+</table>

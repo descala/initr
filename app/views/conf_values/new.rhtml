@@ -1,0 +1,8 @@
+<h1>New conf_value</h1>
+
+<% form_tag :action => 'create' do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag "Create" %>
+<% end %>
+
+<%= link_to 'Back', :controller => 'node', :action => 'manage', :id => @node_id %>

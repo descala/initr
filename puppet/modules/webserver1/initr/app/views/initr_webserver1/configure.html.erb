@@ -1,0 +1,27 @@
+<h2><%=@node.fqdn%></h2>
+
+<h3>Domains</h3>
+
+<table>
+  <tr>
+    <th>Domain</th>
+    <th>www</th>
+    <th>mx</th>
+    <th>mail</th>
+  </tr>
+<% @webserver.domains.each do |domain| -%>
+  <tr>
+    <td><%= link_to domain.name, :action => 'edit_domain', :id => domain %></td>
+    <td><%= domain.www_ip %></td>
+    <td><%= domain.mx_ip %></td>
+    <td><%= domain.mail_ip %></td>
+    <td><%= link_to image_tag("cross.gif", :plugin => "initr", :border => 0), {:action => 'rm_domain', :id => domain}, :confirm => "Delete #{domain.name}?", :method => :post %></td>
+  </tr>
+<% end -%>
+</table>
+
+<p><%= link_to "Add new domain", :action => 'add_domain', :id => @webserver %></p>
+
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+

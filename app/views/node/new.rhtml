@@ -1,0 +1,19 @@
+<h2>Configure a new node</h2>
+
+<div class="form">
+
+  <%= error_messages_for 'node' %>
+
+  <fieldset>
+    <% form_for :node, :url => { :id => @project }  do |form| %>
+      <p>
+      <label for="name"><%="Name"%> (hostname):</label>
+      <%= form.text_field(:name, :size => 40) %>
+      </p>
+
+      <%= submit_tag("New node", :class => "submit") %>
+
+    <% end %>
+  </fieldset>
+</div>
+

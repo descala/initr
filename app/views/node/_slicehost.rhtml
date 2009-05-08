@@ -1,0 +1,7 @@
+<%= link_to "Slicehost", "https://manage.slicehost.com/slices/#{node.provider_get('id')}" %>: 
+<%= node.provider_get('status') %> -  
+<%= number_with_precision(node.provider_get('bw_in'),2) %> 
+in / 
+<%= number_with_precision(node.provider_get('bw_out'),2) %>
+out
+<br/>

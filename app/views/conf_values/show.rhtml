@@ -1,0 +1,8 @@
+<% for column in Initr::ConfValue.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @conf_value.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @conf_value %> |
+<%= link_to 'Back', :controller => 'node', :action => 'manage', :id => @conf_value.node_id %>

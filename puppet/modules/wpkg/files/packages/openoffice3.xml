@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+  <package id="openoffice3" name="OpenOffice.org 3.0.1" revision="301" reboot="false" priority="0">
+    <check type="uninstall" condition="exists" path="OpenOffice.org 3.0" />
+    <install cmd='msiexec /qn /i "%SOFTWARE%\OpenOffice.org\OOo_301_es\openofficeorg30.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1' />
+    <upgrade cmd='msiexec /qn /i "%SOFTWARE%\OpenOffice.org\OOo_301_es\openofficeorg30.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1' />
+    <remove  cmd='msiexec /qn /x {85F0337D-33AC-43B4-A003-DF35061F1D8D}' />
+  </package>
+</packages>

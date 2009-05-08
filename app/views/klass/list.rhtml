@@ -1,0 +1,27 @@
+<h2><%=@node.fqdn%></h2>
+
+<h3>Node classes</h2>
+
+<%= render :partial => 'klasses', :locals => { :klasses => @klasses } %>
+
+<h3>Available classes</h2>
+
+<table class="list">
+  <tr align="left">
+    <th><%="Class"%></th>
+    <th><%="Description"%></th>
+    <th></th>
+  </tr>
+  <%
+  @available_klass_names.each do |kn| %>
+  <tr class="<%= cycle('odd', 'even') %>">
+    <td><%=kn.name%></td>
+    <td><%=kn.description%></td>
+    <td><%=button_to( "Add this class", :action => 'create', :id => @node, :klass_name => kn, :method => :post )%>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h3>Nade facts</h3>
+<%= render :partial => 'node/facts', :locals => { :f => @facts } %>

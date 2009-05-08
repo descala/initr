@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Lists profiles available to the systems. A profile represents a certain
+     selection of packages from the packages database. Profiles can depend on
+     other profiles, the end result being the sum of all required packages.
+-->
+
+<profiles>
+  <profile id="default">
+    <package package-id="firefox3" />
+    <package package-id="thunderbird" />
+  </profile>
+</profiles>
+
+<!-- also available:
+    <package package-id="openoffice3" />
+-->

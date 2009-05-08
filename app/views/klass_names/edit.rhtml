@@ -1,0 +1,9 @@
+<h2><%="Editing klass"%></h2>
+
+<% form_tag :action => 'update', :id => @klass_name do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Show', :action => 'show', :id => @klass_name %> |
+<%= link_to 'Back', :action => 'list' %>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+  <package 
+      id="thunderbird" 
+      name="Mozilla Thunderbird" 
+      revision="20021" 
+      reboot="false" 
+      priority="0">
+    <check type="uninstall" condition="exists" path="Mozilla Thunderbird (2.0.0.21)" />
+    <install cmd='"%SOFTWARE%\Thunderbird\Thunderbird Setup 2.0.0.21.exe" -ms' />
+    <upgrade cmd='"%SOFTWARE%\Thunderbird\Thunderbird Setup 2.0.0.21.exe" -ms' />
+    <remove cmd='"%PROGRAMFILES%\Mozilla Thunderbird\uninstall\helper.exe" /S' />
+  </package>
+</packages>

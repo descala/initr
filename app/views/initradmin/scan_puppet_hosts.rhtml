@@ -1,0 +1,9 @@
+<h1><%= "Scan for new Puppet hosts" %></h1>
+
+<h2><%= "Already exist" %>:</h2>
+
+    <%= @hosts_exist.size>0 ? @hosts_exist.join(", ") : "None" %>
+
+<h2><%= "New nodes from Puppet" %>:</h2>
+
+    <%= @hosts_new.size>0 ? @hosts_new.join(", ") : "None" %>
