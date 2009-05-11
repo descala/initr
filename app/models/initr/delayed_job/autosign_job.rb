@@ -12,12 +12,12 @@ class Initr::DelayedJob::AutosignJob
 
     @log = RAILS_DEFAULT_LOGGER
     unless can_write? path
-      @log.err("Can't write file: #{path}")
+      @log.error("Can't write file: #{path}")
       return 1
     end
     lines=(`echo -n "#{content}" | wc -l`).to_i
     unless lines > 0
-      @log.err("Not overwriten file #{path} with empty content #{content}")
+      @log.error("Not overwriten file #{path} with empty content #{content}")
       return 1
     end
 

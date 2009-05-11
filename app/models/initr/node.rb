@@ -47,7 +47,7 @@ class Initr::Node < ActiveRecord::Base
 
   def after_create
     b = Initr::Base.new
-    b.klass_name = Initr::KlassName.find_by_name 'Base'
+    b.klass_name = Initr::KlassName.find_by_name 'base'
     self.klasses << b
   end
   

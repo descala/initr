@@ -19,8 +19,8 @@ class Initr::KlassName < ActiveRecord::Base
   end
   
   def <=>(oth)
-    return -1 if self.name == 'Base'
-    return  1 if oth.name  == 'Base'
+    return -1 if self.name == 'base'
+    return  1 if oth.name  == 'base'
     self.name <=> oth.name
   end
 

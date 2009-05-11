@@ -50,7 +50,7 @@ Initr plugins installation
    Another alternative is to add this line in environment.rb:
    ::
     
-    config.plugin_paths = ["#{RAILS_ROOT}/vendor/plugins", "#{RAILS_ROOT}/vendor/plugins/initr/puppet/modules/"]
+    config.plugin_paths += %W( #{RAILS_ROOT}/vendor/plugins/initr/puppet/modules )
 
 2. Execute migrations with ``rake db:migrate:plugins``
 
