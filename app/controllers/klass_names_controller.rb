@@ -14,7 +14,7 @@ class KlassNamesController < InitrRequireAdminController
          :redirect_to => { :action => :list }
 
   def list
-    base = Initr::KlassName.find_by_name('Base')
+    base = Initr::KlassName.find_by_name('base')
     @klass_name_pages = Paginator.new(self, Initr::KlassName.count, 50, params[:page])
     @klass_names = Initr::KlassName.find :all, :order => 'name',
                                :limit  =>  @klass_name_pages.items_per_page,

@@ -18,7 +18,7 @@
       <%=link_to( "Configure", :controller=>klass.controller, :action => 'configure', :id => klass) if klass.configurable? %>
     </td>
     <td>
-      <%= link_to(image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => klass }, :confirm => 'Remove this class and configuration from this node?', :method => :post) unless klass.klass_name.name == 'Base' %>&nbsp;
+      <%= link_to(image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => klass }, :confirm => 'Remove this class and configuration from this node?', :method => :post) unless klass.klass_name.name == 'base' %>&nbsp;
     </td>
   </tr>
   <% end %>

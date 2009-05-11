@@ -58,9 +58,9 @@ class Setup < ActiveRecord::Migration
       table.timestamps
     end
 
-    create_table :stories do |table|
-      table.string :text
-    end
+    # Add data
+    kn = Initr::KlassName.new :name=>'base', :description=>'The base class of initr'
+    kn.save!
 
   end
 
@@ -75,7 +75,6 @@ class Setup < ActiveRecord::Migration
     drop_table :base_confs
     # Delayed_job tables
     drop_table :delayed_jobs
-    drop_table :stories
   end
 
 end
