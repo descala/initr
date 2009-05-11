@@ -18,7 +18,13 @@ class KlassController < ApplicationController
     @klass_name = Initr::KlassName.find params[:klass_name]
     begin
       # Exists a class named after the klass_name
-      klass = Kernel.const_get("Initr#{@klass_name.name.camelize}").new
+      begin
+        # try old naming of plugin models,
+        # until we migrate all them to initr namespace
+        klass = Kernel.const_get("Initr#{@klass_name.name.camelize}").new
+      rescue NameError
+        klass = Kernel.eval("Initr::"+@klass_name.name.camelize).new
+      end
     rescue NameError
       # Default
       klass = Initr::Klass.new
