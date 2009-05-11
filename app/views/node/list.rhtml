@@ -38,7 +38,9 @@
       <%= render :partial => node.provider_partial, :locals => {:node=>node} if node.provider_is_configured? %>
     </td>
     <td>
-      <%= link_to image_tag("stats.gif", :plugin => "initr" , :border => 0), { :controller => 'initr_munin', :action => 'index', :id => node } %>
+      <% node.klasses.each do |k| -%>
+        <%= render(:partial => k.nodelist_partial, :locals => {:node=>node}) %>
+      <% end -%>
       <%= link_to image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => node }, :confirm => 'Remove this node?', :method => :post %>
     </td>
   </tr>

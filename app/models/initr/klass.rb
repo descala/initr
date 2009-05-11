@@ -61,4 +61,7 @@ class Initr::Klass < ActiveRecord::Base
     self.klass_name <=> oth.klass_name
   end
 
+  def nodelist_partial
+  end
+
 end
