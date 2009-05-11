@@ -15,11 +15,12 @@ class KlassNamesController < InitrRequireAdminController
 
   def list
     base = Initr::KlassName.find_by_name('Base')
+    baseid = base.nil? ? -1 : base.id
     @klass_name_pages = Paginator.new(self, Initr::KlassName.count, 50, params[:page])
     @klass_names = Initr::KlassName.find :all, :order => 'name',
                                :limit  =>  @klass_name_pages.items_per_page,
                                :offset =>  @klass_name_pages.current.offset,
-                               :conditions => ["id != ?",base.id]
+                               :conditions => ["id != ?",baseid]
   end
 
   def show
