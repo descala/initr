@@ -229,6 +229,7 @@ class webserver1::awstats {
       command => "/bin/touch /etc/awstats/users",
       creates => "/etc/awstats/users",
       user => root,
+      require => Package["awstats"],
       before => Exec["htpasswd for admin"];
   }
 
