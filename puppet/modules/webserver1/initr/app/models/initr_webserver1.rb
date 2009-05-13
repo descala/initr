@@ -26,5 +26,17 @@ class InitrWebserver1 < Initr::Klass
   def domains
     initr_webserver1_domains
   end
+
+  def default_nagios_checks
+    case self.node.puppet_fact("operatingsystem","")
+    when "Debian":
+      httpd_service = "apache2"
+    else
+      httpd_service = "httpd"
+    end
+    dnc = {}
+    dnc["apache"] = "check_procs -C #{httpd_service} -w 1:50 -c 1:100"
+    return dnc
+  end
  
 end
