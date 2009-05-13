@@ -9,7 +9,7 @@ class Initr::KlassName < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
-
+  
   def needed_confs
     conf_names
   end
@@ -23,5 +23,5 @@ class Initr::KlassName < ActiveRecord::Base
     return  1 if oth.name  == 'base'
     self.name <=> oth.name
   end
-
+  
 end
