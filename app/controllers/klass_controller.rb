@@ -32,7 +32,11 @@ class KlassController < ApplicationController
     klass.node=@node
     klass.klass_name=@klass_name
     if klass.save
-      redirect_to :action => 'list', :id => @node.id
+      if klass.configurable?
+        redirect_to :controller => klass.controller, :action => 'configure', :id => klass.id
+      else
+        redirect_to :action => 'list', :id => @node.id
+      end
     else
       flash[:error] = "Error adding class: #{klass.error}"
       redirect_to :back
