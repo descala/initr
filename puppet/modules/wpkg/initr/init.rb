@@ -10,7 +10,7 @@ Initr::Plugin.register :wpkg do
     version '0.0.1'
     project_module :initr do
       permission :wpkg_configure,
-        :initr_wpkg => [ :configure ],
+        { :initr_wpkg => [ :configure ] },
         :require => :member
     end
   end
