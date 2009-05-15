@@ -1,57 +1,55 @@
 class KlassController < ApplicationController
   unloadable
 
-  before_filter :find_node, :only => [:list,:create,:add]
+  before_filter :find_node, :only => [:list,:create]
   before_filter :find_project, :only => [:configure,:destroy]
   before_filter :authorize
   
   layout 'nested' 
   
   def list
-    @klass_names = Initr::KlassName.find :all, :order => "name"
-    @klasses=@node.klasses
-    @available_klass_names = @klass_names - @node.klass_names
+    @klass_definitions = []
+    Initr::KlassDefinition.all.each do |kd|
+      unless Initr::KlassDefinition.all_for_node(@node).include? kd or kd.name == "CustomKlass"
+        @klass_definitions << kd
+      end
+    end
     @facts = @node.puppet_host.get_facts_hash rescue []
   end
  
   def create
-    @klass_name = Initr::KlassName.find params[:klass_name]
+    if params[:klass_name] == "CustomKlass"
+      redirect_to :controller => 'custom_klass', :action => 'new', :id => @node
+      return
+    end
     begin
-      # Exists a class named after the klass_name
       begin
         # try old naming of plugin models,
         # until we migrate all them to initr namespace
-        klass = Kernel.const_get("Initr#{@klass_name.name.camelize}").new
+        klass = Kernel.const_get("Initr#{params[:klass_name].camelize}").new
       rescue NameError
-        klass = Kernel.eval("Initr::"+@klass_name.name.camelize).new
+        klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new
       end
     rescue NameError
-      # Default
-      klass = Initr::Klass.new
+      @klass_name = Initr::KlassName.find_by_name params[:klass_name]
+      klass = Initr::CustomKlass.new(:klass_name => @klass_name)
+      klass.klass_name = @klass_name
     end
     klass.node=@node
-    klass.klass_name=@klass_name
     if klass.save
-      redirect_to :action => 'list', :id => @node.id
+      if klass.configurable?
+        redirect_to :controller => klass.controller, :action => 'configure', :id => klass.id
+      else
+        redirect_to :action => 'list', :id => @node.id
+      end
     else
       flash[:error] = "Error adding class: #{klass.error}"
       redirect_to :back
     end
   end
 
-  def configure
-    @confs = @klass.node.getconfs
-    if request.post?
-      save_confs(@klass)
-      redirect_to :action => 'list', :id => @node.id
-    end
-  end
-  
   def destroy
     k = Initr::Klass.find params[:id]
-    k.confs.each do |c|
-      c.destroy
-    end
     k.destroy
     redirect_to :back
   end

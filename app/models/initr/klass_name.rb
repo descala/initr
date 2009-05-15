@@ -2,8 +2,8 @@ class Initr::KlassName < ActiveRecord::Base
 
   unloadable
   
-  has_many :klasses, :class_name => "Initr::Klass"
-  has_many :nodes, :through => :klasses, :class_name => "Initr::Node"
+  has_many :custom_klasses, :class_name => "Initr::CustomKlass"
+  has_many :nodes, :through => :custom_klasses, :class_name => "Initr::Node"
   has_and_belongs_to_many :conf_names, :class_name => "Initr::ConfName"
   has_many :confs, :through => :conf_names, :class_name => "Initr::Conf"
 

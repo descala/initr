@@ -28,8 +28,8 @@
     </td>
     <td class="subject">
       <%
-        klasses = node.klass_names.collect{|c|c.name}.join(", ")
-    klasses = "???" if klasses==""
+        klasses = node.klasses.collect {|c| c.name}.join(", ")
+        klasses = "???" if klasses==""
       -%>
       <%= link_to klasses, :controller => 'klass', :action => 'list', :id => node %>
     </td>
