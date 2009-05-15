@@ -3,65 +3,52 @@ class Initr::Klass < ActiveRecord::Base
   unloadable
   
   belongs_to :node, :class_name => "Initr::Node"
-  belongs_to :klass_name, :class_name => "Initr::KlassName"
-  has_many :confs, :dependent => :destroy, :class_name => "Initr::Conf"
-  has_many :conf_names, :through => :confs, :class_name => "Initr::ConfName"
 
   serialize :config
 
+  # you must override this method and return a name for the class
+  # it must be a valid puppet class name, without strange characters or spaces
   def name
-    klass_name.name
+    self.class.to_s.gsub(/^Initr::/,'')
   end
 
+  # name to match puppet class in .pp
   def name4puppet
     name
   end
 
+  # you should override this method and return a description for the class
   def description
-    klass_name.description
   end
 
   def controller
     self.class.to_s.gsub(/^Initr::/,'').underscore
   end
   
-  # Other klasses may need to override this
+  # Variables for puppet
   def parameters
-    parameters = {}
-    confs.sort.each do |conf|
-      parameters[conf.name]=YAML.load conf.value_yaml
-    end
-    parameters
+    {}
   end
-  
+
+  # we assume that each class has a controller to configure it
   def configurable?
-    if self.class == Initr::Klass
-      return false unless klass_name
-      return !klass_name.conf_names.empty?
-    else
-      return true
-    end
+    true
   end
   
-  # Other klasses may need to override this
+  # information to show about the conf of this class
   def print_parameters
-    p = {}
-    confs.each do |conf|
-      p[conf.name] = conf.get_value
-    end
-    return "-" if p.empty?
-    str = ""
-    p.each { |k,v|
-      str += "#{k} = #{v}<br />"
-    }
-    str
+    "-"
   end
 
   def <=>(oth)
-    self.klass_name <=> oth.klass_name
+    return -1 if self.name == 'base'
+    return  1 if oth.name  == 'base'
+    self.name.downcase <=> oth.name.downcase
   end
 
+  # node/list includes this partial on each node that returns a partial name here
   def nodelist_partial
   end
 
 end
+

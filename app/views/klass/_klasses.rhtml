@@ -7,18 +7,17 @@
     <th></th>
   </tr>
   <%
-    @node.klass_names.sort.each do |klass_name|
-    klass = @node.get_klass(klass_name)
+    @node.klasses.sort.each do |klass|
   %>
   <tr class="<%= cycle('odd', 'even') %>">
-    <td><%=klass_name.name%></td>
-    <td><%=klass_name.description%></td>
+    <td><%= klass.name %></td>
+    <td><%= klass.description %></td>
     <td><%= klass.print_parameters %></td>
     <td>
       <%=link_to( "Configure", :controller=>klass.controller, :action => 'configure', :id => klass) if klass.configurable? %>
     </td>
     <td>
-      <%= link_to(image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => klass }, :confirm => 'Remove this class and configuration from this node?', :method => :post) unless klass.klass_name.name == 'base' %>&nbsp;
+      <%= link_to(image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => klass }, :confirm => 'Remove this class and configuration from this node?', :method => :post) unless klass.name == 'base' %>&nbsp;
     </td>
   </tr>
   <% end %>

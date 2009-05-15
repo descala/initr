@@ -3,6 +3,14 @@ class Initr::Base < Initr::Klass
   unloadable
   has_one  :base_conf, :dependent => :destroy, :class_name => "Initr::BaseConf"
 
+  def name
+    "base"
+  end
+
+  def description
+    "Initr base class"
+  end
+
   def parameters
     self.base_conf.puppetconf
   end
@@ -17,7 +25,6 @@ class Initr::Base < Initr::Klass
 
   def after_create
     self.base_conf = Initr::BaseConf.new if self.base_conf.nil?
-    self.klass_name = Initr::KlassName.find_by_name "Base" if self.klass_name.nil?
     save
   end
 
