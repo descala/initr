@@ -7,11 +7,6 @@ class InitrWebserver1Controller < ApplicationController
   before_filter :find_domain, :only => [:edit_domain,:rm_domain]
   before_filter :authorize
 
-  def configure
-    if request.post?
-    end 
-  end
-
   def add_domain
     @domain=InitrWebserver1Domain.new(params[:initr_webserver1_domain])
     @domain.initr_webserver1 = @webserver

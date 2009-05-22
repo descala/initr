@@ -13,15 +13,16 @@
     <th></th>
   </tr>
   <%
-  @available_klass_names.each do |kn| %>
+  @klass_definitions.each do |kd| %>
   <tr class="<%= cycle('odd', 'even') %>">
-    <td><%=kn.name%></td>
-    <td><%=kn.description%></td>
-    <td><%=button_to( "Add this class", :action => 'create', :id => @node, :klass_name => kn, :method => :post )%>
-    </td>
+    <td><%= kd.name %></td>
+    <td><%= kd.description %></td>
+    <td><%= button_to("Add this class", :action => 'create', :id => @node, :klass_name => kd.name, :method => :post) %></td>
   </tr>
   <% end %>
 </table>
+
+<p><%= link_to "Add new custom class", :controller => 'custom_klass', :action => 'new', :id => @node %></p>
 
 <h3>Nade facts</h3>
 <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
