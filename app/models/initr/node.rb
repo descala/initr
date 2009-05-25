@@ -62,6 +62,7 @@ class Initr::Node < ActiveRecord::Base
 
   def after_destroy
     Delayed::Job.enqueue Initr::DelayedJob::PuppetcaCleanJob.new(fqdn) unless puppet_host.nil?
+    puppet_host_destroy
   end
 
   def <=>(oth)
@@ -91,7 +92,7 @@ class Initr::Node < ActiveRecord::Base
 
   def puppet_host_destroy
     @host_object = Puppet::Rails::Host.find_by_name(name)
-    Puppet::Rails::Host.delete @host_object
+    Puppet::Rails::Host.destroy @host_object
   end
 
   def puppet_fact(factname, default=nil)
