@@ -8,9 +8,10 @@ class KlassController < ApplicationController
   layout 'nested' 
   
   def list
+    node_klasses = Initr::KlassDefinition.all_for_node(@node)
     @klass_definitions = []
     Initr::KlassDefinition.all.each do |kd|
-      unless Initr::KlassDefinition.all_for_node(@node).include? kd or kd.name == "CustomKlass"
+      unless node_klasses.include? kd or kd.name == "CustomKlass"
         @klass_definitions << kd
       end
     end
