@@ -6,6 +6,11 @@ class Initr::Klass < ActiveRecord::Base
 
   serialize :config
 
+  def initialize(attributes = nil)
+    super
+    self.config ||= {}
+  end
+
   # you must override this method and return a name for the class
   # it must be a valid puppet class name, without strange characters or spaces
   def name
