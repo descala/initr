@@ -7,7 +7,6 @@ class Initr::Node < ActiveRecord::Base
   unloadable
 
   has_many :klasses, :dependent => :destroy, :class_name => "Initr::Klass"
-  has_many :klass_names, :through => :klasses, :class_name => "Initr::KlassName"
   has_many :confs, :through => :klasses, :class_name => "Initr::Conf"
   belongs_to :project
 
@@ -47,7 +46,6 @@ class Initr::Node < ActiveRecord::Base
 
   def after_create
     b = Initr::Base.new
-    b.klass_name = Initr::KlassName.find_by_name 'base'
     self.klasses << b
   end
   
@@ -232,7 +230,7 @@ class Initr::Node < ActiveRecord::Base
   # returns { confname1 => conf1, ..., confnameN => confN }
   def getconfs
     configs = {}
-    self.klasses.each do |k|
+    self.custom_klasses.each do |k|
       k.confs.each do |c|
         configs[c.conf_name.name] = c.get_value
       end
@@ -241,7 +239,7 @@ class Initr::Node < ActiveRecord::Base
   end
 
   def get_conf(name)
-    self.klasses.each do |k|
+    self.custom_klasses.each do |k|
       k.confs.each do |c|
         return c if c.conf_name.name == name
       end
@@ -259,5 +257,9 @@ class Initr::Node < ActiveRecord::Base
       dummy.klass_name = klass_name
       return dummy
     end
+  end
+
+  def custom_klasses
+    self.klasses.collect {|k| k if k.class == Initr::CustomKlass }.compact
   end
 end
