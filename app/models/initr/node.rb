@@ -89,7 +89,7 @@ class Initr::Node < ActiveRecord::Base
 
   def puppet_host_destroy
     @host_object = Puppet::Rails::Host.find_by_name(name)
-    Puppet::Rails::Host.delete @host_object
+    Puppet::Rails::Host.delete @host_object if @host_object
   end
 
   def puppet_fact(factname, default=nil)
