@@ -5,21 +5,14 @@ class Initr::KlassDefinition
   attr_accessor :name, :description
 
   def self.all
-    (self.custom_klasses + self.module_klasses).sort
+    self.custom_klasses
   end
 
   def self.custom_klasses
     kdefs = Initr::KlassName.all.sort.collect { |kn|
       Initr::KlassDefinition.new(kn.name,kn.description)
     }
-    kdefs
-  end
-
-  def self.module_klasses
-    #TODO
-    [ Initr::KlassDefinition.new("InitrWebserver1","Complete webserver"),
-      Initr::KlassDefinition.new("InitrWpkg","wpkg"),
-      Initr::KlassDefinition.new("CustomKlass","Custom class") ]
+    kdefs.sort
   end
 
   def initialize(name,description)
