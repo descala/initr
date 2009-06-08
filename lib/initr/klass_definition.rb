@@ -32,13 +32,13 @@ class Initr::KlassDefinition
 
   def self.find_by_name(name)
     ObjectSpace.each_object(Initr::KlassDefinition) { |kd|
-      return kd if kd.name == name
+      return kd if kd.name.downcase == name.downcase
     }
     return find_by_name("CustomKlass")
   end
 
   def ==(oth)
-    self.name == oth.name
+    self.name.downcase == oth.name.downcase
   end
   
   def <=>(oth)
