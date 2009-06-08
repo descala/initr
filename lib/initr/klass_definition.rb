@@ -12,6 +12,7 @@ class Initr::KlassDefinition
     kdefs = Initr::KlassName.all.sort.collect { |kn|
       Initr::KlassDefinition.new(kn.name,kn.description)
     }
+    kdefs << Initr::KlassDefinition.new("CustomKlass","Custom class")
     kdefs.sort
   end
 
