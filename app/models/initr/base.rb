@@ -19,10 +19,6 @@ class Initr::Base < Initr::Klass
     ""
   end
 
-  def name4puppet
-    "base"
-  end
-
   def after_create
     self.base_conf = Initr::BaseConf.new if self.base_conf.nil?
     save

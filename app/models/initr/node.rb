@@ -36,7 +36,7 @@ class Initr::Node < ActiveRecord::Base
     # node classes
     classes = [ "base" ]
     klasses.sort.each do |k|
-      classes << k.name4puppet
+      classes << k.name
     end
     result = { }
     result["parameters"] = parameters

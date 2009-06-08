@@ -11,15 +11,11 @@ class Initr::Klass < ActiveRecord::Base
     self.config ||= {}
   end
 
-  # you must override this method and return a name for the class
-  # it must be a valid puppet class name, without strange characters or spaces
+  # If your model class does not match your puppet class, you must override
+  # this method and return a name for the class.
+  # It must be a valid puppet class name, without strange characters or spaces
   def name
     self.class.to_s.gsub(/^Initr::/,'')
-  end
-
-  # name to match puppet class in .pp
-  def name4puppet
-    name
   end
 
   # you should override this method and return a description for the class
