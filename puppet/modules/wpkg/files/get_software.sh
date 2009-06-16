@@ -4,7 +4,7 @@
 
 # firefox
 DIR="Internet/firefox"
-URL="http://download.mozilla.org/?product=firefox-3.0.9&os=win&lang=ca"
+URL="http://download.mozilla.org/?product=firefox-3.0.10&os=win&lang=ca"
 mkdir -p "$DIR" && cd "$DIR" && wget "$URL" 
 
 # thunderbird
@@ -26,3 +26,4 @@ mkdir -p "$DIR" && cd "$DIR" && wget "$URL"
 # TODO: cal un pas manual
 # que descomprimeix arxius, executant el OOo_3.0.1_Win32Intel_install_es.exe des de windows
 
+wget "http://download.microsoft.com/download/9/4/2/942080a4-ba69-496b-a379-d3b26d37b647/WindowsXP-KB936929-SP3-x86-ESN.exe"

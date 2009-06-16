@@ -1,4 +1,4 @@
-class Setup < ActiveRecord::Migration
+class CustomKlasses < ActiveRecord::Migration
 
   def self.up
     rename_column(:confs,:klass_id,:custom_klass_id)
