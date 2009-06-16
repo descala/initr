@@ -19,7 +19,6 @@ class CustomKlassController < ApplicationController
 
   def new
     @custom_klass = Initr::CustomKlass.new(:node=>@node)
-    @custom_klass.custom_klass_confs.build
   end
 
   def create
