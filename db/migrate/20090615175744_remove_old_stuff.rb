@@ -4,6 +4,7 @@ class RemoveOldStuff < ActiveRecord::Migration
     drop_table :klass_names
     drop_table :confs
     drop_table :conf_names
+    remove_column(:klasses, :klass_name_id)
   end
 
   def self.down
@@ -22,6 +23,7 @@ class RemoveOldStuff < ActiveRecord::Migration
       t.string  :name
       t.text    :help
     end
+    add_column(:klasses, :klass_name_id, :integer)
   end
 
 end

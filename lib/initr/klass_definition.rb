@@ -26,7 +26,7 @@ class Initr::KlassDefinition
     ObjectSpace.each_object(Initr::KlassDefinition) { |kd|
       return kd if kd.name.downcase == name.downcase
     }
-    return nil #find_by_name("CustomKlass")
+    return nil
   end
 
   def ==(oth)

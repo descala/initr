@@ -14,6 +14,8 @@ class CustomKlassController < ApplicationController
       else
         render :action => 'configure', :id=>@custom_klass
       end
+    else
+      redirect_to :action => "new", :id => @node
     end
   end
 
@@ -46,8 +48,13 @@ class CustomKlassController < ApplicationController
   end
 
   def find_klass
-    @custom_klass = Initr::CustomKlass.find params[:id]
-    @node = @custom_klass.node
+    # see save method on custom_klass model
+    if request.post?
+      @custom_klass = Initr::CustomKlass.find params[:id]
+      @node = @custom_klass.node
+    else
+      @node = Initr::Node.find params[:id]
+    end
     @project = @node.project
   end
 

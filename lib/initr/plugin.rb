@@ -55,6 +55,7 @@ module Initr #:nodoc:
     def self.klass_names
       klass_names = []
       registered_plugins.values.each do |plugin|
+        next unless plugin.klasses
         plugin.klasses.each do |k,v|
           klass_names << Initr::KlassDefinition.new(k,v)
         end

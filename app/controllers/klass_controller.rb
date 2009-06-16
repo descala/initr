@@ -17,7 +17,6 @@ class KlassController < ApplicationController
   end
  
   def create
-    begin
       begin
         # try old naming of plugin models,
         # until we migrate all them to initr namespace
@@ -25,9 +24,6 @@ class KlassController < ApplicationController
       rescue NameError
         klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new
       end
-    rescue NameError
-      klass = Initr::CustomKlass.new(:name => params[:klass_name])
-    end
     klass.node=@node
     if klass.save
       if klass.configurable?
@@ -36,7 +32,7 @@ class KlassController < ApplicationController
         redirect_to :action => 'list', :id => @node.id
       end
     else
-      flash[:error] = "Error adding class: #{klass.error}"
+      flash[:error] = "Error adding class: #{klass.errors.full_messages}"
       redirect_to :back
     end
   end
