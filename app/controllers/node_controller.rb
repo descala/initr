@@ -4,7 +4,6 @@ class NodeController < ApplicationController
   unloadable
 
   helper :projects, :initr
-  
   menu_item :initr
 
   before_filter :find_node, :except => [:new,:list,:get_host_definition]
@@ -46,15 +45,6 @@ class NodeController < ApplicationController
         }.flatten.uniq.compact.sort
       end
     end
-  end
-
-  def view
-    @klasses = @node.klasses
-    @facts = @node.puppet_host.get_facts_hash rescue []
-  end
-  
-  def facts
-    @facts = @node.puppet_host.get_facts_hash
   end
 
   def destroy

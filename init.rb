@@ -33,14 +33,15 @@ begin
     # It can be enabled/disabled at project level (Project settings -> Modules)
     project_module :initr do
       permission :view_nodes,
-        { :node    => [:list, :view, :facts] },
+        { :node => [:list],
+          :klass => [:list]},
         :require => :member
       permission :manage_nodes,
         { :node  => [:new, :destroy],
           :base    => [:configure] },
         :require => :member
       permission :use_classes,
-        { :klass   => [:list, :create, :configure, :destroy] },
+        { :klass   => [:create, :configure, :destroy] },
         :require => :member
       # public:
       #  * node/get_host_definition

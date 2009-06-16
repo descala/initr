@@ -2,6 +2,7 @@ class BaseController < ApplicationController
   unloadable
 
   layout 'nested'
+  menu_item :initr
 
   before_filter :find_base
   before_filter :authorize

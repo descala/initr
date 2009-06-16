@@ -6,6 +6,7 @@ class KlassController < ApplicationController
   before_filter :authorize
   
   layout 'nested' 
+  menu_item :initr
   
   def list
     node_klasses = Initr::KlassDefinition.all_for_node(@node)
