@@ -1,11 +1,20 @@
 class CustomKlasses < ActiveRecord::Migration
 
   def self.up
-    rename_column(:confs,:klass_id,:custom_klass_id)
+    add_column(:klasses, :name, :string)
+    add_column(:klasses, :description, :string)
+    Initr::CustomKlass.all.each do |ck|
+      ck.name = ck.klass_name.name rescue ""
+      ck.description = ck.klass_name.description rescue ""
+      ck.save
+    end
+    remove_column(:klasses, :klass_name_id)
   end
 
   def self.down
-    rename_column(:confs,:custom_klass_id,:klass_id)
+    remove_column(:klasses, :name)
+    remove_column(:klasses, :description)
+    add_column(:klasses, :klass_name_id, :integer)
   end
 
 end

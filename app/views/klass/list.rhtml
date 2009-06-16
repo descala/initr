@@ -12,17 +12,19 @@
     <th><%="Description"%></th>
     <th></th>
   </tr>
-  <%
-  @klass_definitions.each do |kd| %>
+  <% @klass_definitions.each do |kd| %>
   <tr class="<%= cycle('odd', 'even') %>">
     <td><%= kd.name %></td>
     <td><%= kd.description %></td>
-    <td><%= button_to("Add this class", :action => 'create', :id => @node, :klass_name => kd.name, :method => :post) %></td>
+    <td><%= button_to("Add this class",:action => 'create', :id => @node, :klass_name => kd.name, :method => :post) %></td>
   </tr>
   <% end %>
+  <tr>
+    <td>Custom klass</td>
+    <td>Add a generic klass without controller</td>
+    <td><%= button_to("New class",:controller => 'custom_klass', :action => 'new', :id => @node) %></td>
+  </tr>
 </table>
 
-<p><%= link_to "Add new custom class", :controller => 'custom_klass', :action => 'new', :id => @node %></p>
-
-<h3>Nade facts</h3>
+<h3>Node facts</h3>
 <%= render :partial => 'node/facts', :locals => { :f => @facts } %>

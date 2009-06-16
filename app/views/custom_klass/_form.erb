@@ -1,22 +1,17 @@
-<%= error_messages_for 'klass_name' %>
+<%= error_messages_for 'custom_klass' %>
 
-<p><label for="klass_name_name"><%="Name"%></label><br/>
-<%= text_field 'klass_name', 'name'  %></p>
-<p><label for="klass_name_description"><%="Description"%></label><br/>
-<%= text_field 'klass_name', 'description'  %></p>
+<!--[form:custom_klass]-->
 
-<h3><%= "Attributes needed by the class:" %></h3>
-<ul>
-  <%
-  i=0
-  @conf_names.each do |cn| %>
-    <li><%= check_box("confname_"+i.to_s, "id", {:checked => (@klass_name.conf_names.include?(cn) ? true : false) }, cn.id, nil) %><%=cn.name%></li>
-    <%
-    i=i+1
-  end
-  %>
-</ul>
+<p><label for="custom_klass_name"><%="Name"%></label><br/>
+<%= form.text_field 'name'  %></p>
+<p><label for="custom_klass_description"><%="Description"%></label><br/>
+<%= form.text_field 'description'  %></p>
 
-<p>
-Create new attribute <%= text_field_tag "todo" %><%= button_to("create") %>
-</p>
+<%= hidden_field_tag :node_id, @node.id %>
+
+<div id="custom_klass_confs">
+  <%= render :partial => 'custom_klass_conf', :collection => @custom_klass.custom_klass_confs -%>
+</div>
+<p><%= add_ckc_link("Add configuration value") %></p>
+
+<!--[eoform:custom_klass]-->

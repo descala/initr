@@ -1,10 +1,10 @@
 <h2><%="New custom klass"%></h2>
 
-<% form_tag :action => 'create', :id => @node do |f| %>
+<% form_for :custom_klass, @custom_klass, :url => {:action => 'create'} do |f| %>
 
-  <%= render :partial => 'form', :locals => {:f=>f} %>
-
+  <%= render :partial => f %>
   <%= submit_tag "Create" %>
+
 <% end %>
 
-<%= link_to 'Back', :controller => 'klass', :action => 'list', :id => @node %>
+<%= link_to 'Back', :back %>

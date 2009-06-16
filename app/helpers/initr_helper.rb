@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 module InitrHelper
 
   def color_zebra(i)
@@ -12,5 +11,5 @@ module InitrHelper
       content_tag(:span, 'Correct', :style=>'color: green;')
     end
   end
-  
+
 end

@@ -42,6 +42,9 @@ begin
       permission :use_classes,
         { :klass   => [:list, :create, :configure, :destroy] },
         :require => :member
+      permission :manage_klasses,
+        { :custom_klass => [:new, :create, :configure] },
+        :require => :member
       # public:
       #  * node/get_host_definition
       # admin only:

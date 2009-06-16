@@ -1,47 +1,61 @@
 class Initr::CustomKlass < Initr::Klass
 
   unloadable
-  
-  belongs_to :klass_name, :class_name => "Initr::KlassName"
-  has_many :confs, :dependent => :destroy, :class_name => "Initr::Conf"
-  has_many :conf_names, :through => :confs, :class_name => "Initr::ConfName"
+  has_many :custom_klass_confs,
+    :class_name => "Initr::CustomKlassConf",
+    :dependent => :destroy
+  after_update :save_custom_klass_confs
+  validates_presence_of :name
+  validates_uniqueness_of :name, :scope => :node_id
 
   def name
-    klass_name.name
-  rescue
-    "rescued"
-  end
-
-  def description
-    klass_name.description
-  rescue
-    "rescued"
+    read_attribute :name
   end
 
   def parameters
     parameters = {}
-    confs.sort.each do |conf|
-      parameters[conf.name]=YAML.load conf.value_yaml
+    custom_klass_confs.each do |ckc|
+      parameters[ckc.name] = ckc.value
     end
     parameters
   end
 
   def configurable?
-    return false unless klass_name
-    return !klass_name.conf_names.empty?
+    return custom_klass_confs.size > 0
   end
 
   def print_parameters
-    p = {}
-    confs.each do |conf|
-      p[conf.name] = conf.get_value
-    end
+    p = custom_klass_confs
     return "-" if p.empty?
     str = ""
-    p.each { |k,v|
-      str += "#{k} = #{v}<br />"
+    p.each { |ckc|
+      str += "#{ckc.name} = #{ckc.value}<br />"
     }
     str
+  end
+
+  def new_custom_klass_conf_attributes=(ckc_attributes)
+    ckc_attributes.each do |attributes|
+      custom_klass_confs.build(attributes)
+    end
+  end
+
+  def existing_custom_klass_conf_attributes=(ckc_attributes)
+    custom_klass_confs.reject(&:new_record?).each do |ckc|
+      attributes = ckc_attributes[ckc.id.to_s]
+      if attributes
+        ckc.attributes = attributes
+        ckc.save
+      else
+        custom_klass_confs.delete(ckc)
+      end
+    end
+  end
+
+  def save_custom_klass_confs
+    custom_klass_confs.each do |ckc|
+      ckc.save(false)
+    end
   end
 
 end

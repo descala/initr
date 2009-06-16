@@ -7,7 +7,6 @@ class Initr::Node < ActiveRecord::Base
   unloadable
 
   has_many :klasses, :dependent => :destroy, :class_name => "Initr::Klass"
-  has_many :confs, :through => :klasses, :class_name => "Initr::Conf"
   belongs_to :project
 
   validates_presence_of :name
@@ -216,38 +215,8 @@ class Initr::Node < ActiveRecord::Base
       "#{tense}#{parts.join("")}"
   end
 
-  def getconf(name)
-    begin
-      cn = Initr::ConfName.find_by_name name
-      cv = (Initr::ConfValue.find :all, :conditions => [ "conf_name_id = ? AND node_id = ?", cn.id, self.id ], :limit => 1).first
-    rescue
-      cv = nil
-    end
-    return cv
-  end
-
-  # returns { confname1 => conf1, ..., confnameN => confN }
-  def getconfs
-    configs = {}
-    self.custom_klasses.each do |k|
-      k.confs.each do |c|
-        configs[c.conf_name.name] = c.get_value
-      end
-    end
-    return configs
-  end
-
-  def get_conf(name)
-    self.custom_klasses.each do |k|
-      k.confs.each do |c|
-        return c if c.conf_name.name == name
-      end
-    end
-    return nil
-  end
-
   def get_klass(name)
-    klass_name = name.is_a?(Initr::KlassName) ? name : klass_name = Initr::KlassName.find_by_name(klass_name)
+    klass_name = name.is_a?(Initr::CustomKlass) ? name : Initr::CustomKlass.find_by_name(klass_name)
     begin
       (Initr::Klass.find :all, :conditions => [ "node_id=? and klass_name_id=?", self.id, klass_name.id ], :limit => 1).first
     rescue  ActiveRecord::SubclassNotFound

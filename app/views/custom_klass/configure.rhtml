@@ -1,24 +1,13 @@
-<h2><%="Editing"%> <%=@klass.name%> <%="for node"%> <%=@node.name%></h2>
+<h2><%="Editing"%> <%=@custom_klass.name%> <%="for node"%> <%=@node.name%></h2>
 
 <p><%= "Needed attributes for this class:" %></p>
 
-<% form_tag (url_for :id => @klass) do %>
+<% form_for :custom_klass, @custom_klass, :url => ({ :action=>'configure', :id=>@custom_klass }) do |f| %>
 
-  <%= hidden_field_tag('node',@node.id) %>
-
-  <%
-    confs = []
-    @klass.klass_name.conf_names.each do |cn|
-      value = (@confs.has_key? cn.name) ? @confs[cn.name] : ""
-      confs << cn.name
-  %>
-    <label for="<%=cn.name%>"><%=cn.name.capitalize%></label>
-    <%= text_field_tag(cn.name,value)%>
-  <% end %>
-
-  <%= hidden_field_tag('nodeconfs',confs.join(" ")) %>
+  <%= render :partial => f %>
 
   <%=submit_tag 'Save'%>
 
 <% end %>
 
+<%= link_to 'Back', :back -%>

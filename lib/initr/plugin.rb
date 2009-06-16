@@ -56,7 +56,7 @@ module Initr #:nodoc:
       klass_names = []
       registered_plugins.values.each do |plugin|
         plugin.klasses.each do |k,v|
-          klass_names << Initr::KlassName.new(:name => k, :description => v)
+          klass_names << Initr::KlassDefinition.new(k,v)
         end
       end
       klass_names
@@ -64,13 +64,9 @@ module Initr #:nodoc:
 
     def self.update_klass_names
       klass_names.each do |kn|
-        begin
-          kn.save!
-        rescue ActiveRecord::RecordInvalid
-          updated = Initr::KlassName.find_by_name(kn.name)
-          updated.description = kn.description
-          updated.save!
-        end
+        updated = Initr::KlassDefinition.find_by_name(kn.name)
+        updated = Initr::KlassDefinition.new(kn.name) if updated.nil?
+        updated.description = kn.description
       end
     end
     

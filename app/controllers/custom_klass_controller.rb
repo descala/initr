@@ -2,39 +2,35 @@ class CustomKlassController < ApplicationController
 
   unloadable
 
-  before_filter :find_node, :only  => [:new, :create]
-  before_filter :find_klass, :only => [:configure]
+  before_filter :find_node,    :only => [:new]
+  before_filter :find_node_id, :only => [:create]
+  before_filter :find_klass,   :only => [:configure]
+
+  def configure
+    if request.post?
+      params[:custom_klass][:existing_custom_klass_conf_attributes] ||= {}
+      if @custom_klass.update_attributes(params[:custom_klass])
+        redirect_to :controller => 'klass', :action => 'list', :id => @node.id
+      else
+        render :action => 'configure', :id=>@custom_klass
+      end
+    end
+  end
 
   def new
-    @klass_name = Initr::KlassName.new
-    @conf_names = Initr::ConfName.all
+    @custom_klass = Initr::CustomKlass.new(:node=>@node)
+    @custom_klass.custom_klass_confs.build
   end
 
   def create
-    #TODO: copy&pasted from KlassNamesController
-    @klass_name = Initr::KlassName.new(params[:klass_name])
-    confnames = Initr::ConfName.find :all
-    needed_confnames = []
-    i=0
-    confnames.each do |ad|
-      needed_confnames << params["confname_"+i.to_s]["id"] unless params["confname_"+i.to_s]["id"].length == 0
-      i=i+1
-    end
-    @klass_name.conf_name_ids = needed_confnames
-    if @klass_name.save
-      flash[:notice] = 'Class successfully created.'
-      redirect_to :controller => 'klass', :action => 'list', :id => @node
-    else
-      @conf_names = Initr::ConfName.find :all
-      render :action => 'new', :id => @node
-    end
-  end
-
-  def configure
-    @confs = @klass.node.getconfs
     if request.post?
-      save_confs(@klass)
-      redirect_to :action => 'list', :id => @node.id
+      @custom_klass = Initr::CustomKlass.new(params[:custom_klass])
+      @custom_klass.node = @node
+      if @custom_klass.save
+        redirect_to :controller=>'klass',:action=>'list',:id=>@node
+      else
+        render :action=>'new', :id=>@node
+      end
     end
   end
 
@@ -45,9 +41,14 @@ class CustomKlassController < ApplicationController
     @project = @node.project
   end
 
+  def find_node_id
+    @node = Initr::Node.find params[:node_id]
+    @project = @node.project
+  end
+
   def find_klass
-    @klass = Initr::CustomKlass.find params[:id]
-    @node = @klass.node
+    @custom_klass = Initr::CustomKlass.find params[:id]
+    @node = @custom_klass.node
     @project = @node.project
   end
 

@@ -5,15 +5,7 @@ class Initr::KlassDefinition
   attr_accessor :name, :description
 
   def self.all
-    self.custom_klasses
-  end
-
-  def self.custom_klasses
-    kdefs = Initr::KlassName.all.sort.collect { |kn|
-      Initr::KlassDefinition.new(kn.name,kn.description)
-    }
-    kdefs << Initr::KlassDefinition.new("CustomKlass","Custom class")
-    kdefs.sort
+    Initr::Plugin.klass_names
   end
 
   def initialize(name,description)
@@ -34,7 +26,7 @@ class Initr::KlassDefinition
     ObjectSpace.each_object(Initr::KlassDefinition) { |kd|
       return kd if kd.name.downcase == name.downcase
     }
-    return find_by_name("CustomKlass")
+    return nil #find_by_name("CustomKlass")
   end
 
   def ==(oth)

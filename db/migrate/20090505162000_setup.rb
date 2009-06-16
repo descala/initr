@@ -58,10 +58,6 @@ class Setup < ActiveRecord::Migration
       table.timestamps
     end
 
-    # Add data
-    kn = Initr::KlassName.new :name=>'base', :description=>'The base class of initr'
-    kn.save!
-
   end
 
   def self.down

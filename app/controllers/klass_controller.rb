@@ -11,18 +11,12 @@ class KlassController < ApplicationController
     node_klasses = Initr::KlassDefinition.all_for_node(@node)
     @klass_definitions = []
     Initr::KlassDefinition.all.each do |kd|
-      unless node_klasses.include? kd or kd.name == "CustomKlass"
-        @klass_definitions << kd
-      end
+      @klass_definitions << kd unless node_klasses.include? kd
     end
     @facts = @node.puppet_host.get_facts_hash rescue []
   end
  
   def create
-    if params[:klass_name] == "CustomKlass"
-      redirect_to :controller => 'custom_klass', :action => 'new', :id => @node
-      return
-    end
     begin
       begin
         # try old naming of plugin models,
@@ -32,9 +26,7 @@ class KlassController < ApplicationController
         klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new
       end
     rescue NameError
-      @klass_name = Initr::KlassName.find_by_name params[:klass_name]
-      klass = Initr::CustomKlass.new(:klass_name => @klass_name)
-      klass.klass_name = @klass_name
+      klass = Initr::CustomKlass.new(:name => params[:klass_name])
     end
     klass.node=@node
     if klass.save
@@ -57,20 +49,6 @@ class KlassController < ApplicationController
     
   private
   
-  def save_confs(k)
-    params[:nodeconfs].split.each do |nc|
-      value=params[nc]
-      cn = Initr::ConfName.find_by_name nc
-      c = Initr::Conf.find(:all, :conditions => ["conf_name_id = ? and klass_id = ?", cn.id, k.id])
-      #TODO: raise if c.size > 1 ???
-      c = (c.size == 1) ? c[0] : Initr::Conf.new()
-      c.klass=k
-      c.conf_name=cn
-      c.set_value value
-      c.save
-    end
-  end
-
   def find_node
     @node = Initr::Node.find params[:id]
     @project = @node.project

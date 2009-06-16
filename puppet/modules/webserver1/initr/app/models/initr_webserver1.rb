@@ -4,6 +4,10 @@ class InitrWebserver1 < Initr::Klass
 
   has_many :initr_webserver1_domains
 
+  def name
+    "webserver1"
+  end
+
   def parameters
     domain_list = {}
     bind_masterzones = {}
