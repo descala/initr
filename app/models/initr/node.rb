@@ -59,6 +59,7 @@ class Initr::Node < ActiveRecord::Base
 
   def after_destroy
     Delayed::Job.enqueue Initr::DelayedJob::PuppetcaCleanJob.new(fqdn) unless puppet_host.nil?
+    puppet_host_destroy
   end
 
   def <=>(oth)
