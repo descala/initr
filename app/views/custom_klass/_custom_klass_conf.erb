@@ -3,7 +3,7 @@
 <% prefix = "custom_klass[#{new_or_existing}_custom_klass_conf_attributes][]" %>
 <% fields_for prefix, custom_klass_conf do |ckc_form| -%>
   <%= label_tag "name", "Name:" %> <%= ckc_form.text_field "name" %>
-  <%= label_tag "value", "Value:" %> <%= ckc_form.text_field "value" %>
+  <%= label_tag "value", "Value:" %> <%= ckc_form.text_field "value", :value => custom_klass_conf.value %>
 <%= link_to_function "remove" , "$(this).up('.custom_klass_conf').remove()" %>
 <% end -%>
 </div>
