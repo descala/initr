@@ -21,7 +21,7 @@ class Initr::CustomKlass < Initr::Klass
   end
 
   def configurable?
-    return custom_klass_confs.size > 0
+    true
   end
 
   def print_parameters
