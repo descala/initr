@@ -46,7 +46,7 @@ class Initr::CustomKlassConf < ActiveRecord::Base
   end
 
   def <=>(oth)
-    self.conf_name.name <=> oth.conf_name.name
+    self.name <=> oth.name
   end
 
   private
