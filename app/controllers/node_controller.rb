@@ -23,7 +23,6 @@ class NodeController < ApplicationController
     @node = Initr::Node.new(params[:node])
     @node.project = @project
     if request.post? && @node.save
-      @node.set_fqdn
       flash[:notice] = l(:notice_successful_create)
       redirect_to :action => 'list', :id => @project
     end

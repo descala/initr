@@ -12,10 +12,6 @@ class Initr::Node < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
   
-  attr_accessor :domini
-  attr_accessor :fqdn
-  attr_accessor :so
-
   def self.find(*args)
     if args.first && args.first.is_a?(String) && !args.first.match(/^\d*$/)
       node = find_by_name(*args)
@@ -150,14 +146,6 @@ class Initr::Node < ActiveRecord::Base
     end
   end
 
-  def freshcheck_warning?
-    begin
-      (Time.now - puppet_attribute('last_freshcheck')) > 60 * 30
-    rescue
-      false
-    end
-  end
-
   def compile
     begin
       remaining(puppet_attribute('last_compile'))
@@ -165,14 +153,6 @@ class Initr::Node < ActiveRecord::Base
         ''
     end
 
-  end
-
-  def freshcheck
-    begin
-      remaining(puppet_attribute('last_freshcheck'))
-    rescue Exception => e
-        ''
-    end
   end
 
   def kernel
@@ -184,51 +164,4 @@ class Initr::Node < ActiveRecord::Base
     end
   end
 
-  def set_fqdn
-    self.domini = "" if self.domini.nil?
-    self.name = "" if self.name.nil?
-    self.name = self.name.to_s + "." + self.domini
-    self.name.downcase!
-  end
-
-  def accepts_role?( role, user )
-    if role == 'user'
-      return user.node_ids.include?(self.id)
-    elsif role == 'admin'
-      return true
-    end
-  end
-
-
-  # TODO
-  # should be at lib
-  # convert a Time object to +0d0h0m0s
-  def remaining(time)
-    intervals = [["d", 1], ["h", 24], ["m", 60], ["s", 60]]
-    elapsed = Time.now - time
-    tense = elapsed > 0 ? "" : "-"
-    interval = 60*60*24
-    parts = intervals.collect do |name, new_interval|
-      interval = interval / new_interval
-      number, elapsed = elapsed.abs.divmod(interval)
-        "#{numbero_i}#{name}" if numbero_i>0
-    end
-      "#{tense}#{parts.join("")}"
-  end
-
-  def get_klass(name)
-    klass_name = name.is_a?(Initr::CustomKlass) ? name : Initr::CustomKlass.find_by_name(klass_name)
-    begin
-      (Initr::Klass.find :all, :conditions => [ "node_id=? and klass_name_id=?", self.id, klass_name.id ], :limit => 1).first
-    rescue  ActiveRecord::SubclassNotFound
-      klass_name.name += " (plugin missing!)"
-      dummy = Initr::Klass.new
-      dummy.klass_name = klass_name
-      return dummy
-    end
-  end
-
-  def custom_klasses
-    self.klasses.collect {|k| k if k.class == Initr::CustomKlass }.compact
-  end
 end
