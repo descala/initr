@@ -12,19 +12,6 @@ class Initr::CustomKlass < Initr::Klass
     super
   end
 
-  def save(*args)
-    # hack to call /custom_klass/configure/id
-    # correctly without saving the custom_klass
-    if name.nil? and self.new_record? and id.nil?
-      update_attribute :id, node_id
-      return true
-    elsif name.nil? and self.new_record?
-      return true
-    else
-      super
-    end
-  end
-
   def name
     read_attribute :name
   end

@@ -18,23 +18,29 @@ class KlassController < ApplicationController
   end
  
   def create
-      begin
-        # try old naming of plugin models,
-        # until we migrate all them to initr namespace
-        klass = Kernel.const_get("Initr#{params[:klass_name].camelize}").new
-      rescue NameError
-        klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new
-      end
-    klass.node=@node
-    if klass.save
-      if klass.configurable?
-        redirect_to :controller => klass.controller, :action => 'configure', :id => klass.id
-      else
-        redirect_to :action => 'list', :id => @node.id
-      end
+    begin
+      # try old naming of plugin models,
+      # until we migrate all them to initr namespace
+      klass = Kernel.const_get("Initr#{params[:klass_name].camelize}").new
+    rescue NameError
+      klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new
+    end
+
+    # if plugin controller implements "new" method, redirect_to it
+    if (eval("#{klass.controller.camelize}Controller")).action_methods.include? "new"
+      redirect_to :controller => klass.controller, :action => 'new', :id => @node
     else
-      flash[:error] = "Error adding class: #{klass.errors.full_messages}"
-      redirect_to :back
+      klass.node=@node
+      if klass.save
+        if klass.configurable?
+          redirect_to :controller => klass.controller, :action => 'configure', :id => klass.id
+        else
+          redirect_to :action => 'list', :id => @node.id
+        end
+      else
+        flash[:error] = "Error adding class: #{klass.errors.full_messages}"
+        redirect_to :back
+      end
     end
   end
 
