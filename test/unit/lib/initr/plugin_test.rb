@@ -48,7 +48,7 @@ class Initr::PluginTest < Test::Unit::TestCase
     end
     
     assert_equal 3, @klass.klass_names.size
-    assert @klass.klass_names.first.is_a?(Initr::KlassDescription)
+    assert @klass.klass_names.first.is_a?(Initr::KlassDefinition)
   end
   
 

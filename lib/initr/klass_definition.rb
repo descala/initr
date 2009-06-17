@@ -24,19 +24,19 @@ class Initr::KlassDefinition
 
   def self.find_by_name(name)
     ObjectSpace.each_object(Initr::KlassDefinition) { |kd|
-      return kd if kd.name.downcase == name.downcase
+      return kd if kd.name.to_s.downcase == name.to_s.downcase
     }
     return nil
   end
 
   def ==(oth)
-    self.name.downcase == oth.name.downcase
+    self.name.to_s.downcase == oth.name.to_s.downcase
   end
   
   def <=>(oth)
     return -1 if self.name == 'base'
     return  1 if oth.name  == 'base'
-    self.name.downcase <=> oth.name.downcase
+    self.name.to_s.downcase <=> oth.name.to_s.downcase
   end
 
 end
