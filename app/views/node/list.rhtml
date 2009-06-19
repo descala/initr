@@ -39,7 +39,7 @@
     </td>
     <td>
       <% node.klasses.each do |k| -%>
-        <%= render(:partial => k.nodelist_partial, :locals => {:node=>node}) %>
+        <%= render(:partial => k.nodelist_partial, :locals => {:klass=>k}) %>
       <% end -%>
       <%= link_to image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => node }, :confirm => 'Remove this node?', :method => :post %>
     </td>
