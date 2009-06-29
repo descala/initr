@@ -72,14 +72,10 @@ rescue MissingSourceFile
 end
 
 
-# load initr_plugins
-#paths = []
-#base=File.dirname(__FILE__)+"/plugins/"
-#(Dir.entries(File.dirname(__FILE__)+"/plugins") - [".",".."]).each do |plugin|
-#  paths << base+plugin+"/app/controllers"
-#  paths << base+plugin+"/app/models"
-#  paths << base+plugin+"/app/views"
-#end
-#config.load_paths += paths
+# Load initr plugins when all is initialized
+config.after_initialize do
+  config.plugin_paths = %W( #{RAILS_ROOT}/vendor/plugins/initr/puppet/modules )
+  Engines::Plugin::Loader.new(initializer).load_plugins
+end
 
-#puts "\n\n\n\n\n----------#{File.dirname(__FILE__)}\n#{config.load_paths.join("\n")}\n----------\n\n\n\n\n"
+

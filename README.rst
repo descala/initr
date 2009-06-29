@@ -45,12 +45,7 @@ you can see daemon output at Redmine's ``tmp/pids/delayed_jobs_worker.rb.output`
 Initr plugins installation
 --------------------------
 
-1. Copy or soft link each initr directory at puppet/modules/\*/ to Redmine vendor/plugins directory
-
-   Another alternative is to add this line in environment.rb:
-   ::
-    
-    config.plugin_paths += %W( #{RAILS_ROOT}/vendor/plugins/initr/puppet/modules )
+1. Initr will load all plugins in puppet/modules directory
 
 2. Execute migrations with ``rake db:migrate:plugins``
 
