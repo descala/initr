@@ -75,7 +75,8 @@ end
 # Load initr plugins when all is initialized
 config.after_initialize do
   config.plugin_paths = %W( #{RAILS_ROOT}/vendor/plugins/initr/puppet/modules )
-  Engines::Plugin::Loader.new(initializer).load_plugins
+  initr_loader = Engines::Plugin::Loader.new(initializer)
+  initr_loader.load_plugins
+  initr_loader.add_plugin_load_paths
 end
-
 
