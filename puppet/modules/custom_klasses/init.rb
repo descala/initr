@@ -1,6 +1,6 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting initr_custom_klasses'
+RAILS_DEFAULT_LOGGER.info 'Starting initr plugin: custom_klasses'
 
 
 Initr::Plugin.register :custom_klasses do
