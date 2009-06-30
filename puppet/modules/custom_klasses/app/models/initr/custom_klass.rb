@@ -7,6 +7,7 @@ class Initr::CustomKlass < Initr::Klass
   after_update :save_custom_klass_confs
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :node_id
+  validates_associated :custom_klass_confs
 
   def initialize(attributes=nil)
     super
