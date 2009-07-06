@@ -47,9 +47,5 @@ class Initr::Klass < ActiveRecord::Base
     self.name.downcase <=> oth.name.downcase
   end
 
-  # node/list includes this partial on each node that returns a partial name here
-  def nodelist_partial
-  end
-
 end
 
