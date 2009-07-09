@@ -9,7 +9,7 @@
     <th>mx</th>
     <th>mail</th>
   </tr>
-<% @webserver.domains.each do |domain| -%>
+<% @webserver.domains.sort.each do |domain| -%>
   <tr>
     <td><%= link_to domain.name, :action => 'edit_domain', :id => domain %></td>
     <td><%= domain.www_ip %></td>

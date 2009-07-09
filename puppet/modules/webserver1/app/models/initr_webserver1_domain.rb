@@ -68,6 +68,10 @@ class InitrWebserver1Domain < ActiveRecord::Base
     super
   end
 
+  def <=>(oth)
+    self.name <=> oth.name
+  end
+
   private
 
   def random_salt
