@@ -23,7 +23,7 @@ class InitrWebserver1Domain < ActiveRecord::Base
                    "password_clear" => password,
                    "password" => crypted_password,
                    "database" => dbname,
-                   "force_www" => force_www
+                   "force_www" => force_www.to_s
                  }
     parameters["shell"] = "/bin/bash" if self.shell == "1"
     return parameters
