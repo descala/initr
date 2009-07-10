@@ -3,6 +3,7 @@ class InitrWebserver1 < Initr::Klass
   unloadable
 
   has_many :initr_webserver1_domains
+  belongs_to :node, :class_name => 'Initr::Node'
 
   def name
     "webserver1"

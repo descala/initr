@@ -45,59 +45,35 @@
     </td>
     <% unless @domain.new_record? -%>
     <td valign="top">
-      <table>
-        <tr>
-          <td colspan="2"><h4>Current settings</h4></td>
-        </tr>
-        <tr>
-          <td>Awstats url:</td><td><%= link_to "http://#{@domain.name}/awstats", "http://#{@domain.username}:#{@domain.password}@#{@domain.name}/awstats" %></td>
-        </tr>
-        <tr>
-          <td>Awstats user:</td><td><%= @domain.username %></td>
-        </tr>
-        <tr>
-          <td>Awstats password:</td><td><%= @domain.password %></td>
-        </tr>
-        <tr>
-          <td>Database name:</td><td><%= @domain.dbname %></td>
-        </tr>
-        <tr>
-          <td>Database user:</td><td><%= @domain.username %></td>
-        </tr>
-        <tr>
-          <td>Database password:</td><td><%= @domain.password %></td>
-        </tr>
-        <% unless @domain.serial.nil? -%>
-        <tr>
-          <td colspan="2">
-            <h5>DNS zone</h5>
-            <table>
-              <tr>
-                <td><%= @domain.name %></td><td><%= @domain.www_ip %></td>
-              </tr>
-              <tr>
-                <td>www.<%= @domain.name %></td><td><%= @domain.www_ip %></td>
-              </tr>
-              <tr>
-                <td>ftp.<%= @domain.name %></td><td><%= @domain.www_ip %></td>
-              </tr>
-              <tr>
-                <td>mailmx.<%= @domain.name %></td><td><%= @domain.mx_ip %> (MX)</td>
-              </tr>
-              <tr>
-                <td>webmail.<%= @domain.name %></td><td><%= @domain.mail_ip %></td>
-              </tr>
-              <tr>
-                <td>mail.<%= @domain.name %></td><td><%= @domain.mail_ip %></td>
-              </tr>
-              <tr>
-                <td>smtp.<%= @domain.name %></td><td><%= @domain.mail_ip %></td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <% end -%>
-      </table>
+      <pre>
+--
+Dades del hosting <%= @domain.name %>
+--
+
+Servidor compartit <%= @domain.initr_webserver1.node.name %> [<%=@domain.initr_webserver1.node.puppet_fact('ipaddress')%>]
+
+ACCES FTP <%= "i SSH" unless @domain.shell == "0" %>
+
+Host:         <%= @domain.name %>
+Usuari:       <%= @domain.username %>
+Contrasenya:  <%= @domain.password %>
+
+ESTADISTIQUES DE VISITES
+
+URL:          http://<%= @domain.name %>/awstats
+Usuari:       <%= @domain.username %>
+Contrasenya:  <%= @domain.password %>
+
+<% if @domain.dbname and @domain.dbname.size > 0 %>
+BASE DE DADES MySQL
+
+Host:              localhost
+Nom base de dades: <%= @domain.dbname %>
+Usuari:            <%= @domain.username %>
+Contrasenya:       <%= @domain.password %>
+
+<% end -%>
+      </pre>
     </td>
     <% end -%>
   </tr>
