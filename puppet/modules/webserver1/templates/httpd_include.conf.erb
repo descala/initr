@@ -6,7 +6,7 @@
 # /var/www/<%=name%>/conf/vhost.conf
 
 <VirtualHost *:80>
-<% if force_www -%>
+<% if force_www == "true" -%>
   ServerName   www.<%=name%>
 <% else -%>
   ServerName   <%=name%>
@@ -36,7 +36,7 @@
   Include /var/www/<%=name%>/conf/vhost.conf
 
 </VirtualHost>
-<% if force_www -%>
+<% if force_www == "true" -%>
 
 <VirtualHost *:80>
   ServerName   <%=name%>
