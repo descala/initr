@@ -5,6 +5,8 @@
 <table>
   <tr>
     <th>Domain</th>
+    <th>Stastics</th>
+    <th>Ftp</th>
     <th>www</th>
     <th>mx</th>
     <th>mail</th>
@@ -12,6 +14,8 @@
 <% @webserver.domains.sort.each do |domain| -%>
   <tr>
     <td><%= link_to domain.name, :action => 'edit_domain', :id => domain %></td>
+    <td><%= link_to "http://#{domain.name}/awstats", "http://#{domain.username}:#{domain.password}@#{domain.name}/awstats", :target => 'blank' %></td>
+    <td><%= link_to "ftp://#{domain.name}", "ftp://#{domain.username}:#{domain.password}@#{domain.name}", :target => 'blank' %></td>
     <td><%= domain.www_ip %></td>
     <td><%= domain.mx_ip %></td>
     <td><%= domain.mail_ip %></td>
