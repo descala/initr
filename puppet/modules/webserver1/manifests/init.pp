@@ -41,7 +41,7 @@ class webserver1 {
 }
 
 #TODO: controlar ensure
-define webserver1::domain ( $username, $password, $password_clear, $shell='/sbin/nologin', $ensure='present', $database=true) {
+define webserver1::domain ( $username, $password, $password_clear, $shell='/sbin/nologin', $ensure='present', $database=true, $force_www=true) {
 
   webserver1::awstats::domain { $name:
     user => $username,

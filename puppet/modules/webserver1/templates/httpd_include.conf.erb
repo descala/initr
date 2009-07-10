@@ -15,6 +15,12 @@
   ErrorLog  /var/www/<%=name%>/logs/error_log
   ScriptAlias  /cgi-bin/ /var/www/<%=name%>/cgi-bin/
 
+<% if $force_www -%>
+    # redirect all requests to www.<%=name%>
+    # http://perldoc.perl.org/perlre.html
+    RedirectMatch /(?!awstats)[/.]*$ http://www.<%=name%>
+
+<% end -%>
   <Directory /var/www/<%=name%>/htdocs>
 #    <IfModule sapi_apache2.c>
 #      php_admin_flag engine on
