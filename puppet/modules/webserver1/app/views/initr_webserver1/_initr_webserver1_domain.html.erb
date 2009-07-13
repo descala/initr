@@ -52,13 +52,13 @@ Dades del hosting <%= @domain.name %>
 
 Servidor compartit <%= @domain.initr_webserver1.node.name %> [<%=@domain.initr_webserver1.node.puppet_fact('ipaddress')%>]
 
-ACCES FTP <%= "i SSH" unless @domain.shell == "0" %>
+ACCÉS FTP <%= "i SSH" unless @domain.shell == "0" %>
 
 Host:         <%= @domain.name %>
 Usuari:       <%= @domain.username %>
 Contrasenya:  <%= @domain.password %>
 
-ESTADISTIQUES DE VISITES
+ESTADÍSTIQUES DE VISITES
 
 URL:          http://<%= @domain.name %>/awstats
 Usuari:       <%= @domain.username %>
@@ -71,6 +71,8 @@ Host:              localhost
 Nom base de dades: <%= @domain.dbname %>
 Usuari:            <%= @domain.username %>
 Contrasenya:       <%= @domain.password %>
+
+------
 
 <% end -%>
       </pre>
