@@ -5,7 +5,7 @@ class InitrWebserver1Domain < ActiveRecord::Base
 
   belongs_to :initr_webserver1
   validates_uniqueness_of :name, :scope => :initr_webserver1_id
-  validates_uniqueness_of :username, :database
+  validates_uniqueness_of :username, :dbname
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
   validates_presence_of :name, :username, :password
   validate :all_dns_fields
