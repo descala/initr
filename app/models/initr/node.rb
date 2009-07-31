@@ -109,13 +109,16 @@ class Initr::Node < ActiveRecord::Base
   end
 
   def os
-    f=puppet_fact('lsbdistid','FedoraCore')
+    f = puppet_fact('lsbdistid')
+    f = puppet_fact('operatingsystem','FedoraCore') unless f
     logger.debug("OS= '#{f}'") if logger
     return f
   end
 
   def os_release
-    puppet_fact('lsbdistrelease','?')
+    f = puppet_fact('lsbdistrelease')      
+    f = puppet_fact('operatingsystemrelease','?') unless f
+    return f
   end
 
   def hostname
