@@ -9,6 +9,7 @@
   <profile id="default">
     <package package-id="firefox3" />
     <package package-id="thunderbird" />
+    <package package-id="winxp-sp3" />
   </profile>
 </profiles>
 

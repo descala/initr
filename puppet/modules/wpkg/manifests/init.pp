@@ -2,6 +2,10 @@ class wpkg {
 
   $base = "/var/arxiver/deploy"
   $wpkg_client = "WPKG Client 1.2.1.msi"
+
+  include wpkg::firefox
+  include wpkg::thunderbird
+  include wpkg::service_packs_xp
   
   file {
     [$base,"$base/wpkg","$base/software","$base/settings","$base/scripts","$base/wpkg/hosts","$base/wpkg/profiles"]:
@@ -33,9 +37,6 @@ class wpkg {
       source => "puppet:///wpkg/wpkg_before.bat";
     "$base/scripts/wpkg_after.bat":
       source => "puppet:///wpkg/wpkg_after.bat";
-    "$base/software/get_software.sh":
-      source => "puppet:///wpkg/get_software.sh",
-      mode => 755;
   }
 
   exec {
@@ -46,4 +47,20 @@ class wpkg {
       creates => "$base/software/$wpkg_client";
   }
 
+  define download($url,$creates) {
+
+    $download_dir = "$base/software/$name"
+    
+    exec {
+      "wpkg_$name":
+        command => "wget -O '$creates' '$url'",
+        logoutput => false,
+        cwd => $download_dir,
+        require => File[$download_dir],
+        timeout => 3600,
+        creates => "$download_dir/$creates";
+    }
+
+  }
+  
 }
