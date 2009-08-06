@@ -1,4 +1,5 @@
 # Redmine initr plugin
+
 begin
   require 'redmine'
   
@@ -64,7 +65,7 @@ begin
     f.puts "# Changes will be lost"
     f.puts "RAILS_ROOT: #{RAILS_ROOT}"
     f.puts "RAILS_ENV: #{RAILS_ENV}"
-    f.puts "DOMAIN: localhost:8000" #TODO: can we set this automatically?
+    f.puts "DOMAIN: localhost:3000" #TODO: can we set this automatically?
   end
   
 rescue MissingSourceFile
