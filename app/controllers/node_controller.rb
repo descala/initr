@@ -42,10 +42,12 @@ class NodeController < ApplicationController
         node = Initr::Node.find(params[:hostname])
         render :text => YAML.dump(node.parameters)
       rescue ActiveRecord::RecordNotFound
-        render :text => "Unknown hostname: #{params[:hostname]}"
+        render :text => "Unknown hostname '#{params[:hostname]}'\n", :status => 404
+        logger.error "Unknown hostname '#{params[:hostname]}'."
       end
     else
-      render :text => ""
+      render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
+      logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr_plugin['puppetmaster_ip']}).\n"
     end
   end
 
