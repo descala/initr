@@ -20,5 +20,5 @@
       <%= link_to(image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => klass }, :confirm => 'Remove this class and configuration from this node?', :method => :post) unless klass.name == 'base' %>&nbsp;
     </td>
   </tr>
-  <% end %>
+  <% end rescue ActiveRecord::SubclassNotFound %>
 </table>
