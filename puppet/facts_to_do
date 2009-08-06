@@ -1,0 +1,7 @@
+TODO:
+
+This facts should not be here
+
+But puppetmaster does not do http://reductivelabs.com/trac/puppet/wiki/PluginsInModules
+
+And facts from modules/<moduel>/plugins/facter are not found
