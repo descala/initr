@@ -2,7 +2,6 @@
 
   <% content_for :sidebar do %>
     <h3>Manage your nodes</h3>
-    <%= link_to("Inventory", :controller => 'node', :action => 'list', :id => nil) %><br />
     <%= link_to("Project nodes", :controller => 'node', :action => 'list', :id => @project) if @project %><br />
     <%= link_to_if_authorized("New node", :controller => 'node',:action => 'new', :id => @project) if @project %>
     <% Initr::Plugin.all.each do |p| -%>

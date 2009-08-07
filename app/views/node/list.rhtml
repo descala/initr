@@ -6,7 +6,6 @@
     <tr>
       <th title="Distribution">OS</th>
       <th style="text-align:left;">Hostname</th>
-      <th style="text-align:left;">Project</th>
       <th title="What you want">Desired state</th>
       <th title="What it actually does">Current state</th>
       <th title="Where is the hardware">Provider</th>
@@ -15,36 +14,13 @@
   </thead>
 
   <tbody>
-    <%  for node in @nodes -%>
-    <tr class="<%= cycle('odd', 'even') %> issue">
-    <td><%= image_tag("os/#{node.os}.png", :title => "#{node.os} #{node.os_release} Kernel #{node.kernel}", :plugin => "initr") %></td>
-    <td class="subject"><%= link_to node.name, :controller => 'klass', :action => 'list', :id => node %></td>
-    <td class="subject">
-      <% if node.project.nil? -%>
-      <%= link_to "-", :controller => 'initradmin', :action => 'unassigned_nodes' %>
-      <% else -%>
-      <%= link_to node.project.name, :controller => 'node', :action => 'list', :id => node.project %>
-      <% end -%>
-    </td>
-    <td class="subject">
-      <%
-        klasses = node.klasses.collect {|c| c.name}.join(", ")
-        klasses = "???" if klasses==""
-      -%>
-      <%= link_to klasses, :controller => 'klass', :action => 'list', :id => node %>
-    </td>
-    <td><%= current_state(node) %></td>
-    <td>
-      <%= render :partial => node.provider_partial, :locals => {:node=>node} if node.provider_is_configured? %>
-    </td>
-    <td>
-      <% node.klasses.each do |k| -%>
-        <%= render :partial => "#{k.class.to_s.gsub("Initr","").underscore}/nodelist", :locals => {:klass=>k} rescue "" %>
-      <% end -%>
-      <%= link_to image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => node }, :confirm => 'Remove this node?', :method => :post %>
-    </td>
-  </tr>
-  <% end -%>
-</tbody>
+    
+    <%= render :partial => 'project_nodes', :locals => {:projects=>[@project]} %>
+    
+    <% if @subprojects.any? -%>
+    <%= render :partial => 'project_nodes', :locals => {:projects=>@subprojects} %>
+    <% end -%>
+
+  </tbody>
 
 </table>
