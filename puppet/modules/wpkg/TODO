@@ -1,0 +1,9 @@
+WPKG INITR MODULE - TODO
+------------------------
+
+* Provide a base path for files. Currently /var/arxiver/deploy. Idealy it should be configurable. You should create /var/arxiver
+
+* A way to interact with samba. Now /etc/samba should exist and wpkg configuration should be included in smb.conf with:
+
+   include = /etc/samba/wpkg_smb.conf
+
