@@ -4,43 +4,40 @@
 
 <%= error_messages_for 'initr_wpkg' %>
 
-<% form_tag({:action => 'report'}, :id => 'permissions_form') do %>
+<% form_for(:wpkg, @initr_wpkg, :url => {:action => 'configure'} ) do |f| -%>
+
+<% new_or_existing = @initr_wpkg.wpkg_conf.new_record? ? 'new' : 'existing' -%>
+<% prefix = "wpkg[#{new_or_existing}_wpkg_conf_attributes][]" -%>
+<% fields_for prefix, @initr_wpkg.wpkg_conf do |wpkg_conf_form| -%>
 
 <table class="list">
-<thead>
+  <thead>
     <tr>
-    <th>Package name</th>
-    <th>Default profile</th>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Revision</th>
+      <th>Default profile</th>
     </tr>
-</thead>
-<tbody>
-<% ['Microsoft Office 2003','SP3 for XP','OpenOffice 3'].each do |line| %>
-<tr class="<%= cycle('odd', 'even') %> application-<%= line %>">
-<td>
-  <%= line %>
-</td>
-<td align="center">
-  <%= check_box_tag "software[#{line}][]", line, true , :id => nil %>
-</td>
-<% end %>
-<tr>
-  <%= content_tag('th', 'Internet', :colspan => 2, :align => 'left') %>
-</tr>
-<% ['Firefox 3','Thunderbird'].each do |line| %>
-<tr class="<%= cycle('odd', 'even') %> application-<%= line %>">
-<td>
-  <%= line %>
-</td>
-<td align="center">
-  <%= check_box_tag "software[#{line}][]", line, true , :id => nil %>
-</td>
-<% end %>
-</tr>
+  </thead>
+  <tbody>
+    <% @packages.each do |p| %>
+    <tr class="<%= cycle('odd', 'even') %>">
+    <td><%=  p.id %></td>
+    <td><%=  p.name %></td>
+    <td><%=  p.revision %></td>
+    <td align="center">
+      <%= wpkg_conf_form.check_box :packages %>
+    </td>
+  </tr>
+  <% end %>
 </tbody>
 </table>
-<p><%= submit_tag "Save" %></p>
+
 <% end %>
 
+<p><%= submit_tag "Save" %></p>
 
+<% end %>
 
+<hr/>
 <p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
