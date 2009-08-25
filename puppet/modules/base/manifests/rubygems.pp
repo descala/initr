@@ -34,6 +34,7 @@ define gem_package($ensure=installed) {
   case $rubygems_version {
     "": {
       warning("Rubygems not installed: can not manage '$name' package")
+      package { $name: } # dummy definition, allows requires
     }
     default: {
       package { $name:
