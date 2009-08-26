@@ -37,7 +37,7 @@ class NodeController < ApplicationController
   end
 
   def get_host_definition
-    if request.remote_ip == Setting.plugin_initr_plugin['puppetmaster_ip']
+    if request.remote_ip == '127.0.0.1' or request.remote_ip == Setting.plugin_initr_plugin['puppetmaster_ip']
       begin
         node = Initr::Node.find(params[:hostname])
         render :text => YAML.dump(node.parameters)
