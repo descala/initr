@@ -65,7 +65,12 @@ begin
     f.puts "# Changes will be lost"
     f.puts "RAILS_ROOT: #{RAILS_ROOT}"
     f.puts "RAILS_ENV: #{RAILS_ENV}"
-    f.puts "DOMAIN: localhost:3000" #TODO: can we set this automatically?
+    #TODO: can we set this automatically?
+    if RAILS_ENV == 'production'
+      f.puts "DOMAIN: localhost:8020"
+    else
+      f.puts "DOMAIN: localhost:3000"
+    end
   end
   
 rescue MissingSourceFile
