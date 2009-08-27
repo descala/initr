@@ -34,7 +34,13 @@ define gem_package($ensure=installed) {
   case $rubygems_version {
     "": {
       warning("Rubygems not installed: can not manage '$name' package")
-      package { $name: } # dummy definition, allows requires
+      # dummy definition, allows requires
+      # it always fails as package does not exist
+      # eventualy rubygems will be installed and use the gem provider
+      package { "my-dummy-rubygems-$name":
+        ensure => $ensure,
+        alias => $name,
+      }
     }
     default: {
       package { $name:
