@@ -1,0 +1,10 @@
+--- 
+user: mongrel
+cwd: /usr/lib64/ruby/gems/1.8/gems/initr-0.0.1
+log_file: log/mongrel.log
+port: "3000"
+environment: production
+group: mongrel
+address: 127.0.0.1
+pid_file: log/mongrel.pid
+servers: 1

@@ -1,0 +1,31 @@
+##################
+# Puppet Managed #
+##################
+#
+# Highest priority to stable
+Package: *
+Pin: release a=stable
+Pin-Priority: 700
+
+Package: *
+Pin: release a=testing
+Pin-Priority: 600
+
+# we want puppet from testing
+Package: puppet
+Pin: release a=testing
+Pin-Priority: 700
+
+# we want proxychains from testing
+Package: proxychains
+Pin: release a=testing
+Pin-Priority: 700
+
+# we want rubygems from testing
+Package: rubygems
+Pin: release a=testing
+Pin-Priority: 700
+
+Package: rubygems1.8
+Pin: release a=testing
+Pin-Priority: 700

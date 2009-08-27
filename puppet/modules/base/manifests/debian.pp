@@ -42,3 +42,11 @@ class debian5_0 inherits debian {
   }
 
 }
+
+# alias
+class debian5_0_1 {
+  include debian5_0
+}
+class debian5_0_2 {
+  include debian5_0
+}
