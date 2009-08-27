@@ -1,9 +1,11 @@
 # From http://technet.microsoft.com/en-us/windows/bb794714.aspx
 
-class wpkg::service_packs_xp {
+# Class name must match a package id in an XML in files/packages
+
+class wpkg::winxp-sp3 {
 
   file {
-    "$base/software/service_packs_xp":
+    "$wpkg_base/software/service_packs_xp":
       ensure => directory;
   }
 

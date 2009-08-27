@@ -24,7 +24,18 @@ class InitrWpkg < Initr::Klass
   end
 
   def parameters
-    { 'wpkg_profiles' => { 'default' => config.keys } } 
+    {
+      'wpkg_profiles' => { 'default' => config.keys },
+      'wpkg_base' => '/var/arxiver/deploy'
+    } 
+  end
+
+  def more_classes
+    more_classes = []
+    config.keys.each do |package|
+      more_classes << "wpkg::#{package}"
+    end
+    more_classes
   end
   
   def print_parameters

@@ -1,9 +1,11 @@
 # From http://www.mozilla.com/en-US/firefox/all.html
 
-class wpkg::firefox {
+# Class name must match a package id in an XML in files/packages
+
+class wpkg::firefox3 {
 
   file {
-    "$base/software/firefox":
+    "$wpkg_base/software/firefox":
       ensure => directory;
   }
 

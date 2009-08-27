@@ -1,9 +1,11 @@
 # From http://www.mozillamessaging.com/en-US/thunderbird/all.html
 
+# Class name must match a package id in an XML in files/packages
+
 class wpkg::thunderbird {
 
   file {
-    "$base/software/thunderbird":
+    "$wpkg_base/software/thunderbird":
       ensure => directory;
   }
 
