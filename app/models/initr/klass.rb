@@ -30,7 +30,12 @@ class Initr::Klass < ActiveRecord::Base
   def parameters
     {}
   end
-
+  
+  # Array of additional puppet classes that should be included
+  def more_classes
+    nil
+  end
+  
   # we assume that each class has a controller to configure it
   def configurable?
     true

@@ -32,6 +32,7 @@ class Initr::Node < ActiveRecord::Base
     classes = [ "base" ]
     klasses.sort.each do |k|
       classes << k.name
+      classes += k.more_classes if k.more_classes
     end
     result = { }
     result["parameters"] = parameters
