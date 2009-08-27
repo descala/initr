@@ -2,13 +2,7 @@
 
 <h3>Configure WPKG</h3>
 
-<%= error_messages_for 'initr_wpkg' %>
-
-<% form_for(:wpkg, @initr_wpkg, :url => {:action => 'configure'} ) do |f| -%>
-
-<% new_or_existing = @initr_wpkg.wpkg_conf.new_record? ? 'new' : 'existing' -%>
-<% prefix = "wpkg[#{new_or_existing}_wpkg_conf_attributes][]" -%>
-<% fields_for prefix, @initr_wpkg.wpkg_conf do |wpkg_conf_form| -%>
+<% form_for :wpgk do |f| -%>
 
 <table class="list">
   <thead>
@@ -26,16 +20,14 @@
     <td><%=  p.name %></td>
     <td><%=  p.revision %></td>
     <td align="center">
-      <%= wpkg_conf_form.check_box :packages %>
+      <%= check_box_tag "config[#{p.id}]", true, @wpkg.config[p.id], :id => nil %>
     </td>
   </tr>
   <% end %>
 </tbody>
 </table>
 
-<% end %>
-
-<p><%= submit_tag "Save" %></p>
+<p><%= f.submit "Save" %></p>
 
 <% end %>
 

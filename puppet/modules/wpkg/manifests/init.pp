@@ -22,7 +22,7 @@ class wpkg {
     "$base/wpkg/hosts/default.xml":
       source => "puppet:///wpkg/hosts-default.xml";
     "$base/wpkg/profiles/default.xml":
-      source => "puppet:///wpkg/profiles-default.xml";
+      content => template("wpkg/profiles.xml.erb");
     "$base/wpkg/hosts.xml":
       ensure => "hosts/default.xml";    
     "$base/wpkg/profiles.xml":

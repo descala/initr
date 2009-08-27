@@ -22,6 +22,14 @@ class InitrWpkg < Initr::Klass
   def name
     "wpkg"
   end
+
+  def parameters
+    { 'wpkg_profiles' => { 'default' => config.keys } } 
+  end
+  
+  def print_parameters
+    config.keys.join ", "
+  end
   
   def self.packages_available_from_xml
     files = Dir.glob("#{XML_PATH}/*.xml").entries

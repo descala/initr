@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- PUPPET MANAGED -->
+
 <!-- Lists profiles available to the systems. A profile represents a certain
      selection of packages from the packages database. Profiles can depend on
      other profiles, the end result being the sum of all required packages.
 -->
 
 <profiles>
-  <profile id="default">
-    <package package-id="firefox3" />
-    <package package-id="thunderbird" />
-    <package package-id="winxp-sp3" />
+<% wpkg_profiles.each do |profile, packages| -%>
+  <profile id="<%= profile %>">
+<% packages.each do |package| -%>
+    <package package-id="<%= package %>" />
+<% end -%>
   </profile>
+<% end -%>
 </profiles>
-
-<!-- also available:
-    <package package-id="openoffice3" />
--->
