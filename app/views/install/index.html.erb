@@ -1,0 +1,19 @@
+<p>If you have an existing system, and you want to add it to <%= h html_title %>, use the steps below.</p>
+
+<p>NOTE: Network has to be already configured and you need root access to the system.</p>
+
+<h3>CentOS</h3>
+
+<p>Copy and paste this line in a root shell:</p>
+
+<pre>
+wget -qO - <%= link_to url_for(:action => :centos, :only_path => false), :action => :centos %> | /bin/sh
+</pre>
+  
+<h3>Debian</h3>
+
+<p>Copy and paste this line in a root shell:</p>
+
+<pre>
+wget -qO - <%= link_to url_for(:action => :debian, :only_path => false), :action => :debian %> | /bin/sh
+</pre>
