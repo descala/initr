@@ -8,5 +8,7 @@
 #  gem 'rails', '2.2.2'
 #
 
-PWD=`pwd`
-puppetmasterd --confdir $PWD --certname puppet --no-daemonize -l console -v $*
+abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
+path_only=`dirname "$abspath"`
+
+puppetmasterd --confdir $path_only --certname puppet --no-daemonize -l console -v $*
