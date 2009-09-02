@@ -11,4 +11,20 @@
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 path_only=`dirname "$abspath"`
 
+cat << EOF > $path_only/fileserver.conf
+[dist]
+ path $path_only/files
+ allow *
+
+[facts]
+ path $path_only/facts
+ allow *
+
+[plugins]
+ allow *
+
+[modules]
+ allow *
+EOF
+
 puppetmasterd --confdir $path_only --certname puppet --no-daemonize -l console -v $*
