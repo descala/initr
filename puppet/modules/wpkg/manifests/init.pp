@@ -1,49 +1,64 @@
+# Import required for external nodes to find wpkg::package classes
+import "*.pp"
+
 class wpkg {
 
-  $base = "/var/arxiver/deploy"
-  $wpkg_client = "WPKG Client 1.2.1.msi"
-  
+  $client = "WPKG Client 1.2.1.msi"
+
   file {
-    [$base,"$base/wpkg","$base/software","$base/settings","$base/scripts","$base/wpkg/hosts","$base/wpkg/profiles"]:
+    [$wpkg_base,"$wpkg_base/wpkg","$wpkg_base/software","$wpkg_base/settings","$wpkg_base/scripts","$wpkg_base/wpkg/hosts","$wpkg_base/wpkg/profiles"]:
       ensure => directory;
-    "$base/settings/client-settings.xml":
+    "$wpkg_base/settings/client-settings.xml":
       content => template("wpkg/client-settings.xml.erb");
-    "$base/install.bat":
+    "$wpkg_base/install.bat":
       content => template("wpkg/install.bat.erb");
     "/etc/samba/wpkg_smb.conf":
       source => "puppet:///wpkg/wpkg_smb.conf",
       mode => 664;
-    "$base/wpkg/wpkg.js":
+    "$wpkg_base/wpkg/wpkg.js":
       source => "puppet:///wpkg/wpkg.js";
-    "$base/wpkg/hosts/default.xml":
+    "$wpkg_base/wpkg/hosts/default.xml":
       source => "puppet:///wpkg/hosts-default.xml";
-    "$base/wpkg/profiles/default.xml":
-      source => "puppet:///wpkg/profiles-default.xml";
-    "$base/wpkg/hosts.xml":
+    "$wpkg_base/wpkg/profiles/default.xml":
+      content => template("wpkg/profiles.xml.erb");
+    "$wpkg_base/wpkg/hosts.xml":
       ensure => "hosts/default.xml";    
-    "$base/wpkg/profiles.xml":
+    "$wpkg_base/wpkg/profiles.xml":
       ensure => "profiles/default.xml";    
-    "$base/wpkg/packages.xml":
+    "$wpkg_base/wpkg/packages.xml":
       ensure => "packages/default.xml";    
-    "$base/wpkg/packages/":
+    "$wpkg_base/wpkg/packages/":
       source => "puppet:///wpkg/packages",
       recurse => true,
       ignore => ".svn";
-    "$base/scripts/wpkg_before.bat":
+    "$wpkg_base/scripts/wpkg_before.bat":
       source => "puppet:///wpkg/wpkg_before.bat";
-    "$base/scripts/wpkg_after.bat":
+    "$wpkg_base/scripts/wpkg_after.bat":
       source => "puppet:///wpkg/wpkg_after.bat";
-    "$base/software/get_software.sh":
-      source => "puppet:///wpkg/get_software.sh",
-      mode => 755;
   }
 
   exec {
     'download_wpkg_client':
-      command => "wget 'http://wpkg.org/files/client/stable/$wpkg_client'",
+      command => "wget 'http://wpkg.org/files/client/stable/$client'",
       logoutput => false,
-      cwd => "$base/software/",
-      creates => "$base/software/$wpkg_client";
+      cwd => "$wpkg_base/software/",
+      creates => "$wpkg_base/software/$client";
   }
 
+  define download($url,$creates) {
+
+    $download_dir = "$wpkg_base/software/$name"
+    
+    exec {
+      "wpkg_$name":
+        command => "wget -O '$creates' '$url'",
+        logoutput => false,
+        cwd => $download_dir,
+        require => File[$download_dir],
+        timeout => 3600,
+        creates => "$download_dir/$creates";
+    }
+
+  }
+  
 }

@@ -1,0 +1,10 @@
+##################
+# Puppet managed #
+##################
+
+[base]
+name=Fedora Core $releasever - $basearch - Base (Archives)
+baseurl=http://archives.fedoraproject.org/pub/archive/fedora/linux/core/$releasever/$basearch/os/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora

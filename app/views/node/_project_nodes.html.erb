@@ -1,0 +1,18 @@
+<%  for project in projects -%>
+
+<% if project.nodes.any? -%>
+
+<% if project != @project %>
+<tr>
+  <%= content_tag('th', project_path(project), :colspan => 6, :align => 'left') %>
+</tr>
+<% end -%>
+
+<% for node in project.nodes.sort -%>
+<%= render :partial => 'node_line', :locals => {:node=>node} %>
+<% end -%>
+
+<% end -%>
+
+<% end -%>
+

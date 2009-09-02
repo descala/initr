@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <packages>
-  <package id="openoffice3" name="OpenOffice.org 3.0.1" revision="301" reboot="false" priority="0">
-    <check type="uninstall" condition="exists" path="OpenOffice.org 3.0" />
-    <install cmd='msiexec /qn /i "%SOFTWARE%\OpenOffice.org\OOo_301_es\openofficeorg30.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1' />
-    <upgrade cmd='msiexec /qn /i "%SOFTWARE%\OpenOffice.org\OOo_301_es\openofficeorg30.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1' />
-    <remove  cmd='msiexec /qn /x {85F0337D-33AC-43B4-A003-DF35061F1D8D}' />
+  <package id="openoffice3" name="OpenOffice.org 3.1" revision="310" reboot="false" priority="0">
+    <check type="uninstall" condition="exists" path="OpenOffice.org 3.1" />
+    <install cmd='msiexec /qn /i "%SOFTWARE%\openoffice\openofficeorg31.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1 ADDLOCAL=ALL REMOVE=gm_o_Quickstart,gm_o_Onlineupdate' />
+    <install cmd='cmd /c del /q /s "%Public%\Desktop\OpenOffice.org 3.1.lnk"' /> 
+    <upgrade cmd='msiexec /qn /i "%SOFTWARE%\openoffice\openofficeorg31.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1 ADDLOCAL=ALL REMOVE=gm_o_Quickstart,gm_o_Onlineupdate' />
+    <upgrade cmd='cmd /c del /q /s "%Public%\Desktop\OpenOffice.org 3.1.lnk"' />
+    <remove  cmd='msiexec /qn /x {43A650AA-D1DC-4C52-8819-D7848B3A08DA}' />
   </package>
 </packages>
+

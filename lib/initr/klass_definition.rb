@@ -16,8 +16,11 @@ class Initr::KlassDefinition
   def self.all_for_node(node)
     self.all
     kdefs = []
-    node.klasses.each do |k|
-      kdefs << self.find_by_name(k.name)
+    begin
+      node.klasses.each do |k|
+        kdefs << self.find_by_name(k.name)
+      end
+    rescue ActiveRecord::SubclassNotFound
     end
     kdefs
   end

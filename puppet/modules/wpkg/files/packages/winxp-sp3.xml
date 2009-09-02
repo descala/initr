@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <packages>
+ <package id="winxp-sp3" name="Windows XP Service Pack 3" revision="1" reboot="true" priority="0">
+  <check type="logical" condition="or">
+    <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName" value="Microsoft Windows 2000" />
+    <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\CSDVersion"  value="Service Pack 3" />
+    <check type="uninstall" condition="exists" path="Windows XP Service Pack 3" />
+  </check>
+  <install cmd='%SOFTWARE%\service_packs_xp\WindowsXP-KB936929-SP3-x86-ESN.exe /quiet /norestart'>
+   <exit code="0" />
+   <exit code="3010" />
+  </install>
+  <remove cmd='%WINDIR%\$NtServicePackUninstall$\spuninst\spuninst.exe /quiet /norestart'>
+   <exit code="0" />
+   <exit code="3010" />
+  </remove>
+ </package>
+</packages>

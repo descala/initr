@@ -9,7 +9,7 @@ class NodeController < ApplicationController
   before_filter :find_node, :except => [:new,:list,:get_host_definition]
   before_filter :find_project, :only => [:new]
   before_filter :find_optional_project, :only => [:list]
-  before_filter :authorize, :except => [:get_host_definition, :list]
+  before_filter :authorize, :except => [:get_host_definition]
   
   layout 'nested'
   
@@ -28,23 +28,7 @@ class NodeController < ApplicationController
   end
 
   def list
-    unless params[:id].nil?
-      # view a project nodes
-      @project = Project.find(params[:id])
-      authorize
-      @nodes = @project.nodes.sort
-    else
-      # view all nodes allowed
-      if User.current.admin?
-        # show all nodes only to an admin
-        # @nodes = Project.all.collect {|p| p.nodes.sort}.flatten # grouped by project
-        @nodes = Project.all.collect {|p| p.nodes}.flatten.sort
-      else
-        @nodes = User.current.projects.collect { |p|
-          p.nodes if User.current.allowed_to?({:controller => 'node', :action => 'list'}, p)
-        }.flatten.uniq.compact.sort
-      end
-    end
+    @subprojects = @project.descendants.visible
   end
 
   def destroy
@@ -53,15 +37,17 @@ class NodeController < ApplicationController
   end
 
   def get_host_definition
-    if request.remote_ip == Setting.plugin_initr_plugin['puppetmaster_ip']
+    if request.remote_ip == '127.0.0.1' or request.remote_ip == Setting.plugin_initr_plugin['puppetmaster_ip']
       begin
         node = Initr::Node.find(params[:hostname])
         render :text => YAML.dump(node.parameters)
       rescue ActiveRecord::RecordNotFound
-        render :text => "Unknown hostname: #{params[:hostname]}"
+        render :text => "Unknown hostname '#{params[:hostname]}'\n", :status => 404
+        logger.error "Unknown hostname '#{params[:hostname]}'."
       end
     else
-      render :text => ""
+      render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
+      logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr_plugin['puppetmaster_ip']}).\n"
     end
   end
 
