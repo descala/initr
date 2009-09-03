@@ -16,11 +16,6 @@ Package: puppet
 Pin: release a=testing
 Pin-Priority: 700
 
-# we want proxychains from testing
-Package: proxychains
-Pin: release a=testing
-Pin-Priority: 700
-
 # we want rubygems from testing
 Package: rubygems
 Pin: release a=testing

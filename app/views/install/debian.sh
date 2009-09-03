@@ -1,17 +1,22 @@
 cat << FI > /etc/apt/sources.list
-# repositoris per defecte debian versio estable
-deb http://ftp.fr.debian.org/debian/ lenny main
-deb-src http://ftp.fr.debian.org/debian/ lenny main
-deb http://security.debian.org/ lenny/updates main
-deb-src http://security.debian.org/ lenny/updates main
-deb http://volatile.debian.org/debian-volatile lenny/volatile main
-deb-src http://volatile.debian.org/debian-volatile lenny/volatile main
+##################
+# Puppet Managed #
+##################
+#
+# debian stable
+deb http://ftp.fr.debian.org/debian lenny main contrib non-free
+deb http://security.debian.org lenny/updates main contrib non-free
 
-#repositoris debian versio testing
-deb http://ftp.fr.debian.org/debian squeeze main
+# debian testing
+deb http://ftp.fr.debian.org/debian squeeze main contrib non-free
+deb http://security.debian.org squeeze/updates main contrib non-free
 FI
 cat << FI > /etc/apt/preferences
-# + prioritat per stable que testing
+##################
+# Puppet Managed #
+##################
+#
+# Highest priority to stable
 Package: *
 Pin: release a=stable
 Pin-Priority: 700
@@ -20,16 +25,22 @@ Package: *
 Pin: release a=testing
 Pin-Priority: 600
 
-# puppet el volem de testing
+# we want puppet from testing
 Package: puppet
+Pin: release a=testing
+Pin-Priority: 700
+
+# we want rubygems from testing
+Package: rubygems
+Pin: release a=testing
+Pin-Priority: 700
+
+Package: rubygems1.8
 Pin: release a=testing
 Pin-Priority: 700
 FI
 apt-get update
-apt-get install -y puppet/testing
-apt-get install -y lsb-release
-
-# puppet version >= 0.23
+apt-get install -y puppet lsb-release
 cat << FI > /etc/puppet/puppet.conf
 [main]
     vardir = /var/lib/puppet
@@ -43,5 +54,4 @@ cat << FI > /etc/puppet/puppet.conf
     factsync = true
     report = true
 FI
-
 /etc/init.d/puppet start
