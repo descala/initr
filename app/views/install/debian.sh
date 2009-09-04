@@ -1,3 +1,4 @@
+echo "Setting up initr node `hostname`..."
 cat << FI > /etc/apt/sources.list
 ##################
 # Puppet Managed #
@@ -39,8 +40,7 @@ Package: rubygems1.8
 Pin: release a=testing
 Pin-Priority: 700
 FI
-apt-get update
-apt-get install -y puppet lsb-release
+mkdir -p /etc/puppet
 cat << FI > /etc/puppet/puppet.conf
 [main]
     vardir = /var/lib/puppet
@@ -54,4 +54,4 @@ cat << FI > /etc/puppet/puppet.conf
     factsync = true
     report = true
 FI
-/etc/init.d/puppet start
+apt-get update -qq; apt-get install -qq -o DPkg::Options::=--force-confold puppet lsb-release && echo "OK! Look for puppetd logs in syslog (tail -f /var/log/syslog)."
