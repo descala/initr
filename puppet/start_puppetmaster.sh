@@ -11,6 +11,11 @@
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 path_only=`dirname "$abspath"`
 
+# Warning, development only: signs all certificate requests!
+cat << EOF > $path_only/autosign.conf
+*
+EOF
+
 cat << EOF > $path_only/fileserver.conf
 [dist]
  path $path_only/files
