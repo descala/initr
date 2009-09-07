@@ -33,7 +33,7 @@ class rubygems {
 define gem_package($ensure=installed) {
   case $rubygems_version {
     "": {
-      warning("Rubygems not installed: can not manage '$name' package")
+      warning("Rubygems not installed: can not manage '$name' package. rubygems_version='$rubygems_version'")
       # dummy definition, allows requires
       # it always fails as package does not exist
       # eventualy rubygems will be installed and use the gem provider
