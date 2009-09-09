@@ -58,14 +58,6 @@ define delete_if_such_lines($file, $line) {
         }
 }
 
-# envia un missatge al syslog
-define log($message) {
-        exec { "logger -t \"puppetd[$puppetd_pid]\" -s \"$message\"" :
-                path => "/bin:/usr/bin:/usr/sbin",
-        }
-}
-
-
 # Usage:
 # replace { set_munin_node_port:
 #              file => "/etc/munin/munin-node.conf",
