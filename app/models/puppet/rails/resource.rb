@@ -1,23 +1,51 @@
+require 'puppet'
 require 'puppet/rails/param_name'
+require 'puppet/rails/param_value'
 require 'puppet/rails/puppet_tag'
+require 'puppet/rails/benchmark'
 require 'puppet/util/rails/collection_merger'
 
 class Puppet::Rails::Resource < ActiveRecord::Base
-  establish_connection "puppet_#{RAILS_ENV}"
+    establish_connection "puppet_#{RAILS_ENV}"
     include Puppet::Util::CollectionMerger
+    include Puppet::Util::ReferenceSerializer
+    include Puppet::Rails::Benchmark
 
-    has_many :param_values, :dependent => :destroy
-    has_many :param_names, :through => :param_values
+    has_many :param_values, :dependent => :destroy, :class_name => "Puppet::Rails::ParamValue"
+    has_many :param_names, :through => :param_values, :class_name => "Puppet::Rails::ParamName"
 
-    has_many :resource_tags, :dependent => :destroy
-    has_many :puppet_tags, :through => :resource_tags
-    
+    has_many :resource_tags, :dependent => :destroy, :class_name => "Puppet::Rails::ResourceTag"
+    has_many :puppet_tags, :through => :resource_tags, :class_name => "Puppet::Rails::PuppetTag"
+
     belongs_to :source_file
     belongs_to :host
 
+    @tags = {}
+    def self.tags
+        @tags
+    end
+
+    # Determine the basic details on the resource.
+    def self.rails_resource_initial_args(resource)
+        result = [:type, :title, :line].inject({}) do |hash, param|
+            # 'type' isn't a valid column name, so we have to use another name.
+            to = (param == :type) ? :restype : param
+            if value = resource.send(param)
+                hash[to] = value
+            end
+            hash
+        end
+
+        # We always want a value here, regardless of what the resource has,
+        # so we break it out separately.
+        result[:exported] = resource.exported || false
+
+        result
+    end
+
     def add_resource_tag(tag)
-        pt = Puppet::Rails::PuppetTag.find_or_create_by_name(tag, :include => :puppet_tag)
-        resource_tags.create(:puppet_tag => pt)
+        pt = Puppet::Rails::PuppetTag.accumulate_by_name(tag)
+        resource_tags.build(:puppet_tag => pt)
     end
 
     def file
@@ -32,27 +60,118 @@ class Puppet::Rails::Resource < ActiveRecord::Base
         self.source_file = Puppet::Rails::SourceFile.find_or_create_by_filename(file)
     end
 
-    # returns a hash of param_names.name => [param_values]
-    def get_params_hash(values = nil)
-        values ||= param_values.find(:all, :include => :param_name)
-        values.inject({}) do | hash, value |
-            hash[value.param_name.name] ||= []
-            hash[value.param_name.name] << value
-            hash
-        end
+    def title
+        unserialize_value(self[:title])
     end
-    
-    def get_tag_hash(tags = nil)
-        tags ||= resource_tags.find(:all, :include => :puppet_tag)
-        return tags.inject({}) do |hash, tag|
-            # We have to store the tag object, not just the tag name.
-            hash[tag.puppet_tag.name] = tag
-            hash
-        end
+
+    def add_param_to_hash(param)
+        @params_hash ||= []
+        @params_hash << param
+    end
+
+    def add_tag_to_hash(tag)
+        @tags_hash ||= []
+        @tags_hash << tag
+    end
+
+    def params_hash=(hash)
+        @params_hash = hash
+    end
+
+    def tags_hash=(hash)
+        @tags_hash = hash
     end
 
     def [](param)
         return super || parameter(param)
+    end
+
+    # Make sure this resource is equivalent to the provided Parser resource.
+    def merge_parser_resource(resource)
+        accumulate_benchmark("Individual resource merger", :attributes) { merge_attributes(resource) }
+        accumulate_benchmark("Individual resource merger", :parameters) { merge_parameters(resource) }
+        accumulate_benchmark("Individual resource merger", :tags) { merge_tags(resource) }
+        save()
+    end
+
+    def merge_attributes(resource)
+        args = self.class.rails_resource_initial_args(resource)
+        args.each do |param, value|
+            unless resource[param] == value
+                self[param] = value
+            end
+        end
+
+        # Handle file specially
+        if (resource.file and  (!resource.file or self.file != resource.file))
+            self.file = resource.file
+        end
+    end
+
+    def merge_parameters(resource)
+        catalog_params = {}
+        resource.each do |param, value|
+            catalog_params[param.to_s] = value
+        end
+
+        db_params = {}
+
+        deletions = []
+        @params_hash.each do |value|
+            # First remove any parameters our catalog resource doesn't have at all.
+            deletions << value['id'] and next unless catalog_params.include?(value['name'])
+
+            # Now store them for later testing.
+            db_params[value['name']] ||= []
+            db_params[value['name']] << value
+        end
+
+        # Now get rid of any parameters whose value list is different.
+        # This might be extra work in cases where an array has added or lost
+        # a single value, but in the most common case (a single value has changed)
+        # this makes sense.
+        db_params.each do |name, value_hashes|
+            values = value_hashes.collect { |v| v['value'] }
+
+            unless value_compare(catalog_params[name], values)
+                value_hashes.each { |v| deletions << v['id'] }
+            end
+        end
+
+        # Perform our deletions.
+        Puppet::Rails::ParamValue.delete(deletions) unless deletions.empty?
+
+        # Lastly, add any new parameters.
+        catalog_params.each do |name, value|
+            next if db_params.include?(name)
+            values = value.is_a?(Array) ? value : [value]
+
+            values.each do |v|
+                param_values.build(:value => serialize_value(v), :line => resource.line, :param_name => Puppet::Rails::ParamName.accumulate_by_name(name))
+            end
+        end
+    end
+
+    # Make sure the tag list is correct.
+    def merge_tags(resource)
+        in_db = []
+        deletions = []
+        resource_tags = resource.tags
+        @tags_hash.each do |tag|
+            deletions << tag['id'] and next unless resource_tags.include?(tag['name'])
+            in_db << tag['name']
+        end
+        Puppet::Rails::ResourceTag.delete(deletions) unless deletions.empty?
+
+        (resource_tags - in_db).each do |tag|
+            add_resource_tag(tag)
+        end
+    end
+
+    def value_compare(v,db_value)
+        v = [v] unless v.is_a?(Array)
+
+        v == db_value
     end
 
     def name
@@ -61,7 +180,7 @@ class Puppet::Rails::Resource < ActiveRecord::Base
 
     def parameter(param)
         if pn = param_names.find_by_name(param)
-            if pv = param_values.find(:first, :conditions => [ 'param_name_id = ?', pn]                                                            )
+            if pv = param_values.find(:first, :conditions => [ 'param_name_id = ?', pn])
                 return pv.value
             else
                 return nil
@@ -73,7 +192,7 @@ class Puppet::Rails::Resource < ActiveRecord::Base
         result = get_params_hash
         result.each do |param, value|
             if value.is_a?(Array)
-                result[param] = value.collect { |v| v.value }
+                result[param] = value.collect { |v| v['value'] }
             else
                 result[param] = value.value
             end
@@ -82,7 +201,16 @@ class Puppet::Rails::Resource < ActiveRecord::Base
     end
 
     def ref
-        "%s[%s]" % [self[:restype].capitalize, self[:title]]
+        "%s[%s]" % [self[:restype].split("::").collect { |s| s.capitalize }.join("::"), self.title.to_s]
+    end
+
+    # Returns a hash of parameter names and values, no ActiveRecord instances.
+    def to_hash
+        Puppet::Rails::ParamValue.find_all_params_from_resource(self).inject({}) do |hash, value|
+            hash[value['name']] ||= []
+            hash[value['name']] << value.value
+            hash
+        end
     end
 
     # Convert our object to a resource.  Do not retain whether the object
@@ -98,6 +226,7 @@ class Puppet::Rails::Resource < ActiveRecord::Base
         hash.delete("host_id")
         hash.delete("updated_at")
         hash.delete("source_file_id")
+        hash.delete("created_at")
         hash.delete("id")
         hash.each do |p, v|
             hash.delete(p) if v.nil?

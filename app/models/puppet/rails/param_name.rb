@@ -1,12 +1,14 @@
 require 'puppet/util/rails/collection_merger'
 require 'puppet/rails/param_value'
+require 'puppet/util/rails/cache_accumulator'
 
 class Puppet::Rails::ParamName < ActiveRecord::Base
+    establish_connection "puppet_#{RAILS_ENV}"
+    include Puppet::Util::CollectionMerger
+    has_many :param_values, :dependent => :destroy
 
-  establish_connection "puppet_#{RAILS_ENV}"
-
-  include Puppet::Util::CollectionMerger
-    has_many :param_values, :dependent => :destroy 
+    include Puppet::Util::CacheAccumulator
+    accumulates :name
 
     def to_resourceparam(resource, source)
         hash = {}
@@ -22,4 +24,3 @@ class Puppet::Rails::ParamName < ActiveRecord::Base
     end
 end
 
-# $Id$
