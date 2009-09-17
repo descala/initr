@@ -73,54 +73,99 @@ define replace($file, $pattern, $replacement) {
     }
 }
 
+# Usage:
+# line { description:
+# 	file => "filename",
+# 	line => "content",
+# 	ensure => {absent,present}
+# }
+define line($file, $line, $ensure) {
+	case $ensure {
+		default : { err ( "unknown ensure value $ensure" ) }
+		present: {
+			exec { "/bin/echo '$line' >> '$file'":
+				unless => "/bin/grep -Fx '$line' '$file'"
+			}
+		}
+		absent: {
+			exec { "/usr/bin/perl -ni -e 'print unless /^\\Q$line\\E$/' '$file'":
+				onlyif => "/bin/grep -Fx '$line' '$file'"
+			}
+		}
+	}
+}
+
+# create a file from snippets
+# stored in a directory
 #
-## Replace a section marked by
-## comment_char {BEGIN,END} pattern
-## with the given content
-## if checksum is set to "none", no resource is defined for the edited file
-#define file_splice ($file, $pattern = "PUPPET SECTION", $comment_char = "#", $content = "", $input_file = "", $checksum = md5)
-#{
-#    case $checksum {
-#        "none": {}
-#        default: { file { $file: checksum => $checksum } }
-#    }
-#
-#    # the splice command needs at least the BEGIN line in the file
-#    append_if_no_such_line { "seed-$file-$pattern":
-#        file => $file,
-#        line => "$comment_char BEGIN $pattern",
-#        require => File [ $file ],
-#    }
-#
-#    case $content {
-#        "": {
-#            case $input_file {
-#                "": {
-#                    fail ("either input_file or content have to be supplied")
-#                }
-#                default: {
-#                    exec{ "/usr/local/bin/file_splice '$input_file' '$comment_char' '$pattern' $file":
-#                        require => Append_if_no_such_line [ "seed-$file-$pattern" ],
-#                        subscribe => [ File[$input_file], File[$file] ],
-#                    }
-#                }
-#            }
-#        }
-#        default: {
-#            $splice_file = "$splice_dir/$name"
-#            file { $splice_file:
-#                mode => 0600, owner => root, group => root,
-#                content => $content,
-#                require => File [ $splice_dir ],
-#            }
-#
-#            exec{ "/usr/local/bin/file_splice '$splice_file' '$comment_char' '$pattern' $file":
-#                require => Append_if_no_such_line [ "seed-$file-$pattern" ],
-#                subscribe => [ File [ $splice_file ], File[$file] ]
-#            }
-#        }
-#    }
-#}
-#
-#
-#
+# Copyright (C) 2007 David Schmitt <david@schmitt.edv-bus.at>
+# See LICENSE for the full license granted to you.
+
+# TODO:
+# * get rid of the $dir parameter
+# * create the directory in _part too
+
+# Usage:
+# concatenated_file { "/etc/some.conf":
+# 	dir => "/etc/some.conf.d",
+# }
+# Use Exec["concat_$name"] as Semaphor
+define concatenated_file (
+	$dir, $mode = 0644, $owner = root, $group = root 
+	)
+{
+	file {
+		$dir:
+			ensure => directory, checksum => mtime,
+			## This doesn't work as expected
+			#recurse => true, purge => true, noop => true,
+			mode => $mode, owner => $owner, group => $group;
+		$name:
+			ensure => present, checksum => md5,
+			mode => $mode, owner => $owner, group => $group;
+	}
+
+	exec { "find ${dir} -maxdepth 1 -type f ! -name '*puppettmp' -print0 | sort -z | xargs -0 cat > ${name}":
+		refreshonly => true,
+		subscribe => File[$dir],
+		alias => "concat_${name}",
+	}
+}
+
+
+# Add a snippet called $name to the concatenated_file at $dir.
+# The file can be referenced as File["cf_part_${name}"]
+define concatenated_file_part (
+	$dir, $content = '', $ensure = present,
+	$mode = 0644, $owner = root, $group = root 
+	)
+{
+
+	file { "${dir}/${name}":
+		ensure => $ensure, content => $content,
+		mode => $mode, owner => $owner, group => $group,
+		alias => "cf_part_${name}",
+	}
+
+}
+
+# put a config file with default permissions
+# Copyright (C) 2007 David Schmitt <david@schmitt.edv-bus.at>
+# See LICENSE for the full license granted to you.
+
+# Usage:
+# config_file { filename:
+# 	content => "....\n",
+# }
+define config_file ($content) {
+	file { $name:
+		content => $content,
+		# keep old versions on the server
+		backup => server,
+		# default permissions for config files
+		mode => 0644, owner => root, group => root,
+		# really detect changes to this file
+		checksum => md5,
+	}
+}
+
