@@ -3,6 +3,6 @@ require 'open-uri'
 
 Facter.add("ipaddress_internet") do
   setcode do
-    open("http://#{Facter.value(:servername) || 'one.ingent.net'}/node/getip").read.chomp
+    open("http://checkip.dyndns.org/").read.match(/Current IP Address: ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/).captures.first rescue nil
   end
 end
