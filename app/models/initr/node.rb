@@ -35,7 +35,7 @@ class Initr::Node < ActiveRecord::Base
         classes += klass.more_classes if klass.more_classes
       rescue Initr::Klass::ConfigurationError => e
         # if klass.parameters raises don't add klass to node
-        err = "klass #{klass.name} raises an exception: #{e.message}"
+        err = "#{e.message} for node #{self.name}"
         logger.error(err) if logger
         # show message in puppet log
         classes << "configuration_errors"
