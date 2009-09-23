@@ -25,14 +25,23 @@ class Initr::Node < ActiveRecord::Base
   def parameters
     # node parameters
     parameters = { }
-    klasses.each do |klass|
-      parameters = parameters.merge(klass.parameters)
-    end
     # node classes
     classes = [ "base" ]
-    klasses.sort.each do |k|
-      classes << k.name
-      classes += k.more_classes if k.more_classes
+    klasses.sort.each do |klass|
+      begin
+        klassparameters = klass.parameters
+        parameters = parameters.merge(klassparameters)
+        classes << klass.name
+        classes += klass.more_classes if klass.more_classes
+      rescue Initr::Klass::ConfigurationError => e
+        # if klass.parameters raises don't add klass to node
+        err = "klass #{klass.name} raises an exception: #{e.message}"
+        logger.error(err) if logger
+        # show message in puppet log
+        classes << "configuration_errors"
+        parameters["errors"]=[] unless parameters["errors"]
+        parameters["errors"] << err unless parameters["errors"].include? err
+      end
     end
     result = { }
     result["parameters"] = parameters

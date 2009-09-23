@@ -1,5 +1,10 @@
 class Initr::Klass < ActiveRecord::Base
 
+  # raised in parameters when there's a configuration error
+  # and klass should not be included in node parameters
+  # (see parameters method in Initr::Node class)
+  class ConfigurationError < StandardError ; end
+
   unloadable
   
   belongs_to :node, :class_name => "Initr::Node"
