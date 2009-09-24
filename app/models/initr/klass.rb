@@ -8,9 +8,14 @@ class Initr::Klass < ActiveRecord::Base
   unloadable
   
   belongs_to :node, :class_name => "Initr::Node"
-
+  
+  after_save :add_klasses
+  validates_uniqueness_of :type, :scope => :node_id 
+  
   serialize :config
-
+  
+  @@adds_klasses = false
+  
   def initialize(attributes = nil)
     super
     self.config ||= {}
@@ -56,6 +61,22 @@ class Initr::Klass < ActiveRecord::Base
     return  1 if oth.name  == 'base'
     self.name.downcase <=> oth.name.downcase
   end
+  
+  private
 
+  def self.adds_klass(*args)
+    @@adds_klasses = args
+  end
+  
+  def add_klasses
+    return unless @@adds_klasses
+    @@adds_klasses.each do |k|
+      if !self.node.klasses.find_by_type(k.to_s.split("::").last)
+        self.node.klasses << k.new
+      end
+    end
+  end
+
+  
 end
 
