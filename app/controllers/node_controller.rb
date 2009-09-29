@@ -16,6 +16,9 @@ class NodeController < ApplicationController
   skip_before_filter :check_if_login_required, :only => [ :get_host_definition ]
   session :off, :only => [ :get_host_definition ]
 
+  # skip ssl_requirement's plugin before_filter, in case it is
+  # pressent in redmine, for get_host_definition
+  skip_before_filter :ensure_proper_protocol, :only => [:get_host_definition]  
   
   def new
     # find_project
