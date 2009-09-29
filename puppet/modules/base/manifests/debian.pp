@@ -50,3 +50,6 @@ class debian5_0_1 {
 class debian5_0_2 {
   include debian5_0
 }
+class debian5_0_3 {
+  include debian5_0
+}
