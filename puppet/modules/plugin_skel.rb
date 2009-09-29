@@ -5,8 +5,6 @@ if ARGV.size != 1
   puts "usage: ruby plugin_skel.rb plugin_name"
 elsif File.exist?(plugindir)
   puts "plugin #{ARGV[0]} already exists"
-elsif !(ARGV[0] =~ /^initr_/)
-  puts "plugin name must start with initr_"
 else
   plugin=ARGV[0]
 
@@ -18,9 +16,34 @@ else
   `touch    #{plugindir}/app/models/#{plugin}.rb`
   `mkdir -p #{plugindir}/db/migrate`
   `touch    #{plugindir}/README`
-  `touch    #{plugindir}/init.rb`
+  `mkdir    #{plugindir}/files`
+  `mkdir    #{plugindir}/manifests`
+  `mkdir    #{plugindir}/templates`
+  `touch    #{plugindir}/manifests/init.pp`
 
   # TODO: write model and controller templates
+
+initrb="# Redmine initr plugin
+require 'redmine'
+
+RAILS_DEFAULT_LOGGER.info 'Starting #{plugin} plugin for Initr'
+
+Initr::Plugin.register :#{plugin} do
+  redmine do
+    name '#{plugin}'
+    author 'Ingent'
+    description '#{plugin.capitalize} plugin for initr'
+    version '0.0.1'
+    project_module :initr do
+      permission :configure_#{plugin},
+        { :#{plugin} => [:configure] },
+        :require => :member
+    end
+  end
+  klasses '#{plugin}' => '#{plugin.capitalize} node'
+end"
+
+  open("#{plugindir}/init.rb",'w') {|f| f << initrb }
 
 end
 
