@@ -31,11 +31,11 @@ class NodeController < ApplicationController
   def list
     if @project.nil?
       @subprojects = []
-      User.current.projects.each do |p|
+      User.current.projects.sort.each do |p|
         @subprojects << p
       end
     else
-      @subprojects = @project.descendants.visible
+      @subprojects = @project.descendants.visible.sort
     end
   end
 

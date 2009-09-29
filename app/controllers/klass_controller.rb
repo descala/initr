@@ -9,10 +9,11 @@ class KlassController < ApplicationController
   menu_item :initr
   
   def list
-    node_klasses = Initr::KlassDefinition.all_for_node(@node)
+    node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
     @klass_definitions = []
     Initr::KlassDefinition.all.each do |kd|
       @klass_definitions << kd unless node_klasses.include? kd
+      @klass_definitions.sort!
     end
     @facts = @node.puppet_host.get_facts_hash rescue []
   end
