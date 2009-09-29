@@ -22,7 +22,7 @@ class Initr::KlassDefinition
       end
     rescue ActiveRecord::SubclassNotFound
     end
-    kdefs
+    kdefs.compact
   end
 
   def self.find_by_name(name)

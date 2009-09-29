@@ -15,7 +15,9 @@
 
   <tbody>
     
+    <% if @project -%>
     <%= render :partial => 'project_nodes', :locals => {:projects=>[@project]} %>
+    <% end -%>
     
     <% if @subprojects.any? -%>
     <%= render :partial => 'project_nodes', :locals => {:projects=>@subprojects} %>

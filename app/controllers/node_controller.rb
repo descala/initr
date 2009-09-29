@@ -9,7 +9,8 @@ class NodeController < ApplicationController
   before_filter :find_node, :except => [:new,:list,:get_host_definition]
   before_filter :find_project, :only => [:new]
   before_filter :find_optional_project, :only => [:list]
-  before_filter :authorize, :except => [:get_host_definition]
+  before_filter :authorize, :except => [:get_host_definition,:list]
+  before_filter :authorize_global, :only => [:list]
   
   layout 'nested'
   
@@ -31,7 +32,14 @@ class NodeController < ApplicationController
   end
 
   def list
-    @subprojects = @project.descendants.visible
+    if @project.nil?
+      @subprojects = []
+      User.current.projects.sort.each do |p|
+        @subprojects << p
+      end
+    else
+      @subprojects = @project.descendants.visible.sort
+    end
   end
 
   def destroy
