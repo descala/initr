@@ -12,10 +12,13 @@ class KlassController < ApplicationController
     node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
     @klass_definitions = []
     Initr::KlassDefinition.all.each do |kd|
-      @klass_definitions << kd unless node_klasses.include? kd
+      unless node_klasses.include? kd or kd.name == "CustomKlass"
+        @klass_definitions << kd
+      end
       @klass_definitions.sort!
     end
     @facts = @node.puppet_host.get_facts_hash rescue []
+    @external_nodes_yaml = YAML.dump @node.parameters
   end
  
   def create
