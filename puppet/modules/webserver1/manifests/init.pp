@@ -1,6 +1,6 @@
 class webserver1 {
   
-  include apache_with_ssl
+  include apache::ssl
   include mysql
   include php
   include ftp

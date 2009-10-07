@@ -80,7 +80,11 @@ $httpd_service = $operatingsystem ? {
   default => httpd
 }
 $ssl_module = $operatingsystem ? {
-  Debian => "libapache-mod-ssl",
+  Debian => $lsbmajdistrelease ? {
+    # debian > 5.0 does not have libapache-mod-ssl
+    5 => "",
+    default => "libapache-mod-ssl"
+  },
   Mandriva => "apache-mod_ssl",
   default => "mod_ssl"
 }
