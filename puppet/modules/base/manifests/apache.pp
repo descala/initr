@@ -9,23 +9,10 @@ class apache {
     ensure => installed,
   }
 
-  if $ssl_module != "" {
-    package { $ssl_module:
-      ensure => absent,
-    }
-    service { $httpd_service:
-      ensure => running,
-      enable => true,
-      require => [ Package[$httpd], Package[$ssl_module] ],
-    }
-  }
-  else
-  {
-    service { $httpd_service:
-      ensure => running,
-      enable => true,
-      require => Package[$httpd],
-    }
+  service { $httpd_service:
+    ensure => running,
+    enable => true,
+    require => Package[$httpd],
   }
 
   # debian a2enmod, but just one symlink
