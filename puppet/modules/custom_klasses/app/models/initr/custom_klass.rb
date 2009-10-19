@@ -24,7 +24,7 @@ class Initr::CustomKlass < Initr::Klass
   def parameters
     parameters = {}
     custom_klass_confs.sort.each do |ckc|
-      parameters[ckc.name] = YAML.load ckc.value_yaml
+      parameters[ckc.name] = YAML.load ckc.value.gsub(/\n/,"\n\n")
     end
     parameters
   end

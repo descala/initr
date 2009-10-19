@@ -26,7 +26,7 @@ class Initr::CustomKlassConf < ActiveRecord::Base
       else
         val = v.to_json
       end
-    rescue
+    rescue Exception=>e
       val = read_attribute("value")
     end
     return "" if val.nil?
@@ -40,7 +40,7 @@ class Initr::CustomKlassConf < ActiveRecord::Base
       if eval(v).class == Fixnum
         v2=eval(v.to_json) unless v =~ /^[0-9]+$/
       end
-    rescue
+    rescue Exception=>e
       v2 = v
     end
     write_attribute("value", v2)

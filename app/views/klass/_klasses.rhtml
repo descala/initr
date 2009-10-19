@@ -12,7 +12,7 @@
   <tr class="<%= cycle('odd', 'even') %>">
     <td><%= klass.name %></td>
     <td><%= klass.description %></td>
-    <td><%= klass.print_parameters %></td>
+    <td><%= truncate(klass.print_parameters, :length=>80) %></td>
     <td>
       <%=link_to( "Configure", :controller=>klass.controller, :action => 'configure', :id => klass) if klass.configurable? %>
     </td>
