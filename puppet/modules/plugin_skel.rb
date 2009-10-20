@@ -12,8 +12,8 @@ else
   `touch    #{plugindir}/app/controllers/#{plugin}_controller.rb`
   `mkdir -p #{plugindir}/app/views/#{plugin}`
   `touch    #{plugindir}/app/views/#{plugin}/configure.html.erb`
-  `mkdir    #{plugindir}/app/models`
-  `touch    #{plugindir}/app/models/#{plugin}.rb`
+  `mkdir -p #{plugindir}/app/models/initr`
+  `touch    #{plugindir}/app/models/initr/#{plugin}.rb`
   `mkdir -p #{plugindir}/db/migrate`
   `touch    #{plugindir}/README`
   `mkdir    #{plugindir}/files`
