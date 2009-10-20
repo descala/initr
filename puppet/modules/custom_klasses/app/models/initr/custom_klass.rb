@@ -12,7 +12,11 @@ class Initr::CustomKlass < Initr::Klass
   def initialize(attributes=nil)
     super
   end
-
+  
+  # Allow more than one CutomKlass per node
+  # see validates_uniqueness_of on Klass
+  def unique?; false end
+  
   def name
     read_attribute :name
   end

@@ -10,7 +10,7 @@ class Initr::Klass < ActiveRecord::Base
   belongs_to :node, :class_name => "Initr::Node"
   
   after_save :add_klasses
-  validates_uniqueness_of :type, :scope => :node_id 
+  validates_uniqueness_of :type, :scope => :node_id , :if => Proc.new { |k| k.unique? }
   
   serialize :config
   
@@ -21,6 +21,10 @@ class Initr::Klass < ActiveRecord::Base
     self.config ||= {}
   end
 
+  # Default to only one klass type per node
+  # see validates_uniqueness_of
+  def unique?; true end
+  
   # Returs the Initr::Klass of our type (STI) of a given node
   def self.for_node(node)
     node.klasses.find_by_type(self.sti_name)
