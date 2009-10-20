@@ -2,9 +2,8 @@
 <% new_or_existing = custom_klass_conf.new_record? ? 'new' : 'existing' %>
 <% prefix = "custom_klass[#{new_or_existing}_custom_klass_conf_attributes][]" %>
 <% fields_for prefix, custom_klass_conf do |ckc_form| -%>
-  <%= label_tag "name", "Name:" %> <%= ckc_form.text_field "name" %>
-<!--  <%= label_tag "value", "Value:" %> <%= ckc_form.text_field "value", :value => custom_klass_conf.value %> -->
-<%= label_tag "value", "Value:" %> <%= ckc_form.text_area "value",
+  <%= label_tag "name", "Name:" %> <%= ckc_form.text_field "name" %><br />
+  <%= label_tag "value", "Value:" %> <%= ckc_form.text_area "value",
                                                 :value => custom_klass_conf.value,
                                                 :class=> 'wiki-edit',
                                                 :accesskey => accesskey(:edit),
