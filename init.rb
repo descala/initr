@@ -17,7 +17,7 @@ begin
     Project.send(:include, ProjectPatch)
   end 
 
-  Redmine::Plugin.register :initr_plugin do
+  Redmine::Plugin.register :initr do
     name 'initr'
     author 'Ingent'
     description 'Node management with redmine and puppet'
