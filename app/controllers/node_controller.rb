@@ -6,11 +6,11 @@ class NodeController < ApplicationController
   helper :projects, :initr
   menu_item :initr
 
-  before_filter :find_node, :except => [:new,:list,:get_host_definition]
+  before_filter :find_node, :except => [:new,:list,:get_host_definition,:facts]
   before_filter :find_project, :only => [:new]
   before_filter :find_optional_project, :only => [:list]
-  before_filter :authorize, :except => [:get_host_definition,:list]
-  before_filter :authorize_global, :only => [:list]
+  before_filter :authorize, :except => [:get_host_definition,:list,:facts]
+  before_filter :authorize_global, :only => [:list,:facts]
   
   layout 'nested'
   
@@ -39,6 +39,15 @@ class NodeController < ApplicationController
       end
     else
       @subprojects = @project.descendants.visible.sort
+    end
+  end
+
+  def facts
+    @fact=params[:id]
+    @nodes=User.current.projects.collect {|p| p.nodes }.flatten.compact.sort
+    @facts={}
+    @nodes.each do |n|
+      @facts[n] = n.puppet_fact(params[:id]) unless n.puppet_fact(params[:id]).nil?
     end
   end
 

@@ -34,7 +34,7 @@ begin
     # It can be enabled/disabled at project level (Project settings -> Modules)
     project_module :initr do
       permission :view_nodes,
-        { :node => [:list],
+        { :node => [:list,:facts],
           :klass => [:list]},
         :require => :member
       permission :manage_nodes,
