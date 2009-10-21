@@ -15,7 +15,7 @@ class Initr::DelayedJob::DeleteHostJob < Struct.new(:id)
   def perform
     n=Initr::Node.find id
     return unless n.puppet_host.nil?
-    path=Setting.plugin_initr_plugin['autosign']
+    path=Setting.plugin_initr['autosign']
     `/bin/grep -v "^#{n.fqdn}$" #{path} > /tmp/autosign_`
     `/bin/mv /tmp/autosign_ #{path}`
     `chmod 644 #{path}`

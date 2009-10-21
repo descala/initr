@@ -57,7 +57,7 @@ class NodeController < ApplicationController
   end
 
   def get_host_definition
-    if request.remote_ip == '127.0.0.1' or request.remote_ip == Setting.plugin_initr_plugin['puppetmaster_ip']
+    if request.remote_ip == '127.0.0.1' or request.remote_ip == Setting.plugin_initr['puppetmaster_ip']
       begin
         node = Initr::Node.find(params[:hostname])
         render :text => YAML.dump(node.parameters)
@@ -67,7 +67,7 @@ class NodeController < ApplicationController
       end
     else
       render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
-      logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr_plugin['puppetmaster_ip']}).\n"
+      logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr['puppetmaster_ip']}).\n"
     end
   end
 

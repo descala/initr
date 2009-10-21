@@ -8,7 +8,7 @@ class Initr::DelayedJob::AutosignJob
 
   def perform
     content = generate_content
-    path = Setting.plugin_initr_plugin['autosign']
+    path = Setting.plugin_initr['autosign']
 
     unless can_write? path
       puts "Can't write file: #{path}"
