@@ -8,6 +8,7 @@ class CustomKlassController < ApplicationController
   before_filter :find_node,    :only => [:new]
   before_filter :find_node_id, :only => [:create]
   before_filter :find_klass,   :only => [:configure]
+  before_filter :authorize
 
   def configure
     if request.post?
