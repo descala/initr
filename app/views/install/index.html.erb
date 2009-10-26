@@ -7,13 +7,18 @@
 <p>Copy and paste this line in a root shell:</p>
 
 <pre>
-wget -qO - <%= link_to url_for(:action => :centos, :only_path => false), :action => :centos %> | /bin/sh
+wget <% if request.ssl? %>--no-check-certificate<% end -%> -qO - <%= link_to url_for(:action => :centos, :only_path => false), :action => :centos %> | /bin/sh
 </pre>
-  
+
+<% if request.ssl? %>
+<p>On CentOS you need to use --no-check-certificate because our CA is not yet included in /etc/pki/tls/certs/ca-bundle.crt</p>
+<% end %>
+
 <h3>Debian</h3>
 
 <p>Copy and paste this line in a root shell:</p>
 
 <pre>
+<% if request.ssl? %>apt-get install ca-certificates && <% end -%>
 wget -qO - <%= link_to url_for(:action => :debian, :only_path => false), :action => :debian %> | /bin/sh
 </pre>
