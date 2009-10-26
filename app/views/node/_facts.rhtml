@@ -5,7 +5,7 @@
   </tr>
 <% f.sort.each do |key, value| %>
   <tr class="<%= cycle('odd', 'even') %>">
-    <td style="font-weight: bold;"><div><%=key%></div></td>
+    <td style="font-weight: bold;"><div><%=link_to key, :controller=>'node', :action=>'facts', :id=>key%></div></td>
     <% if value.first.value.size > 100 %>
     <td><div class="wiki"><pre style="margin: 0;"><%= value.first.value %></pre></div></td>
     <% else %>

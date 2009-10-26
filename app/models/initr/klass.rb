@@ -47,7 +47,8 @@ class Initr::Klass < ActiveRecord::Base
   
   # Variables for puppet
   def parameters
-    {}
+    return {} unless self.config.is_a? Hash
+    self.config
   end
   
   # Array of additional puppet classes that should be included

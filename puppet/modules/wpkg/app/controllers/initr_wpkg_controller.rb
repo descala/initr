@@ -3,6 +3,7 @@ class InitrWpkgController < ApplicationController
   unloadable
 
   before_filter :find_wpkg
+  before_filter :authorize
 
   layout 'nested'
   menu_item :initr

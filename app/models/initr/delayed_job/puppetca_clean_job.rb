@@ -7,7 +7,7 @@
 class Initr::DelayedJob::PuppetcaCleanJob < Struct.new(:hostname)
 
   def perform
-    `#{Setting.plugin_initr_plugin['puppetca']} --clean #{hostname}`
+    `#{Setting.plugin_initr['puppetca']} --clean #{hostname}`
   end
 
 end

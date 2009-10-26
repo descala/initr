@@ -42,7 +42,7 @@ class Initr::Slice < Initr::Node
   private
   
   def self.password
-    Setting.plugin_initr_plugin['slicehost_api_password']
+    Setting.plugin_initr['slicehost_api_password']
   end
   
 end
