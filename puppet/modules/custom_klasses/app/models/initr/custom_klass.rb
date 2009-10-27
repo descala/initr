@@ -16,7 +16,7 @@ class Initr::CustomKlass < Initr::Klass
   # Allow more than one CutomKlass per node
   # see validates_uniqueness_of on Klass
   def unique?; false end
-  
+
   def name
     read_attribute :name
   end
@@ -28,7 +28,7 @@ class Initr::CustomKlass < Initr::Klass
   def parameters
     parameters = {}
     custom_klass_confs.sort.each do |ckc|
-      parameters[ckc.name] = YAML.load ckc.value.gsub(/\n/,"\n\n")
+      parameters[ckc.name] = ckc.value
     end
     parameters
   end
