@@ -42,7 +42,9 @@ class Initr::Slice < Initr::Node
   private
   
   def self.password
-    Setting.plugin_initr['slicehost_api_password']
+    # TODO: create setting in redmine to use this
+    # Setting.plugin_initr['slicehost_api_password']
+    ""
   end
   
 end
