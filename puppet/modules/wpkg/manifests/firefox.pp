@@ -11,8 +11,8 @@ class wpkg::firefox3 {
 
   download {
     "firefox":
-      url => "http://download.mozilla.org/?product=firefox-3.5.4&os=win&lang=ca",
-      creates => "Firefox Setup 3.5.4.exe";
+      url => "http://download.mozilla.org/?product=firefox-3.5.5&os=win&lang=ca",
+      creates => "Firefox Setup 3.5.5.exe";
   }
 
 }

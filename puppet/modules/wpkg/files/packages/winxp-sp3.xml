@@ -3,6 +3,7 @@
  <package id="winxp-sp3" name="Windows XP Service Pack 3" revision="1" reboot="true" priority="0">
   <check type="logical" condition="or">
     <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName" value="Microsoft Windows 2000" />
+    <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName" value="Windows 7 Ultimate" />
     <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\CSDVersion"  value="Service Pack 3" />
     <check type="uninstall" condition="exists" path="Windows XP Service Pack 3" />
   </check>
