@@ -24,23 +24,9 @@ Initr installation
 
 1. Copy (or link) initr directory into Redmine vendor/plugins directory
 
-2. Install `delayed_job`_ plugin into Redmine vendor/plugins directory
+2. Migrate Redmine database for plugin with ``rake db:migrate:plugins``
 
-3. Migrate Redmine database for plugin with ``rake db:migrate:plugins``
-
-4. Restart Redmine and check that it lists initr plugin on 'Admin -> Information' screen.
-
-Initr daemon
-------------
-
-Initr uses delayed jobs to do some root tasks, you should start daemon provided in bin/delayed_jobs_daemon.rb.
-
-Simply run:
-::
- 
- ruby bin/delayed_jobs_daemon.rb start
-
-you can see daemon output at Redmine's ``tmp/pids/delayed_jobs_worker.rb.output``
+3. Restart Redmine and check that it lists initr plugin on 'Admin -> Information' screen.
 
 Initr plugins installation
 --------------------------
@@ -175,8 +161,6 @@ Steps followed to install puppetmaster, redmine and initr on a CentOS 5.3 machin
  # Install Initr plugin
  cd vendor/plugins
  git clone git://github.com/descala/initr.git
- # initr needs delayed_job plugin
- git clone git://github.com/tobi/delayed_job.git
  # mongrel user needs write access on initr directory
  chown -R mongrel: initr
  # migrate plugin database
@@ -198,6 +182,5 @@ Steps followed to install puppetmaster, redmine and initr on a CentOS 5.3 machin
 
 .. _storeconfigs: http://reductivelabs.com/trac/puppet/wiki/UsingStoredConfiguration
 .. _external nodes: http://reductivelabs.com/trac/puppet/wiki/ExternalNodes
-.. _delayed_job: http://github.com/tobi/delayed_job
 .. _Redmine: http://www.redmine.org
 .. _Puppet: http://puppet.reductivelabs.com

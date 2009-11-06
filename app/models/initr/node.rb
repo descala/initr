@@ -54,17 +54,7 @@ class Initr::Node < ActiveRecord::Base
     self.klasses << b
   end
   
-  def after_save
-    if puppet_host.nil?
-      Delayed::Job.enqueue Initr::DelayedJob::AutosignJob.new
-      # Delete node and autosign file after 48h if node still not connected to puppetmaster
-      Delayed::Job.enqueue(Initr::DelayedJob::DeleteHostJob.new(id),0,((ActiveRecord::Base.default_timezone == :utc) ?
-                                                                       Time.now.utc + 172800 : Time.now + 172800))
-    end
-  end
-
   def after_destroy
-    Delayed::Job.enqueue Initr::DelayedJob::PuppetcaCleanJob.new(fqdn) unless puppet_host.nil?
     puppet_host_destroy
   end
 
