@@ -2,6 +2,7 @@
 
   <% content_for :sidebar do %>
     <h3>Manage your nodes</h3>
+    <%= link_to("All nodes",:controller=>'node',:action=>'list',:id=>nil) %><br />
     <%= link_to("Project nodes", :controller => 'node', :action => 'list', :id => @project) if @project %><br />
     <%= link_to_if_authorized("New node", :controller => 'node',:action => 'new', :id => @project) if @project %>
     <% Initr::Plugin.all.each do |p| -%>
@@ -12,6 +13,11 @@
           ""
         end
       %>
+    <% end -%>
+    <% if User.current.admin? -%>
+      <h3>Import from puppet</h3>
+      <%= link_to("Scan for new hosts", :controller=>'node', :action=>'scan_puppet_hosts') %><br />
+      <%= link_to("Node-Project assignment", :controller=>'node', :action=>'unassigned_nodes') %>
     <% end -%>
 
   <% end %>

@@ -8,8 +8,12 @@ begin
   # Patches to the Redmine core.
   require 'dispatcher'
   require 'project_patch'
+  require 'puppet_patch'
   Dispatcher.to_prepare do
     Project.send(:include, ProjectPatch)
+    Puppet::Rails::Host.send(:include, PuppetPatch)
+    Puppet::Rails::FactName.send(:include, PuppetPatch)
+    Puppet::Rails::FactValue.send(:include, PuppetPatch)
   end 
 
   Redmine::Plugin.register :initr do
@@ -18,12 +22,9 @@ begin
     description 'Node management with redmine and puppet'
     version '0.0.1'
     settings :default => {
-      'puppetmaster_ip' => '127.0.0.1',
-      'autosign' => '/etc/puppet/autosign.conf',
-      'puppetca' => '/usr/bin/puppetca',
-      'slicehost_api_password' => '0'
+      'puppetmaster_ip' => '127.0.0.1'
     },
-    :partial => 'initradmin/settings'
+    :partial => '/settings'
 
     # This plugin adds a project module
     # It can be enabled/disabled at project level (Project settings -> Modules)
@@ -33,7 +34,7 @@ begin
           :klass => [:list]},
         :require => :member
       permission :manage_nodes,
-        { :node  => [:new, :destroy],
+        { :node  => [:new, :destroy, :unassigned_nodes],
           :base    => [:configure] },
         :require => :member
       permission :use_classes,
@@ -46,12 +47,11 @@ begin
       #  * initr_admin
       #  * klass_names
       #  * node/list when no project selected (all).
+      #  * node/
     end
 
     # A new item is added to the project menu
     menu :project_menu, :initr, { :controller => 'node', :action => 'list' }, :caption => 'Initr'
-    menu :top_menu, :initr, { :controller => 'initradmin' }, :caption =>
-      'Admin-Initr'
   end
   
   # dump to a file some server info need by scripts (see initr_login)
