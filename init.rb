@@ -8,8 +8,12 @@ begin
   # Patches to the Redmine core.
   require 'dispatcher'
   require 'project_patch'
+  require 'puppet_patch'
   Dispatcher.to_prepare do
     Project.send(:include, ProjectPatch)
+    Puppet::Rails::Host.send(:include, PuppetPatch)
+    Puppet::Rails::FactName.send(:include, PuppetPatch)
+    Puppet::Rails::FactValue.send(:include, PuppetPatch)
   end 
 
   Redmine::Plugin.register :initr do
