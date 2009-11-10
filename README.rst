@@ -14,11 +14,13 @@ Quickstart
 1. Get latest `Redmine`_
 
 ::
+
   git clone git://github.com/edavis10/redmine.git
 
 2. Install initr plugin
 
 ::
+
   cd vendor/plugins ; git clone git://github.com/descala/initr.git
 
 3. Configure config/database.yml
@@ -26,6 +28,7 @@ Quickstart
 4. additionally to redmine tables you can configure the database where puppetmaster stores configs to tell initr where to look for hosts and facts, or you can simply run "rake puppet:import:hosts_and_facts" to load them from YAML
 
 ::
+
   # you can define a puppet_[RAILSENV] database to
   # tell initr where to look for hosts and facts
   puppet_development:
@@ -37,6 +40,7 @@ Quickstart
 5. Migrate databases
 
 ::
+
   rake db:migrate ; rake db:migrate:plugins
 
 6. (Re)Start Redmine and check that it lists initr plugin on 'Admin -> Information' screen.
