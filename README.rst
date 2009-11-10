@@ -11,21 +11,21 @@ It uses `Puppet`_ as enabling technology.
 Quickstart
 ----------
 
-1. Get latest `Redmine`_
+* Get latest `Redmine`_
 
 ::
 
   git clone git://github.com/edavis10/redmine.git
 
-2. Install initr plugin
+* Install initr plugin
 
 ::
 
   cd vendor/plugins ; git clone git://github.com/descala/initr.git
 
-3. Configure config/database.yml
+* Configure config/database.yml
 
-4. additionally to redmine tables you can configure the database where puppetmaster stores configs to tell initr where to look for hosts and facts, or you can simply run "rake puppet:import:hosts_and_facts" to load them from YAML
+* additionally to redmine tables you can configure the database where puppetmaster stores configs to tell initr where to look for hosts and facts, or you can simply run "rake puppet:import:hosts_and_facts" to load them from YAML
 
 ::
 
@@ -37,15 +37,15 @@ Quickstart
     username: root
     password:
 
-5. Migrate databases
+* Migrate databases
 
 ::
 
   rake db:migrate ; rake db:migrate:plugins
 
-6. (Re)Start Redmine and check that it lists initr plugin on 'Admin -> Information' screen.
+* (Re)Start Redmine and check that it lists initr plugin on 'Admin -> Information' screen.
 
-7. You can start a local puppetmaster by running puppet/start_puppetmaster.sh from initr plugin directory
+* You can start a local puppetmaster by running puppet/start_puppetmaster.sh from initr plugin directory
 
 Considerations
 --------------
