@@ -4,6 +4,12 @@ class InitrWebserver1 < Initr::Klass
 
   has_many :initr_webserver1_domains
   belongs_to :node, :class_name => 'Initr::Node'
+  validates_confirmation_of :password, :allow_nil => true
+  attr_accessor :password, :password_confirmation
+
+  def before_validation
+    self.admin_password = password unless password.blank? or password != password_confirmation
+  end
 
   def name
     "webserver1"
@@ -16,7 +22,9 @@ class InitrWebserver1 < Initr::Klass
       domain_list[domain.name] = domain.parameters
       bind_masterzones[domain.name] = domain.bind_parameters unless domain.bind_parameters.nil?
     end
-    { "webserver_domains" => domain_list, "bind_masterzones" => bind_masterzones }
+    { "webserver_domains"=>domain_list,
+      "bind_masterzones"=>bind_masterzones,
+      "admin_password"=>config["admin_password"] }
   end
 
   def print_parameters
@@ -43,5 +51,13 @@ class InitrWebserver1 < Initr::Klass
     dnc["apache"] = "check_procs -C #{httpd_service} -w 1:50 -c 1:100"
     return dnc
   end
- 
+
+  def admin_password
+    config["admin_password"].nil? ? "" : "*"*config["admin_password"].size
+  end
+
+  def admin_password=(p)
+    config["admin_password"]=p
+  end 
+
 end

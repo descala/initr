@@ -14,9 +14,8 @@
 <% @webserver.domains.sort.each do |domain| -%>
   <tr>
     <td><%= link_to domain.name, :action => 'edit_domain', :id => domain %></td>
-    <td><%= link_to "http://#{domain.name}/awstats", "http://#{domain.username}:#{domain.password}@#{domain.name}/awstats", :target => 'blank' %></td>
-    <td><%= link_to "ftp://#{domain.name}", "ftp://#{domain.username}:#{domain.password}@#{domain.name}", :target => 'blank' %></td>
-    <td><%= domain.www_ip %></td>
+    <td><%= link_to "http://#{domain.name}/awstats", "http://#{domain.username}:#{domain.password_awstats}@#{domain.name}/awstats", :target => 'blank' %></td>
+    <td><%= link_to "ftp://#{domain.name}", "ftp://#{domain.username}@#{domain.name}", :target => 'blank' %></td>    <td><%= domain.www_ip %></td>
     <td><%= domain.mx_ip %></td>
     <td><%= domain.mail_ip %></td>
     <td><%= link_to image_tag("cross.gif", :plugin => "initr", :border => 0), {:action => 'rm_domain', :id => domain}, :confirm => "Delete #{domain.name}?", :method => :post %></td>
@@ -26,6 +25,20 @@
 
 <p><%= link_to "Add new domain", :action => 'add_domain', :id => @webserver %></p>
 
-<hr />
+<br />
+<% labelled_tabular_form_for(:initr_webserver1, @webserver, :url=>{:action=>'configure'}) do |f| %>
+
+<%= error_messages_for 'webserver' %>
+
+<fieldset>
+  <legend>Global admin password</legend>
+  <p><%= f.text_field :admin_password, :disabled=>true %></p>
+  <p><%= f.password_field :password %></p>
+  <p><%= f.password_field :password_confirmation %></p>
+</fieldset>
+
+  <p><%= submit_tag("Save")%></p>
+<% end %>
+
 <p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
 

@@ -1,50 +1,24 @@
-<table width="100%">
-  <tr>
-    <td valign="top">
-      <table>
-        <tr>
-          <td colspan="2"><h4>Domain config</h4></td>
-        </tr>
-        <tr>
-          <td>Domain:</td><td><%= form.text_field :name %></td>
-        </tr>
-        <tr>
-          <td>Admin username:</td><td><%= form.text_field :username %></td>
-        </tr>
-        <tr>
-          <td>Password:</td><td><%= form.text_field :password %></td>
-        </tr>
-        <tr>
-          <td>Crypted password:</td><td><%= form.text_field :crypted_password, :disabled => true %></td>
-        </tr>
-        <tr>
-          <td>Database:</td><td><%= form.text_field :dbname %></td>
-        </tr>
-        <tr>
-          <td>Shell access</td><td><%= form.check_box :shell %></td>
-        </tr>
-        <tr>
-          <td>Force www. in apache</td><td><%= form.check_box :force_www %></td>
-        </tr>
-        <tr>
-          <td colspan="2"><h4>DNS config</h4></td>
-        </tr>
-        <tr>
-          <td>IP WWW:</td><td><%= form.text_field :www_ip %></td>
-        </tr>
-        <tr>
-          <td>IP MX:</td><td><%= form.text_field :mx_ip %></td>
-        </tr>
-        <tr>
-          <td>IP MAIL:</td><td><%= form.text_field :mail_ip %></td>
-        </tr>
-        <tr>
-          <td>DNS serial:</td><td><%= form.text_field :serial, :disabled => true %></td>
-        </tr>
-      </table>
+<table>
+    <td>
+      <h4>Domain config</h4>
+      <p><%= form.text_field :name %></p>
+      <p><%= form.text_field :username %></p>
+      <p><%= form.text_field :password_ftp %></p>
+      <p><%= form.text_field :password_awstats %></p>
+      <p><%= form.text_field :password_db %></p>
+      <p><%= form.text_field :dbname %></p>
+      <p><%= form.check_box :shell %></p>
+      <p><%= form.check_box :force_www %></p>
+      <h4>DNS config</h4>
+      <p><%= form.text_field :www_ip %></p>
+      <p><%= form.text_field :mx_ip %></p>
+      <p><%= form.text_field :mail_ip %></p>
+      <p><%= form.text_field :serial, :disabled => true %></p>
     </td>
     <% unless @domain.new_record? -%>
+    <td width="40px"></td>
     <td valign="top">
+      <h4>Current settings</h4>
       <pre>
 --
 Dades del hosting <%= @domain.name %>
@@ -56,13 +30,13 @@ ACCÉS FTP <%= "i SSH" unless @domain.shell == "0" %>
 
 Host:         <%= @domain.name %>
 Usuari:       <%= @domain.username %>
-Contrasenya:  <%= @domain.password %>
+Contrasenya:  <%= @domain.password_ftp %>
 
 ESTADÍSTIQUES DE VISITES
 
 URL:          http://<%= @domain.name %>/awstats
 Usuari:       <%= @domain.username %>
-Contrasenya:  <%= @domain.password %>
+Contrasenya:  <%= @domain.password_awstats %>
 
 <% if @domain.dbname and @domain.dbname.size > 0 %>
 BASE DE DADES MySQL
@@ -70,7 +44,7 @@ BASE DE DADES MySQL
 Host:              localhost
 Nom base de dades: <%= @domain.dbname %>
 Usuari:            <%= @domain.username %>
-Contrasenya:       <%= @domain.password %>
+Contrasenya:       <%= @domain.password_db %>
 
 ------
 

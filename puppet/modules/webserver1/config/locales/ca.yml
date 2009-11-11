@@ -1,0 +1,14 @@
+ca:
+  field_admin_password: Contrasenya actual
+  field_password_db: Contrasenya de la BBDD
+  field_password_awstats: Contrasenya awstats
+  field_username: Usuari
+  field_password_ftp: Contrasenya FTP/Shell
+  field_dbname: Nom de la BBDD
+  field_shell: Accés shell
+  field_force_www: Forçar www.
+  field_www_ip: IP www
+  field_mx_ip: IP mx
+  field_mail_ip: IP mail
+  field_serial: Serial del DNS
+  field_backup_server: Còpies de seguretat

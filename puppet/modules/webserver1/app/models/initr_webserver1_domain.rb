@@ -7,7 +7,7 @@ class InitrWebserver1Domain < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :initr_webserver1_id
   validates_uniqueness_of :username, :dbname
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
-  validates_presence_of :name, :username, :password
+  validates_presence_of :name, :username, :password_ftp, :password_db, :password_awstats
   validate :all_dns_fields
 
   def all_dns_fields
@@ -21,8 +21,9 @@ class InitrWebserver1Domain < ActiveRecord::Base
   def parameters
     parameters = { "name"   => name,
                    "username" => username,
-                   "password_clear" => password,
-                   "password" => crypted_password,
+                   "password_db" => password_db,
+                   "password_awstats" => password_awstats,
+                   "password_ftp" => crypted_password,
                    "database" => dbname,
                    "force_www" => force_www.to_s
                  }
@@ -63,8 +64,8 @@ class InitrWebserver1Domain < ActiveRecord::Base
           end
         end
       end
-      if password_changed? or crypted_password.nil? or crypted_password.blank?
-        self.crypted_password = password.crypt("$1$#{random_salt}$")
+      if password_ftp_changed? or crypted_password.nil? or crypted_password.blank?
+        self.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
       end
     end
     super

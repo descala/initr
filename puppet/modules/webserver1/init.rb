@@ -16,3 +16,5 @@ Initr::Plugin.register :webserver1 do
   end
   klasses 'webserver1' => 'LAMP web server. You can manage virtual hosts, ftp users and databases'
 end
+
+::I18n.load_path += Dir.glob(File.join("#{File.dirname(__FILE__)}", 'config', 'locales', '*.yml'))

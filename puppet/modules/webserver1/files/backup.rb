@@ -14,7 +14,7 @@ class Backup
   RSYNC="/usr/bin/rsync"
   NICE="/bin/nice"
 
-  def initialize(domain, server="arxiver006.arxiver.com", history=7, excludes="")
+  def initialize(domain, server, history=7, excludes="")
     validate(ARGV)
     @excludes = excludes
     @history = history
@@ -70,7 +70,7 @@ if __FILE__ == $0
 
   retval = 0
 
-  if ARGV.size == 0 or ARGV.size > 4
+  if ARGV.size < 2 or ARGV.size > 4
     Backup.usage
     puts "Exiting with status 3 (UNKNOWN)"
     exit 3
@@ -79,11 +79,12 @@ if __FILE__ == $0
   begin
     puts "sleep(#{rand(600)})"
     sleep(rand(600))
-    cop = Backup.new(ARGV[0])
+    cop = Backup.new(*ARGV)
     retval += cop.do_backup
     retval += cop.purge_history if retval == 0
   rescue Exception => e
     puts e.to_s
+    puts e.backtrace
     puts "Exiting with status 3 (UNKNOWN)"
     exit 3
   end

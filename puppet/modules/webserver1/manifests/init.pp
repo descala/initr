@@ -41,11 +41,11 @@ class webserver1 {
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password, $password_clear, $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $backup_server, $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
-    pass => $password_clear,
+    pass => $password_awstats,
   }
   webserver1::domain::remotebackup { $name: }
 
@@ -63,12 +63,12 @@ define webserver1::domain($username, $password, $password_clear, $shell='/sbin/n
     mysql::database { $dbname:
       ensure => present,
       owner => $username,
-      passwd => $password_clear,
+      passwd => $password_db,
     }
     mysql::database::backup { $dbname:
       destdir => "/var/www/$name/backups",
       user => $username,
-      pass => $password_clear,
+      pass => $password_db,
     }
   }
 
@@ -131,7 +131,7 @@ define webserver1::domain($username, $password, $password_clear, $shell='/sbin/n
       ensure => present,
       comment => "puppet managed",
       home => "/var/www/$name",
-      password => $password,#mkpasswd($password_clear,"13254768"),
+      password => $password_ftp,
       shell => $shell,
       require => Package["ruby-shadow"];
   }
@@ -218,10 +218,9 @@ class webserver1::awstats {
       source => "puppet:///webserver1/awstats.model.conf";
   }
 
-  #TODO: hardcoded passwd d'admin
   exec {
     "htpasswd for admin":
-      command => "/usr/bin/htpasswd -b /etc/awstats/users admin ingent",
+      command => "/usr/bin/htpasswd -b /etc/awstats/users admin $admin_password",
       user => root,
       unless => "grep \"^admin:\" /etc/awstats/users",
       require => Exec["create htpasswd"];
