@@ -24,7 +24,9 @@ class InitrWebserver1 < Initr::Klass
     end
     { "webserver_domains"=>domain_list,
       "bind_masterzones"=>bind_masterzones,
-      "admin_password"=>config["admin_password"] }
+      "admin_password"=>config["admin_password"],
+      "accessible_phpmyadmin"=>accessible_phpmyadmin,
+      "blowfish_secret"=>blowfish_secret }
   end
 
   def print_parameters
@@ -55,9 +57,22 @@ class InitrWebserver1 < Initr::Klass
   def admin_password
     config["admin_password"].nil? ? "" : "*"*config["admin_password"].size
   end
-
   def admin_password=(p)
     config["admin_password"]=p
   end 
+
+  def accessible_phpmyadmin
+    config["accessible_phpmyadmin"]
+  end
+  def accessible_phpmyadmin=(v)
+    config["accessible_phpmyadmin"]=v
+  end
+
+  def blowfish_secret
+    config["blowfish_secret"]
+  end
+  def blowfish_secret=(v)
+    config["blowfish_secret"]=v
+  end
 
 end

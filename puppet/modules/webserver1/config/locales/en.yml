@@ -1,5 +1,5 @@
 en:
-  field_admin_password: Current password
+  field_admin_password: Admin password
   field_password_db: Database password
   field_password_awstats: Awstats password
   field_username: Username
@@ -12,3 +12,5 @@ en:
   field_mail_ip: IP mail
   field_serial: DNS Serial
   field_backup_server: Backups server
+  field_accessible_phpmyadmin: Internet accessible
+  field_blowfish_secret: cookie auth secret

@@ -1,5 +1,5 @@
 es:
-  field_admin_password: Contraseña actual
+  field_admin_password: Contraseña admin
   field_password_db: Contraseña de la BBDD
   field_password_awstats: Contraseña de awstats
   field_username: Usuario
@@ -12,3 +12,5 @@ es:
   field_mail_ip: IP mail
   field_serial: Serial del DNS
   field_backup_server: Copias de seguridad
+  field_accessible_phpmyadmin: Accesible desde internet
+  field_blowfish_secret: cookie auth secret

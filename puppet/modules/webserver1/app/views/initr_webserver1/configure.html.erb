@@ -31,10 +31,16 @@
 <%= error_messages_for 'webserver' %>
 
 <fieldset>
-  <legend>Global admin password</legend>
+  <legend>Awstats</legend>
   <p><%= f.text_field :admin_password, :disabled=>true %></p>
   <p><%= f.password_field :password %></p>
   <p><%= f.password_field :password_confirmation %></p>
+</fieldset>
+
+<fieldset>
+  <legend>Phpmyadmin</legend>
+  <p><%= f.check_box :accessible_phpmyadmin %></p>
+  <p><%= f.text_field :blowfish_secret %> (you must fill in this for cookie auth)</p>
 </fieldset>
 
   <p><%= submit_tag("Save")%></p>

@@ -1,0 +1,21 @@
+##################
+# Puppet managed #
+##################
+#
+#  Web application to manage MySQL
+#
+
+<Directory "/usr/share/phpmyadmin">
+<% if accessible_phpmyadmin -%>
+  Order Deny,Allow
+  Allow from all
+<% else -%>
+  Order Deny,Allow
+  Deny from all
+  Allow from 127.0.0.1
+<% end -%>
+</Directory>
+
+Alias /phpmyadmin /usr/share/phpmyadmin
+Alias /phpMyAdmin /usr/share/phpmyadmin
+Alias /mysqladmin /usr/share/phpmyadmin
