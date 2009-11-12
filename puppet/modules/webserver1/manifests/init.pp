@@ -124,6 +124,15 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       notify => Service[$httpd_service],
       source => "puppet:///webserver1/vhost.conf",
       replace => false;
+    "/etc/httpd/conf.d/phpmyadmin.conf":
+      mode => 640,
+      group => apache,
+      require => Package["phpmyadmin"],
+      content => template("webserver1/phpmyadmin_httpd.erb");
+    "/usr/share/phpmyadmin/config.inc.php":
+      mode => 644,
+      require => [Package["phpmyadmin"],Package[$httpd]],
+      content => template("webserver1/phpmyadmin_config.erb");
   }
 
   user {

@@ -1,5 +1,5 @@
 ca:
-  field_admin_password: Contrasenya actual
+  field_admin_password: Contrasenya admin
   field_password_db: Contrasenya de la BBDD
   field_password_awstats: Contrasenya awstats
   field_username: Usuari
@@ -12,3 +12,5 @@ ca:
   field_mail_ip: IP mail
   field_serial: Serial del DNS
   field_backup_server: Còpies de seguretat
+  field_accessible_phpmyadmin: "Accessible des d'internet"
+  field_blowfish_secret: cookie auth secret
