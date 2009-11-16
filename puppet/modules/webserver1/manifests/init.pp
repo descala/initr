@@ -1,4 +1,9 @@
 class webserver1 {
+
+  $phpmyadmindir = $lsbdistrelease ? {
+    "5.4" => "/usr/share/phpMyAdmin",
+    default => "/usr/share/phpmyadmin"
+  }
   
   include apache::ssl
   include mysql
@@ -41,7 +46,7 @@ class webserver1 {
       group => apache,
       require => Package["phpmyadmin"],
       content => template("webserver1/phpmyadmin_httpd.erb");
-    "/usr/share/phpmyadmin/config.inc.php":
+    "$phpmyadmindir/config.inc.php":
       mode => 644,
       require => [Package["phpmyadmin"],Package[$httpd]],
       content => template("webserver1/phpmyadmin_config.erb");
