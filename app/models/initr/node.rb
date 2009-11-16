@@ -167,4 +167,8 @@ class Initr::Node < ActiveRecord::Base
     end
   end
 
+  def config_errors?
+    self.puppet_fact("puppet_classes","").split.include? "configuration_errors"
+  end
+
 end
