@@ -71,6 +71,10 @@ class Initr::Klass < ActiveRecord::Base
     return  1 if oth.name  == 'base'
     self.name.downcase <=> oth.name.downcase
   end
+
+  def installed?
+    self.node.puppet_fact('puppet_classes','').split.include? self.name
+  end
   
   private
 

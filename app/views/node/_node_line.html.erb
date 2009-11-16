@@ -1,6 +1,9 @@
 <tr class="<%= cycle('odd', 'even') %> issue">
 <td><%= image_tag("os/#{node.os}.png", :title => "#{node.os} #{node.os_release} Kernel #{node.kernel}", :plugin => "initr") %></td>
-<td class="subject"><%= link_to node.name, :controller => 'klass', :action => 'list', :id => node %></td>
+<td class="subject">
+  <%= image_tag("warning.png",:title=>"Node has configuration errors") if node.puppet_fact("puppet_classes","").split.include? "configuration_errors" %>
+  <%= link_to node.name, :controller => 'klass', :action => 'list', :id => node %>
+</td>
 <td class="subject">
   <%
     klasses = node.klasses.collect {|c| c.name}.join(", ") rescue ActiveRecord::SubclassNotFound

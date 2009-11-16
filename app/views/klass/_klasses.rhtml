@@ -10,7 +10,7 @@
     @node.klasses.sort.each do |klass|
   %>
   <tr class="<%= cycle('odd', 'even') %>">
-    <td><%= klass.name %></td>
+    <td><%= image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.installed? %> <%= klass.name %></td>
     <td><%= klass.description %></td>
     <td><%= truncate(klass.print_parameters, :length=>80) %></td>
     <td>
