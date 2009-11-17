@@ -1,9 +1,16 @@
 class Fail2banController < ApplicationController
+  
   unloadable
+
+  # authorize filter expects @project to be the current project
+  # we set this on find_fail2ban filter
   before_filter :find_fail2ban
   before_filter :authorize
 
+  # to make right menu appear
   layout "nested"
+
+  # make "initr" item on the top menu the selected one
   menu_item :initr
 
   def configure

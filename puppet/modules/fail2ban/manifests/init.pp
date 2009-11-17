@@ -1,3 +1,6 @@
+# fail2ban puppet module
+# it expects $fail2ban_jails to be an array of jails to be enabled
+# and $mailto an email address to send notifications to.
 class fail2ban {
 
   if $fail2ban_jails {

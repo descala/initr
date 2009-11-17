@@ -1,0 +1,2 @@
+This module is a view for fail2ban puppet module.
+It allows to configure which jails will be used by fail2ban and where emails should be sent (if any).
