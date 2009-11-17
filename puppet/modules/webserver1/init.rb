@@ -1,6 +1,6 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting initr_webserver1'
+RAILS_DEFAULT_LOGGER.info 'Starting webserver1'
 
 Initr::Plugin.register :webserver1 do
   redmine do
@@ -9,8 +9,8 @@ Initr::Plugin.register :webserver1 do
     description 'Webserver management plugin'
     version '0.0.1'
     project_module :initr do
-      permission :initr_webserver_configure,
-        { :initr_webserver1 => [:configure, :add_domain, :edit_domain, :rm_domain] },
+      permission :webserver_configure,
+        { :webserver1 => [:configure, :add_domain, :edit_domain, :rm_domain] },
         :require => :member
     end
   end

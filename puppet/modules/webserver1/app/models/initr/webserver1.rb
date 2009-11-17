@@ -1,8 +1,8 @@
-class InitrWebserver1 < Initr::Klass
+class Initr::Webserver1 < Initr::Klass
 
   unloadable
 
-  has_many :initr_webserver1_domains
+  has_many :webserver1_domains, :dependent => :destroy, :class_name => "Initr::Webserver1Domain"
   belongs_to :node, :class_name => 'Initr::Node'
   validates_confirmation_of :password, :allow_nil => true
   attr_accessor :password, :password_confirmation
@@ -18,7 +18,7 @@ class InitrWebserver1 < Initr::Klass
   def parameters
     domain_list = {}
     bind_masterzones = {}
-    initr_webserver1_domains.each do |domain|
+    webserver1_domains.each do |domain|
       domain_list[domain.name] = domain.parameters
       bind_masterzones[domain.name] = domain.bind_parameters unless domain.bind_parameters.nil?
     end
@@ -39,7 +39,7 @@ class InitrWebserver1 < Initr::Klass
   end
 
   def domains
-    initr_webserver1_domains
+    webserver1_domains
   end
 
   def default_nagios_checks

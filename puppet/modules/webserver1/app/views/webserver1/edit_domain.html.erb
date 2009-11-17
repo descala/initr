@@ -2,9 +2,9 @@
 
 <h3>Edit domain</h3>
 
-<% labelled_tabular_form_for('initr_webserver1_domain', @domain, :url=>{:action=>'edit_domain'}) do |f| -%>
+<% labelled_tabular_form_for('webserver1_domain', @domain, :url=>{:action=>'edit_domain'}) do |f| -%>
   <p><%= f.error_messages %></p>
-  <%= render :partial => 'initr_webserver1_domain', :locals => {:form => f} %>
+  <%= render :partial => 'webserver1_domain', :locals => {:form => f} %>
   <p>
   <%= submit_tag("Edit")%>
   </p>

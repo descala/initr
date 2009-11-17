@@ -24,7 +24,7 @@
 Dades del hosting <%= @domain.name %>
 --
 
-Servidor compartit <%= @domain.initr_webserver1.node.name %> [<%=@domain.initr_webserver1.node.puppet_fact('ipaddress')%>]
+Servidor compartit <%= @domain.webserver1.node.name %> [<%=@domain.webserver1.node.puppet_fact('ipaddress')%>]
 
 ACCÉS FTP <%= "i SSH" unless @domain.shell == "0" %>
 

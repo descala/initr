@@ -26,7 +26,7 @@
 <p><%= link_to "Add new domain", :action => 'add_domain', :id => @webserver %></p>
 
 <br />
-<% labelled_tabular_form_for(:initr_webserver1, @webserver, :url=>{:action=>'configure'}) do |f| %>
+<% labelled_tabular_form_for(:webserver1, @webserver, :url=>{:action=>'configure'}) do |f| %>
 
 <%= error_messages_for 'webserver' %>
 

@@ -1,4 +1,4 @@
-class InitrWebserver1Controller < ApplicationController
+class Webserver1Controller < ApplicationController
   unloadable
 
   layout 'nested'
@@ -10,7 +10,7 @@ class InitrWebserver1Controller < ApplicationController
 
   def configure
     if request.post?
-      if @webserver.update_attributes params[:initr_webserver1]
+      if @webserver.update_attributes params[:webserver1]
           flash[:notice] = 'Configuration saved'
           redirect_to :controller => 'klass', :action => 'list', :id => @node
       else
@@ -20,8 +20,8 @@ class InitrWebserver1Controller < ApplicationController
   end
 
   def add_domain
-    @domain=InitrWebserver1Domain.new(params[:initr_webserver1_domain])
-    @domain.initr_webserver1 = @webserver
+    @domain=Initr::Webserver1Domain.new(params[:webserver1_domain])
+    @domain.webserver1 = @webserver
     if request.post?
       if @domain.save
         flash[:notice] = 'Domain saved'
@@ -34,7 +34,7 @@ class InitrWebserver1Controller < ApplicationController
 
   def edit_domain
     if request.post?
-      if @domain.update_attributes(params["initr_webserver1_domain"])
+      if @domain.update_attributes(params["webserver1_domain"])
         redirect_to :action => 'configure', :id => @webserver
       else
         render :action => 'edit_domain'
@@ -50,13 +50,13 @@ class InitrWebserver1Controller < ApplicationController
   private
 
   def find_webserver
-    @webserver = InitrWebserver1.find params[:id]
+    @webserver = Initr::Webserver1.find params[:id]
     @node = @webserver.node
     @project = @node.project
   end
 
   def find_domain
-    @domain = InitrWebserver1Domain.find params[:id]
+    @domain = Initr::Webserver1Domain.find params[:id]
     @webserver = @domain.webserver
     @node = @webserver.node
     @project = @node.project

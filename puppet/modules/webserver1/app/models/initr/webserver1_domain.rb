@@ -1,10 +1,10 @@
-class InitrWebserver1Domain < ActiveRecord::Base
+class Initr::Webserver1Domain < ActiveRecord::Base
   unloadable
 
   require "digest/md5"
 
-  belongs_to :initr_webserver1
-  validates_uniqueness_of :name, :scope => :initr_webserver1_id
+  belongs_to :webserver1, :class_name => "Initr::Webserver1"
+  validates_uniqueness_of :name, :scope => :webserver1_id
   validates_uniqueness_of :username, :dbname
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
   validates_presence_of :name, :username, :password_ftp, :password_db, :password_awstats
@@ -41,7 +41,7 @@ class InitrWebserver1Domain < ActiveRecord::Base
   end
 
   def webserver
-    initr_webserver1
+    webserver1
   end
 
   def dbname=(db)
