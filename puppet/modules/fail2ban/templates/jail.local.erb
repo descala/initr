@@ -1,0 +1,37 @@
+[DEFAULT]
+ignoreip = 127.0.0.1
+bantime  = 600
+findtime  = 600
+maxretry = 3
+backend = auto
+
+[pop3-iptables]
+enabled  = <%= fail2ban_jails.include? "pop3" %>
+filter   = mail
+action   = iptables[name=pop3, port=pop3, protocol=tcp]
+<% unless mailto.blank? -%>
+           sendmail-whois[name=POP3, <%= mailto %>, sender=fail2ban@<%= fqdn %>]
+<% end -%>
+logpath  = /var/log/maillog
+maxretry = 5
+
+[ssh-iptables]
+enabled  = <%= fail2ban_jails.include? "ssh" %>
+filter   = sshd
+action   = iptables[name=SSH, port=ssh, protocol=tcp]
+<% unless mailto.blank? -%>
+           sendmail-whois[name=SSH, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
+<% end -%>
+logpath  = /var/log/secure
+maxretry = 5
+
+[vsftpd-iptables]
+enabled  = <%= fail2ban_jails.include? "vsftpd" %>
+filter   = vsftpd
+action   = iptables[name=VSFTPD, port=ftp, protocol=tcp]
+<% unless mailto.blank? -%>
+           sendmail-whois[name=VSFTPD, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
+<% end -%>
+logpath  = /var/log/vsftpd.log
+maxretry = 5
+bantime  = 1800
