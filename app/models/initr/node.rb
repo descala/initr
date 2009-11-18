@@ -24,13 +24,22 @@ class Initr::Node < ActiveRecord::Base
 
   def parameters
     # node parameters
-    parameters = { }
+    parameters = {}
     # node classes
     classes = [ "base" ]
     klasses.sort.each do |klass|
       begin
-        klassparameters = klass.parameters
-        parameters = parameters.merge(klassparameters)
+        klass.parameters.each do |k,v|
+          if parameters.keys.include? k
+            if parameters[k].class == Array
+              parameters[k] << v
+            else
+              parameters[k] = [parameters[k], v]
+            end
+          else
+            parameters[k] = v
+          end
+        end
         classes << klass.name
         classes += klass.more_classes if klass.more_classes
       rescue Initr::Klass::ConfigurationError => e
