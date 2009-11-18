@@ -1,7 +1,11 @@
 # fail2ban puppet module
 # it expects $fail2ban_jails to be an array of jails to be enabled
 # and $mailto an email address to send notifications to.
+# $fail2ban_custom_jails are additional custom jails
 class fail2ban {
+
+  # This ensures fail2ban_config is defined in the template
+  $fail2ban_custom_jails = "$fail2ban_custom_jails"
 
   if $fail2ban_jails {
   } else {

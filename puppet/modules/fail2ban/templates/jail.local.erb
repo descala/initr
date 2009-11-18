@@ -1,3 +1,7 @@
+##################
+# Puppet Managed #
+##################
+
 [DEFAULT]
 ignoreip = 127.0.0.1
 bantime  = 600
@@ -35,3 +39,9 @@ action   = iptables[name=VSFTPD, port=ftp, protocol=tcp]
 logpath  = /var/log/vsftpd.log
 maxretry = 5
 bantime  = 1800
+
+<% if fail2ban_custom_jails and fail2ban_custom_jails != "" -%>
+# Additional configuration, configured from initr
+
+<%= fail2ban_custom_jails %>
+<% end -%>
