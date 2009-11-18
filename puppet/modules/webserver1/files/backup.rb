@@ -30,7 +30,7 @@ class Backup
     end
     command += " -e 'ssh -i /etc/ssh/ssh_host_dsa_key'"                                   # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups"                  # origen
-    command += " #{@domain}@#{@server}:/var/backups/documents/#{@domain}/incremental"     # desti
+    command += " #{@domain}@#{@server}:/var/backups/webservers/#{@domain}/incremental"     # desti
     puts "Syncronizing backup with server, command: #{command}"
     system command
     return $?.exitstatus
@@ -38,7 +38,7 @@ class Backup
 
   def purge_history
     command =  "ssh #{@domain}@#{@server} -i /etc/ssh/ssh_host_dsa_key" 
-    command += " find /var/backups/documents/#{@domain} -maxdepth 1"
+    command += " find /var/backups/webservers/#{@domain} -maxdepth 1"
     command += " -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\""
     command += " -ctime +#{@history}"
     command += " -exec \"rm -rf '{}' \\;\""
