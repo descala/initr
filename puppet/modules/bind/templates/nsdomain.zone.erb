@@ -1,0 +1,24 @@
+;##################
+;# Puppet Managed #
+;##################
+;
+$TTL 300
+@   IN  SOA ns1.initer.com.    root.initer.com. (
+            <%= serial %>   ; serial, todays date + todays serial #
+            300     ; refresh, seconds
+            7200        ; retry, seconds
+            300     ; expire, seconds
+            300 )       ; minimum, seconds
+;nameserver
+     IN  NS  ns1.initer.com.
+     IN  NS  ns2.initer.com.
+     IN  MX  10 mailmx
+
+       IN  A   <%= wwwip %>
+www    IN  A   <%= wwwip %>
+ftp    IN  A   <%= wwwip %>
+mail   IN  A   <%= mxip %>
+mailmx IN  A   <%= mxip %>
+smtp   IN  A   <%= mxip %>
+ns1    IN  A   <%= nsip %>
+ns2    IN  A   <%= nsip %>
