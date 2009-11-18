@@ -20,6 +20,7 @@ class Webserver1Controller < ApplicationController
   end
 
   def add_domain
+    @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user
     @domain=Initr::Webserver1Domain.new(params[:webserver1_domain])
     @domain.webserver1 = @webserver
     if request.post?
@@ -33,6 +34,7 @@ class Webserver1Controller < ApplicationController
   end
 
   def edit_domain
+    @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user
     if request.post?
       if @domain.update_attributes(params["webserver1_domain"])
         redirect_to :action => 'configure', :id => @webserver

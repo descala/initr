@@ -14,3 +14,5 @@ ca:
   field_backup_server: Còpies de seguretat
   field_accessible_phpmyadmin: "Accessible des d'internet"
   field_blowfish_secret: cookie auth secret
+  field_web_backups_server: Servidor de backups
+

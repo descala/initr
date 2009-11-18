@@ -14,6 +14,8 @@
       <p><%= form.text_field :mx_ip %></p>
       <p><%= form.text_field :mail_ip %></p>
       <p><%= form.text_field :serial, :disabled => true %></p>
+      <h4>Backups</h4>
+      <p><%= form.select(:web_backups_server, @web_backups_servers, :include_blank=>true) %></p>
     </td>
     <% unless @domain.new_record? -%>
     <td width="40px"></td>

@@ -14,3 +14,4 @@ en:
   field_backup_server: Backups server
   field_accessible_phpmyadmin: Internet accessible
   field_blowfish_secret: cookie auth secret
+  field_web_backups_server: Backups server

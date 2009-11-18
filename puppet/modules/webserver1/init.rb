@@ -14,7 +14,8 @@ Initr::Plugin.register :webserver1 do
         :require => :member
     end
   end
-  klasses 'webserver1' => 'LAMP web server. You can manage virtual hosts, ftp users and databases'
+  klasses 'webserver1' => 'LAMP web server. You can manage virtual hosts, ftp users and databases',
+          'web_backups_server' => 'Acts as a backup server for webserver1'
 end
 
 ::I18n.load_path += Dir.glob(File.join("#{File.dirname(__FILE__)}", 'config', 'locales', '*.yml'))

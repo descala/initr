@@ -7,6 +7,13 @@ class Initr::Webserver1 < Initr::Klass
   validates_confirmation_of :password, :allow_nil => true
   attr_accessor :password, :password_confirmation
 
+  def initialize(attributes=nil)
+    super
+    admin_password ||= ""
+    accessible_phpmyadmin ||= "0"
+    blowfish_secret ||= ""
+  end
+
   def before_validation
     self.admin_password = password unless password.blank? or password != password_confirmation
   end
@@ -73,6 +80,13 @@ class Initr::Webserver1 < Initr::Klass
   end
   def blowfish_secret=(v)
     config["blowfish_secret"]=v
+  end
+
+  def self.backup_servers_for_current_user
+    user_projects = User.current.projects
+    Initr::WebBackupsServer.all.collect { |bs|
+      bs.node.fqdn if user_projects.include? bs.node.project
+    }.compact
   end
 
 end
