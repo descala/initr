@@ -164,8 +164,8 @@ define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30
     type => "dsa",
     tag => "${web_backups_server}_backup",
     user => $name,
-    target => "/var/arxiver/webservers/$name/.ssh/authorized_keys",
-    require => [ File["/var/arxiver/webservers/$name"], User[$name] ],
+    target => "/var/backups/webservers/$name/.ssh/authorized_keys",
+    require => [ File["/var/backups/webservers/$name"], User[$name] ],
   }
 
   cron { "Backup $name":
@@ -180,17 +180,17 @@ define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30
   @@user { $name:
     ensure => present,
     comment => "puppet managed, backups for $name",
-    home => "/var/arxiver/webservers/$name",
-    shell => "/bin/bash", #TODO: nomes scp (http://redmine.ingent.net/issues/show/67)
+    home => "/var/backups/webservers/$name",
+    shell => "/bin/bash", #TODO: allow only scp (http://redmine.ingent.net/issues/show/67)
     tag => "backups",
   }
 
-  @@file { "/var/arxiver/webservers/$name":
+  @@file { "/var/backups/webservers/$name":
     ensure => directory,
     owner => $name,
     group => $name,
     mode => 755,
-    require => [ User[$name], File["/var/arxiver/webservers"] ],
+    require => [ User[$name], File["/var/backups/webservers"] ],
     tag => "backups",
   }
 
@@ -202,8 +202,9 @@ class webserver1::web_backups_server {
   User <<| tag == "backups" |>>
   File <<| tag == "backups" |>>
 
-  file { "/var/arxiver/webservers":
-    ensure => directory,
+  file {
+    ["/var/backups","/var/backups/webservers"]:
+      ensure => directory;
   }
 
   @@sshkey { $fqdn:
