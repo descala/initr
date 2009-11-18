@@ -55,13 +55,15 @@ class webserver1 {
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $backup_server, $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server, $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
     pass => $password_awstats,
   }
-  webserver1::domain::remotebackup { $name: }
+  webserver1::domain::remotebackup { $name:
+    web_backups_server => $web_backups_server,
+  }
 
   case $database {
     false: {}
@@ -152,19 +154,22 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
 }
 
-define webserver1::domain::remotebackup($hour="3", $min="30", $server="arxiver006.arxiver.com", $history=7, $excludes="") {
+define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30", $history=7, $excludes="") {
+
+  Sshkey <<| tag == "${web_backups_server}_backup" |>>
+
   @@ssh_authorized_key { "backups for $name":
     ensure => present,
     key => $sshdsakey,
     type => "dsa",
-    tag => "backups",
+    tag => "${web_backups_server}_backup",
     user => $name,
     target => "/var/arxiver/webservers/$name/.ssh/authorized_keys",
     require => [ File["/var/arxiver/webservers/$name"], User[$name] ],
   }
 
   cron { "Backup $name":
-    command => "/usr/local/sbin/backup.rb $name $server $history $excludes 2>&1 >> /var/log/messages",
+    command => "/usr/local/sbin/backup.rb $name $web_backups_server $history $excludes 2>&1 >> /var/log/messages",
     user => root,
     hour => $hour,
     minute => $min,
@@ -191,9 +196,9 @@ define webserver1::domain::remotebackup($hour="3", $min="30", $server="arxiver00
 
 }
 
-class webserver1::backups_server {
+class webserver1::web_backups_server {
 
-  Ssh_authorized_key <<| tag == "backups" |>>
+  Ssh_authorized_key <<| tag == "${fqdn}_backup" |>>
   User <<| tag == "backups" |>>
   File <<| tag == "backups" |>>
 
@@ -205,7 +210,7 @@ class webserver1::backups_server {
     ensure => present,
     key => $sshrsakey,
     type => "rsa",
-    tag => "backups",
+    tag => "${fqdn}_backup",
   }
 }
 
