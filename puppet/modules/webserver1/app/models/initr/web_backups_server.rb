@@ -15,7 +15,7 @@ module Initr
     end
 
     def parameters
-      { "webserver1_server_name"=>node.fqdn }
+      { "webserver1_server_name"=>node.fqdn, "tags_for_sshkey"=>"#{self.node.fqdn}_backup" }
     end
 
   end

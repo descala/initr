@@ -198,6 +198,8 @@ define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30
 
 class webserver1::web_backups_server {
 
+  include sshkeys
+
   Ssh_authorized_key <<| tag == "${fqdn}_backup" |>>
   User <<| tag == "backups" |>>
   File <<| tag == "backups" |>>
@@ -205,13 +207,6 @@ class webserver1::web_backups_server {
   file {
     ["/var/backups","/var/backups/webservers"]:
       ensure => directory;
-  }
-
-  @@sshkey { $fqdn:
-    ensure => present,
-    key => $sshrsakey,
-    type => "rsa",
-    tag => "${fqdn}_backup",
   }
 }
 
