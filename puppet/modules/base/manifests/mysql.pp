@@ -29,7 +29,8 @@ define mysql::database($ensure, $owner, $passwd) {
         "Create MySQL DB: $name":
           command => "mysql -e \"$dbcr\"",
           user => "root",
-          unless => "/usr/bin/mysql $name -e \";\"";
+          unless => "/usr/bin/mysql $name -e \";\"",
+          require => Service["mysqld"];
         "MySQL Privileges for $owner to DB $name":
           command => "mysql -e \"$priv\"",
           user => "root",
