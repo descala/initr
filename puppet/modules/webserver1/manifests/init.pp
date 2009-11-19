@@ -156,10 +156,15 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
 define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30", $history=7, $excludes="") {
 
+  $ensure = $web_backups_server ? {
+    "" => "absent",
+    default => "present"
+  }
+
   Sshkey <<| tag == "${web_backups_server}_backup" |>>
 
   @@ssh_authorized_key { "backups for $name":
-    ensure => present,
+    ensure => $ensure,
     key => $sshdsakey,
     type => "dsa",
     tag => "${web_backups_server}_backup",
@@ -169,6 +174,7 @@ define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30
   }
 
   cron { "Backup $name":
+    ensure => $ensure,
     command => "/usr/local/sbin/backup.rb $name $web_backups_server $history $excludes 2>&1 >> /var/log/messages",
     user => root,
     hour => $hour,
@@ -176,22 +182,25 @@ define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30
     require => Package["rsync"],
   }
 
-  # usuari per les copies de seguretat
+  # user to do backups
   @@user { $name:
-    ensure => present,
+    ensure => $ensure,
     comment => "puppet managed, backups for $name",
     home => "/var/backups/webservers/$name",
     shell => "/bin/bash", #TODO: allow only scp (http://redmine.ingent.net/issues/show/67)
     tag => "backups",
   }
 
-  @@file { "/var/backups/webservers/$name":
-    ensure => directory,
-    owner => $name,
-    group => $name,
-    mode => 755,
-    require => [ User[$name], File["/var/backups/webservers"] ],
-    tag => "backups",
+  # don't remove backups automatically
+  if $ensure == "present" {
+    @@file { "/var/backups/webservers/$name":
+      ensure => directory,
+      owner => $name,
+      group => $name,
+      mode => 755,
+      require => [ User[$name], File["/var/backups/webservers"] ],
+      tag => "backups",
+    }
   }
 
 }
