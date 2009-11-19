@@ -12,6 +12,11 @@
   <p><%= check_box_tag("fail2ban[fail2ban_jails][ssh]", 1, @fail2ban.fail2ban_jails.include?("ssh")) %> ssh</p>
   <p><%= check_box_tag("fail2ban[fail2ban_jails][vsftpd]", 1, @fail2ban.fail2ban_jails.include?("vsftpd")) %> vsftpd</p>
 
+  <p>
+    <%= f.label("fail2ban_custom_jails", "Custom jails:") %><br/>
+    <%= f.text_area("fail2ban_custom_jails", :cols => 60, :rows => 15) %>
+  </p>
+
   <p><%= submit_tag("Save")%></p>
 
 <% end -%>

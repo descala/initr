@@ -7,6 +7,7 @@ class Initr::Fail2ban < Initr::Klass
     super
     self.mailto ||= ""
     self.fail2ban_jails ||= {}
+    self.fail2ban_custom_jails ||=""
   end
 
   # puppet class is named fail2ban
@@ -28,22 +29,30 @@ class Initr::Fail2ban < Initr::Klass
 
   # getter for serialized attribute
   def fail2ban_jails
-    self.config["fail2ban_jails"]
+    config["fail2ban_jails"]
   end
 
   # setter for serialized attribute
   def fail2ban_jails=(jails)
-    self.config["fail2ban_jails"]=jails.keys
+    config["fail2ban_jails"]=jails.keys
   end
 
   # getter for serialized attribute
   def mailto
-    self.config["mailto"]
+    config["mailto"]
   end
 
   # setter for serialized attribute
   def mailto=(mail)
-    self.config["mailto"]=mail
+    config["mailto"]=mail
+  end
+
+  def fail2ban_custom_jails
+    config["fail2ban_custom_jails"]
+  end
+
+  def fail2ban_custom_jails=(v)
+    config["fail2ban_custom_jails"]=v
   end
 
 end
