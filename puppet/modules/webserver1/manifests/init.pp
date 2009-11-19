@@ -55,7 +55,7 @@ class webserver1 {
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server, $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server, $web_backups_server_port="22", $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
@@ -63,6 +63,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   }
   webserver1::domain::remotebackup { $name:
     web_backups_server => $web_backups_server,
+    port => $web_backups_server_port,
   }
 
   case $database {
@@ -154,7 +155,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
 }
 
-define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30", $history=7, $excludes="") {
+define webserver1::domain::remotebackup($web_backups_server, $port="22", $hour="3", $min="30", $history=7, $excludes="") {
 
   $ensure = $web_backups_server ? {
     "" => "absent",
@@ -175,7 +176,7 @@ define webserver1::domain::remotebackup($web_backups_server, $hour="3", $min="30
 
   cron { "Backup $name":
     ensure => $ensure,
-    command => "/usr/local/sbin/backup.rb $name $web_backups_server $history $excludes 2>&1 >> /var/log/messages",
+    command => "/usr/local/sbin/backup.rb $name $web_backups_server $port $history $excludes 2>&1 >> /var/log/messages",
     user => root,
     hour => $hour,
     minute => $min,

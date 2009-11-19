@@ -3,7 +3,7 @@ class Webserver1Controller < ApplicationController
 
   layout 'nested'
   menu_item :initr
-  
+
   before_filter :find_webserver, :except => [:edit_domain,:rm_domain]
   before_filter :find_domain, :only => [:edit_domain,:rm_domain]
   before_filter :authorize
@@ -20,7 +20,7 @@ class Webserver1Controller < ApplicationController
   end
 
   def add_domain
-    @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user
+    @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user.collect {|wbs| [wbs.node.fqdn, wbs.id] }
     @domain=Initr::Webserver1Domain.new(params[:webserver1_domain])
     @domain.webserver1 = @webserver
     if request.post?
@@ -34,7 +34,7 @@ class Webserver1Controller < ApplicationController
   end
 
   def edit_domain
-    @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user
+    @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user.collect {|wbs| [wbs.node.fqdn, wbs.id] }
     if request.post?
       if @domain.update_attributes(params["webserver1_domain"])
         redirect_to :action => 'configure', :id => @webserver
@@ -48,7 +48,7 @@ class Webserver1Controller < ApplicationController
     @domain.destroy if request.post?
     redirect_to :action => 'configure', :id => @webserver
   end
-  
+
   private
 
   def find_webserver
@@ -63,5 +63,5 @@ class Webserver1Controller < ApplicationController
     @node = @webserver.node
     @project = @node.project
   end
-  
+
 end

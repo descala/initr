@@ -4,6 +4,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   require "digest/md5"
 
   belongs_to :webserver1, :class_name => "Initr::Webserver1"
+  belongs_to :web_backups_server, :class_name => "Initr::WebBackupsServer"
   validates_uniqueness_of :name, :scope => :webserver1_id
   validates_uniqueness_of :username, :dbname
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
@@ -26,7 +27,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
                    "password_ftp" => crypted_password,
                    "database" => dbname,
                    "force_www" => force_www.to_s,
-                   "web_backups_server" => web_backups_server }
+                   "web_backups_server" => web_backups_server.nil? ? "" : web_backups_server.address,
+                   "web_backups_server_port" => web_backups_server.nil? ? "" : web_backups_server.port }
     parameters["shell"] = "/bin/bash" if self.shell == "1"
     return parameters
   end

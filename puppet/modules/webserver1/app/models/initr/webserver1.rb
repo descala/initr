@@ -85,7 +85,7 @@ class Initr::Webserver1 < Initr::Klass
   def self.backup_servers_for_current_user
     user_projects = User.current.projects
     Initr::WebBackupsServer.all.collect { |bs|
-      bs.node.fqdn if user_projects.include? bs.node.project
+      bs if user_projects.include? bs.node.project
     }.compact
   end
 

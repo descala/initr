@@ -1,0 +1,16 @@
+<h2><%=@node.fqdn%></h2>
+
+<h3>Web backups server</h3>
+
+<% labelled_tabular_form_for(:web_backups_server, @wbs, :url=>{:action=>'configure'}) do |f| %>
+
+<%= error_messages_for 'wbs' %>
+
+  <p><%= f.text_field :address %></p>
+  <p><%= f.text_field :port %></p>
+
+  <p><%= submit_tag("Save")%></p>
+<% end %>
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+

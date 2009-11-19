@@ -14,12 +14,13 @@ class Backup
   RSYNC="/usr/bin/rsync"
   NICE="/bin/nice"
 
-  def initialize(domain, server, history=7, excludes="")
+  def initialize(domain, server, port=22, history=7, excludes="")
     validate(ARGV)
     @excludes = excludes
     @history = history
     @domain  = domain
     @server  = server
+    @port    = port
     @bakdir="\"../" + `date +%Y-%m-%d/%H-%M-%S`.sub(/\n/,  '') + "\""
   end
 
@@ -28,16 +29,16 @@ class Backup
     unless @excludes.nil? or @excludes.size == 0
       command += " --exclude-from=#{@excludes} --delete-excluded"                         # excludes
     end
-    command += " -e 'ssh -i /etc/ssh/ssh_host_dsa_key'"                                   # ssh options
+    command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"                        # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups"                  # origen
-    command += " #{@domain}@#{@server}:/var/backups/webservers/#{@domain}/incremental"     # desti
+    command += " #{@domain}@#{@server}:/var/backups/webservers/#{@domain}/incremental"    # desti
     puts "Syncronizing backup with server, command: #{command}"
     system command
     return $?.exitstatus
   end
 
   def purge_history
-    command =  "ssh #{@domain}@#{@server} -i /etc/ssh/ssh_host_dsa_key" 
+    command =  "ssh -p #{@port} #{@domain}@#{@server} -i /etc/ssh/ssh_host_dsa_key" 
     command += " find /var/backups/webservers/#{@domain} -maxdepth 1"
     command += " -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\""
     command += " -ctime +#{@history}"
