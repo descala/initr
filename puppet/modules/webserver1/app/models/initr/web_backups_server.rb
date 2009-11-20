@@ -5,8 +5,14 @@ module Initr
     validate :address_is_unique
 
     def address_is_unique
-      if Initr::WebBackupsServer.all.collect {|wbs| wbs.address }.include?(address)
-        errors.add_to_base("address is already been taken")
+      if new_record?
+        if WebBackupsServer.all.collect {|wbs| wbs.address}.include? address
+          errors.add_to_base("#{l "address"} has already been taken")
+        end
+      else
+        if WebBackupsServer.all.collect {|wbs| wbs.address if wbs.id != self.id }.include? address
+          errors.add_to_base("#{l "address"} has already been taken")
+        end
       end
     end
 
