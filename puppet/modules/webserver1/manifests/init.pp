@@ -179,8 +179,8 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $por
     key => $sshdsakey,
     type => "dsa",
     user => $name,
-    target => "/var/backups/webservers/$name/.ssh/authorized_keys",
-    require => [ File["/var/backups/webservers/$name"], User[$name] ],
+    target => "$backups_path/webservers/$name/.ssh/authorized_keys",
+    require => [ File["$backups_path/webservers/$name"], User[$name] ],
     tag => "${web_backups_server}_backup",
   }
 
@@ -198,19 +198,19 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $por
   @@user { $name:
     ensure => $ensure,
     comment => "puppet managed, backups for $name",
-    home => "/var/backups/webservers/$name",
+    home => "$backups_path/webservers/$name",
     shell => "/bin/bash", #TODO: allow only scp (http://redmine.ingent.net/issues/show/67)
     tag => "${web_backups_server}_backup",
   }
 
   # don't remove backups automatically
   if $ensure == "present" {
-    @@file { "/var/backups/webservers/$name":
+    @@file { "$backups_path/webservers/$name":
       ensure => directory,
       owner => $name,
       group => $name,
       mode => 755,
-      require => [ User[$name], File["/var/backups/webservers"] ],
+      require => [ User[$name], File["$backups_path/webservers"] ],
       tag => "${web_backups_server}_backup",
     }
   }
