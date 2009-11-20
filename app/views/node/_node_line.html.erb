@@ -5,11 +5,15 @@
   <%= link_to node.name, :controller => 'klass', :action => 'list', :id => node %>
 </td>
 <td class="subject">
-  <%
-    klasses = node.klasses.collect {|c| c.name}.join(", ") rescue ActiveRecord::SubclassNotFound
-    klasses = "???" if klasses==""
+  <%=
+    node.klasses.collect { |k|
+      if k.configurable?
+        link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
+      else
+        link_to(k.name, :controller=>'klass', :action=>'list', :id=>node.id)
+      end
+    }.join(", ") rescue(link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id))
   -%>
-  <%= link_to klasses, :controller => 'klass', :action => 'list', :id => node %>
 </td>
 <td><%= current_state(node) %></td>
 <td>
