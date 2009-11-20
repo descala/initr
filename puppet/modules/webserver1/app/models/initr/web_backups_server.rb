@@ -2,6 +2,7 @@ module Initr
   class WebBackupsServer < Initr::Klass
     unloadable
 
+    has_many :webserver1_domains, :class_name => "Initr::Webserver1Domain"
     validate :address_is_unique
 
     def address_is_unique
