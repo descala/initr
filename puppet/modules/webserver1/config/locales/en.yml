@@ -16,3 +16,4 @@ en:
   field_blowfish_secret: cookie auth secret
   field_web_backups_server: Backups server
   field_address: Address
+  field_backups_path: Backups path

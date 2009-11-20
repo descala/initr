@@ -14,10 +14,9 @@ class Backup
   RSYNC="/usr/bin/rsync"
   NICE="/bin/nice"
 
-  def initialize(domain, server, port=22, history=7, excludes="")
+  def initialize(domain, server, port=22, excludes="")
     validate(ARGV)
     @excludes = excludes
-    @history = history
     @domain  = domain
     @server  = server
     @port    = port
@@ -37,23 +36,12 @@ class Backup
     return $?.exitstatus
   end
 
-  def purge_history
-    command =  "ssh -p #{@port} #{@domain}@#{@server} -i /etc/ssh/ssh_host_dsa_key" 
-    command += " find /var/backups/webservers/#{@domain} -maxdepth 1"
-    command += " -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\""
-    command += " -ctime +#{@history}"
-    command += " -exec \"rm -rf '{}' \\;\""
-    puts "Deleting old historic files, command: #{command}"
-    system command
-    return $?.exitstatus
-  end
-
   def self.already_running?
     return false # TODO
   end
 
   def self.usage
-    puts "USAGE: backups.rb <domain.tld> [server] [history days] [excludes]"
+    puts "USAGE: backups.rb <domain.tld> [server] [excludes]"
   end
 
   private
@@ -82,7 +70,6 @@ if __FILE__ == $0
     sleep(rand(600))
     cop = Backup.new(*ARGV)
     retval += cop.do_backup
-    retval += cop.purge_history if retval == 0
   rescue Exception => e
     puts e.to_s
     puts e.backtrace

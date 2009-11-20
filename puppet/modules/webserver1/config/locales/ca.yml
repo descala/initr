@@ -16,4 +16,4 @@ ca:
   field_blowfish_secret: cookie auth secret
   field_web_backups_server: Servidor de backups
   field_address: Adreça
-
+  field_backups_path: Directori dels backups

@@ -28,8 +28,8 @@ module Initr
     end
 
     def parameters
-      { "webserver1_server_name"=>node.fqdn,
-        "tags_for_sshkey"=>"#{address}_backup" }
+      { "tags_for_sshkey"=>"#{address}_backup",
+        "backups_path"=>backups_path }
     end
 
     def address
@@ -46,13 +46,12 @@ module Initr
       config["port"]=p
     end
 
-    #TODO
-#    def backups_path
-#      config["backups_path"]
-#    end
-#    def backups_path=(p)
-#      config["backups_path"]=p
-#    end
+    def backups_path
+      config["backups_path"]
+    end
+    def backups_path=(p)
+      config["backups_path"]=p
+    end
 
   end
 end

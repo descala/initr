@@ -55,7 +55,7 @@ class webserver1 {
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server, $web_backups_server_port="22", $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="/var/backups", $web_backups_server_port="22", $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
@@ -64,6 +64,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   webserver1::domain::remotebackup { $name:
     web_backups_server => $web_backups_server,
     port => $web_backups_server_port,
+    backups_path => $backups_path,
   }
 
   case $database {
@@ -155,7 +156,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
 }
 
-define webserver1::domain::remotebackup($web_backups_server, $port="22", $hour="3", $min="30", $history=7, $excludes="") {
+define webserver1::domain::remotebackup($web_backups_server, $backups_path, $port, $hour="3", $min="30", $history=7, $excludes="") {
 
   $ensure = $web_backups_server ? {
     "" => "absent",
@@ -163,16 +164,6 @@ define webserver1::domain::remotebackup($web_backups_server, $port="22", $hour="
   }
 
   Sshkey <<| tag == "${web_backups_server}_backup" |>>
-
-  @@ssh_authorized_key { "backups for $name":
-    ensure => $ensure,
-    key => $sshdsakey,
-    type => "dsa",
-    tag => "${web_backups_server}_backup",
-    user => $name,
-    target => "/var/backups/webservers/$name/.ssh/authorized_keys",
-    require => [ File["/var/backups/webservers/$name"], User[$name] ],
-  }
 
   cron { "Backup $name":
     ensure => $ensure,
@@ -183,13 +174,33 @@ define webserver1::domain::remotebackup($web_backups_server, $port="22", $hour="
     require => Package["rsync"],
   }
 
+  @@ssh_authorized_key { "backups for $name":
+    ensure => $ensure,
+    key => $sshdsakey,
+    type => "dsa",
+    user => $name,
+    target => "/var/backups/webservers/$name/.ssh/authorized_keys",
+    require => [ File["/var/backups/webservers/$name"], User[$name] ],
+    tag => "${web_backups_server}_backup",
+  }
+
+  $prevhour = $hour - 1
+  @@cron { "Purge $name":
+    ensure => $ensure,
+    command => "find $backups_path/webservers/$name -maxdepth 1 -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\" -ctime +$history -delete",
+    user => root,
+    hour => $prevhour,
+    minute => $min,
+    tag => "${web_backups_server}_backup",
+  }
+
   # user to do backups
   @@user { $name:
     ensure => $ensure,
     comment => "puppet managed, backups for $name",
     home => "/var/backups/webservers/$name",
     shell => "/bin/bash", #TODO: allow only scp (http://redmine.ingent.net/issues/show/67)
-    tag => "backups",
+    tag => "${web_backups_server}_backup",
   }
 
   # don't remove backups automatically
@@ -200,7 +211,7 @@ define webserver1::domain::remotebackup($web_backups_server, $port="22", $hour="
       group => $name,
       mode => 755,
       require => [ User[$name], File["/var/backups/webservers"] ],
-      tag => "backups",
+      tag => "${web_backups_server}_backup",
     }
   }
 
@@ -210,12 +221,13 @@ class webserver1::web_backups_server {
 
   include sshkeys
 
-  Ssh_authorized_key <<| tag == "${fqdn}_backup" |>>
-  User <<| tag == "backups" |>>
-  File <<| tag == "backups" |>>
+  Ssh_authorized_key <<| tag == "$tags_for_sshkey" |>>
+  Cron <<| tag == "$tags_for_sshkey" |>>
+  User <<| tag == "$tags_for_sshkey" |>>
+  File <<| tag == "$tags_for_sshkey" |>>
 
   file {
-    ["/var/backups","/var/backups/webservers"]:
+    [$backups_path,"$backups_path/webservers"]:
       ensure => directory;
   }
 }

@@ -20,15 +20,18 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   end
 
   def parameters
-    parameters = { "name"   => name,
+    parameters = { "name" => name,
                    "username" => username,
                    "password_db" => password_db,
                    "password_awstats" => password_awstats,
                    "password_ftp" => crypted_password,
                    "database" => dbname,
-                   "force_www" => force_www.to_s,
-                   "web_backups_server" => web_backups_server.nil? ? "" : web_backups_server.address,
-                   "web_backups_server_port" => web_backups_server.nil? ? "" : web_backups_server.port }
+                   "force_www" => force_www.to_s }
+    if web_backups_server
+      parameters["web_backups_server"] = web_backups_server.address
+      parameters["web_backups_server_port"] = web_backups_server.port
+      parameters["backups_path"] = web_backups_server.backups_path
+    end
     parameters["shell"] = "/bin/bash" if self.shell == "1"
     return parameters
   end
