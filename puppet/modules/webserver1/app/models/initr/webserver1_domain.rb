@@ -6,7 +6,9 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   belongs_to :webserver1, :class_name => "Initr::Webserver1"
   belongs_to :web_backups_server, :class_name => "Initr::WebBackupsServer"
   validates_uniqueness_of :name, :scope => :webserver1_id
-  validates_uniqueness_of :username, :dbname
+  validates_uniqueness_of :name, :scope => :web_backups_server
+  validates_uniqueness_of :dbname, :scope => :webserver1_id
+  validates_uniqueness_of :username, :scope => :webserver1_id
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
   validates_presence_of :name, :username, :password_ftp, :password_db, :password_awstats
   validate :all_dns_fields
