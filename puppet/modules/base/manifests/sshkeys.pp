@@ -1,9 +1,9 @@
 class sshkeys {
 
-  if $alias_for_sshkey {
-    $alias = $alias_for_sshkey
-  } else {
-    $alias = ""
+  $array=[]
+  $alias = $alias_for_sshkey ? {
+    $array => "",
+    default => $alias_for_sshkey,
   }
 
   # export ssh host key
