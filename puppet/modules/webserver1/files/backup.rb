@@ -14,12 +14,14 @@ class Backup
   RSYNC="/usr/bin/rsync"
   NICE="/bin/nice"
 
-  def initialize(domain, server, port=22, excludes="")
+  # $name $web_backups_server $port $history $excludes
+  def initialize(domain, server, port=22, bdays=7, excludes="")
     validate(ARGV)
     @excludes = excludes
     @domain  = domain
     @server  = server
     @port    = port
+    @bdays   = bdays #TODO
     @bakdir="\"../" + `date +%Y-%m-%d/%H-%M-%S`.sub(/\n/,  '') + "\""
   end
 
