@@ -30,6 +30,7 @@ module Initr
 
     def parameters
       { "tags_for_sshkey"=>"#{address}_backup",
+        "alias_for_sshkey"=>address,
         "backups_path"=>backups_path }
     end
 
