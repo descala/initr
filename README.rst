@@ -8,6 +8,8 @@ From provision to operations, puts and keeps the nodes on track.
 
 It uses `Puppet`_ as enabling technology.
 
+See `project homepage`_ for screenshots and documentation
+
 Quickstart
 ----------
 
@@ -60,3 +62,4 @@ Considerations
 .. _external nodes: http://reductivelabs.com/trac/puppet/wiki/ExternalNodes
 .. _Redmine: http://www.redmine.org
 .. _Puppet: http://puppet.reductivelabs.com
+.. _project homepage: http://www.initr.org
