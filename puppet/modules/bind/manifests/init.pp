@@ -18,7 +18,7 @@ class bind {
     alias => bind,
   }
 
-  package { "bind":
+  package { $bind:
     ensure => installed,
   }
 

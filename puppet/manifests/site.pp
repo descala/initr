@@ -104,6 +104,10 @@ $httpd_logdir = $operatingsystem ? {
   Debian => "/var/log/apache2",
   default => "/var/log/httpd"
 }
+$bind = $operatingsystem ? {
+  Debian => bind9,
+  default => bind
+}
 $dnsutils = $operatingsystem ? {
   Debian => dnsutils,
   Gentoo => bind-tools,
