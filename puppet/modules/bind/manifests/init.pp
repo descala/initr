@@ -14,7 +14,7 @@ class bind {
     ensure => running,
     enable => true,
     hasrestart => true,
-    require => Package["bind"],
+    require => Package[$bind],
     alias => bind,
   }
 
@@ -42,14 +42,14 @@ class bind {
       group => named,
       source => [ "puppet:///dist/specific/$fqdn/bind-zones.conf", "puppet:///bind/zones.conf" ],
       notify => Service["bind"],
-      require => Package["bind"];
+      require => Package[$bind];
     "$etc_dir/named.conf":
       mode => 644,
       owner => root,
       group => root,
       source => [ "puppet:///dist/specific/$fqdn/bind-named.conf", "puppet:///bind/named.conf" ],
       notify => Service["bind"],
-      require => Package["bind"];
+      require => Package[$bind];
     "$var_dir/puppet_zones.conf":
       replace => no,
       mode => 644,
@@ -57,7 +57,7 @@ class bind {
       group => named,
       content => "",
       notify => Service["bind"],
-      require => Package["bind"];
+      require => Package[$bind];
   }
 
   define bind_etc_file() {
@@ -65,7 +65,7 @@ class bind {
       mode => 644, owner => root, group => root,
       source => [ "puppet:///bind/$name" ],
       notify => Service["bind"],
-      require => Package["bind"],
+      require => Package[$bind],
     }
   }
 
@@ -74,7 +74,7 @@ class bind {
       mode => 644, owner => named, group => named,
       source => [ "puppet:///bind/$name" ],
       notify => Service["bind"],
-      require => Package["bind"],
+      require => Package[$bind],
     }
   }
 
@@ -98,7 +98,7 @@ class bind {
       mode => 640,
       source => "puppet:///dist/specific/$fqdn/$name.zone",
       notify => Exec["generate_bind_zones.conf"],
-      require => [Package["bind"],File["$bind::var_dir/master"]],
+      require => [Package[$bind],File["$bind::var_dir/master"]],
     }
   }
   
@@ -113,7 +113,7 @@ class bind {
       mode => 640,
       content => template("bind/masterdomain.zone.erb"),
       notify => Exec["generate_bind_zones.conf"],
-      require => [Package["bind"],File["$bind::var_dir/master"]],
+      require => [Package[$bind],File["$bind::var_dir/master"]],
     }
   }
 
@@ -124,7 +124,7 @@ class bind {
       mode => 640,
       content => template("bind/nsdomain.zone.erb"),
       notify => Exec["generate_bind_zones.conf"],
-      require => [Package["bind"],File["$bind::var_dir/master"]],
+      require => [Package[$bind],File["$bind::var_dir/master"]],
     }
   }
 
