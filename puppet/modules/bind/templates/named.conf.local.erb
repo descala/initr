@@ -1,9 +1,0 @@
-##################
-# Puppet managed #
-##################
-
-# master zones
-<% bind_masterzones.each_key do |mz| -%>
-zone "<%= mz %>" { type master; file "/etc/bind/puppet_zones/<%= mz %>.zone"; };
-<% end -%>
-

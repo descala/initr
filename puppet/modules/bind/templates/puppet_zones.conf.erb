@@ -1,9 +1,10 @@
 ##################
 # Puppet managed #
 ##################
+# from template puppet_zones.conf.erb
+# this zones are managed by init's bind module
+# you can configure them using initr
 
-# master zones
 <% bind_masterzones.each_key do |mz| -%>
 zone "<%= mz %>" { type master; file "<%=var_dir%>/puppet_zones/<%= mz %>.zone"; };
 <% end -%>
-

@@ -1,16 +1,24 @@
 class bind {
+  $osavn = "$lsbdistid$lsbdistrelease_class"
   case $operatingsystem {
     Debian: {
-      include bind_debian
+      $etc_dir = "/etc/bind"
+      $var_dir = $etc_dir
+      include bind::debian
     }
     default: {
-      include bind_redhat
+      $bind_base_dir = $osavn ? {
+        "MandrivaLinux2006_0" => "/var/lib/named",
+        default => ""
+      }
+      $etc_dir = "$bind_base_dir/etc"
+      $var_dir = "$bind_base_dir/var/named"
+      include bind::redhat
     }
   }
-}
 
-class bind_debian {
-
+  # common definitions
+  
   package {
     $bind:
       ensure => installed;
@@ -27,28 +35,52 @@ class bind_debian {
   }
 
   file {
-    "/etc/bind":
+    "$var_dir/puppet_zones":
+      owner => $binduser,
+      group => $binduser,
+      require => [File["$var_dir"],Package[$bind]],
+      purge => true,
+      force => true,
+      recurse => true,
+      ignore => ".gitignore",
+      source => "puppet:///bind/empty",
+      mode => 770;
+    "$var_dir/puppet_zones.conf":
+      owner => root,
+      group => $binduser,
+      mode => 644,
+      notify => Service["bind"],
+      require => Package[$bind],
+      content => template("bind/puppet_zones.conf.erb");
+  }
+  
+  masterzone { $bind_masterzones: }
+
+  define masterzone($zone) {
+    file {
+      "$var_dir/puppet_zones/$name.zone":
+        owner => $binduser,
+        group => $binduser,
+        mode => 640,
+        content => template("bind/zone.erb"),
+        require => [Package[$bind],File["$var_dir/puppet_zones"]],
+        notify => Service[$bind];
+    }
+  }
+  
+}
+
+# debian specific
+
+class bind::debian {
+
+  file {
+    "$var_dir":
       owner => $binduser,
       group => $binduser,
       mode => 770,
       require => Package[$bind],
       ensure => directory;
-    "/etc/bind/puppet_zones.conf":
-      owner => root,
-      group => $binduser,
-      mode => 644,
-      notify => Service["bind"],
-      content => template("bind/named.conf.local.erb");
-    "/etc/bind/puppet_zones":
-      owner => $binduser,
-      group => $binduser,
-      mode => 770,
-      require => Package[$bind],
-      source => "puppet:///bind/empty",
-      ignore => ".gitignore",
-      purge => true,
-      recurse => true,
-      force => true;
   }
 
   append_if_no_such_line { puppet_zones_include:
@@ -58,46 +90,12 @@ class bind_debian {
     notify => Service["bind"],
   }
 
-
-  masterzone { $bind_masterzones: }
-
-  define masterzone($zone) {
-    file {
-      "/etc/bind/puppet_zones/$name.zone":
-        owner => $binduser,
-        group => $binduser,
-        mode => 640,
-        content => template("bind/masterzone.erb"),
-        require => [Package[$bind],File["/etc/bind/puppet_zones"]],
-        notify => Service[$bind];
-    }
-  }
-
 }
 
-class bind_redhat {
+# redhat specific
 
-  $osavn = "$lsbdistid$lsbdistrelease_class"
+class bind::redhat {
 
-  $bind_base_dir = $osavn ? {
-    "MandrivaLinux2006_0" => "/var/lib/named",
-    default => ""
-  }
-
-  $etc_dir = "$bind_base_dir/etc"
-  $var_dir = "$bind_base_dir/var/named"
-
-  service { $bindservice:
-    ensure => running,
-    enable => true,
-    hasrestart => true,
-    require => Package[$bind],
-    alias => bind,
-  }
-
-  package { $bind:
-    ensure => installed,
-  }
 
   file {
     "$var_dir":
@@ -105,16 +103,6 @@ class bind_redhat {
       owner => root,
       group => $binduser,
       mode => 750;
-    "$var_dir/puppet_zones":
-      owner => $binduser,
-      group => $binduser,
-      require => File["$var_dir"],
-      purge => true,
-      force => true,
-      recurse => true,
-      ignore => ".gitignore",
-      source => "puppet:///bind/empty",
-      mode => 770;
     "$etc_dir/named.conf":
       mode => 644,
       owner => root,
@@ -122,15 +110,8 @@ class bind_redhat {
       source => [ "puppet:///dist/specific/$fqdn/bind-named.conf", "puppet:///bind/named.conf" ],
       notify => Service["bind"],
       require => Package[$bind];
-    "$var_dir/puppet_zones.conf":
-      mode => 644,
-      owner => $binduser,
-      group => $binduser,
-      content => template("bind/puppet_zones.conf.erb"),
-      notify => Service["bind"],
-      require => Package[$bind];
     "$var_dir/zones.conf":
-      # no matxacar-lo si ja existeix
+      # do not overwrite file, let it be manualy modified
       replace => no,
       mode => 644,
       owner => named,
@@ -170,17 +151,5 @@ class bind_redhat {
   bind_var_file { "named.ip6.local": }
   bind_var_file { "named.local": }
   bind_var_file { "named.zero": }
-
-  masterzone { $bind_masterzones: }
-  
-  define masterzone($zone) {
-    file { "$var_dir/puppet_zones/$name.zone":
-      owner => $binduser,
-      group => $binduser,
-      mode => 640,
-      content => template("bind/masterzone.erb"),
-      require => [Package[$bind],File["$var_dir/puppet_zones"]],
-    }
-  }
 
 }
