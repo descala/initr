@@ -31,6 +31,7 @@ class bind_debian {
       owner => root,
       group => $binduser,
       mode => 644,
+      notify => Service["bind"],
       content => template("bind/named.conf.local.erb");
     "/etc/bind/master":
       owner => $binduser,

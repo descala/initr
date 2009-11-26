@@ -4,4 +4,8 @@ class Initr::BindZone < ActiveRecord::Base
   validates_presence_of :domain, :zone
   validates_uniqueness_of :domain, :scope => 'bind_id'
 
+  def parameters
+    {"zone"=>zone}
+  end
+
 end
