@@ -7,10 +7,6 @@ en:
   field_dbname: Database name
   field_shell: Shell access
   field_force_www: Force www.
-  field_www_ip: IP www
-  field_mx_ip: IP mx
-  field_mail_ip: IP mail
-  field_serial: DNS Serial
   field_backup_server: Backups server
   field_accessible_phpmyadmin: Internet accessible
   field_blowfish_secret: cookie auth secret

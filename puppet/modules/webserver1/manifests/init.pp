@@ -22,7 +22,6 @@ class webserver1 {
   }
 
   webserver1::domain { $webserver_domains: }
-  bind::masterzone  { $bind_masterzones: }
 
   package {
     "ruby-shadow":
@@ -210,7 +209,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $por
       owner => $name,
       group => $name,
       mode => 755,
-      require => [ User[$name], File["$backups_path/webservers"] ],
+      require => [User[$name],File["$backups_path/webservers"]],
       tag => "${web_backups_server}_backup",
     }
   }

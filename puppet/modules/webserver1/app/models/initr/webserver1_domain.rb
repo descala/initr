@@ -11,15 +11,6 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_uniqueness_of :username, :scope => :webserver1_id
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
   validates_presence_of :name, :username, :password_ftp, :password_db, :password_awstats
-  validate :all_dns_fields
-
-  def all_dns_fields
-    unless mail_ip.blank? and www_ip.blank? and mx_ip.blank?
-      if mail_ip.blank? or www_ip.blank? or mx_ip.blank?
-        errors.add_to_base("Must fill all or none DNS fields")
-      end
-    end
-  end
 
   def parameters
     parameters = { "name" => name,
@@ -32,19 +23,10 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     if web_backups_server
       parameters["web_backups_server"] = web_backups_server.address
       parameters["web_backups_server_port"] = web_backups_server.port
-      parameters["backups_path"] = web_backups_server.backups_path
+      parameters["backups_path"] = web_backups_server.backups_path unless web_backups_server.backups_path.nil? or web_backups_server.backups_path.blank?
     end
     parameters["shell"] = "/bin/bash" if self.shell == "1"
     return parameters
-  end
-
-  def bind_parameters
-    return nil if serial.nil?
-    { "serial" =>  serial,
-      "wwwip"  => www_ip,
-      "mxip"   => mx_ip,
-      "mailip" => mail_ip
-    }
   end
 
   def webserver
@@ -58,19 +40,6 @@ class Initr::Webserver1Domain < ActiveRecord::Base
 
   def save
     if valid?
-      # auto-update serial date (YYYYMMDD) + id 001
-      if mail_ip_changed? or www_ip_changed? or mx_ip_changed? or name_changed?
-        if mail_ip.blank?
-          self.serial=nil
-        else
-          self.serial="#{Time.now.strftime('%Y%m%d')}001".to_i
-          unless serial_was.nil?
-            while serial <= serial_was
-              self.serial += 1
-            end
-          end
-        end
-      end
       if password_ftp_changed? or crypted_password.nil? or crypted_password.blank?
         self.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
       end

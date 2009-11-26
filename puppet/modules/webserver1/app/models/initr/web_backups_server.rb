@@ -21,7 +21,7 @@ module Initr
       super
       port ||= "22"
       address ||= ""
-      #backups_path ||= "/var/backups"
+      backups_path ||= "/var/backups"
     end
 
     def name

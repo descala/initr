@@ -24,13 +24,10 @@ class Initr::Webserver1 < Initr::Klass
 
   def parameters
     domain_list = {}
-    bind_masterzones = {}
     webserver1_domains.each do |domain|
       domain_list[domain.name] = domain.parameters
-      bind_masterzones[domain.name] = domain.bind_parameters unless domain.bind_parameters.nil?
     end
     { "webserver_domains"=>domain_list,
-      "bind_masterzones"=>bind_masterzones,
       "admin_password"=>config["admin_password"],
       "accessible_phpmyadmin"=>accessible_phpmyadmin,
       "blowfish_secret"=>blowfish_secret }
