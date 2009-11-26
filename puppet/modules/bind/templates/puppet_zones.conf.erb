@@ -4,6 +4,6 @@
 
 # master zones
 <% bind_masterzones.each_key do |mz| -%>
-zone "<%= mz %>" { type master; file "<%=var_dir%>/master/<%= mz %>.zone"; };
+zone "<%= mz %>" { type master; file "<%=var_dir%>/puppet_zones/<%= mz %>.zone"; };
 <% end -%>
 

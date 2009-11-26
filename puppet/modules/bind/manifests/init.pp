@@ -27,13 +27,19 @@ class bind_debian {
   }
 
   file {
-    "/etc/bind/named.conf.local":
+    "/etc/bind":
+      owner => $binduser,
+      group => $binduser,
+      mode => 770,
+      require => Package[$bind],
+      ensure => directory;
+    "/etc/bind/puppet_zones.conf":
       owner => root,
       group => $binduser,
       mode => 644,
       notify => Service["bind"],
       content => template("bind/named.conf.local.erb");
-    "/etc/bind/master":
+    "/etc/bind/puppet_zones":
       owner => $binduser,
       group => $binduser,
       mode => 770,
@@ -45,16 +51,24 @@ class bind_debian {
       force => true;
   }
 
+  append_if_no_such_line { puppet_zones_include:
+    file => "/etc/bind/named.conf.local",
+    line => "include \"/etc/bind/puppet_zones.conf\"; // line added by puppet",
+    require => Package[$bind],
+    notify => Service["bind"],
+  }
+
+
   masterzone { $bind_masterzones: }
 
   define masterzone($zone) {
     file {
-      "/etc/bind/master/$name.zone":
+      "/etc/bind/puppet_zones/$name.zone":
         owner => $binduser,
         group => $binduser,
         mode => 640,
         content => template("bind/masterzone.erb"),
-        require => [Package[$bind],File["/etc/bind/master"]],
+        require => [Package[$bind],File["/etc/bind/puppet_zones"]],
         notify => Service[$bind];
     }
   }
@@ -91,7 +105,7 @@ class bind_redhat {
       owner => root,
       group => $binduser,
       mode => 750;
-    "$var_dir/master":
+    "$var_dir/puppet_zones":
       owner => $binduser,
       group => $binduser,
       require => File["$var_dir"],
@@ -113,6 +127,15 @@ class bind_redhat {
       owner => $binduser,
       group => $binduser,
       content => template("bind/puppet_zones.conf.erb"),
+      notify => Service["bind"],
+      require => Package[$bind];
+    "$var_dir/zones.conf":
+      # no matxacar-lo si ja existeix
+      replace => no,
+      mode => 644,
+      owner => named,
+      group => named,
+      source => [ "puppet:///dist/specific/$fqdn/bind-zones.conf", "puppet:///bind/zones.conf" ],
       notify => Service["bind"],
       require => Package[$bind];
   }
@@ -151,12 +174,12 @@ class bind_redhat {
   masterzone { $bind_masterzones: }
   
   define masterzone($zone) {
-    file { "$var_dir/master/$name.zone":
+    file { "$var_dir/puppet_zones/$name.zone":
       owner => $binduser,
       group => $binduser,
       mode => 640,
-      content => template("bind/masterdomain.zone.erb"),
-      require => [Package[$bind],File["$var_dir/master"]],
+      content => template("bind/masterzone.erb"),
+      require => [Package[$bind],File["$var_dir/puppet_zones"]],
     }
   }
 

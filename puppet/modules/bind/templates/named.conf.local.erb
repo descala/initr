@@ -2,12 +2,8 @@
 # Puppet managed #
 ##################
 
-# Consider adding the 1918 zones here, if they are not used in your
-# organization
-#include "/etc/bind/zones.rfc1918";
-
 # master zones
 <% bind_masterzones.each_key do |mz| -%>
-zone "<%= mz %>" { type master; file "/etc/bind/master/<%= mz %>.zone"; };
+zone "<%= mz %>" { type master; file "/etc/bind/puppet_zones/<%= mz %>.zone"; };
 <% end -%>
 
