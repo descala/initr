@@ -7,17 +7,12 @@
     <th>Domain</th>
     <th>Stastics</th>
     <th>Ftp</th>
-    <th>www</th>
-    <th>mx</th>
-    <th>mail</th>
   </tr>
 <% @webserver.domains.sort.each do |domain| -%>
   <tr>
     <td><%= link_to domain.name, :action => 'edit_domain', :id => domain %></td>
     <td><%= link_to "http://#{domain.name}/awstats", "http://#{domain.username}:#{domain.password_awstats}@#{domain.name}/awstats", :target => 'blank' %></td>
-    <td><%= link_to "ftp://#{domain.name}", "ftp://#{domain.username}@#{domain.name}", :target => 'blank' %></td>    <td><%= domain.www_ip %></td>
-    <td><%= domain.mx_ip %></td>
-    <td><%= domain.mail_ip %></td>
+    <td><%= link_to "ftp://#{domain.name}", "ftp://#{domain.username}@#{domain.name}", :target => 'blank' %></td>
     <td><%= link_to image_tag("cross.gif", :plugin => "initr", :border => 0), {:action => 'rm_domain', :id => domain}, :confirm => "Delete #{domain.name}?", :method => :post %></td>
   </tr>
 <% end -%>
