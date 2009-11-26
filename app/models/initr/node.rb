@@ -33,6 +33,8 @@ class Initr::Node < ActiveRecord::Base
           if parameters.keys.include? k
             if parameters[k].class == Array
               parameters[k] << v
+            elsif parameters[k].class == Hash
+              parameters[k].merge(v)
             else
               parameters[k] = [parameters[k], v]
             end
