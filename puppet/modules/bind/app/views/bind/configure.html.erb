@@ -1,0 +1,18 @@
+<h2><%= @node.fqdn %></h2>
+
+<h3>DNS zones</h3>
+
+<table>
+<% @bind.bind_zones.each do |z| -%>
+  <tr>
+    <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
+    <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
+  </tr>
+<% end -%>
+</table>
+
+<%= link_to "Add zone", :controller => 'bind', :action => 'add_zone', :id => @bind %>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

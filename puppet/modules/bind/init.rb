@@ -1,0 +1,21 @@
+# Redmine initr plugin
+require 'redmine'
+
+RAILS_DEFAULT_LOGGER.info 'Starting bind plugin for Initr'
+
+Initr::Plugin.register :bind do
+  redmine do
+    name 'bind'
+    author 'Ingent'
+    description 'DNS server plugin for initr'
+    version '0.0.1'
+    project_module :initr do
+      permission :configure_bind,
+        { :bind => [:configure, :add_zone, :edit_zone, :destroy_zone] },
+        :require => :member
+    end
+  end
+  klasses 'bind' => 'DNS server'
+end
+
+::I18n.load_path += Dir.glob(File.join("#{File.dirname(__FILE__)}", 'config', 'locales', '*.yml'))

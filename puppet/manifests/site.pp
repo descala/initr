@@ -108,6 +108,14 @@ $bind = $operatingsystem ? {
   Debian => bind9,
   default => bind
 }
+$binduser = $operatingsystem ? {
+  Debian => bind,
+  default => named
+}
+$bindservice = $operatingsystem ? {
+  Debian => bind9,
+  default => named
+}
 $dnsutils = $operatingsystem ? {
   Debian => dnsutils,
   Gentoo => bind-tools,

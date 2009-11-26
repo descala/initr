@@ -3,6 +3,7 @@ class sshkeys {
   $array=[]
   $alias = $alias_for_sshkey ? {
     $array => undef,
+    "" => undef,
     default => $alias_for_sshkey,
   }
 

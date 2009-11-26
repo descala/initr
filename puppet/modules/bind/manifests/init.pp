@@ -1,16 +1,78 @@
 class bind {
+  case $operatingsystem {
+    Debian: {
+      include bind_debian
+    }
+    default: {
+      include bind_redhat
+    }
+  }
+}
+
+class bind_debian {
+
+  package {
+    $bind:
+      ensure => installed;
+  }
+
+  service {
+    $bindservice:
+      ensure => running,
+      enable => true,
+      hasrestart => true,
+      hasstatus => true,
+      require => Package[$bind],
+      alias => bind;
+  }
+
+  file {
+    "/etc/bind/named.conf.local":
+      owner => root,
+      group => $binduser,
+      mode => 644,
+      content => template("bind/named.conf.local.erb");
+    "/etc/bind/master":
+      owner => $binduser,
+      group => $binduser,
+      mode => 770,
+      require => Package[$bind],
+      source => "puppet:///bind/empty",
+      ignore => ".gitignore",
+      purge => true,
+      recurse => true,
+      force => true;
+  }
+
+  masterzone { $bind_masterzones: }
+
+  define masterzone($zone) {
+    file {
+      "/etc/bind/master/$name.zone":
+        owner => $binduser,
+        group => $binduser,
+        mode => 640,
+        content => template("bind/masterzone.erb"),
+        require => [Package[$bind],File["/etc/bind/master"]],
+        notify => Service[$bind];
+    }
+  }
+
+}
+
+class bind_redhat {
 
   $osavn = "$lsbdistid$lsbdistrelease_class"
 
-  case $osavn {
-    "MandrivaLinux2006_0": { $bind_base_dir = "/var/lib/named" }
-    default: { $bind_base_dir = "" }
+  $bind_base_dir = $osavn ? {
+    "MandrivaLinux2006_0" => "/var/lib/named",
+    default => ""
   }
 
   $etc_dir = "$bind_base_dir/etc"
   $var_dir = "$bind_base_dir/var/named"
 
-  service { "named":
+  service { $bindservice:
     ensure => running,
     enable => true,
     hasrestart => true,
@@ -26,23 +88,18 @@ class bind {
     "$var_dir":
       ensure => directory,
       owner => root,
-      group => named,
+      group => $binduser,
       mode => 750;
-    ["$var_dir/master", "$var_dir/slave", "$var_dir/data"]:
-      ensure => directory,
-      owner => named,
-      group => named,
+    "$var_dir/master":
+      owner => $binduser,
+      group => $binduser,
       require => File["$var_dir"],
+      purge => true,
+      force => true,
+      recurse => true,
+      ignore => ".gitignore",
+      source => "puppet:///bind/empty",
       mode => 770;
-    "$var_dir/zones.conf":
-      # no matxacar-lo si ja existeix
-      replace => no,
-      mode => 644,
-      owner => named,
-      group => named,
-      source => [ "puppet:///dist/specific/$fqdn/bind-zones.conf", "puppet:///bind/zones.conf" ],
-      notify => Service["bind"],
-      require => Package[$bind];
     "$etc_dir/named.conf":
       mode => 644,
       owner => root,
@@ -51,11 +108,10 @@ class bind {
       notify => Service["bind"],
       require => Package[$bind];
     "$var_dir/puppet_zones.conf":
-      replace => no,
       mode => 644,
-      owner => named,
-      group => named,
-      content => "",
+      owner => $binduser,
+      group => $binduser,
+      content => template("bind/puppet_zones.conf.erb"),
       notify => Service["bind"],
       require => Package[$bind];
   }
@@ -71,7 +127,7 @@ class bind {
 
   define bind_var_file() {
     file { "$var_dir/$name":
-      mode => 644, owner => named, group => named,
+      mode => 644, owner => $binduser, group => $binduser,
       source => [ "puppet:///bind/$name" ],
       notify => Service["bind"],
       require => Package[$bind],
@@ -91,59 +147,16 @@ class bind {
   bind_var_file { "named.local": }
   bind_var_file { "named.zero": }
 
-  define zone {
-    file { "$bind::var_dir/master/$name.zone":
-      owner => named,
-      group => named,
-      mode => 640,
-      source => "puppet:///dist/specific/$fqdn/$name.zone",
-      notify => Exec["generate_bind_zones.conf"],
-      require => [Package[$bind],File["$bind::var_dir/master"]],
-    }
-  }
+  masterzone { $bind_masterzones: }
   
-  define masterzone ( $serial, $wwwip, $mxip, $mailip="mxip" ) {
-    $mail_ip = $mailip ? {
-      "mxip" => $mxip,
-      default => $mailip
-    }
-    file { "$bind::var_dir/master/$name.zone":
-      owner => named,
-      group => named,
+  define masterzone($zone) {
+    file { "$var_dir/master/$name.zone":
+      owner => $binduser,
+      group => $binduser,
       mode => 640,
       content => template("bind/masterdomain.zone.erb"),
-      notify => Exec["generate_bind_zones.conf"],
-      require => [Package[$bind],File["$bind::var_dir/master"]],
+      require => [Package[$bind],File["$var_dir/master"]],
     }
-  }
-
-  define nszone ( $serial, $wwwip, $mxip, $nsip ) {
-    file { "$bind::var_dir/master/$name.zone":
-      owner => named,
-      group => named,
-      mode => 640,
-      content => template("bind/nsdomain.zone.erb"),
-      notify => Exec["generate_bind_zones.conf"],
-      require => [Package[$bind],File["$bind::var_dir/master"]],
-    }
-  }
-
-  define slavezone ( $masters ) {
-  }
-
-  exec {
-    "generate_bind_zones.conf":
-      refreshonly => true,
-      notify => Service["bind"],
-      command => "/usr/local/sbin/generate_bind_zones.conf.sh > $var_dir/puppet_zones.conf";
-  }
-
-  file {
-    "/usr/local/sbin/generate_bind_zones.conf.sh":
-      mode => 700,
-      owner => root,
-      group => root,
-      source => "puppet:///bind/generate_bind_zones.conf.sh";
   }
 
 }
