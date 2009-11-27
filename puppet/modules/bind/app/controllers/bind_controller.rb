@@ -15,7 +15,7 @@ class BindController < ApplicationController
       params["bind"] ||= {}
       if @bind.update_attributes(params["bind"])
         flash[:notice]='Configuration saved'
-        redirect_to :controller=>'klass', :action=>'list', :id=>@node
+        redirect_to :action=>'configure'
       else
         render :action=>'configure'
       end
