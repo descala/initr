@@ -3,7 +3,7 @@
 <h3>DNS zones</h3>
 
 <table>
-<% @bind.bind_zones.each do |z| -%>
+<% @bind.bind_zones.sort.each do |z| -%>
   <tr>
     <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
     <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>

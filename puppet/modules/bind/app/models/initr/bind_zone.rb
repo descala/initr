@@ -28,4 +28,8 @@ class Initr::BindZone < ActiveRecord::Base
     super
   end
 
+  def <=>(oth)
+    self.domain <=> oth.domain
+  end
+
 end
