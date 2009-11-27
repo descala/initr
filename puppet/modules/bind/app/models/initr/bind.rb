@@ -11,6 +11,7 @@ class Initr::Bind < Initr::Klass
   end
 
   def parameters
+    return {} if bind_zones.size == 0
     if nameservers.nil? or nameservers.blank?
       raise Initr::Klass::ConfigurationError.new("Bind nameservers not configured")
     end
