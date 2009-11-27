@@ -146,6 +146,12 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       replace => false;
   }
 
+  if $operatingsystem == "Debian" {
+    apache::ensite { "$name.conf":
+      require => File["$httpd_confdir/$name.conf"],
+    }
+  }
+
   user {
     $username:
       ensure => present,
