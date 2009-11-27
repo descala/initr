@@ -1,3 +1,8 @@
 es:
   field_domain: Dominio
   field_zone: Zona
+  field_nameservers: Servidores de nombres
+  field_ttl: TTL
+  field_zone_header: Cabezera de la zona
+  Enter at least one nameserver to add zones: Entrar al menos un servidor de nombres para añadir zonas
+  one nameserver per line: un servidor de nombres por línea

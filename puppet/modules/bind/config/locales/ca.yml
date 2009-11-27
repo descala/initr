@@ -1,3 +1,8 @@
 ca:
   field_domain: Domini
   field_zone: Zona
+  field_nameservers: Servidors de noms
+  field_ttl: TTL
+  field_zone_header: Capçalera de la zona
+  Enter at least one nameserver to add zones: Entreu al menys un servidor de noms per afegir zones
+  one nameserver per line: un servidor de noms per línia
