@@ -5,13 +5,13 @@ class mysql {
     include mysql::nagios
   }
 
-  service { "mysqld":
+  service { $mysqld:
     ensure => "running",
     enable => true,
     hasrestart => true,
   }
 
-  package { ["mysql", "mysql-server"]:
+  package { [$mysqlclient, "mysql-server"]:
     ensure => "installed",
   }
   
@@ -30,7 +30,7 @@ define mysql::database($ensure, $owner, $passwd) {
           command => "mysql -e \"$dbcr\"",
           user => "root",
           unless => "/usr/bin/mysql $name -e \";\"",
-          require => Service["mysqld"];
+          require => Service[$mysqld];
         "MySQL Privileges for $owner to DB $name":
           command => "mysql -e \"$priv\"",
           user => "root",

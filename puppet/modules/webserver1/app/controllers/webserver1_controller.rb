@@ -12,7 +12,7 @@ class Webserver1Controller < ApplicationController
     if request.post?
       if @webserver.update_attributes params[:webserver1]
           flash[:notice] = 'Configuration saved'
-          redirect_to :controller => 'klass', :action => 'list', :id => @node
+          redirect_to :action => 'configure'
       else
         render :action => 'configure'
       end

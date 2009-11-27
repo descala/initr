@@ -212,3 +212,35 @@ $ntp = $lsbdistid ? {
   Ubuntu => "ntp-server",
   default => "ntp"
 }
+$mysqlclient = $operatingsystem ? {
+  Debian => "mysql-client",
+  default => "mysql"
+}
+$mysqld = $operatingsystem ? {
+  Debian => "mysql",
+  default => "mysqld"
+}
+$perl_net_dns = $operatingsystem ? {
+  Debian => "libnet-dns-perl",
+  default => "perl-Net-DNS"
+}
+$perl_net_ip = $operatingsystem ? {
+  Debian => "libnet-ip-perl",
+  default => "perl-Net-IP"
+}
+$perl_geo_ipfree = $operatingsystem ? {
+  Debian => "libgeo-ipfree-perl",
+  default => "perl-Geo-IPfree"
+}
+$perl_net_xwhois = $operatingsystem ? {
+  Debian => "libnet-xwhois-perl",
+  default => "perl-Net-XWhois"
+}
+$ruby_shadow = $operatingsystem ? {
+  Debian => "libshadow-ruby1.8",
+  default => "ruby-shadow"
+}
+$php_gd = $operatingsystem ? {
+  Debian => "php5-gd",
+  default => "php-gd"
+}
