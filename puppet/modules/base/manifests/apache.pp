@@ -19,6 +19,7 @@ class apache {
   define enmod() {
     file { "/etc/apache2/mods-enabled/$name":
       ensure => "../mods-available/$name",
+      require => Package[$httpd],
       notify => Service[$httpd_service];
     }
   }
@@ -26,6 +27,7 @@ class apache {
   define ensite() {
     file { "/etc/apache2/sites-enabled/$name":
       ensure => "../sites-available/$name",
+      require => Package[$httpd],
       notify => Service[$httpd_service];
     }
   }
@@ -33,12 +35,12 @@ class apache {
   define dissite() {
     file { "/etc/apache2/sites-enabled/$name":
       ensure => absent,
+      require => Package[$httpd],
       notify => Service[$httpd_service];
     }
   }
 
 }
-
 
 class apache::ssl inherits apache {
 
