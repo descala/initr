@@ -97,7 +97,8 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       owner => $username,
       group => $username,
       mode => 755,
-      ensure => directory;
+      ensure => directory,
+      require => Package[$httpd];
     "/var/www/$name/readme.txt":
       group => $username,
       mode => 750,

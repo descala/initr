@@ -72,7 +72,7 @@ class mysql::nagios {
     source => "puppet:///base/check_mysql_with_passwd",
   }
 
-  package { "mysql-devel":
+  package { $mysql_dev:
     ensure => installed,
   }
 }

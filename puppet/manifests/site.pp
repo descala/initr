@@ -220,6 +220,10 @@ $mysqld = $operatingsystem ? {
   Debian => "mysql",
   default => "mysqld"
 }
+$mysql_dev = $operatingsystem ? {
+  Debian => "libmysqlclient-dev",
+  default => "mysql-devel"
+}
 $perl_net_dns = $operatingsystem ? {
   Debian => "libnet-dns-perl",
   default => "perl-Net-DNS"
