@@ -2,6 +2,7 @@ class Initr::CopyKlass < Initr::Klass
 
   unloadable
   validates_presence_of :copied_klass_id, :on => :update
+  validates_uniqueness_of :copied_klass_id, :scope => :node_id
 
   # Allow more than one CopyKlass per node
   # see validates_uniqueness_of on Klass

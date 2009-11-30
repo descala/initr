@@ -1,6 +1,9 @@
 class CopyKlassController < ApplicationController
   unloadable
 
+  layout 'nested'
+  menu_item :initr
+
   before_filter :find_copy_klass
 
   def configure

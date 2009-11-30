@@ -33,6 +33,7 @@ class Initr::KlassDefinition
     return nil
   end
 
+  # false if a klass can be assigned several times to the same node.
   def unique?
     @unique
   end

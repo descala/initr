@@ -25,7 +25,7 @@ class Initr::Klass < ActiveRecord::Base
   # see validates_uniqueness_of
   def unique?; true end
   
-  # Returs the Initr::Klass of our type (STI) of a given node
+  # Returns the Initr::Klass of our type (STI) for a given node
   def self.for_node(node)
     node.klasses.find_by_type(self.sti_name)
   end
@@ -34,7 +34,7 @@ class Initr::Klass < ActiveRecord::Base
   # this method and return a name for the class.
   # It must be a valid puppet class name, without strange characters or spaces
   def name
-    self.class.to_s.gsub(/^Initr::/,'')
+    self.class.to_s.gsub(/^Initr::/,'').underscore
   end
 
   # you should override this method and return a description for the class
@@ -75,7 +75,7 @@ class Initr::Klass < ActiveRecord::Base
   def installed?
     self.node.puppet_fact('puppet_classes','').split.include? self.name
   end
-  
+
   private
 
   def self.adds_klass(*args)
