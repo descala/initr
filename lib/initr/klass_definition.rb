@@ -19,7 +19,7 @@ class Initr::KlassDefinition
     kdefs = []
     begin
       node.klasses.each do |k|
-        kdefs << self.find_by_name(k.class.to_s.gsub(/^Initr::/,'').underscore)
+        kdefs << self.find_by_name(k.class.to_s.split('::').last.underscore)
       end
     rescue ActiveRecord::SubclassNotFound
     end

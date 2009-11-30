@@ -34,7 +34,7 @@ class Initr::Klass < ActiveRecord::Base
   # this method and return a name for the class.
   # It must be a valid puppet class name, without strange characters or spaces
   def name
-    self.class.to_s.gsub(/^Initr::/,'').underscore
+    self.class.to_s.split('::').last.underscore
   end
 
   # you should override this method and return a description for the class
@@ -42,7 +42,7 @@ class Initr::Klass < ActiveRecord::Base
   end
 
   def controller
-    self.class.to_s.gsub(/^Initr::/,'').underscore
+    self.class.to_s.split('::').last.underscore
   end
   
   # Variables for puppet
