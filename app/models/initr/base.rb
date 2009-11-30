@@ -39,4 +39,10 @@ class Initr::Base < Initr::Klass
     end
   end
 
+  # Don't allow to copy this class
+  # see copy_klass module
+  def copyable?
+    false
+  end
+
 end

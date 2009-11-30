@@ -19,7 +19,11 @@ class Initr::CopyKlass < Initr::Klass
   end
 
   def print_parameters
-    "Copied klass from #{copied_klass.node.fqdn}"
+    if copied_klass
+      "Copied klass from #{copied_klass.node.fqdn}"
+    else
+      "Klass to copy not selected"
+    end
   end
 
   def parameters
@@ -41,6 +45,10 @@ class Initr::CopyKlass < Initr::Klass
     Initr::Klass.find copied_klass_id
   rescue ActiveRecord::RecordNotFound => e
     nil
+  end
+
+  def copyable?
+    false
   end
 
 end
