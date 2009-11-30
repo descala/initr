@@ -5,7 +5,7 @@ class CopyKlassController < ApplicationController
 
   def configure
     @copiable_klasses = []
-    User.current.projects.collect {|p| p.nodes }.compact.flatten.each do |node|
+    User.current.projects.collect {|p| p.nodes }.compact.flatten.sort.each do |node|
       next if node == @node
       n = [node.fqdn, node.klasses.collect {|k| [k.name, k.id.to_s]}]
       @copiable_klasses << n
