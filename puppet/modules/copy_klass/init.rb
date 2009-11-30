@@ -14,7 +14,7 @@ Initr::Plugin.register :copy_klass do
         :require => :member
     end
   end
-  klasses 'copy_klass' => 'copy a class from other node'
+  klasses 'copy_klass' => {:description => 'copy a class from other node', :unique => false}
 end
 
 ::I18n.load_path += Dir.glob(File.join("#{File.dirname(__FILE__)}", 'config', 'locales', '*.yml'))

@@ -57,7 +57,11 @@ module Initr #:nodoc:
       registered_plugins.values.each do |plugin|
         next unless plugin.klasses
         plugin.klasses.each do |k,v|
-          klass_names << Initr::KlassDefinition.new(k,v)
+          if v.is_a? Hash
+            klass_names << Initr::KlassDefinition.new(k,v[:description],v[:unique])
+          else
+            klass_names << Initr::KlassDefinition.new(k,v)
+          end
         end
       end
       klass_names

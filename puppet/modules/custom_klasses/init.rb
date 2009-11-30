@@ -16,6 +16,6 @@ Initr::Plugin.register :custom_klasses do
         :require => :member
     end
   end
-  klasses  'custom_klass' => 'Klass without controller'
+  klasses  'custom_klass' => { :description => 'Klass without controller', :unique => false }
 
 end

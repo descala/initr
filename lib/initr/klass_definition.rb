@@ -8,9 +8,10 @@ class Initr::KlassDefinition
     Initr::Plugin.klass_names
   end
 
-  def initialize(name,description)
+  def initialize(name,description,unique=true)
     @name = name
     @description = description
+    @unique = unique
   end
 
   def self.all_for_node(node)
@@ -18,7 +19,7 @@ class Initr::KlassDefinition
     kdefs = []
     begin
       node.klasses.each do |k|
-        kdefs << self.find_by_name(k.name)
+        kdefs << self.find_by_name(k.class.to_s.gsub(/^Initr::/,'').underscore)
       end
     rescue ActiveRecord::SubclassNotFound
     end
@@ -30,6 +31,10 @@ class Initr::KlassDefinition
       return kd if kd.name.to_s.downcase == name.to_s.downcase
     }
     return nil
+  end
+
+  def unique?
+    @unique
   end
 
   def ==(oth)
