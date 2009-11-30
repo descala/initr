@@ -91,6 +91,5 @@ class Initr::Klass < ActiveRecord::Base
     end
   end
 
-  
 end
 
