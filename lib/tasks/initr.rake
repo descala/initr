@@ -54,6 +54,9 @@ namespace :initr do
         f << "class #{name.camelize}Controller < ApplicationController\n"
         f << "  unloadable\n"
         f << "\n"
+        f << "  layout 'nested'\n"
+        f << "  menu_item :initr\n"
+        f << "\n"
         f << "end\n"
       end
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/init.rb"
