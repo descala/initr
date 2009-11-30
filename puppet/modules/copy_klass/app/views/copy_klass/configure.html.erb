@@ -1,0 +1,10 @@
+<h2><%=@node.fqdn%></h2>
+<h3><%=l "Choose a class to copy"%></h3>
+<% labelled_tabular_form_for :copy_klass, @copy_klass, :url=>{:action=>'configure'} do |f| -%>
+
+  <p><%= f.error_messages %></p>
+  <p><%= f.select('copied_klass_id',grouped_options_for_select(@copiable_klasses, @copy_klass.copied_klass_id), :include_blank=>true) %></p>
+  <p><%= submit_tag("Save") %></p>
+
+<% end -%>
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
