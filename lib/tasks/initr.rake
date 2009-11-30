@@ -6,6 +6,10 @@ namespace :initr do
       name = ENV['name']
       modulesdir="#{File.dirname(__FILE__)}/../../puppet/modules"
       modules=Dir["#{modulesdir}/*"].collect {|d| d.split("/").last if File.directory? d}.compact
+      if name.blank?
+        puts "usage: rake initr:module:create name=<module_name>"
+        exit
+      end
       if modules.include? name
         puts "#{name} already exists on puppet/modules/ directory"
         exit
@@ -24,6 +28,12 @@ namespace :initr do
       FileUtils.mkdir("#{plugindir}/files")
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/manifests"
       FileUtils.mkdir("#{plugindir}/manifests")
+      puts "      create  vendor/plugins/initr/puppet/modules/#{name}/manifests/init.pp"
+      open("#{plugindir}/manifests/init.pp", 'w') do |f|
+        f << "class #{name} {\n"
+        f << "\n"
+        f << "}\n"
+      end
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/templates"
       FileUtils.mkdir("#{plugindir}/templates")
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/app/models/initr/#{name}.rb"
