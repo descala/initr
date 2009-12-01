@@ -11,7 +11,7 @@ class webserver1 {
   include apache::ssl
   include mysql
   include php
-  include ftp
+  include webserver1::ftp
   include webserver1::awstats
   case $operatingsystem {
     "Debian": { include webserver1::awstats::debian }
@@ -56,7 +56,7 @@ class webserver1 {
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="/var/backups", $web_backups_server_port="22", $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="/var/backups", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database=true, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
@@ -238,6 +238,21 @@ class webserver1::web_backups_server {
     [$backups_path,"$backups_path/webservers"]:
       ensure => directory;
   }
+}
+
+class webserver1::ftp inherits ftp {
+
+  # user shell should appear on /etc/shells to allow ftp login
+  append_if_no_such_line { nologin_shell:
+    file => "/etc/shells",
+    line => "$nologin",
+  }
+
+  file { $vsftpd_conf_file:
+    content => template("webserver1/vsftpd.conf.erb"),
+    require => Package["vsftpd"],
+  }
+
 }
 
 class webserver1::awstats {

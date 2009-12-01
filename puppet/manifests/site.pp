@@ -248,3 +248,11 @@ $php_gd = $operatingsystem ? {
   Debian => "php5-gd",
   default => "php-gd"
 }
+$nologin = $operatingsystem ? {
+  Debian => "/usr/sbin/nologin",
+  default => "/sbin/nologin"
+}
+$vsftpd_conf_file = $operatingsystem ? {
+  Debian => "/etc/vsftpd.conf",
+  default => "/etc/vsftpd/vsftpd.conf"
+}
