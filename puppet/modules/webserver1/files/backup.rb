@@ -25,11 +25,11 @@ class Backup
   def do_backup
     command =  "nice -n 19 rsync --delete -a -v --backup --backup-dir=#{@bakdir}"
     unless @excludes.nil? or @excludes.size == 0
-      command += " --exclude-from=#{@excludes} --delete-excluded"                         # excludes
+      command += " --exclude-from=#{@excludes} --delete-excluded"        # excludes
     end
-    command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"                        # ssh options
-    command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups"                  # origen
-    command += " #{@domain}@#{@server}:/var/backups/webservers/#{@domain}/incremental"    # desti
+    command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
+    command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origen
+    command += " #{@domain}@#{@server}:incremental"                      # desti
     puts "Syncronizing backup with server, command: #{command}"
     system command
     return $?.exitstatus
