@@ -3,15 +3,33 @@
 <h3>DNS zones</h3>
 
 <table>
-<% @bind.bind_zones.each do |z| -%>
+<% @bind.bind_zones.sort.each do |z| -%>
   <tr>
     <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
     <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
   </tr>
 <% end -%>
-</table>
+</table><br />
 
-<%= link_to "Add zone", :controller => 'bind', :action => 'add_zone', :id => @bind %>
+<% if @bind.nameservers.nil? or @bind.nameservers.blank? -%>
+  <p><%= l "Enter at least one nameserver to add zones" %></p>
+<% else -%>
+  <%= link_to "Add zone", :controller => 'bind', :action => 'add_zone', :id => @bind %>
+<% end -%>
+<br />
+<br />
+
+<h3>Global config</h3>
+
+<% labelled_tabular_form_for :bind, @bind, :url=>{:action=>'configure'} do |f| -%>
+
+  <p><%= f.error_messages %></p>
+
+  <p><%= f.text_area("nameservers", :cols=>40, :rows=>3) %><br />(<%= l "one nameserver per line" %>)</p>
+
+  <p><%= submit_tag("Save") %></p>
+
+<% end -%>
 
 <hr />
 

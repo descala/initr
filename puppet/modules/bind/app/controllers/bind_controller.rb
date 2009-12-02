@@ -15,7 +15,7 @@ class BindController < ApplicationController
       params["bind"] ||= {}
       if @bind.update_attributes(params["bind"])
         flash[:notice]='Configuration saved'
-        redirect_to :controller=>'klass', :action=>'list', :id=>@node
+        redirect_to :action=>'configure'
       else
         render :action=>'configure'
       end
@@ -25,6 +25,7 @@ class BindController < ApplicationController
   def add_zone
     @bind_zone = Initr::BindZone.new(params[:bind_zone])
     @bind_zone.bind = @bind
+    @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
     if request.post?
       if @bind_zone.save
         flash[:notice]="Bind zone saved"
@@ -36,6 +37,7 @@ class BindController < ApplicationController
   end
 
   def edit_zone
+    @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
     if request.post?
       if @bind_zone.update_attributes(params[:bind_zone])
         flash[:notice]="Bind zone saved"

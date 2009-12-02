@@ -1,0 +1,10 @@
+$TTL <%= zone.ttl %>
+@   IN  SOA <%= zone.bind.nameservers.split.first %>.  webmaster.<%= zone.domain %>. (
+            <%= zone.serial %>  ; serial automatically incremented
+            300         ; refresh, seconds
+            7200        ; retry, seconds
+            300         ; expire, seconds
+            300 )       ; minimum, seconds
+<% zone.bind.nameservers.split.each do |ns| -%>
+    IN  NS  <%= ns %>.
+<% end -%>

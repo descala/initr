@@ -3,17 +3,11 @@ module Initr
     unloadable
 
     has_many :webserver1_domains, :class_name => "Initr::Webserver1Domain"
-    validate :address_is_unique
+    validate :address_is_unique, :on => :update
 
     def address_is_unique
-      if new_record?
-        if WebBackupsServer.all.collect {|wbs| wbs.address}.include? address
-          errors.add_to_base("#{l "address"} has already been taken")
-        end
-      else
-        if WebBackupsServer.all.collect {|wbs| wbs.address if wbs.id != self.id }.include? address
-          errors.add_to_base("#{l "address"} has already been taken")
-        end
+      if WebBackupsServer.all(:conditions=>["id != ?",id]).collect {|wbs| wbs.address }.include? address
+        errors.add_to_base("#{l "address"} has already been taken")
       end
     end
 

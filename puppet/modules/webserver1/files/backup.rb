@@ -11,9 +11,6 @@
 
 class Backup
 
-  RSYNC="/usr/bin/rsync"
-  NICE="/bin/nice"
-
   # $name $web_backups_server $port $history $excludes
   def initialize(domain, server, port=22, bdays=7, excludes="")
     validate(ARGV)
@@ -26,7 +23,7 @@ class Backup
   end
 
   def do_backup
-    command =  "#{NICE} -n 19 #{RSYNC} --delete -a -v --backup --backup-dir=#{@bakdir}"
+    command =  "nice -n 19 rsync --delete -a -v --backup --backup-dir=#{@bakdir}"
     unless @excludes.nil? or @excludes.size == 0
       command += " --exclude-from=#{@excludes} --delete-excluded"                         # excludes
     end
@@ -68,8 +65,9 @@ if __FILE__ == $0
   end
 
   begin
-    puts "sleep(#{rand(600)})"
-    sleep(rand(600))
+    sleeptime=rand(600)
+    puts "sleep(#{sleeptime})"
+    sleep(sleeptime)
     cop = Backup.new(*ARGV)
     retval += cop.do_backup
   rescue Exception => e

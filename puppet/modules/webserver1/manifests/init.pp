@@ -1,20 +1,27 @@
 class webserver1 {
 
-  $phpmyadmindir = $lsbdistrelease ? {
-    "5.4" => "/usr/share/phpMyAdmin",
-    default => "/usr/share/phpmyadmin"
+  $phpmyadmindir = $operatingsystem ? {
+    Debian => "/usr/share/phpmyadmin",
+    default => $lsbdistrelease ? {
+      "5.4" => "/usr/share/phpMyAdmin",
+      default => "/usr/share/phpmyadmin"
+    }
   }
   
   include apache::ssl
   include mysql
   include php
-  include ftp
+  include webserver1::ftp
   include webserver1::awstats
+  case $operatingsystem {
+    "Debian": { include webserver1::awstats::debian }
+    default: { include webserver1::awstats::redhat }
+  }
 
   Sshkey <<| tag == "backups" |>>
 
   package {
-    ["phpmyadmin","php-mbstring","php-gd"]:
+    ["phpmyadmin",$php_gd]:
       ensure => installed,
       notify => Service[$httpd_service];
     "rsync":
@@ -24,7 +31,7 @@ class webserver1 {
   webserver1::domain { $webserver_domains: }
 
   package {
-    "ruby-shadow":
+    $ruby_shadow:
       ensure => installed;
   }
 
@@ -40,11 +47,6 @@ class webserver1 {
     "/etc/logrotate.d/httpd":
       mode => 644,
       source => "puppet:///webserver1/logrotate_httpd";
-    "/etc/httpd/conf.d/phpmyadmin.conf":
-      mode => 640,
-      group => apache,
-      require => Package["phpmyadmin"],
-      content => template("webserver1/phpmyadmin_httpd.erb");
     "$phpmyadmindir/config.inc.php":
       mode => 644,
       require => [Package["phpmyadmin"],Package[$httpd]],
@@ -54,7 +56,7 @@ class webserver1 {
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="/var/backups", $web_backups_server_port="22", $shell='/sbin/nologin', $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="/var/backups", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database=true, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
@@ -95,7 +97,8 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       owner => $username,
       group => $username,
       mode => 755,
-      ensure => directory;
+      ensure => directory,
+      require => Package[$httpd];
     "/var/www/$name/readme.txt":
       group => $username,
       mode => 750,
@@ -143,6 +146,12 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       replace => false;
   }
 
+  if $operatingsystem == "Debian" {
+    apache::ensite { "$name.conf":
+      require => File["$httpd_confdir/$name.conf"],
+    }
+  }
+
   user {
     $username:
       ensure => present,
@@ -150,7 +159,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       home => "/var/www/$name",
       password => $password_ftp,
       shell => $shell,
-      require => Package["ruby-shadow"];
+      require => Package[$ruby_shadow];
   }
 
 }
@@ -231,10 +240,27 @@ class webserver1::web_backups_server {
   }
 }
 
+class webserver1::ftp inherits ::ftp {
+
+  # user shell should appear on /etc/shells to allow ftp login
+  append_if_no_such_line { nologin_shell:
+    file => "/etc/shells",
+    line => "$nologin",
+    before => File[$vsftpd_conf_file],
+  }
+
+  file { $vsftpd_conf_file:
+    content => template("webserver1/vsftpd.conf.erb"),
+    require => Package["vsftpd"],
+    notify => Service["vsftpd"]
+  }
+
+}
+
 class webserver1::awstats {
 
   package {
-    [ "awstats", "perl-Net-DNS", "perl-Net-IP", "perl-Geo-IPfree", "perl-Net-XWhois" ]:
+    [ "awstats", $perl_net_dns, $perl_net_ip, $perl_geo_ipfree, $perl_net_xwhois ]:
       ensure => installed;
   }
 
@@ -243,11 +269,6 @@ class webserver1::awstats {
       mode => 755,
       source => "puppet:///webserver1/awstats_cron",
       notify => Service[$cron_service];
-    "/etc/httpd/conf.d/awstats.conf":
-      mode => 644,
-      source => "puppet:///webserver1/awstats_httpd.conf",
-      require => Package[$httpd],
-      notify => Service[$httpd_service];
     "/etc/awstats/awstats.model.conf":
       mode => 644,
       require => Package["awstats"],
@@ -269,6 +290,42 @@ class webserver1::awstats {
   }
 
 
+}
+
+class webserver1::awstats::debian {
+  file {
+    "/etc/apache2/conf.d/awstats.conf":
+      mode => 644,
+      source => "puppet:///webserver1/awstats_httpd.conf",
+      require => Package[$httpd],
+      notify => Service[$httpd_service];
+    "/etc/apache2/conf.d/phpmyadmin.conf":
+      mode => 640,
+      group => $httpd_user,
+      require => Package["phpmyadmin"],
+      content => template("webserver1/phpmyadmin_httpd.erb");
+  }
+  #TODO: install php-mbstring from source?
+}
+
+class webserver1::awstats::redhat {
+  file {
+    "/etc/httpd/conf.d/awstats.conf":
+      mode => 644,
+      source => "puppet:///webserver1/awstats_httpd.conf",
+      require => Package[$httpd],
+      notify => Service[$httpd_service];
+    "/etc/httpd/conf.d/phpmyadmin.conf":
+      mode => 640,
+      group => $httpd_user,
+      require => Package["phpmyadmin"],
+      content => template("webserver1/phpmyadmin_httpd.erb");
+  }
+  package {
+    "php-mbstring":
+      ensure => installed,
+      notify => Service[$httpd_service];
+  }
 }
 
 define webserver1::awstats::domain($user, $pass) {

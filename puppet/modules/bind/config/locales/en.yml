@@ -1,3 +1,8 @@
 en:
   field_domain: Domain
   field_zone: Zone
+  field_nameservers: Nameservers
+  field_ttl: TTL
+  field_zone_header: Zone header
+  Enter at least one nameserver to add zones: Enter at least one nameserver to add zones
+  one nameserver per line: one nameserver per line

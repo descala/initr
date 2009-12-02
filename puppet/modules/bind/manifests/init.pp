@@ -56,7 +56,7 @@ class bind {
   
   masterzone { $bind_masterzones: }
 
-  define masterzone($zone) {
+  define masterzone($zone,$ttl,$serial) {
     file {
       "$var_dir/puppet_zones/$name.zone":
         owner => $binduser,

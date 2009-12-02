@@ -12,7 +12,7 @@ class KlassController < ApplicationController
     node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
     @klass_definitions = []
     Initr::KlassDefinition.all.each do |kd|
-      unless node_klasses.include? kd or kd.name == "CustomKlass"
+      unless node_klasses.include?(kd) and kd.unique?
         @klass_definitions << kd
       end
       @klass_definitions.sort!
