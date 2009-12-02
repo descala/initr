@@ -45,7 +45,7 @@ pam_service_name=vsftpd
 #
 userlist_enable=YES
 #
-<% if $operatingsystem == "Debian" -%>
+<% if operatingsystem == "Debian" -%>
 # Debian customization
 #
 # Some of vsftpd's settings don't fit the Debian filesystem layout by
@@ -60,4 +60,7 @@ secure_chroot_dir=/var/run/vsftpd
 # This option specifies the location of the RSA certificate to use for SSL
 # encrypted connections.
 rsa_cert_file=/etc/ssl/certs/vsftpd.pem
+#
+userlist_file=/etc/ftpusers
+#
 <% end -%>
