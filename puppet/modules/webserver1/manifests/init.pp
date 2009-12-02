@@ -51,6 +51,9 @@ class webserver1 {
       mode => 644,
       require => [Package["phpmyadmin"],Package[$httpd]],
       content => template("webserver1/phpmyadmin_config.erb");
+    "/usr/local/sbin/webserver_backup_all":
+      mode => 700,
+      content => template("webserver1/backup_all.sh.erb");
   }
 
 }

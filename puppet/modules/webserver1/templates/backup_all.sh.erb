@@ -1,0 +1,5 @@
+#!/bin/sh
+
+<% webserver_domains.each do |k,v| -%>
+<%= "/usr/local/sbin/backup.rb #{v['name']} #{v['web_backups_server']} #{v['web_backups_server_port']||22} #{v['history']||7} #{v['excludes']}" %>
+<% end -%>
