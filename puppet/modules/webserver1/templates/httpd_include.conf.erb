@@ -20,17 +20,10 @@
   ScriptAlias  /cgi-bin/ /var/www/<%=name%>/cgi-bin/
 
   <Directory /var/www/<%=name%>/htdocs>
-#    <IfModule sapi_apache2.c>
-#      php_admin_flag engine on
-#      php_admin_flag safe_mode on
-#      php_admin_value open_basedir "/var/www/<%=name%>/htdocs:/tmp"
-#    </IfModule>
-#    <IfModule mod_php5.c>
-#      php_admin_flag engine on
-#      php_admin_flag safe_mode on
-#      php_admin_value open_basedir "/var/www/<%=name%>/htdocs:/tmp"
-#    </IfModule>
-#    Options -Includes +ExecCGI
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
   </Directory>
 
   Include /var/www/<%=name%>/conf/vhost.conf
