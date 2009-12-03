@@ -80,7 +80,6 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   }
   webserver1::domain::remotebackup { $name:
     web_backups_server => $web_backups_server,
-    port => $web_backups_server_port,
     backups_path => $backups_path,
   }
 
