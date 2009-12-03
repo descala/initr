@@ -23,6 +23,7 @@ module Initr
     end
 
     def parameters
+      address=node.fqdn if address == "" or address.nil?
       { "tags_for_sshkey"=>"#{address}_backup",
         "alias_for_sshkey"=>address,
         "backups_path"=>backups_path }
