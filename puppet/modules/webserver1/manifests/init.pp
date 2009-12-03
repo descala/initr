@@ -222,7 +222,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
   # TODO: remove me
   # erase deprecated crontabs
   cron { "Backup $name":
-    command => "/bin/true"
+    command => "/bin/true",
     ensure => absent,
   }
   @@cron { "Purge $name":
