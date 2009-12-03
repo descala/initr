@@ -7,11 +7,11 @@
 <%= error_messages_for 'wbs' %>
 
   <p><%= f.text_field :address %>
-    <br/>The adress webservers will ssh to. Defaults to <%=@node.fqdn%>.</em></p>
+    <br/><em>The adress webservers will ssh to.</em></p>
   <p><%= f.text_field :port %>
-    <br/>The port webservers will ssh to. Defaults to 22.</em></p>
+    <br/><em>The port webservers will ssh to.</em></p>
   <p><%= f.text_field :backups_path %>
-    <br/><em>Will store backups in /{backups_path}/webservers/{domain_name}/</em></p>
+    <br/><em>Will store backups in {backups_path}/webservers/{domain_name}/</em></p>
 
   <p><%= submit_tag("Save")%></p>
 <% end %>

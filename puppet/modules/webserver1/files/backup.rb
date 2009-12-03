@@ -65,9 +65,6 @@ if __FILE__ == $0
   end
 
   begin
-    sleeptime=rand(600)
-    puts "sleep(#{sleeptime})"
-    sleep(sleeptime)
     cop = Backup.new(*ARGV)
     retval += cop.do_backup
   rescue Exception => e

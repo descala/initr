@@ -1,0 +1,32 @@
+#!/bin/sh
+
+DOMAIN=$1
+
+u_sure() {
+  while true; do
+    read -p "Do you wish to restore $DOMAIN from its latest backup on $SERVER? [y/n] " yn
+    case $yn in
+      [Yy]* ) echo "Restoring $DOMAIN from $SERVER ..."; break;;
+      [Nn]* ) exit;;
+      * ) echo "Please answer yes or no.";;
+    esac
+  done
+}
+
+case "$DOMAIN" in
+<% webserver_domains.each do |k,v| -%>
+  <%= v['name'] %>)
+    SERVER=<%= v['web_backups_server'] %>
+    u_sure
+    <%= "rsync --delete -a -v --backup --backup-dir='/var/www/$DOMAIN/htdocs_before_restore' -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/htdocs/ /var/www/$DOMAIN/htdocs/" %>
+    chown -R "<%= v['username'] %>":"<%= v['username'] %>" /var/www/$DOMAIN/htdocs
+    ;;
+<% end -%>
+  *)
+    echo "Usage: restore domain.name"
+    exit 1
+esac
+
+echo "Find original files, if any, in /var/www/$DOMAIN/htdocs_before_restore"
+
+exit 0

@@ -54,12 +54,15 @@ class webserver1 {
     "/usr/local/sbin/webserver_backup_all":
       mode => 700,
       content => template("webserver1/backup_all.sh.erb");
+    "/usr/local/sbin/webserver_restore":
+      mode => 700,
+      content => template("webserver1/restore.sh.erb");
   }
 
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="/", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database=true, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
@@ -220,7 +223,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $por
       ensure => directory,
       owner => $name,
       group => $name,
-      mode => 755,
+      mode => 750,
       require => [User[$name],File["$backups_path/webservers"]],
       tag => "${web_backups_server}_backup",
     }
