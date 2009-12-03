@@ -1,5 +1,3 @@
-<h2><%=@node.fqdn%></h2>
-
 <div class="contextual">
 <% if @klass.movable? -%>
   <%= link_to_if_authorized l(:button_move), {:controller => 'klass', :action => 'move', :id => @klass }, :class => 'icon icon-move' %>
@@ -9,4 +7,4 @@
 <% end -%>
 </div>
 
-<h3><%= title %></h3>
+<h2><%= title %> - <%= @node.fqdn %></h2>

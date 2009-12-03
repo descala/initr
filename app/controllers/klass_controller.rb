@@ -6,6 +6,7 @@ class KlassController < ApplicationController
   before_filter :authorize
  
   layout 'nested' 
+  helper :initr
   menu_item :initr
   
   def list
