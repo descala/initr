@@ -1,0 +1,12 @@
+<h2><%=@node.fqdn%></h2>
+
+<div class="contextual">
+<% if @klass.movable? -%>
+  <%= link_to_if_authorized l(:button_move), {:controller => 'klass', :action => 'move', :id => @klass }, :class => 'icon icon-move' %>
+<% end -%>
+<% if @klass.removable? -%>
+  <%= link_to_if_authorized l(:button_delete), {:controller => 'klass', :action => 'destroy', :id => @klass}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+<% end -%>
+</div>
+
+<h3><%= title %></h3>

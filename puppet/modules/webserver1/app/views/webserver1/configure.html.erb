@@ -1,14 +1,16 @@
-<h2><%=@node.fqdn%></h2>
+<%= klass_menu "Webserver configuration" %>
 
-<h3>Domains</h3>
-
+<fieldset>
+  <legend>Domains</legend>
 <table>
+  <% unless @klass.domains.size == 0 -%>
   <tr>
     <th>Domain</th>
     <th>Stastics</th>
     <th>Ftp</th>
   </tr>
-<% @webserver.domains.sort.each do |domain| -%>
+  <% end -%>
+<% @klass.domains.sort.each do |domain| -%>
   <tr>
     <td><%= link_to domain.name, :action => 'edit_domain', :id => domain %></td>
     <td><%= link_to "http://#{domain.name}/awstats", "http://#{domain.username}:#{domain.password_awstats}@#{domain.name}/awstats", :target => 'blank' %></td>
@@ -18,10 +20,12 @@
 <% end -%>
 </table>
 
-<p><%= link_to "Add new domain", :action => 'add_domain', :id => @webserver %></p>
+<p><%= link_to "Add new domain", :action => 'add_domain', :id => @klass %></p>
+
+</fieldset>
 
 <br />
-<% labelled_tabular_form_for(:webserver1, @webserver, :url=>{:action=>'configure'}) do |f| %>
+<% labelled_tabular_form_for(:webserver1, @klass, :url=>{:action=>'configure'}) do |f| %>
 
 <%= error_messages_for 'webserver' %>
 
@@ -31,6 +35,8 @@
   <p><%= f.password_field :password %></p>
   <p><%= f.password_field :password_confirmation %></p>
 </fieldset>
+
+<br />
 
 <fieldset>
   <legend>Phpmyadmin</legend>

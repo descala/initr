@@ -3,8 +3,6 @@
     <th><%="Class"%></th>
     <th><%="Description"%></th>
     <th><%="Configuration"%></th>
-    <th></th>
-    <th></th>
   </tr>
   <%
     @node.klasses.sort.each do |klass|
@@ -12,16 +10,10 @@
   <tr class="<%= cycle('odd', 'even') %>">
     <td>
       <%= image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.installed? %>
-      <%= klass.configurable? ? link_to(klass.name, :controller=>klass.controller, :action=>'configure', :id=>klass) : klass.name %>
+      <%= link_to(klass.name, :controller=>klass.controller, :action=>'configure', :id=>klass) %>
     </td>
     <td><%= klass.description %></td>
     <td><%= truncate(klass.print_parameters, :length=>80) %></td>
-    <td>
-      <%=link_to( "Configure", :controller=>klass.controller, :action => 'configure', :id => klass) if klass.configurable? %>
-    </td>
-    <td>
-      <%= link_to(image_tag("cross.gif", :plugin => "initr" , :border => 0), { :action => 'destroy', :id => klass }, :confirm => 'Remove this class and configuration from this node?', :method => :post) unless klass.name == 'base' %>&nbsp;
-    </td>
   </tr>
   <% end rescue ActiveRecord::SubclassNotFound %>
 </table>

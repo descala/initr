@@ -10,6 +10,9 @@ class Fail2banController < ApplicationController
   # to make right menu appear
   layout "nested"
 
+  # use initr helper
+  helper :initr
+
   # make "initr" item on the top menu the selected one
   menu_item :initr
 
@@ -17,7 +20,7 @@ class Fail2banController < ApplicationController
     if request.post?
       params["fail2ban"] ||= {}
       params["fail2ban"]["fail2ban_jails"] ||= {}
-      if @fail2ban.update_attributes(params["fail2ban"])
+      if @klass.update_attributes(params["fail2ban"])
         flash[:notice]='Configuration saved'
         redirect_to :controller=>'klass', :action=>'list', :id=>@node
       else
@@ -29,8 +32,8 @@ class Fail2banController < ApplicationController
   private
 
   def find_fail2ban
-    @fail2ban = Initr::Fail2ban.find params[:id]
-    @node = @fail2ban.node
+    @klass = Initr::Fail2ban.find params[:id]
+    @node = @klass.node
     @project = @node.project
   end
 

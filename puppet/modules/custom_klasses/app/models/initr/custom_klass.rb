@@ -33,10 +33,6 @@ class Initr::CustomKlass < Initr::Klass
     parameters
   end
 
-  def configurable?
-    true
-  end
-
   def print_parameters
     p = custom_klass_confs
     return "-" if p.empty?

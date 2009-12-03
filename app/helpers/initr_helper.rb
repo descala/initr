@@ -12,4 +12,9 @@ module InitrHelper
     end
   end
 
+  def klass_menu(title="")
+    t = title.blank? ? "Configuration" : title
+    render(:partial => 'klass/menu', :locals => {:title=>t})
+  end
+
 end

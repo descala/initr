@@ -1,0 +1,8 @@
+<h3>Move class from <%=@node.fqdn%></h2>
+
+<% labelled_tabular_form_for :klass, @klass, :url=>{:action=>'move'} do |f| -%>
+  <p><%= f.error_messages %></p>
+  <p><%= f.select('node_id',@nodes.collect {|n| [n.fqdn,n.id]}) %></p>
+  <p><%= submit_tag("Move") %></p>
+<% end -%>
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

@@ -1,16 +1,14 @@
-<h2><%= @node.fqdn %></h2>
-
-<h3>Fail2ban jails</h3>
+<%= klass_menu "Fail2ban jails" %>
 
 <%= error_messages_for 'fail2ban' %>
 
-<% form_for(:fail2ban, @fail2ban, :url => {:action => 'configure'} ) do |f| -%>
+<% form_for(:fail2ban, @klass, :url => {:action => 'configure'} ) do |f| -%>
 
   <p>Mail notifications to:<br />
   <%= f.text_field("mailto") %> (empty if don't want mail notifications)</p>
-  <p><%= check_box_tag("fail2ban[fail2ban_jails][pop3]", 1, @fail2ban.fail2ban_jails.include?("pop3")) %> pop3</p>
-  <p><%= check_box_tag("fail2ban[fail2ban_jails][ssh]", 1, @fail2ban.fail2ban_jails.include?("ssh")) %> ssh</p>
-  <p><%= check_box_tag("fail2ban[fail2ban_jails][vsftpd]", 1, @fail2ban.fail2ban_jails.include?("vsftpd")) %> vsftpd</p>
+  <p><%= check_box_tag("fail2ban[fail2ban_jails][pop3]", 1, @klass.fail2ban_jails.include?("pop3")) %> pop3</p>
+  <p><%= check_box_tag("fail2ban[fail2ban_jails][ssh]", 1, @klass.fail2ban_jails.include?("ssh")) %> ssh</p>
+  <p><%= check_box_tag("fail2ban[fail2ban_jails][vsftpd]", 1, @klass.fail2ban_jails.include?("vsftpd")) %> vsftpd</p>
 
   <p>
     <%= f.label("fail2ban_custom_jails", "Custom jails:") %><br/>

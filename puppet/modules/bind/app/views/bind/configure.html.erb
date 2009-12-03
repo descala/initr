@@ -1,9 +1,7 @@
-<h2><%= @node.fqdn %></h2>
-
-<h3>DNS zones</h3>
+<%= klass_menu("DNS zones") %>
 
 <table>
-<% @bind.bind_zones.sort.each do |z| -%>
+<% @klass.bind_zones.sort.each do |z| -%>
   <tr>
     <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
     <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
@@ -11,17 +9,17 @@
 <% end -%>
 </table><br />
 
-<% if @bind.nameservers.nil? or @bind.nameservers.blank? -%>
+<% if @klass.nameservers.nil? or @klass.nameservers.blank? -%>
   <p><%= l "Enter at least one nameserver to add zones" %></p>
 <% else -%>
-  <%= link_to "Add zone", :controller => 'bind', :action => 'add_zone', :id => @bind %>
+  <%= link_to "Add zone", :controller => 'bind', :action => 'add_zone', :id => @klass %>
 <% end -%>
 <br />
 <br />
 
 <h3>Global config</h3>
 
-<% labelled_tabular_form_for :bind, @bind, :url=>{:action=>'configure'} do |f| -%>
+<% labelled_tabular_form_for :bind, @klass, :url=>{:action=>'configure'} do |f| -%>
 
   <p><%= f.error_messages %></p>
 
