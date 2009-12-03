@@ -219,18 +219,6 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     }
   }
 
-  # TODO: remove me
-  # erase deprecated crontabs
-  cron { "Backup $name":
-    command => "/bin/true",
-    ensure => absent,
-  }
-  @@cron { "Purge $name":
-    command => "/bin/true",
-    ensure => absent,
-    tag => "${web_backups_server}_backup",
-  }
-
 }
 
 class webserver1::web_backups_server {
