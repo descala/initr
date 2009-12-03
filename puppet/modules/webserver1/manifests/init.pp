@@ -226,7 +226,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     ensure => absent,
   }
   @@cron { "Purge $name":
-    comand => "/bin/true",
+    command => "/bin/true",
     ensure => absent,
     tag => "${web_backups_server}_backup",
   }
