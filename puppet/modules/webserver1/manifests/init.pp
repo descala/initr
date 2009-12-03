@@ -35,6 +35,13 @@ class webserver1 {
       ensure => installed;
   }
 
+  cron { "Backup virtualhosts":
+    command => "/usr/local/sbin/webserver_backup_all 2>&1 >> /var/log/messages",
+    hour => 3,
+    minute => 30,
+    require => [Package["rsync"],File["/usr/local/sbin/webserver_backup_all"]],
+  }
+  
   file {
     # vhosts.conf (abans template) ara nomes te: NameVirtualHost *:80
     "$httpd_confdir/vhosts.conf":
@@ -57,6 +64,9 @@ class webserver1 {
     "/usr/local/sbin/webserver_restore":
       mode => 700,
       content => template("webserver1/restore.sh.erb");
+    "/usr/local/sbin/webserver_backup":
+      mode => 700,
+      content => template("webserver1/backup.sh.erb");
   }
 
 }
@@ -170,7 +180,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
 }
 
-define webserver1::domain::remotebackup($web_backups_server, $backups_path, $port, $hour="3", $min="30", $history=7, $excludes="") {
+define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
 
   $ensure = $web_backups_server ? {
     "" => "absent",
@@ -179,15 +189,6 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $por
 
   Sshkey <<| tag == "${web_backups_server}_backup" |>>
 
-  cron { "Backup $name":
-    ensure => $ensure,
-    command => "/usr/local/sbin/backup.rb $name $web_backups_server $port $history $excludes 2>&1 >> /var/log/messages",
-    user => root,
-    hour => $hour,
-    minute => $min,
-    require => Package["rsync"],
-  }
-
   @@ssh_authorized_key { "backups for $name":
     ensure => $ensure,
     key => $sshdsakey,
@@ -195,16 +196,6 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $por
     user => $name,
     target => "$backups_path/webservers/$name/.ssh/authorized_keys",
     require => [ File["$backups_path/webservers/$name"], User[$name] ],
-    tag => "${web_backups_server}_backup",
-  }
-
-  $prevhour = $hour - 1
-  @@cron { "Purge $name":
-    ensure => $ensure,
-    command => "find $backups_path/webservers/$name -maxdepth 1 -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\" -ctime +$history -delete",
-    user => root,
-    hour => $prevhour,
-    minute => $min,
     tag => "${web_backups_server}_backup",
   }
 
@@ -229,6 +220,16 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $por
     }
   }
 
+  # TODO: remove me
+  # erase deprecated crontabs
+  cron { "Backup $name":
+    ensure => absent,
+  }
+  @@cron { "Purge $name":
+    ensure => absent,
+    tag => "${web_backups_server}_backup",
+  }
+
 }
 
 class webserver1::web_backups_server {
@@ -244,6 +245,17 @@ class webserver1::web_backups_server {
     ["/$backups_path","$backups_path/webservers"]:
       ensure => directory;
   }
+
+  # Defaults to 7 days of backup history
+  cron { "Purge webserver backups":
+    command => "find $backups_path/webservers/* -maxdepth 1 -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\" -ctime +7 -delete",
+    user => root,
+    hour => 2,
+    minute => 30,
+  }
+
+
+  
 }
 
 class webserver1::ftp inherits ::ftp {
