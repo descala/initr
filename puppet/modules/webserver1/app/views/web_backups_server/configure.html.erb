@@ -1,8 +1,6 @@
-<h2><%=@node.fqdn%></h2>
+<%= klass_menu "Web backups server" %>
 
-<h3>Web backups server</h3>
-
-<% labelled_tabular_form_for(:web_backups_server, @wbs, :url=>{:action=>'configure'}) do |f| %>
+<% labelled_tabular_form_for(:web_backups_server, @klass, :url=>{:action=>'configure'}) do |f| %>
 
 <%= error_messages_for 'wbs' %>
 

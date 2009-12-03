@@ -48,7 +48,7 @@ begin
           :base    => [:configure] },
         :require => :member
       permission :use_classes,
-        { :klass   => [:create, :configure, :destroy] },
+        { :klass   => [:create, :configure, :move, :destroy] },
         :require => :member
       # public:
       #  * node/get_host_definition

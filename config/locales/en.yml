@@ -1,4 +1,13 @@
-# Sample plugin
-label_plugin_example: Sample Plugin
-text_say_hello: Plugin say 'Hello'
-text_say_goodbye: Plugin say 'Good bye'
+en:
+  Task or Support: Task or Support
+  Functionality: Functionality
+  Defect: Defect
+  New: New
+  Assigned: Assigned
+  Resolved: Resolved
+  Reopened: Reopened
+  Needs more information: Needs more information
+  Closed: Closed
+  Refused: Refused
+  Temporarily parked: Temporarily parked
+  field_node: Node

@@ -42,7 +42,14 @@ class Initr::Klass < ActiveRecord::Base
   end
 
   def controller
-    self.class.to_s.split('::').last.underscore
+    class_name = self.class.to_s.split('::').last
+    if "#{class_name}Controller".constantize.instance_methods.include? 'configure'
+      class_name.underscore
+    else
+      'klass'
+    end
+  rescue NameError => e
+    'klass'
   end
   
   # Variables for puppet
@@ -56,8 +63,13 @@ class Initr::Klass < ActiveRecord::Base
     nil
   end
   
-  # we assume that each class has a controller to configure it
-  def configurable?
+  # a class can be moved from node to another
+  def movable?
+    true
+  end
+
+  # a class can be removed from a node
+  def removable?
     true
   end
   

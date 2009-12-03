@@ -1,6 +1,4 @@
-<h2><%=@node.fqdn%></h2>
-
-<h3>Configure WPKG</h3>
+<%= klass_menu "Configure WPKG" %>
 
 <% form_for :wpgk do |f| -%>
 
@@ -20,7 +18,7 @@
     <td><%=  p.name %></td>
     <td><%=  p.revision %></td>
     <td align="center">
-      <%= check_box_tag "config[#{p.id}]", true, @wpkg.config[p.id], :id => nil %>
+      <%= check_box_tag "config[#{p.id}]", true, @klass.config[p.id], :id => nil %>
     </td>
   </tr>
   <% end %>

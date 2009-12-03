@@ -1,6 +1,4 @@
-<h2><%=@node.fqdn%></h2>
-
-<h3><%="New custom klass"%></h3>
+<%= klass_menu "New custom klass"%>
 
 <% form_for :custom_klass, @custom_klass, :url => {:action => 'create'} do |f| %>
 

@@ -7,13 +7,13 @@ class BindController < ApplicationController
   before_filter :authorize
 
   layout "nested"
-
+  helper :initr
   menu_item :initr
 
   def configure
     if request.post?
       params["bind"] ||= {}
-      if @bind.update_attributes(params["bind"])
+      if @klass.update_attributes(params["bind"])
         flash[:notice]='Configuration saved'
         redirect_to :action=>'configure'
       else
@@ -24,12 +24,12 @@ class BindController < ApplicationController
 
   def add_zone
     @bind_zone = Initr::BindZone.new(params[:bind_zone])
-    @bind_zone.bind = @bind
+    @bind_zone.bind = @klass
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
     if request.post?
       if @bind_zone.save
         flash[:notice]="Bind zone saved"
-        redirect_to :action=>'configure', :id=>@bind
+        redirect_to :action=>'configure', :id=>@klass
       else
         render :action=>"add_zone"
       end
@@ -41,7 +41,7 @@ class BindController < ApplicationController
     if request.post?
       if @bind_zone.update_attributes(params[:bind_zone])
         flash[:notice]="Bind zone saved"
-        redirect_to :action => 'configure', :id => @bind
+        redirect_to :action => 'configure', :id => @klass
       else
         render :action => 'edit_zone'
       end
@@ -50,21 +50,21 @@ class BindController < ApplicationController
 
   def destroy_zone
     @bind_zone.destroy if request.post?
-    redirect_to :action => 'configure', :id => @bind
+    redirect_to :action => 'configure', :id => @klass
   end
 
   private
 
   def find_bind
-    @bind = Initr::Bind.find params[:id]
-    @node = @bind.node
+    @klass = Initr::Bind.find params[:id]
+    @node = @klass.node
     @project = @node.project
   end
 
   def find_bind_zone
     @bind_zone = Initr::BindZone.find params[:id]
-    @bind = @bind_zone.bind
-    @node = @bind.node
+    @klass = @bind_zone.bind
+    @node = @klass.node
     @project = @node.project
   end
 

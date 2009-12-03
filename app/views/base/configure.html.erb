@@ -1,16 +1,14 @@
-<h2><%=@node.fqdn%></h2>
-
-<h3>Initr</h3>
+<%= klass_menu %>
 
 <%= error_messages_for 'base' %>
 
-<% form_for(:base, @base, :url => {:action => 'configure'} ) do |f| -%>
+<% form_for(:base, @klass, :url => {:action => 'configure'} ) do |f| -%>
 
   <p class="base_conf">
   <table>
-  <% new_or_existing = @base.base_conf.new_record? ? 'new' : 'existing' -%>
+  <% new_or_existing = @klass.base_conf.new_record? ? 'new' : 'existing' -%>
   <% prefix = "base[#{new_or_existing}_base_conf_attributes][]" -%>
-  <% fields_for prefix, @base.base_conf do |base_conf_form| -%>
+  <% fields_for prefix, @klass.base_conf do |base_conf_form| -%>
     <tr>
       <td>Cron active</td><td><%= base_conf_form.check_box :initr_cron %></td>
     </tr>

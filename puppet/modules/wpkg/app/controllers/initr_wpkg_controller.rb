@@ -6,13 +6,14 @@ class InitrWpkgController < ApplicationController
   before_filter :authorize
 
   layout 'nested'
+  helper :initr
   menu_item :initr
 
   def configure
     @packages = InitrWpkg.packages_available_from_xml
     if request.post?
-      @wpkg.config = params[:config] || {}
-      if @wpkg.save
+      @klass.config = params[:config] || {}
+      if @klass.save
         flash[:notice] = 'Configuration saved'
         redirect_to :controller => 'klass', :action => 'list', :id => @node
       end
@@ -22,8 +23,8 @@ class InitrWpkgController < ApplicationController
   private
 
   def find_wpkg
-    @wpkg = InitrWpkg.find params[:id]
-    @node = @wpkg.node
+    @klass = InitrWpkg.find params[:id]
+    @node = @klass.node
     @project = @node.project
   end
 

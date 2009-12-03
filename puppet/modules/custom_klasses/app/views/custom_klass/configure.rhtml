@@ -1,10 +1,8 @@
-<h2><%=@node.fqdn%></h2>
-
-<h3><%="Editing"%> <%=@custom_klass.name%></h3>
+<%= klass_menu("Editing #{@klass.name}") %>
 
 <p><%= "Needed attributes for this class:" %></p>
 
-<% form_for :custom_klass, @custom_klass, :url => ({ :action=>'configure', :id=>@custom_klass }) do |f| %>
+<% form_for :custom_klass, @klass, :url => ({ :action=>'configure', :id=>@klass }) do |f| %>
 
   <%= render :partial => f %>
 

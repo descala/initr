@@ -2,10 +2,11 @@ class KlassController < ApplicationController
   unloadable
 
   before_filter :find_node, :only => [:list,:create]
-  before_filter :find_project, :only => [:configure,:destroy]
+  before_filter :find_klass, :only => [:configure,:destroy,:move]
   before_filter :authorize
-  
+ 
   layout 'nested' 
+  helper :initr
   menu_item :initr
   
   def list
@@ -36,7 +37,7 @@ class KlassController < ApplicationController
     else
       klass.node=@node
       if klass.save
-        if klass.configurable?
+        if "#{klass.class.to_s.split('::').last}Controller".constantize.instance_methods.include? "configure"
           redirect_to :controller => klass.controller, :action => 'configure', :id => klass.id
         else
           redirect_to :action => 'list', :id => @node.id
@@ -48,13 +49,47 @@ class KlassController < ApplicationController
     end
   end
 
+  def configure
+    #TODO
+  end
+
+  def move
+    unless @klass.movable?
+      flash[:error] = "This klass can't be moved"
+      redirect_to :action => 'list', :id => @node.id
+      return
+    end
+    @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
+    if request.post?
+      unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
+        flash[:error] = "Invalid destination node"
+        render :action => 'move'
+        return
+      end
+      @klass.node_id = params[:klass][:node_id]
+      if @klass.save
+        flash[:notice] = "Klass moved"
+        redirect_to :action => 'list', :id => params[:klass][:node_id]
+      else
+        render :action => 'move'
+      end
+    end
+  end
+
   def destroy
     k = Initr::Klass.find params[:id]
     k.destroy
-    redirect_to :back
+    flash[:notice] = "Klass deleted"
+    redirect_to :action => 'list', :id => @node
   end
     
   private
+  
+  def find_klass
+    @klass = Initr::Klass.find params[:id]
+    @node = @klass.node
+    @project = @node.project
+  end
   
   def find_node
     @node = Initr::Node.find params[:id]
@@ -63,10 +98,4 @@ class KlassController < ApplicationController
     render_404
   end
 
-  def find_project
-    @klass = Initr::Klass.find params[:id]
-    @node = @klass.node
-    @project = @node.project
-  end
-  
 end

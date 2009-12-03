@@ -1,5 +1,6 @@
 class BaseController < ApplicationController
   unloadable
+  helper 'initr'
 
   layout 'nested'
   menu_item :initr
@@ -10,7 +11,7 @@ class BaseController < ApplicationController
   def configure
     if request.post?
       params[:base][:existing_base_conf_attributes] ||= {}
-      if @base.update_attributes(params[:base])
+      if @klass.update_attributes(params[:base])
         flash[:notice] = "Configuration successfully updated."
         redirect_to :controller => 'klass', :action => 'list', :id => @node
       else
@@ -22,8 +23,8 @@ class BaseController < ApplicationController
   private
 
   def find_base
-    @base = Initr::Base.find(params[:id])
-    @node = @base.node
+    @klass = Initr::Base.find(params[:id])
+    @node = @klass.node
     @project = @node.project
   end
   

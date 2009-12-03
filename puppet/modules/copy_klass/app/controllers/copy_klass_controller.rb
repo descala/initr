@@ -2,6 +2,7 @@ class CopyKlassController < ApplicationController
   unloadable
 
   layout 'nested'
+  helper :initr
   menu_item :initr
 
   before_filter :find_copy_klass
@@ -15,7 +16,7 @@ class CopyKlassController < ApplicationController
     end
     if request.post?
       params["copy_klass"] ||= {}
-      if @copy_klass.update_attributes(params["copy_klass"])
+      if @klass.update_attributes(params["copy_klass"])
         flash[:notice]='Configuration saved'
         redirect_to :controller => 'klass', :action=>'list', :id => @node
       else
@@ -25,8 +26,8 @@ class CopyKlassController < ApplicationController
   end
 
   def find_copy_klass
-    @copy_klass = Initr::CopyKlass.find params[:id]
-    @node = @copy_klass.node
+    @klass = Initr::CopyKlass.find params[:id]
+    @node = @klass.node
     @project = @node.project
   end
 

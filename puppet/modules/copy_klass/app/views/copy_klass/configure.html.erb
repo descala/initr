@@ -1,11 +1,11 @@
-<h2><%=@node.fqdn%></h2>
-<h3><%=l "Choose a class to copy"%></h3>
-<% labelled_tabular_form_for :copy_klass, @copy_klass, :url=>{:action=>'configure'} do |f| -%>
+<%=klass_menu "Choose a class to copy"%>
+
+<% labelled_tabular_form_for :copy_klass, @klass, :url=>{:action=>'configure'} do |f| -%>
 
   <p><%= f.error_messages %></p>
-  <p><%= f.select('copied_klass_id',grouped_options_for_select(@copiable_klasses, @copy_klass.copied_klass_id), :include_blank=>true) %></p>
-  <% if @copy_klass.copied_klass -%>
-    <p><%= link_to("configure #{@copy_klass.copied_klass.name} at #{@copy_klass.copied_klass.node.fqdn}", :controller=>@copy_klass.copied_klass.controller, :action=>'configure', :id=>@copy_klass.copied_klass_id) %></p>
+  <p><%= f.select('copied_klass_id',grouped_options_for_select(@copiable_klasses, @klass.copied_klass_id), :include_blank=>true) %></p>
+  <% if @klass.copied_klass -%>
+    <p><%= link_to("configure #{@klass.copied_klass.name} at #{@klass.copied_klass.node.fqdn}", :controller=>@klass.copied_klass.controller, :action=>'configure', :id=>@klass.copied_klass_id) %></p>
   <% end -%>
   <p><%= submit_tag("Save") %></p>
 

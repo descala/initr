@@ -10,7 +10,7 @@
 <%= hidden_field_tag :node_id, @node.id %>
 
 <div id="custom_klass_confs">
-  <%= render :partial => 'custom_klass_conf', :collection => @custom_klass.custom_klass_confs -%>
+  <%= render :partial => 'custom_klass_conf', :collection => @klass.custom_klass_confs -%>
 </div>
 <p><%= add_ckc_link("Add configuration value") %></p>
 

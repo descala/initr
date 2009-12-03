@@ -45,4 +45,12 @@ class Initr::Base < Initr::Klass
     false
   end
 
+  def movable?
+    false
+  end
+
+  def removable?
+    false
+  end
+
 end
