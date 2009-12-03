@@ -29,6 +29,7 @@ module Initr
     end
 
     def address
+      return node.fqdn if config["address"] == "" or config["address"].nil?
       config["address"]
     end
     def address=(a)
