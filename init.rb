@@ -11,9 +11,19 @@ begin
   require 'puppet_patch'
   Dispatcher.to_prepare do
     Project.send(:include, ProjectPatch)
-    Puppet::Rails::Host.send(:include, PuppetPatch)
-    Puppet::Rails::FactName.send(:include, PuppetPatch)
-    Puppet::Rails::FactValue.send(:include, PuppetPatch)
+    [
+     Puppet::Rails::Host,
+     Puppet::Rails::FactName,
+     Puppet::Rails::FactValue,
+     Puppet::Rails::Resource,
+     Puppet::Rails::ParamValue,
+     Puppet::Rails::ParamName,
+     Puppet::Rails::ResourceTag,
+     Puppet::Rails::PuppetTag,
+     Puppet::Rails::SourceFile
+    ].each do |c|
+      c.send(:include, PuppetPatch)
+    end
   end 
 
   Redmine::Plugin.register :initr do
