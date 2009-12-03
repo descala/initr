@@ -222,9 +222,11 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
   # TODO: remove me
   # erase deprecated crontabs
   cron { "Backup $name":
+    command => "/bin/true"
     ensure => absent,
   }
   @@cron { "Purge $name":
+    comand => "/bin/true",
     ensure => absent,
     tag => "${web_backups_server}_backup",
   }
@@ -297,7 +299,7 @@ class webserver1::awstats {
       command => "/usr/bin/htpasswd -b /etc/awstats/users admin $admin_password",
       user => root,
       unless => "grep \"^admin:\" /etc/awstats/users",
-      require => Exec["create htpasswd"];
+      require => [Exec["create htpasswd"], Package[$httpd]];
     "create htpasswd":
       command => "/bin/touch /etc/awstats/users",
       creates => "/etc/awstats/users",
