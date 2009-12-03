@@ -1,0 +1,12 @@
+<table class="list" style="table-layout: fixed;">
+  <tr align="left">
+    <th  width="33%">Resource</th>
+    <th  width="66%">Tags</th>
+  </tr>
+<% resources.each do |resource| %>
+  <tr class="<%= cycle('odd', 'even') %>">
+    <td><%= resource.restype %>[<%= resource.title %>]</td>
+    <td><%= resource.puppet_tags.collect{|t|t.name}.sort.join(" ") %></td>
+  </tr>
+<% end %>
+</table>

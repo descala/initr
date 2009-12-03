@@ -24,8 +24,11 @@
   <% end %>
 </table>
 
-<h3>Node facts</h3>
+<h3>Facts</h3>
 <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
+
+<h3>Exported resources</h3>
+<%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
 
 <h3>Puppet "external_nodes" YAML</h3>
 <table class="list" style="table-layout: fixed;">
