@@ -35,8 +35,12 @@ class NodeController < ApplicationController
   def list
     if @project.nil?
       @subprojects = []
-      User.current.projects.sort.each do |p|
-        @subprojects << p
+      if User.current.admin?
+        @subprojects = Project.all.sort
+      else
+        User.current.projects.sort.each do |p|
+          @subprojects << p
+        end
       end
     else
       @subprojects = @project.descendants.visible.sort
@@ -45,7 +49,11 @@ class NodeController < ApplicationController
 
   def facts
     @fact=params[:id]
-    @nodes=User.current.projects.collect {|p| p.nodes }.flatten.compact.sort
+    if User.current.admin?
+      @nodes=Project.all.collect {|p| p.nodes }.flatten.compact.sort
+    else
+      @nodes=User.current.projects.collect {|p| p.nodes }.flatten.compact.sort
+    end
     @facts={}
     @nodes.each do |n|
       @facts[n] = n.puppet_fact(params[:id]) unless n.puppet_fact(params[:id]).nil?
