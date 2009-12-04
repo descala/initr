@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [ -f /usr/bin/awstats_updateall.pl -a -f /var/www/awstats/awstats.pl -a -d /etc/awstats ] ; then
-  exec perl /usr/bin/awstats_updateall.pl now -configdir="/etc/awstats" -awstatsprog="/var/www/awstats/awstats.pl" >/dev/null
-fi
-exit 0
-

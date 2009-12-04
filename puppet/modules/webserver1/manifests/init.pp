@@ -12,9 +12,14 @@ class webserver1 {
   include mysql
   include php
   include webserver1::ftp
-  include webserver1::awstats
   case $operatingsystem {
     "Debian": { include webserver1::awstats::debian }
+    "CentOS": {
+      case $operatingsystemrelease {
+        "5.3": { include webserver1::awstats::centos53 }
+        default: { include webserver1::awstats::redhat }
+      }
+    }
     default: { include webserver1::awstats::redhat }
   }
 
@@ -51,9 +56,9 @@ class webserver1 {
     "/usr/local/sbin/backup.rb":
       mode => 700,
       source => "puppet:///webserver1/backup.rb";
-    "/etc/logrotate.d/httpd":
+    "/etc/logrotate.d/$httpd_service":
       mode => 644,
-      source => "puppet:///webserver1/logrotate_httpd";
+      content => template("webserver1/logrotate_httpd.erb");
     "$phpmyadmindir/config.inc.php":
       mode => 644,
       require => [Package["phpmyadmin"],Package[$httpd]],
@@ -265,10 +270,6 @@ class webserver1::awstats {
   }
 
   file {
-    "/etc/cron.hourly/awstats":
-      mode => 755,
-      source => "puppet:///webserver1/awstats_cron",
-      notify => Service[$cron_service];
     "/etc/awstats/awstats.model.conf":
       mode => 644,
       require => Package["awstats"],
@@ -282,7 +283,7 @@ class webserver1::awstats {
       unless => "grep \"^admin:\" /etc/awstats/users",
       require => [Exec["create htpasswd"], Package[$httpd]];
     "create htpasswd":
-      command => "/bin/touch /etc/awstats/users",
+      command => "/bin/touch /etc/awstats/users ; chgrp $httpd_user /etc/awstats/users ; chmod 640 /etc/awstats/users",
       creates => "/etc/awstats/users",
       user => root,
       require => Package["awstats"],
@@ -291,11 +292,17 @@ class webserver1::awstats {
 
 }
 
-class webserver1::awstats::debian {
+class webserver1::awstats::debian inherits webserver1::awstats {
   file {
+    "/etc/cron.d/awstats":
+      mode => 755,
+      content => template("webserver1/awstats_cron.erb"),
+      notify => Service[$cron_service];
     "/etc/apache2/conf.d/awstats.conf":
       mode => 644,
-      source => "puppet:///webserver1/awstats_httpd.conf",
+      owner => $httpd_user,
+      group => $httpd_user,
+      content => template("webserver1/awstats_httpd.conf.erb"),
       require => Package[$httpd],
       notify => Service[$httpd_service];
     "/etc/apache2/conf.d/phpmyadmin.conf":
@@ -303,15 +310,23 @@ class webserver1::awstats::debian {
       group => $httpd_user,
       require => Package["phpmyadmin"],
       content => template("webserver1/phpmyadmin_httpd.erb");
+    "/usr/bin/awstats_updateall.pl":
+      mode => 750,
+      source => "/usr/share/doc/awstats/examples/awstats_updateall.pl",
+      require => Package["awstats"];
   }
   #TODO: install php-mbstring from source?
 }
 
-class webserver1::awstats::redhat {
+class webserver1::awstats::redhat inherits webserver1::awstats {
   file {
+    "/etc/cron.hourly/awstats":
+      mode => 755,
+      content => template("webserver1/awstats_cron.erb"),
+      notify => Service[$cron_service];
     "/etc/httpd/conf.d/awstats.conf":
       mode => 644,
-      source => "puppet:///webserver1/awstats_httpd.conf",
+      content => template("webserver1/awstats_httpd.conf.erb"),
       require => Package[$httpd],
       notify => Service[$httpd_service];
     "/etc/httpd/conf.d/phpmyadmin.conf":
@@ -319,11 +334,30 @@ class webserver1::awstats::redhat {
       group => $httpd_user,
       require => Package["phpmyadmin"],
       content => template("webserver1/phpmyadmin_httpd.erb");
+    "/var/lib/awstats":
+      ensure => directory,
+      owner => root,
+      group => root,
+      mode => 755;
+    "/var/lib/awstats/awstats.pl":
+      source => "/var/www/awstats/awstats.pl",
+      require => Package["awstats"];
   }
   package {
     "php-mbstring":
       ensure => installed,
       notify => Service[$httpd_service];
+  }
+}
+
+class webserver1::awstats::centos53 inherits webserver1::awstats::redhat {
+  file {
+    "/usr/bin/awstats_updateall.pl":
+      ensure => "/usr/share/awstats/tools/awstats_updateall.pl",
+      require => Package["awstats"];
+    "/var/lib/awstats/awstats.pl":
+      source => "/usr/share/awstats/wwwroot/cgi-bin/awstats.pl",
+      require => Package["awstats"];
   }
 }
 

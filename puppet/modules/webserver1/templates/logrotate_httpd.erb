@@ -1,0 +1,38 @@
+<% if operatingsystem == "Debian" -%>
+/var/log/apache2/*.log {
+    weekly
+    missingok
+    rotate 52
+    compress
+    delaycompress
+    notifempty
+    create 640 root adm
+    sharedscripts
+    prerotate
+      if [ -f /usr/bin/awstats_updateall.pl -a -f /usr/lib/cgi-bin/awstats.pl -a -d /etc/awstats ] ; then
+        /usr/bin/awstats_updateall.pl now -configdir="/etc/awstats" -awstatsprog="/usr/lib/cgi-bin/awstats.pl" >/dev/null
+      fi
+    endscript
+    postrotate
+      if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
+          /etc/init.d/apache2 reload > /dev/null
+      fi
+    endscript
+}
+<% else -%>
+/var/log/httpd/*log /var/www/*/logs/*log {
+    missingok
+    rotate 4
+    notifempty
+    sharedscripts
+    prerotate
+      if [ -f /usr/bin/awstats_updateall.pl -a -f /var/lib/awstats/awstats.pl -a -d /etc/awstats ] ; then
+        /usr/bin/awstats_updateall.pl now -configdir="/etc/awstats" -awstatsprog="/var/lib/awstats/awstats.pl" >/dev/null
+      fi
+    endscript
+    postrotate
+        /sbin/service httpd reload > /dev/null 2>/dev/null || true
+    endscript
+}
+
+<% end -%>

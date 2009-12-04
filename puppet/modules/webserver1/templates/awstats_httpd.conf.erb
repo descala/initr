@@ -1,0 +1,60 @@
+<% if operatingsystem == "Debian" -%>
+##################
+# Puppet Managed #
+##################
+# This provides worldwide access to everything below the directory
+# Security concerns:
+#  * Raw log processing data is accessible too for everyone
+#  * The directory is by default writable by the httpd daemon, so if
+#    any PHP, CGI or other script can be tricked into copying or
+#    symlinking stuff here, you have a looking glass into your server,
+#    and if stuff can be uploaded to here, you have a public warez site!
+<Directory /usr/lib/cgi-bin>
+        DirectoryIndex awstats.pl
+        Options ExecCGI
+        AuthUserFile /etc/awstats/users
+        AuthName "Accés a les estadístiques"
+        AuthType Basic
+        Require valid-user
+</Directory>
+
+# This provides worldwide access to everything below the directory
+# Security concerns: none known
+<Directory /usr/share/awstats/icon>
+        Options None
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+</Directory>
+
+# This provides worldwide access to everything in the directory
+# Security concerns: none known
+Alias /awstats/icon/ /usr/share/awstats/icon/
+
+# This (hopefully) enables _all_ CGI scripts in the default directory
+# Security concerns: Are you sure _all_ CGI scripts are safe?
+ScriptAlias /awstats /usr/lib/cgi-bin
+
+RedirectMatch ^/awstats[/]*$ /awstats/awstats.pl
+<% else -%>
+##################
+# Puppet Managed #
+##################
+<% if operatingsystem == "CentOS" and operatingsystemrelease == "5.3" -%>
+Alias /awstats/icon/ /usr/share/awstats/wwwroot/icon/
+<% else -%>
+Alias /awstats/icon/ /var/lib/awstats/icon/
+<% end -%>
+
+ScriptAlias /awstats/ /var/lib/awstats/
+<Directory /var/lib/awstats/>
+  DirectoryIndex awstats.pl
+  Options ExecCGI
+  AuthUserFile /etc/awstats/users
+  AuthName "Accés a les estadístiques"
+  AuthType Basic
+  Require valid-user
+</Directory>
+
+RedirectMatch ^/awstats[/]*$ /awstats/awstats.pl
+<% end -%>
