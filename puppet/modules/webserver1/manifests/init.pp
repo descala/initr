@@ -240,7 +240,7 @@ class webserver1::web_backups_server {
 
   # Defaults to 7 days of backup history
   cron { "Purge webserver backups":
-    command => "find $backups_path/webservers/* -maxdepth 1 -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\" -ctime +7 -delete",
+    command => "find $backups_path/webservers/* -maxdepth 1 -name \"[0-9][0-9]*-[0-9][0-9]*-[0-9][0-9]*\" -ctime +7 -exec rm -rf {} \;",
     user => root,
     hour => 2,
     minute => 30,
