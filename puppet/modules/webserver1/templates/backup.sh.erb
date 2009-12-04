@@ -13,7 +13,10 @@ case "$DOMAIN" in
 <% webserver_domains.each do |k,v| -%>
   <%= v['name'] %>)
     SERVER=<%= v['web_backups_server'] %>
-    u_sure
+    SQLBAK=/var/www/$DOMAIN/backups/$DOMAIN.sql
+     u_sure
+    <%= "/usr/bin/mysqldump -u #{v['username']} -p#{v['password_db']} #{v['database']} > $SQLBAK ; gzip -f $SQLBAK ; chmod 600 $SQLBAK.gz" %>
+    <%= "/var/www/awstats/awstats??????.$DOMAIN.???" %>
     <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} #{v['excludes']}" %>
     ;;
 <% end -%>

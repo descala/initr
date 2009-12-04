@@ -99,13 +99,8 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       owner => $username,
       passwd => $password_db,
     }
-    mysql::database::backup { $dbname:
-      destdir => "/var/www/$name/backups",
-      user => $username,
-      pass => $password_db,
-    }
+    # removed mysql::database::backup, we are doing it in backup.sh.erb now
   }
-
 
   file {
     "/var/www/$name":
@@ -243,8 +238,6 @@ class webserver1::web_backups_server {
     minute => 30,
   }
 
-
-  
 }
 
 class webserver1::ftp inherits ::ftp {
@@ -295,7 +288,6 @@ class webserver1::awstats {
       require => Package["awstats"],
       before => Exec["htpasswd for admin"];
   }
-
 
 }
 
@@ -351,5 +343,4 @@ define webserver1::awstats::domain($user, $pass) {
   }
 
 }
-
 
