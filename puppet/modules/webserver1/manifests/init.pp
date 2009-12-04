@@ -67,6 +67,9 @@ class webserver1 {
     "/usr/local/sbin/webserver_backup":
       mode => 700,
       content => template("webserver1/backup.sh.erb");
+    "/usr/local/sbin/webserver_restore_all":
+      mode => 700,
+      content => template("webserver1/restore_all.sh.erb");
   }
 
 }

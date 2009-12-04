@@ -1,0 +1,29 @@
+#!/bin/sh
+##################
+# Puppet managed #
+##################
+
+u_sure() {
+  while true; do
+    read -p "Do you wish to restore ALL webserver domains from its latest backup? [y/n] " yn
+    case $yn in
+      [Yy]* ) echo "Restoring all webserver domains ..."; break;;
+      [Nn]* ) exit;;
+      * ) echo "Please answer yes or no.";;
+    esac
+  done
+}
+
+echo "---------------------"
+echo "Restoring from backup"
+echo "---------------------"
+<% webserver_domains.each do |k,v| -%>
+echo "<%= v['name'] %> from <%= v['web_backups_server'] %>"
+<% end -%>
+echo "---------------------"
+
+u_sure
+
+<% webserver_domains.each do |k,v| -%>
+yes | /usr/local/sbin/webserver_restore <%= v['name'] %>
+<% end -%>
