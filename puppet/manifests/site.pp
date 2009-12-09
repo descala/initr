@@ -234,10 +234,6 @@ $perl_net_ip = $operatingsystem ? {
 }
 $perl_geo_ipfree = $operatingsystem ? {
   Debian => "libgeo-ipfree-perl",
-  CentOS => $operatingsystemrelease ? {
-    "5.3" => "perl-Geo-IP",
-    default => "perl-Geo-IPfree"
-  },
   default => "perl-Geo-IPfree"
 }
 $perl_net_xwhois = $operatingsystem ? {
