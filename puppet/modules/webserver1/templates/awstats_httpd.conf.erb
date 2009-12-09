@@ -12,8 +12,11 @@
 <Directory /usr/lib/cgi-bin>
         DirectoryIndex awstats.pl
         Options ExecCGI
+        AllowOverride None
+        Order allow,deny
+        Allow from all
         AuthUserFile /etc/awstats/users
-        AuthName "Accés a les estadístiques"
+        AuthName "WWW Statistics access"
         AuthType Basic
         Require valid-user
 </Directory>

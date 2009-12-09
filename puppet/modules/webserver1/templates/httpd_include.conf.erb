@@ -34,7 +34,8 @@
 <VirtualHost *:80>
   ServerName   <%=name%>
   # redirect all requests to www.<%=name%>
-  # http://perldoc.perl.org/perlre.html
-  RedirectMatch /(?!awstats)[/.]*$ http://www.<%=name%>
+  RewriteEngine On
+  RewriteCond %{REQUEST_URI} !^/awstats(.*)$ [NC]
+  RewriteRule ^/(.*)         http://www.<%=name%>/$1 [L,R]
 </VirtualHost>
 <% end -%>
