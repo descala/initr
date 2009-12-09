@@ -28,8 +28,9 @@ class Backup
       command += " --exclude-from=#{@excludes} --delete-excluded"        # excludes
     end
     command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
-    command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origen
-    command += " #{@domain}@#{@server}:incremental"                      # desti
+    command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origin
+    command += " /var/www/#{@domain}/conf /var/www/#{@domain}/cgi-bin"   # +origin
+    command += " #{@domain}@#{@server}:incremental"                      # destination
     puts "Syncronizing backup with server, command: #{command}"
     system command
     return $?.exitstatus

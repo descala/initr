@@ -338,13 +338,8 @@ class webserver1::awstats::redhat inherits webserver1::awstats {
       require => Package["phpmyadmin"],
       content => template("webserver1/phpmyadmin_httpd.erb");
     "/var/lib/awstats":
-      ensure => directory,
-      owner => root,
-      group => root,
-      mode => 755;
-    "/var/lib/awstats/awstats.pl":
-      source => "/var/www/awstats/awstats.pl",
-      require => Package["awstats"];
+      source => "/var/www/awstats",
+      recurse => true;
   }
   package {
     "php-mbstring":
