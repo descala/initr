@@ -29,7 +29,6 @@ class Backup
     end
     command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origin
-    command += " /var/www/#{@domain}/conf /var/www/#{@domain}/cgi-bin"   # +origin
     command += " #{@domain}@#{@server}:incremental"                      # destination
     puts "Syncronizing backup with server, command: #{command}"
     system command

@@ -21,8 +21,12 @@ case "$DOMAIN" in
   <%= v['name'] %>)
     SERVER=<%= v['web_backups_server'] %>
     u_sure
-    <%= "rsync --delete -a -v --backup --backup-dir='/var/www/$DOMAIN/htdocs_before_restore' -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/htdocs/ /var/www/$DOMAIN/htdocs/" %>
+    <%= "rsync --delete -rlt -v -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/backups/ /var/www/$DOMAIN/restores/" %>
     chown -R "<%= v['username'] %>":"<%= v['username'] %>" /var/www/$DOMAIN/htdocs
+    <%= "rsync --delete -rlt -v --backup --backup-dir=/var/www/$DOMAIN/backups/old_htdocs -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/htdocs/ /var/www/$DOMAIN/htdocs/" %>
+    echo -e '\n--\nUse this command if you also want to restore the database:'
+    <%= "echo \"cd /var/www/$DOMAIN/restores && gunzip $DOMAIN.sql.gz && mysql -u #{v['username']} -p#{v['password_db']} #{v['database']} < $DOMAIN.sql\"" %>
+    echo -e '--\n'
     ;;
 <% end -%>
   *)
@@ -30,6 +34,6 @@ case "$DOMAIN" in
     exit 1
 esac
 
-echo "Find original files, if any, in /var/www/$DOMAIN/htdocs_before_restore"
+echo "Find htdocs original files, if any, in /var/www/$DOMAIN/backups/old_htdocs"
 
 exit 0
