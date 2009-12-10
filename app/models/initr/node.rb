@@ -42,7 +42,7 @@ class Initr::Node < ActiveRecord::Base
             parameters[k] = v
           end
         end
-        classes << klass.name
+        classes << klass.puppetname
         classes += klass.more_classes if klass.more_classes
       rescue Initr::Klass::ConfigurationError => e
         # if klass.parameters raises don't add klass to node

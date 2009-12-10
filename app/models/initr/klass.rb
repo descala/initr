@@ -33,6 +33,10 @@ class Initr::Klass < ActiveRecord::Base
   # If your model class does not match your puppet class, you must override
   # this method and return a name for the class.
   # It must be a valid puppet class name, without strange characters or spaces
+  def puppetname
+    self.name
+  end
+
   def name
     self.class.to_s.split('::').last.underscore
   end
