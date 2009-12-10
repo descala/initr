@@ -38,10 +38,10 @@ class KlassController < ApplicationController
     else
       klass.node=@node
       if klass.save
-        if "#{klass.class.to_s.split('::').last}Controller".constantize.instance_methods.include? "configure"
-          redirect_to :controller => klass.controller, :action => 'configure', :id => klass.id
-        else
+        if klass.controller == 'klass'
           redirect_to :action => 'list', :id => @node.id
+        else
+          redirect_to :controller => klass.controller, :action => 'configure', :id => klass.id
         end
       else
         flash[:error] = "Error adding class: #{klass.errors.full_messages}"
