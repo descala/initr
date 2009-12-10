@@ -1,5 +1,7 @@
-if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
+if [ -f /etc/bash.bashrc ]; then
+  . /etc/bash.bashrc
+elif [ -f /etc/bashrc ]; then
+  . /etc/bashrc
 fi
 export LANG=en_US.UTF-8
 export PS1='[\u@\[\e[36;1m\]\h\[\e[0m\] \W]\$ '
