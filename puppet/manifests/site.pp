@@ -93,6 +93,10 @@ $httpd_user = $operatingsystem ? {
   default => apache
 }
 $httpd_confdir = $operatingsystem ? {
+  Debian => "/etc/apache2/conf.d",
+  default => "/etc/httpd/conf.d"
+}
+$httpd_sitedir = $operatingsystem ? {
   Debian => "/etc/apache2/sites-available",
   default => "/etc/httpd/conf.d"
 }

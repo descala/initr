@@ -151,7 +151,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       notify => Service[$httpd_service],
       require => File["/var/www/$name/conf"],
       content => template("webserver1/httpd_include.conf.erb");
-    "$httpd_confdir/$name.conf":
+    "$httpd_sitedir/$name.conf":
       notify => Service[$httpd_service],
       ensure => "/var/www/$name/conf/httpd_include.conf";
     "/var/www/$name/conf/vhost.conf":
@@ -166,7 +166,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
   if $operatingsystem == "Debian" {
     apache::ensite { "$name.conf":
-      require => File["$httpd_confdir/$name.conf"],
+      require => File["$httpd_sitedir/$name.conf"],
     }
   }
 
