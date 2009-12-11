@@ -323,7 +323,7 @@ class webserver1::awstats::debian inherits webserver1::awstats {
 
 class webserver1::awstats::redhat inherits webserver1::awstats {
   file {
-    "/etc/cron.hourly/awstats":
+    "/etc/cron.hourly/00awstats":
       mode => 755,
       content => template("webserver1/awstats_cron.erb"),
       notify => Service[$cron_service];
