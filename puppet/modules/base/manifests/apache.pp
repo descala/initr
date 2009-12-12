@@ -23,6 +23,14 @@ class apache {
       notify => Service[$httpd_service];
     }
   }
+  # debian a2dismod
+  define dismod() {
+    file { ["/etc/apache2/mods-enabled/${name}.conf","/etc/apache2/mods-enabled/${name}.load"]:
+      ensure => absent,
+      require => Package[$httpd],
+      notify => Service[$httpd_service];
+    }
+  }
   # debian a2ensite
   define ensite() {
     file { "/etc/apache2/sites-enabled/$name":
@@ -31,7 +39,7 @@ class apache {
       notify => Service[$httpd_service];
     }
   }
-  # debian dissite
+  # debian a2dissite
   define dissite() {
     file { "/etc/apache2/sites-enabled/$name":
       ensure => absent,
