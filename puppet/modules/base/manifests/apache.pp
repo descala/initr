@@ -33,15 +33,27 @@ class apache {
   }
   # debian a2ensite
   define ensite() {
-    file { "/etc/apache2/sites-enabled/$name":
-      ensure => "../sites-available/$name",
-      require => Package[$httpd],
-      notify => Service[$httpd_service];
+    if $name == "default"
+    {
+      # ensures default is loaded as the first virtualhost
+      file { "/etc/apache2/sites-enabled/000-default":
+        ensure => "../sites-available/default",
+        require => Package[$httpd],
+        notify => Service[$httpd_service];
+      }
+    }
+    else
+    {
+      file { "/etc/apache2/sites-enabled/$name":
+        ensure => "../sites-available/$name",
+        require => Package[$httpd],
+        notify => Service[$httpd_service];
+      }
     }
   }
   # debian a2dissite
   define dissite() {
-    file { "/etc/apache2/sites-enabled/$name":
+    file { ["/etc/apache2/sites-enabled/$name","/etc/apache2/sites-enabled/000-$name"]:
       ensure => absent,
       require => Package[$httpd],
       notify => Service[$httpd_service];

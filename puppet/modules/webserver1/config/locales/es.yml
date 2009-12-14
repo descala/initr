@@ -13,3 +13,4 @@ es:
   field_web_backups_server: Servidor de backups
   field_address: Dirección
   field_backups_path: Directorio de los backups
+  field_webserver_default_domain: Dominio por defecto
