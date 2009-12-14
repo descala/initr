@@ -48,11 +48,6 @@ class webserver1 {
   }
 
   file {
-    # TODO: make this consistent with Debian's ports.conf
-    "$httpd_confdir/vhosts.conf":
-      mode => 644,
-      source => "puppet:///webserver1/vhosts.conf",
-      notify => Service[$httpd_service];
     "/usr/local/sbin/backup.rb":
       mode => 700,
       source => "puppet:///webserver1/backup.rb";
@@ -75,6 +70,16 @@ class webserver1 {
     "/usr/local/sbin/webserver_restore_all":
       mode => 700,
       content => template("webserver1/restore_all.sh.erb");
+  }
+
+  # TODO: make this consistent with Debian's ports.conf
+  if $operatingsystem == "CentOS" {
+    file {
+      "$httpd_confdir/vhosts.conf":
+        mode => 644,
+        source => "puppet:///webserver1/vhosts.conf",
+        notify => Service[$httpd_service];
+    }
   }
 
   # redirect to default domain
