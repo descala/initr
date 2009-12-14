@@ -82,7 +82,7 @@ class Initr::Webserver1 < Initr::Klass
   end
   
   def webserver_default_domain
-    config["webserver_default_domain"] ||= "http://www.#{webserver1_domains.first.name}"
+    config["webserver_default_domain"] ||= webserver1_domains.any? ? "http://www.#{webserver1_domains.first.name}" : "http://#{Setting.host_name}"
   end
   def webserver_default_domain=(v)
     config["webserver_default_domain"]=v
