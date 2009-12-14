@@ -20,7 +20,11 @@ class KlassController < ApplicationController
     end
     @facts = @node.puppet_host.get_facts_hash rescue []
     @external_nodes_yaml = YAML.dump @node.parameters
-    @exported_resources = @node.puppet_host.resources.find :all,:conditions => ['exported',true], :order => "restype, title"
+    if @node.puppet_host
+      @exported_resources = @node.puppet_host.resources.find :all,:conditions => ['exported',true], :order => "restype, title"
+    else
+      @exported_resources = []
+    end
   end
  
   def create

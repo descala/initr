@@ -40,4 +40,22 @@ class fail2ban {
       notify => Service["fail2ban"];
   }
 
+  # munin
+
+  # TODO better way to know if node is including munin class
+  if $munin_graphs {
+    file {
+      "/etc/munin/plugins/fail2ban_all_jails":
+        mode => 755,
+        source => "puppet:///fail2ban/munin-fail2ban_all_jails",
+        require => Package[$munin],
+        notify => Service["munin-node"];
+      "/etc/munin/plugin-conf.d/fail2ban_all_jails":
+        content => "[fail2ban_all_jails]
+user root",
+        require => Package[$munin],
+        notify => Service["munin-node"];
+    }
+  }
+  
 }
