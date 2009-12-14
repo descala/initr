@@ -46,9 +46,9 @@ class webserver1 {
     minute => 30,
     require => [Package["rsync"],File["/usr/local/sbin/webserver_backup_all"]],
   }
-  
+
   file {
-    # vhosts.conf (abans template) ara nomes te: NameVirtualHost *:80
+    # TODO: make this consistent with Debian's ports.conf
     "$httpd_confdir/vhosts.conf":
       mode => 644,
       source => "puppet:///webserver1/vhosts.conf",
@@ -77,6 +77,31 @@ class webserver1 {
       content => template("webserver1/restore_all.sh.erb");
   }
 
+  # redirect to default domain
+  ############################
+
+  if $operatingsystem == "Debian" {
+    apache::ensite { "default": }
+  }
+  else
+  {
+    file {
+      "$httpd_confdir/000-default.conf":
+        ensure => "$httpd_confdir/default",
+    }
+  }
+  
+  file {
+    "$httpd_confdir/default":
+      content => inline_template('# Puppet managed
+<VirtualHost *:80>
+RewriteEngine On
+RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
+</VirtualHost>'),
+    notify => Service[$httpd_service],
+  }
+
+  
 }
 
 #TODO: controlar ensure

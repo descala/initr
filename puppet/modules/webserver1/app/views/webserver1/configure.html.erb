@@ -27,7 +27,14 @@
 <br />
 <% labelled_tabular_form_for(:webserver1, @klass, :url=>{:action=>'configure'}) do |f| %>
 
-<%= error_messages_for 'webserver' %>
+<%= error_messages_for :klass %>
+
+<fieldset>
+  <legend><%= l :field_webserver_default_domain %></legend>
+  <p><%= f.text_field :webserver_default_domain %></p>
+</fieldset>
+
+<br/>
 
 <fieldset>
   <legend>Awstats</legend>

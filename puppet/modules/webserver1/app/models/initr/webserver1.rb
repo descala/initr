@@ -5,6 +5,7 @@ class Initr::Webserver1 < Initr::Klass
   has_many :webserver1_domains, :dependent => :destroy, :class_name => "Initr::Webserver1Domain"
   belongs_to :node, :class_name => 'Initr::Node'
   validates_confirmation_of :password, :allow_nil => true
+  validates_format_of :webserver_default_domain, :with => /http(|s):\/\/(.*)/, :on => :update 
   attr_accessor :password, :password_confirmation
 
   def initialize(attributes=nil)
@@ -30,7 +31,8 @@ class Initr::Webserver1 < Initr::Klass
     { "webserver_domains"=>domain_list,
       "admin_password"=>config["admin_password"],
       "accessible_phpmyadmin"=>accessible_phpmyadmin,
-      "blowfish_secret"=>blowfish_secret }
+      "blowfish_secret"=>blowfish_secret,
+      "webserver_default_domain"=>webserver_default_domain}
   end
 
   def print_parameters
@@ -78,7 +80,14 @@ class Initr::Webserver1 < Initr::Klass
   def blowfish_secret=(v)
     config["blowfish_secret"]=v
   end
-
+  
+  def webserver_default_domain
+    config["webserver_default_domain"] ||= webserver1_domains.any? ? "http://www.#{webserver1_domains.first.name}" : "http://#{Setting.host_name}"
+  end
+  def webserver_default_domain=(v)
+    config["webserver_default_domain"]=v
+  end
+  
   def self.backup_servers_for_current_user
     user_projects = User.current.projects
     Initr::WebBackupsServer.all.collect { |bs|
