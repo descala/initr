@@ -86,7 +86,7 @@ class webserver1 {
   else
   {
     file {
-      "$httpd_confdir/000-default":
+      "$httpd_confdir/000-default.conf":
         ensure => "$httpd_confdir/default",
     }
   }
