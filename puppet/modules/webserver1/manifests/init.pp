@@ -86,13 +86,13 @@ class webserver1 {
   else
   {
     file {
-      "$httpd_confdir/000-default.conf":
-        ensure => "$httpd_confdir/default",
+      "$httpd_sitedir/000-default.conf":
+        ensure => "$httpd_sitedir/default",
     }
   }
   
   file {
-    "$httpd_confdir/default":
+    "$httpd_sitedir/default":
       content => inline_template('# Puppet managed
 <VirtualHost *:80>
 RewriteEngine On
