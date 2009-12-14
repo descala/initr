@@ -31,16 +31,15 @@ class KlassController < ApplicationController
     begin
       # try old naming of plugin models,
       # until we migrate all them to initr namespace
-      klass = Kernel.const_get("Initr#{params[:klass_name].camelize}").new
+      klass = Kernel.const_get("Initr#{params[:klass_name].camelize}").new({:node_id=>@node.id})
     rescue NameError
-      klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new
+      klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new({:node_id=>@node.id})
     end
 
     # if plugin controller implements "new" method, redirect_to it
     if (eval("#{klass.controller.camelize}Controller")).action_methods.include? "new"
       redirect_to :controller => klass.controller, :action => 'new', :id => @node
     else
-      klass.node=@node
       if klass.save
         if klass.controller == 'klass'
           redirect_to :action => 'list', :id => @node.id
