@@ -50,7 +50,6 @@ cat << FI > /etc/puppet/puppet.conf
 [puppetd]
     server = one.ingent.net
     classfile = /var/lib/puppet/state/classes.txt
-    localconfig = /var/lib/puppet/localconfig
     factsync = true
     report = true
 FI
