@@ -345,6 +345,7 @@ class webserver1::awstats::debian inherits webserver1::awstats {
       content => template("webserver1/phpmyadmin_httpd.erb");
     "/usr/bin/awstats_updateall.pl":
       mode => 750,
+      group => "www-data",
       source => "/usr/share/doc/awstats/examples/awstats_updateall.pl",
       require => Package["awstats"];
   }
