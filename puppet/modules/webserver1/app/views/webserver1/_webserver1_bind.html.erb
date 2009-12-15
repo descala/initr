@@ -1,0 +1,14 @@
+<% if @bind_zone -%>
+<div class="contextual" style="margin-top:20px;">
+  <%= link_to_if_authorized l(:button_edit), {:controller => 'bind', :action => 'edit_zone', :id => @bind_zone }, :class => 'icon icon-edit' %>
+</div>
+      <h4>DNS zone</h4>
+      <p><%= @bind.nameservers %></p>
+      <p><%= @bind_zone.zone %></p>
+<% elsif @bind -%>
+<div class="contextual" style="margin-top:20px;">
+  <%= link_to_if_authorized l(:button_add), {:controller => 'bind', :action => 'add_zone', :id => @bind, 'bind_zone[domain]' => @domain.name }, :class => 'icon icon-edit' %>
+</div>
+      <h4>DNS zone</h4>
+      <p>There is no DNS zone for <%=@domain.name%>.</p>
+<% end-%>

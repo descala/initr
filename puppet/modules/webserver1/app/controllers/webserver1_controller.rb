@@ -36,6 +36,9 @@ class Webserver1Controller < ApplicationController
 
   def edit_domain
     @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user.collect {|wbs| [wbs.node.fqdn, wbs.id] }
+    # check if we have a name server
+    @bind = Initr::Bind.for_node @node
+    @bind_zone = @bind.bind_zones.find(:first, :conditions=>["domain=?",@domain.name]) if @bind
     if request.post?
       if @domain.update_attributes(params["webserver1_domain"])
         redirect_to :action => 'configure', :id => @klass

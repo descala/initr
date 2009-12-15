@@ -1,7 +1,7 @@
 class Initr::BindZone < ActiveRecord::Base
   unloadable
   belongs_to :bind, :class_name => "Initr::Bind"
-  validates_presence_of :domain, :zone, :ttl
+  validates_presence_of :domain, :ttl
   validates_uniqueness_of :domain, :scope => 'bind_id'
 
   def initialize(attributes=nil)
