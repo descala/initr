@@ -149,7 +149,7 @@ class Initr::Node < ActiveRecord::Base
   end
 
   def ip
-    puppet_attribute('ip')
+    puppet_attribute('ipaddress')
   end
 
   def compile_warning?
