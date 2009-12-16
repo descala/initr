@@ -102,6 +102,7 @@ class webserver1 {
       content => inline_template('# Puppet managed
 <VirtualHost *:80>
 RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
 RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
     notify => Service[$httpd_service],
