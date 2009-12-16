@@ -10,7 +10,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_uniqueness_of :dbname, :scope => :webserver1_id
   validates_uniqueness_of :username, :scope => :webserver1_id
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
-  validates_presence_of :name, :username, :password_ftp, :password_db, :password_awstats
+  validates_presence_of :name, :username, :password_ftp, :password_awstats
+  validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank? }
 
   def parameters
     parameters = { "name" => name,
@@ -31,11 +32,6 @@ class Initr::Webserver1Domain < ActiveRecord::Base
 
   def webserver
     webserver1
-  end
-
-  def dbname=(db)
-    db = self.name.gsub(/[\.-]/,'') if db.blank?
-    write_attribute(:dbname,db)
   end
 
   def save

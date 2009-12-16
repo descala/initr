@@ -111,7 +111,7 @@ RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 }
 
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database=true, $force_www='true') {
+define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database, $force_www='true') {
 
   webserver1::awstats::domain { $name:
     user => $username,
@@ -122,18 +122,8 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
     backups_path => $backups_path,
   }
 
-  case $database {
-    false: {}
-    true: {
-      $dbname=gsub($name,'[\.-]','')
-    }
-    default: {
-      $dbname = $database
-    }
-  }
-
-  if $database {
-    mysql::database { $dbname:
+  if $database != "" {
+    mysql::database { $database:
       ensure => present,
       owner => $username,
       passwd => $password_db,

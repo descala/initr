@@ -21,7 +21,9 @@ case "$DOMAIN" in
     SQLBAK=/var/www/$DOMAIN/backups/$DOMAIN.sql
     u_sure
     rsync_local_files
-    <%= "/usr/bin/mysqldump -u #{v['username']} -p#{v['password_db']} #{v['database']} > $SQLBAK ; gzip -f $SQLBAK ; chmod 600 $SQLBAK.gz" %>
+    <% if v['database'] != "" -%>
+      <%= "/usr/bin/mysqldump -u #{v['username']} -p#{v['password_db']} #{v['database']} > $SQLBAK ; gzip -f $SQLBAK ; chmod 600 $SQLBAK.gz" %>
+    <% end -%>
     <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} #{v['excludes']}" %>
     ;;
 <% end -%>

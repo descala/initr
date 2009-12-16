@@ -16,11 +16,11 @@ URL:	      http://<%= name %>/awstats
 Usuari:	      <%= username %>
 Contrasenya:  (la mateixa que el FTP)
 
-<% if database %>
+<% if database != "" %>
 BASE DE DADES MySQL
 
 Host:              localhost
-Nom base de dades: <%= dbname %>
+Nom base de dades: <%= database %>
 Usuari:            <%= username %>
 Contrasenya:       (la mateixa que el FTP)
 
