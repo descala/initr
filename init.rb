@@ -34,7 +34,7 @@ begin
     settings :default => {
       'puppetmaster_ip' => '127.0.0.1'
     },
-    :partial => '/settings'
+    :partial => '/base/settings'
 
     # This plugin adds a project module
     # It can be enabled/disabled at project level (Project settings -> Modules)
