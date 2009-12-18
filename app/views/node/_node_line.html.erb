@@ -6,7 +6,7 @@
 </td>
 <td class="subject">
   <%=
-    node.klasses.collect { |k|
+    node.klasses.sort.collect { |k|
       link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
     }.join(", ") rescue(link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id))
   -%>
