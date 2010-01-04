@@ -1,5 +1,5 @@
 <% if operatingsystem == "Debian" -%>
-/var/log/apache2/*.log {
+/var/log/apache2/*.log /var/www/*/logs/*log {
     weekly
     missingok
     rotate 52
