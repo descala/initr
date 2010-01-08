@@ -50,9 +50,9 @@ class NodeController < ApplicationController
   def facts
     @fact=params[:id]
     if User.current.admin?
-      @nodes=Project.all.collect {|p| p.nodes }.flatten.compact.sort
+      @nodes=Project.all.collect {|p| p.nodes }.flatten.compact
     else
-      @nodes=User.current.projects.collect {|p| p.nodes }.flatten.compact.sort
+      @nodes=User.current.projects.collect {|p| p.nodes }.flatten.compact
     end
     @facts={}
     @nodes.each do |n|
