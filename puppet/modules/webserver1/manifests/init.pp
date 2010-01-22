@@ -360,9 +360,12 @@ class webserver1::awstats::redhat inherits webserver1::awstats {
       group => $httpd_user,
       require => Package["phpmyadmin"],
       content => template("webserver1/phpmyadmin_httpd.erb");
-    "/var/lib/awstats":
-      source => "/var/www/awstats",
-      recurse => true;
+
+    # TODO: why do we need this?
+    #    "/var/lib/awstats":
+    #      source => "/var/www/awstats",
+    #      recurse => true;
+    
   }
   package {
     "php-mbstring":
