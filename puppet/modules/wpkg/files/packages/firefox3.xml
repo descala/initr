@@ -3,21 +3,21 @@
 <package
     id="firefox3"
     name="Mozilla Firefox 3"
-    revision="356"
+    revision="360"
     reboot="false"
     priority="10">
 
-    <check type="uninstall" condition="exists" path="Mozilla Firefox (3.5.6)" />
+    <check type="uninstall" condition="exists" path="Mozilla Firefox (3.6)" />
     <install cmd="taskkill /F /IM Firefox.exe">
         <exit code="0" />
         <exit code="128" />
     </install>
-    <install cmd='"%SOFTWARE%\firefox\Firefox Setup 3.5.6.exe" -ms' />
+    <install cmd='"%SOFTWARE%\firefox\Firefox Setup 3.6.exe" -ms' />
     <upgrade cmd="taskkill /F /IM Firefox.exe">
         <exit code="0" />
         <exit code="128" />
     </upgrade>
-    <upgrade cmd='"%SOFTWARE%\firefox\Firefox Setup 3.5.6.exe" -ms' />
+    <upgrade cmd='"%SOFTWARE%\firefox\Firefox Setup 3.6.exe" -ms' />
     <remove cmd="taskkill /F /IM Firefox.exe">
         <exit code="0" />
         <exit code="128" />
