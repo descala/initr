@@ -56,6 +56,7 @@ class Initr::Node < ActiveRecord::Base
     end
     result = { }
     result["parameters"] = parameters
+    result["parameters"]["classes"] = classes.uniq
     result["classes"] = classes.uniq
     result
   end
