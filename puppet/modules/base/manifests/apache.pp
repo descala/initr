@@ -1,10 +1,5 @@
 class apache {
 
-  #TODO: better way to know if node includes Nagios class?
-  if $nagios_proxytunnel == "0" or $nagios_proxytunnel == "1" {
-    include apache::nagios
-  }
-
   package { $httpd:
     ensure => installed,
   }
@@ -81,18 +76,3 @@ class apache::ssl inherits apache {
 
 }
 
-class apache::nagios {
-
-  # workaround fins que tinguem fet aixo:
-  # http://redmine.ingent.net/issues/769
-  case $fqdn {
-    "sw01.unespai.com": {}
-    "orinador.escala.local": {}
-    "servidor1.cecot.es": {}
-    default: {
-      nagios::nsca_node::wrapper_check { "apache":
-        command => "/usr/local/nagios/libexec/check_procs -C $httpd_service -w 1:50 -c 1:100",
-      }
-    }
-  }
-}
