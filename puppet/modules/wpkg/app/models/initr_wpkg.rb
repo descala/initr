@@ -5,11 +5,12 @@ class InitrWpkg < Initr::Klass
   XML_PATH = File.expand_path("#{File.dirname(__FILE__)}/../../files/packages")
   
   class Package
-    attr_reader :id, :name, :revision
-    def initialize(id,name,revision)
+    attr_reader :id, :name, :revision,:help
+    def initialize(id,name,revision,help)
       @id = id
       @name = name
       @revision = revision
+      @help = help
     end
     def to_s
       "#{id} - #{name} (rev #{revision})"
@@ -49,7 +50,7 @@ class InitrWpkg < Initr::Klass
       xml = File.read(file)
       doc = REXML::Document.new(xml)
       doc.elements.each('packages/package') do |p|
-        packages << Package.new(p.attributes['id'],p.attributes['name'],p.attributes['revision'])
+        packages << Package.new(p.attributes['id'],p.attributes['name'],p.attributes['revision'],p.attributes['help'])
       end
     end
     packages.sort

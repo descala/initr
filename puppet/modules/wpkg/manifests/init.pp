@@ -45,9 +45,9 @@ class wpkg {
       creates => "$wpkg_base/software/$client";
   }
 
-  define download($url,$creates) {
+  define download($to,$url,$creates) {
 
-    $download_dir = "$wpkg_base/software/$name"
+    $download_dir = "$wpkg_base/software/$to"
     
     exec {
       "wpkg_$name":

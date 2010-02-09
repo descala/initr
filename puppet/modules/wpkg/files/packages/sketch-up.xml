@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+<package
+    id="sketchup7"
+    name="Google SketchUp 7"
+    help="The download file is an .exe that does not accept the default silent switches. Run a manual install using the .exe on a test PC. It extracts the .msi to a temp file (see http://www.appdeploy.com/messageboards/tm.asp?m=42458) which can be used successfully as your instalaltion msi."
+    revision="71"
+    reboot="false"
+    priority="10">
+    <check type="uninstall" condition="exists" path="Google SketchUp 7" />
+    <install cmd='msiexec /qn /i %SOFTWARE%\sketchup\GoogleSketchUp7.msi' />
+    <upgrade cmd='msiexec /qn /i %SOFTWARE%\sketchup\GoogleSketchUp7.msi' />
+    <remove  cmd='msiexec /qn /x %SOFTWARE%\sketchup\GoogleSketchUp7.msi' />
+</package>
+<package
+    id="sketchup7-pro"
+    name="Google SketchUp Pro 7"
+    help="See Google SketchUp 7. This version requires a license."
+    revision="71"
+    reboot="false"
+    priority="10">
+    <check type="uninstall" condition="exists" path="Google SketchUp 7" />
+    <install cmd='msiexec /qn /i %SOFTWARE%\sketchup\GoogleSketchUp7.msi' />
+    <upgrade cmd='msiexec /qn /i %SOFTWARE%\sketchup\GoogleSketchUp7.msi' />
+    <remove  cmd='msiexec /qn /x %SOFTWARE%\sketchup\GoogleSketchUp7.msi' />
+</package>
+</packages>
