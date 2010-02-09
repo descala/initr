@@ -33,7 +33,7 @@ class Initr::Base < Initr::Klass
   def more_classes
     case self.config.puppet
     when "lite"
-      return ["puppet::lite"]
+      return ["puppet::litte"]
     when "normal"
       return ["puppet"]
     else
