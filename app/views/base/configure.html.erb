@@ -2,22 +2,12 @@
 
 <%= error_messages_for 'base' %>
 
-<% form_for(:base, @klass, :url => {:action => 'configure'} ) do |f| -%>
+<% labelled_tabular_form_for(:base, @klass, :url=>{:action=>'configure'}) do |f| -%>
 
-  <p class="base_conf">
-  <table>
-  <% new_or_existing = @klass.base_conf.new_record? ? 'new' : 'existing' -%>
-  <% prefix = "base[#{new_or_existing}_base_conf_attributes][]" -%>
-  <% fields_for prefix, @klass.base_conf do |base_conf_form| -%>
-    <tr>
-      <td>Cron active</td><td><%= base_conf_form.check_box :initr_cron %></td>
-    </tr>
-    <tr>
-      <td>Nagios monitored (nsca)</td><td><%= base_conf_form.check_box :initr_nsca_node %></td>
-    </tr>
-  <% end -%>
-  </table>
-  </p>
+  <p><%= f.error_messages %></p>
+  <p><%= f.radio_button :puppet, :none %> Don't manage puppet</p>
+  <p><%= f.radio_button :puppet, :lite %> Puppet daemon not running, called once from cron</p>
+  <p><%= f.radio_button :puppet, :normal %> Puppet daemon running</p>
 
   <p><%= submit_tag("Send")%></p>
 

@@ -10,7 +10,6 @@ class BaseController < ApplicationController
 
   def configure
     if request.post?
-      params[:base][:existing_base_conf_attributes] ||= {}
       if @klass.update_attributes(params[:base])
         flash[:notice] = "Configuration successfully updated."
         redirect_to :controller => 'klass', :action => 'list', :id => @node
