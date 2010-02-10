@@ -26,6 +26,13 @@ class Initr::Webserver1Domain < ActiveRecord::Base
       parameters["web_backups_server_port"] = web_backups_server.port
       parameters["backups_path"] = web_backups_server.backups_path unless web_backups_server.backups_path.nil? or web_backups_server.backups_path.blank?
     end
+    if railsapp
+      parameters["railsapp"] = "true"
+      parameters["rails_root"] = rails_root
+      parameters["rails_spawn_method"] = rails_spawn_method
+    else
+      parameters["railsapp"] = "false"
+    end
     parameters["shell"] = "/bin/bash" if self.shell == "1"
     return parameters
   end

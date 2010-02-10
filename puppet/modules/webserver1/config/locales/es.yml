@@ -14,3 +14,6 @@ es:
   field_address: Dirección
   field_backups_path: Directorio de los backups
   field_webserver_default_domain: Dominio por defecto
+  field_railsapp: Ruby On Rails Application
+  field_rails_root: Rails public folder
+  field_rails_spawn_method: Rails spawn method
