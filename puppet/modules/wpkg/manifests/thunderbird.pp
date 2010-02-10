@@ -11,6 +11,7 @@ class wpkg::thunderbird {
 
   download {
     "thunderbird":
+      to => "thunderbird",
       url => "http://download.mozilla.org/?product=thunderbird-2.0.0.23&os=win&lang=ca",
       creates => "Thunderbird Setup 2.0.0.23.exe";
   }
