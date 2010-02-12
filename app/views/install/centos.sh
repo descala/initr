@@ -8,7 +8,7 @@ cat << FI > /etc/puppet/puppet.conf
     rundir = /var/run/puppet
     ssldir = /var/lib/puppet/ssl
 [puppetd]
-    server = puppet.ingent.net
+    server = one.ingent.net
     masterport = 443
     factsync = true
     report = true
