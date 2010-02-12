@@ -14,7 +14,16 @@
 <% end -%>
   UseCanonicalName Off
   ServerAdmin  "webmaster@<%=name%>"
+<% if railsapp == "true" -%>
+  DocumentRoot /var/www/<%=name%>/htdocs/<%=rails_root%>
+  RailsSpawnMethod <%=rails_spawn_method.blank? ? "smart" : rails_spawn_method %>
+  <Directory /var/www/<%=name%>/htdocs/<%=rails_root%>>
+     AllowOverride all
+     Options -MultiViews
+  </Directory>
+<% else -%>
   DocumentRoot /var/www/<%=name%>/htdocs
+<% end -%>
   CustomLog  /var/www/<%=name%>/logs/access_log combined
   ErrorLog  /var/www/<%=name%>/logs/error_log
 

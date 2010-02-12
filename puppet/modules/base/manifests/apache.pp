@@ -76,3 +76,11 @@ class apache::ssl inherits apache {
 
 }
 
+class apache::passenger {
+
+  # this class assumes that you installed passenger and rails
+  # from gems or your distro package manager
+  apache::enmod { ["passenger.load","passenger.conf"]: }
+
+}
+
