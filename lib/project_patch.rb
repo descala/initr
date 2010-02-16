@@ -25,3 +25,5 @@ module ProjectPatch
 
 end
  
+# Add module to Project
+Project.send(:include, ProjectPatch)

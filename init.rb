@@ -2,7 +2,9 @@
 
 begin
   require 'redmine'
-  
+  require File.join(File.dirname(__FILE__), 'lib','project_patch')
+  require File.join(File.dirname(__FILE__), 'lib','puppet_patch')
+
   RAILS_DEFAULT_LOGGER.info 'Starting initr plugin for Redmine'
 
   # Patches to the Redmine core.
