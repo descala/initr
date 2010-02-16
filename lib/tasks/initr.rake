@@ -1,4 +1,8 @@
 require "fileutils"
+
+# Load initr plugins rake tasks
+Dir["#{RAILS_ROOT}/vendor/plugins/initr/puppet/modules/*/lib/tasks/**/*.rake"].sort.each { |ext| load ext }
+
 namespace :initr do
   namespace :module do
     desc "Creates skel directories and files for a puppet module"
