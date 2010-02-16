@@ -9,6 +9,7 @@ cat << FI > /etc/puppet/puppet.conf
     ssldir = /var/lib/puppet/ssl
 [puppetd]
     server = one.ingent.net
+    masterport = 443
     factsync = true
     report = true
     http_proxy_host = proxy.ingent.net
