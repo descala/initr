@@ -54,4 +54,13 @@ cat << FI > /etc/puppet/puppet.conf
     factsync = true
     report = true
 FI
+cat << FI > /etc/default/puppet
+# Defaults for puppet - sourced by /etc/init.d/puppet
+
+# Start puppet on boot?
+START=yes
+
+# Startup options
+DAEMON_OPTS=""
+FI
 apt-get update -qq; apt-get install -qq -o DPkg::Options::=--force-confold puppet lsb-release && echo "OK! Look for puppetd logs in syslog (tail -f /var/log/syslog)."
