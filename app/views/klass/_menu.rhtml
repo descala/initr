@@ -1,4 +1,5 @@
 <div class="contextual">
+  <%= link_to_if_authorized l(:button_back), {:controller => 'klass', :action => 'list', :id => @node }, :class => 'icon icon-back' %>
 <% if @klass.movable? -%>
   <%= link_to_if_authorized l(:button_move), {:controller => 'klass', :action => 'move', :id => @klass }, :class => 'icon icon-move' %>
 <% end -%>
