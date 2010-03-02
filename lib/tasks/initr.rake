@@ -49,8 +49,7 @@ namespace :initr do
       end
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/app/views/#{name}/configure.html.erb"
       open("#{plugindir}/app/views/#{name}/configure.html.erb", 'w') do |f|
-        f << "<h2><%=@node.fqdn%></h2>\n"
-        f << "<h3>Configure #{name.camelize}</h3>\n"
+        f << "<%= klass_menu \"#{name.camelize}\" %>\n"
         f << "<p>(TODO)</p>\n"
       end
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/app/controllers/#{name}_controller.rb"
