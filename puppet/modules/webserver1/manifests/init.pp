@@ -116,6 +116,10 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
   if $railsapp == "true" {
     include apache::passenger
+    webserver1::logrotate_rails { $name:
+      rails_root => $rails_root,
+      username => $username,
+    }
   }
 
   webserver1::awstats::domain { $name:
@@ -406,3 +410,9 @@ define webserver1::awstats::domain($user, $pass) {
 
 }
 
+define webserver1::logrotate_rails($rails_root,$username) {
+  file {
+    "/etc/logrotate.d/rails_$name":
+      content => template("webserver1/logrotate_rails.erb");
+  }
+}
