@@ -27,8 +27,15 @@
 <h3>Facts</h3>
 <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
 
+<% if !@exported_resources.empty? %>
+
+<div class="contextual">
+<%= link_to_if_authorized "Delete exported resources", {:controller => 'node', :action => 'destroy_exported_resources', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+</div>
 <h3>Exported resources</h3>
 <%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
+
+<% end -%>
 
 <h3>Puppet "external_nodes" YAML</h3>
 <table class="list" style="table-layout: fixed;">

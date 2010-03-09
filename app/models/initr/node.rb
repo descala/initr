@@ -99,6 +99,16 @@ class Initr::Node < ActiveRecord::Base
     @host_object = puppet_host
     Puppet::Rails::Host.destroy @host_object if @host_object
   end
+  
+  def exported_resources
+    puppet_host.resources.find :all,:conditions => ['exported',true], :order => "restype, title"
+  end
+  
+  def destroy_exported_resources
+    exported_resources.each do |r|
+      r.destroy
+    end
+  end
 
   def puppet_fact(factname, default=nil)
     begin

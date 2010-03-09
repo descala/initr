@@ -46,7 +46,7 @@ begin
           :klass => [:list]},
         :require => :member
       permission :manage_nodes,
-        { :node  => [:new, :destroy, :unassigned_nodes],
+        { :node  => [:new, :destroy, :destroy_exported_resources, :unassigned_nodes],
           :base    => [:configure] },
         :require => :member
       permission :use_classes,

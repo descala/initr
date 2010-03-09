@@ -64,7 +64,12 @@ class NodeController < ApplicationController
     @node.destroy
     redirect_to :action => 'list', :id => @project
   end
-
+  
+  def destroy_exported_resources
+    @node.destroy_exported_resources
+    redirect_to :controller => 'klass', :action => 'list', :id => @node
+  end
+  
   def get_host_definition
     if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       begin
