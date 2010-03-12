@@ -21,6 +21,12 @@ module ProjectPatch
   end
   
   module InstanceMethods
+    def node_instances
+      self.nodes.find :all, :conditions => "type='NodeInstance'"
+    end
+    def node_templates
+      self.nodes.find :all, :conditions => "type='NodeTemplate'"
+    end
   end
 
 end

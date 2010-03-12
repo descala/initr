@@ -26,3 +26,28 @@
   </tbody>
 
 </table>
+
+<h2><%="Templates"%></h2>
+
+<table>
+
+  <thead>
+    <tr>
+      <th title="Template name">Name</th>
+      <th title="Template includes">Content</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% if @project -%>
+    <%= render :partial => 'project_templates', :locals => {:projects=>[@project]} %>
+    <% end -%>
+
+    <% if @subprojects.any? -%>
+    <%= render :partial => 'project_templates', :locals => {:projects=>@subprojects} %>
+    <% end -%>
+
+  </tbody>
+
+</table>

@@ -1,0 +1,12 @@
+<tr class="<%= cycle('odd', 'even') %> issue">
+<td class="subject">
+  <%= link_to template.name, :controller => 'klass', :action => 'list', :id => template %>
+</td>
+<td class="subject">
+  <%=
+    template.klasses.sort.collect { |k|
+      link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
+    }.join(", ") rescue(link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>template.id))
+  -%>
+</td>
+</tr>

@@ -1,6 +1,6 @@
 <%  for project in projects -%>
 
-<% if project.node_instances.any? -%>
+<% if project.node_templates.any? -%>
 
 <% if project != @project %>
 <tr>
@@ -8,8 +8,8 @@
 </tr>
 <% end -%>
 
-<% for node in project.node_instances.sort -%>
-<%= render :partial => 'node_line', :locals => {:node=>node} %>
+<% for template in project.node_templates.sort -%>
+<%= render :partial => 'template_line', :locals => {:template=>template} %>
 <% end -%>
 
 <% end -%>
