@@ -4,16 +4,22 @@
     <th><%="Description"%></th>
     <th><%="Configuration"%></th>
   </tr>
-  <%
-    @node.klasses.sort.each do |klass|
-  %>
-  <tr class="<%= cycle('odd', 'even') %>">
-    <td>
-      <%= image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.installed? %>
-      <%= link_to(klass.name, :controller=>klass.controller, :action=>'configure', :id=>klass) %>
-    </td>
-    <td><%= klass.description %></td>
-    <td><%= truncate(klass.print_parameters, :length=>80) %></td>
-  </tr>
-  <% end rescue ActiveRecord::SubclassNotFound %>
+  <% begin -%>
+    <% @node.klasses.sort.each do |klass| %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td>
+        <%= image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.node.is_a? Initr::NodeTemplate or klass.installed? %>
+        <%= link_to(klass.name, :controller=>klass.controller, :action=>'configure', :id=>klass) %>
+      </td>
+      <td><%= klass.description %></td>
+      <td><%= truncate(klass.print_parameters, :length=>80) %></td>
+    </tr>
+    <% end -%>
+  <% rescue ActiveRecord::SubclassNotFound => e %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td colspan="3">
+        Application error: <%= e.message %>
+      </td>
+    </tr>
+  <% end -%>
 </table>

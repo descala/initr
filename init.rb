@@ -13,6 +13,7 @@ begin
   require 'puppet_patch'
   Dispatcher.to_prepare do
     Project.send(:include, ProjectPatch)
+    User.send(:include, UserPatch)
     [
      Puppet::Rails::Host,
      Puppet::Rails::FactName,
@@ -41,6 +42,8 @@ begin
     # This plugin adds a project module
     # It can be enabled/disabled at project level (Project settings -> Modules)
     project_module :initr do
+      permission :manage_templates,
+        { :node => [:new_template] }
       permission :view_nodes,
         { :node => [:list,:facts],
           :klass => [:list]},

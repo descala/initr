@@ -6,9 +6,13 @@
 </td>
 <td class="subject">
   <%=
-    node.klasses.sort.collect { |k|
-      link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
-    }.join(", ") rescue(link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id))
+    begin
+      node.klasses.sort.collect { |k|
+        link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
+      }.join(", ")
+    rescue ActiveRecord::SubclassNotFound => e
+      link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
+    end
   -%>
 </td>
 <td><%= current_state(node) %></td>
@@ -16,8 +20,13 @@
   <%= render :partial => node.provider_partial, :locals => {:node=>node} if node.provider_is_configured? %>
 </td>
 <td>
-  <% node.klasses.each do |k| -%>
-  <%= render :partial => "#{k.class.to_s.split('::').last.underscore}/nodelist", :locals => {:klass=>k} rescue "" %>
-  <% end rescue ActiveRecord::SubclassNotFound -%>
+  <%=
+  begin
+    node.klasses.each do |k|
+      render :partial => "#{k.class.to_s.split('::').last.underscore}/nodelist", :locals => {:klass=>k} rescue ""
+    end
+  rescue ActiveRecord::SubclassNotFound => e
+    link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
+  end %>
 </td>
 </tr>

@@ -6,10 +6,10 @@ class NodeController < ApplicationController
   helper :projects, :initr
   menu_item :initr
 
-  before_filter :find_node, :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node]
+  before_filter :find_node, :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template]
   before_filter :find_project, :only => [:new]
   before_filter :find_optional_project, :only => [:list]
-  before_filter :authorize, :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node]
+  before_filter :authorize, :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template]
   before_filter :authorize_global, :only => [:list,:facts]
   before_filter :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
   
@@ -24,7 +24,8 @@ class NodeController < ApplicationController
   
   def new
     # find_project
-    @node = Initr::Node.new(params[:node])
+    @node = Initr::NodeInstance.new(params[:node_instance])
+    @node.user = User.current
     @node.project = @project
     if request.post? && @node.save
       flash[:notice] = l(:notice_successful_create)
@@ -32,7 +33,18 @@ class NodeController < ApplicationController
     end
   end
 
+  def new_template
+    # @template is an internal rails variable, don't use it
+    @node_template = Initr::NodeTemplate.new(params[:node_template])
+    @node_template.user = User.current
+    if request.post? && @node_template.save
+      flash[:notice] = l(:notice_successful_create)
+      redirect_to :controller=>'klass', :action=>'list', :id=>@node_template
+    end
+  end
+
   def list
+    @templates = User.current.node_templates
     if @project.nil?
       @subprojects = []
       if User.current.admin?
@@ -112,20 +124,21 @@ class NodeController < ApplicationController
   end
 
   def unassigned_nodes
-    @projects = Project.find :all
-    @nodes = Initr::Node.find :all, :order => "project_id, name"
+    @projects = Project.all
+    @users = User.all
+    @node_instances = Initr::NodeInstance.find :all, :order => "project_id, name"
+    @node_templates = Initr::NodeTemplate.find :all, :order => "project_id, name"
   end
 
   def assign_node
     @node=Initr::Node.find params[:id]
     if @node.update_attributes(params[:node])
-      flash[:notice] = 'Initr::Node assigned to project.'
+      flash[:notice] = 'Update successfull'
     else
-      flash[:error] = 'Error in node-project assignation.'
+      flash[:error] = 'Update error'
     end
     redirect_to :action => 'unassigned_nodes'
   end
-
 
   private
 

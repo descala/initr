@@ -2,10 +2,10 @@
 
 <div class="form">
 
-  <%= error_messages_for 'node' %>
+  <%= error_messages_for 'node_instance' %>
 
   <fieldset>
-    <% form_for :node, :url => { :id => @project }  do |form| %>
+    <% form_for :node_instance, :url => { :id => @project }  do |form| %>
       <p>
       <label for="name"><%="Name"%> (hostname):</label>
       <%= form.text_field(:name, :size => 40) %>

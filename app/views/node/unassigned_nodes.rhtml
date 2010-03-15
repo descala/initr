@@ -1,19 +1,50 @@
-<table>
-  <th>Node</th>
-  <th>Assign to project</th>
+<% if @node_instances.any? -%>
+<table width="50%">
+  <th align="left">Node</th>
+  <th align="right">Project</th>
+  <th align="right">Owner</th>
 
-  <% @nodes.each do |@node| %>
+  <% @node_instances.each do |@node| %>
 
-      <tr>
+      <tr class="<%= cycle('odd', 'even') %>">
         <td><%= @node.fqdn %></td>
-        <td>
+        <td align="right">
 	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
           <%= collection_select(:node, :project_id, @projects, :id,
-          :name, {:prompt => true}, :onchange => "confirm('Assign to #{@node.name}?') && submit()" ) -%>
+                :name, {:prompt => true}, :onchange => "confirm('Change #{@node.name} project?') && submit()" ) -%>
+	  <% end %>
+        </td>
+        <td align="right">
+	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
+          <%= collection_select(:node, :user_id, @users, :id,
+                :name, {:prompt => true}, :onchange => "confirm('Change #{@node.name} owner?') && submit()" ) -%>
 	  <% end %>
         </td>
       </tr>
 
   <% end %>
-
 </table>
+<% end -%>
+
+<br />
+
+<% if @node_templates.any? -%>
+<table width="50%">
+  <th align="left">Template</th>
+  <th align="right">Owner</th>
+
+  <% @node_templates.each do |@node| %>
+
+      <tr class="<%= cycle('odd', 'even') %>">
+        <td><%= @node.name %></td>
+        <td align="right">
+	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
+          <%= collection_select(:node, :user_id, @users, :id,
+                :name, {:prompt => true}, :onchange => "confirm('Change #{@node.name} owner?') && submit()" ) -%>
+	  <% end %>
+        </td>
+      </tr>
+
+  <% end %>
+</table>
+<% end -%>

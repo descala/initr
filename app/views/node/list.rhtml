@@ -29,7 +29,7 @@
 
 <h2><%="Templates"%></h2>
 
-<table>
+<table class="list issues">
 
   <thead>
     <tr>
@@ -40,13 +40,7 @@
 
   <tbody>
 
-    <% if @project -%>
-    <%= render :partial => 'project_templates', :locals => {:projects=>[@project]} %>
-    <% end -%>
-
-    <% if @subprojects.any? -%>
-    <%= render :partial => 'project_templates', :locals => {:projects=>@subprojects} %>
-    <% end -%>
+    <%= render :partial => 'templates', :locals => {:projects=>[@project]} %>
 
   </tbody>
 

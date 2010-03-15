@@ -102,4 +102,12 @@ class KlassController < ApplicationController
     render_404
   end
 
+  def authorize
+    if @node.is_a? Initr::NodeTemplate
+      return true
+    else
+      super
+    end
+  end
+
 end

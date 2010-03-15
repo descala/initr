@@ -5,7 +5,7 @@
 <h2><%=@node.fqdn%> <%= image_tag("warning.png",:title=>"Node has configuration errors") if @node.config_errors? %></h2>
 <h3>Node classes</h2>
 
-<%= render :partial => 'klasses', :locals => { :klasses => @klasses } %>
+<%= render :partial => 'klasses' %>
 
 <h3>Available classes</h2>
 
@@ -16,7 +16,7 @@
     <th></th>
   </tr>
   <% @klass_definitions.each do |kd| %>
-  <tr class="<%= cycle('odd', 'even') %>">
+ <tr class="<%= cycle('odd', 'even') %>">
     <td><%= kd.name %></td>
     <td><%= kd.description %></td>
     <td><%= button_to("Add this class",:action => 'create', :id => @node, :klass_name => kd.name, :method => :post) %></td>
@@ -24,29 +24,30 @@
   <% end %>
 </table>
 
-<h3>Facts</h3>
-<%= render :partial => 'node/facts', :locals => { :f => @facts } %>
+<% unless @node.is_a? Initr::NodeTemplate -%>
+ <h3>Facts</h3>
+  <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
 
-<% if !@exported_resources.empty? %>
+  <% if !@exported_resources.empty? %>
 
-<div class="contextual">
-<%= link_to_if_authorized "Delete exported resources", {:controller => 'node', :action => 'destroy_exported_resources', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
-</div>
-<h3>Exported resources</h3>
-<%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
+    <div class="contextual">
+      <%= link_to_if_authorized "Delete exported resources", {:controller => 'node', :action => 'destroy_exported_resources', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+    </div>
+    <h3>Exported resources</h3>
+    <%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
 
+  <% end -%>
+
+  <h3>Puppet "external_nodes" YAML</h3>
+  <table class="list" style="table-layout: fixed;">
+    <tr>
+      <td>
+        <div class="wiki">
+        <pre style="margin: 0; border:0; padding:0;">
+  <%= @external_nodes_yaml %>
+          </pre>
+        </div>
+      </td>
+    </tr>
+  </table>
 <% end -%>
-
-<h3>Puppet "external_nodes" YAML</h3>
-<table class="list" style="table-layout: fixed;">
-  <tr>
-    <td>
-      <div class="wiki">
-      <pre style="margin: 0; border:0; padding:0;">
-<%= @external_nodes_yaml %>
-        </pre>
-      </div>
-    </td>
-  </tr>
-</table>
-

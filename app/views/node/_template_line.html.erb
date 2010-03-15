@@ -4,9 +4,13 @@
 </td>
 <td class="subject">
   <%=
-    template.klasses.sort.collect { |k|
-      link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
-    }.join(", ") rescue(link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>template.id))
+    begin
+      template.klasses.sort.collect { |k|
+        link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
+      }.join(", ")
+    rescue ActiveRecord::SubclassNotFound => e
+      link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>template.id)
+    end
   -%>
 </td>
 </tr>

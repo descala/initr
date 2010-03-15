@@ -7,6 +7,7 @@ class Initr::Node < ActiveRecord::Base
 
   has_many :klasses, :dependent => :destroy, :class_name => "Initr::Klass"
   belongs_to :project
+  belongs_to :user
 
   validates_presence_of :name
   
@@ -17,6 +18,52 @@ class Initr::Node < ActiveRecord::Base
   
   def <=>(oth)
     self.name <=> oth.name
+  end
+
+  def parameters
+    # node parameters
+    parameters = {}
+    # node classes
+    classes = [ "base" ]
+    begin
+      klasses.sort.each do |klass|
+        begin
+          klass.parameters.each do |k,v|
+            if parameters.keys.include? k
+              if parameters[k].class == Array
+                parameters[k] << v
+              elsif parameters[k].class == Hash
+                parameters[k].merge(v)
+              else
+                parameters[k] = [parameters[k], v]
+              end
+            else
+              parameters[k] = v
+            end
+          end
+          classes << klass.puppetname
+          classes += klass.more_classes if klass.more_classes
+        rescue Initr::Klass::ConfigurationError => e
+          # if klass.parameters raises don't add klass to node
+          err = "#{e.message} for node #{self.name}"
+          logger.error(err) if logger
+          # show message in puppet log
+          classes << "configuration_errors"
+          parameters["errors"]=[] unless parameters["errors"]
+          parameters["errors"] << err unless parameters["errors"].include? err
+        end
+      end
+    rescue ActiveRecord::SubclassNotFound => e
+      logger.error(e.message)
+      classes << "configuration_errors"
+      parameters["errors"]=[] unless parameters["errors"]
+      parameters["errors"] << e.message unless parameters["errors"].include? e.message
+    end
+    result = { }
+    result["parameters"] = parameters
+    result["parameters"]["classes"] = classes.uniq
+    result["classes"] = classes.uniq
+    result
   end
 
 end
