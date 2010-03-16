@@ -10,7 +10,7 @@ class NodeController < ApplicationController
   before_filter :find_project, :only => [:new]
   before_filter :find_optional_project, :only => [:list]
   before_filter :authorize, :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template]
-  before_filter :authorize_global, :only => [:list,:facts]
+  before_filter :authorize_global, :only => [:list,:facts,:new_template]
   before_filter :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
   
   layout 'nested'
