@@ -1,4 +1,4 @@
-# issue: 
+# issue: http://www.redmine.org/issues/5095
 diff --git a/lib/redmine/access_control.rb b/lib/redmine/access_control.rb
 index 25cf63d..e96ac3b 100644
 --- a/lib/redmine/access_control.rb
