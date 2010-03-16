@@ -88,7 +88,7 @@ class Initr::Base < Initr::Klass
 
   def method_missing(m, *args)
     if ATTRIBUTES.include?(m.to_s) or ATTRIBUTES.collect {|a| "#{a}="}.include?(m.to_s)
-      return config.send(m,*args) 
+      return config.send(m,*args)
     else
       super
     end

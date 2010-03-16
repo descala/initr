@@ -37,9 +37,8 @@ begin
     settings :default => {
       'puppetmaster_ip' => '127.0.0.1'
     },
-    :partial => '/base/settings'
+    :partial => '/initr/settings'
 
-    add_permission :add_project, { :fail2ban => [:configure] }
     # This plugin adds a project module
     # It can be enabled/disabled at project level (Project settings -> Modules)
     project_module :initr do

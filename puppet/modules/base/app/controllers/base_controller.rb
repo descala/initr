@@ -16,7 +16,7 @@ class BaseController < ApplicationController
       else
         render :action => 'configure'
       end
-    end 
+    end
   end
 
   private
@@ -26,5 +26,5 @@ class BaseController < ApplicationController
     @node = @klass.node
     @project = @node.project
   end
-  
+
 end
