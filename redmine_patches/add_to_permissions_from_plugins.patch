@@ -1,28 +1,18 @@
-# issue: http://www.redmine.org/issues/5095
 diff --git a/lib/redmine/access_control.rb b/lib/redmine/access_control.rb
-index 25cf63d..e96ac3b 100644
+index 25cf63d..3ce8301 100644
 --- a/lib/redmine/access_control.rb
 +++ b/lib/redmine/access_control.rb
-@@ -103,7 +103,18 @@ module Redmine
-         end
-         @actions.flatten!
-       end
--      
-+
-+      def add_actions(hash)
-+        hash.each do |controller, actions|
-+          if actions.is_a? Array
-+            @actions << actions.collect {|action| "#{controller}/#{action}"}
-+          else
-+            @actions << "#{controller}/#{actions}"
-+          end
-+        end
-+        @actions.flatten!
+@@ -94,6 +94,10 @@ module Redmine
+         @public = options[:public] || false
+         @require = options[:require]
+         @project_module = options[:project_module]
++        add_actions(hash)
 +      end
 +
-       def public?
-         @public
-       end
++      def add_actions(hash)
+         hash.each do |controller, actions|
+           if actions.is_a? Array
+             @actions << actions.collect {|action| "#{controller}/#{action}"}
 diff --git a/lib/redmine/plugin.rb b/lib/redmine/plugin.rb
 index 2be8ac8..462128a 100644
 --- a/lib/redmine/plugin.rb
