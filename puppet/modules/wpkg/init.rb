@@ -9,9 +9,8 @@ Initr::Plugin.register :wpkg do
     description 'WPKG management plugin for initr'
     version '0.0.1'
     project_module :initr do
-      permission :wpkg_configure,
-        { :initr_wpkg => [ :configure ] },
-        :require => :member
+      add_permission :edit_klasses,
+        { :initr_wpkg => [ :configure ] }
     end
   end
   klasses 'wpkg' => 'A windows package manager'

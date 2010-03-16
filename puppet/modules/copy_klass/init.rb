@@ -9,9 +9,7 @@ Initr::Plugin.register :copy_klass do
     description 'CopyKlasses plugin for initr'
     version '0.0.1'
     project_module :initr do
-      permission :configure_copy_klass,
-        { :copy_klass => [:configure] },
-        :require => :member
+      add_permission :edit_klasses, { :copy_klass => [:configure] }
     end
   end
   klasses 'copy_klass' => {:description => 'copy a class from other node', :unique => false}

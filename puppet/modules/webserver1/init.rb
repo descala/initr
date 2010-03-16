@@ -9,12 +9,9 @@ Initr::Plugin.register :webserver1 do
     description 'Webserver management plugin'
     version '0.0.1'
     project_module :initr do
-      permission :webserver_configure,
-        { :webserver1 => [:configure, :add_domain, :edit_domain, :rm_domain] },
-        :require => :member
-      permission :web_backups_server_configure,
-        { :web_backups_server => [:configure] },
-        :require => :member
+      add_permission :edit_klasses,
+        { :webserver1         => [:configure, :add_domain, :edit_domain, :rm_domain],
+          :web_backups_server => [:configure] }
     end
   end
   klasses 'webserver1' => 'LAMP web server. You can manage virtual hosts, ftp users and databases',

@@ -39,30 +39,39 @@ begin
     },
     :partial => '/base/settings'
 
+    add_permission :add_project, { :fail2ban => [:configure] }
     # This plugin adds a project module
     # It can be enabled/disabled at project level (Project settings -> Modules)
     project_module :initr do
-      permission :manage_templates,
-        { :node => [:new_template] }
+      permission :add_nodes_and_templates,
+        {:node => [:new,:new_template,:scan_puppet_hosts]},
+        :require => :member
       permission :view_nodes,
-        { :node => [:list,:facts],
-          :klass => [:list]},
+        {:node  => [:list,:facts],
+         :klass => [:list]},
         :require => :member
-      permission :manage_nodes,
-        { :node  => [:new, :destroy, :destroy_exported_resources, :unassigned_nodes],
-          :base    => [:configure] },
+      permission :view_own_nodes,
+        {},
+        :require => :loggedin
+      permission :edit_nodes,
+        {:node  => [:destroy_exported_resources],
+         :klass => [:create, :move, :destroy]},
         :require => :member
-      permission :use_classes,
-        { :klass   => [:create, :configure, :move, :destroy] },
+      permission :edit_own_nodes,
+        {},
+        :require => :loggedin
+      permission :delete_nodes,
+        {:node => [:destroy]},
         :require => :member
-      # public:
-      #  * node/get_host_definition
-      # admin only:
-      #  * conf_names
-      #  * initr_admin
-      #  * klass_names
-      #  * node/list when no project selected (all).
-      #  * node/
+      permission :delete_own_nodes,
+        {},
+        :require => :loggedin
+      permission :edit_klasses,
+        {:klass => [:configure]},
+        :require => :member
+      permission :edit_klasses_of_own_nodes,
+        {},
+        :require => :loggedin
     end
 
     # A new item is added to the project menu

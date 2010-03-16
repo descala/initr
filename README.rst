@@ -25,6 +25,12 @@ Quickstart
 
   cd vendor/plugins ; git clone git://github.com/descala/initr.git
 
+* Apply redmine patches on initr/redmine_patches/
+
+::
+
+  git apply vendor/plugins/initr/redmine_patches/*.patch
+
 * Configure config/database.yml
 
 * additionally to redmine tables you can configure the database where puppetmaster stores configs to tell initr where to look for hosts and facts, or you can simply run "rake puppet:import:hosts_and_facts" to load them from YAML

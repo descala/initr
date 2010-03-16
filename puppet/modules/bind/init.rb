@@ -10,9 +10,7 @@ Initr::Plugin.register :bind do
     description 'DNS server plugin for initr'
     version '0.0.1'
     project_module :initr do
-      permission :configure_bind,
-        { :bind => [:configure, :add_zone, :edit_zone, :destroy_zone] },
-        :require => :member
+      add_permission :edit_klasses, { :bind => [:configure, :add_zone, :edit_zone, :destroy_zone] }
     end
   end
   klasses 'bind' => 'DNS server'

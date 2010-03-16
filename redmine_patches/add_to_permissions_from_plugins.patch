@@ -1,0 +1,40 @@
+# issue: 
+diff --git a/lib/redmine/access_control.rb b/lib/redmine/access_control.rb
+index 25cf63d..e96ac3b 100644
+--- a/lib/redmine/access_control.rb
++++ b/lib/redmine/access_control.rb
+@@ -103,7 +103,18 @@ module Redmine
+         end
+         @actions.flatten!
+       end
+-      
++
++      def add_actions(hash)
++        hash.each do |controller, actions|
++          if actions.is_a? Array
++            @actions << actions.collect {|action| "#{controller}/#{action}"}
++          else
++            @actions << "#{controller}/#{actions}"
++          end
++        end
++        @actions.flatten!
++      end
++
+       def public?
+         @public
+       end
+diff --git a/lib/redmine/plugin.rb b/lib/redmine/plugin.rb
+index 2be8ac8..462128a 100644
+--- a/lib/redmine/plugin.rb
++++ b/lib/redmine/plugin.rb
+@@ -213,6 +213,10 @@ module Redmine #:nodoc:
+         Redmine::AccessControl.map {|map| map.permission(name, actions, options)}
+       end
+     end
++
++    def add_permission(name, actions)
++      AccessControl.permission(name).add_actions(actions) unless AccessControl.permission(name).nil?
++    end
+     
+     # Defines a project module, that can be enabled/disabled for each project.
+     # Permissions defined inside +block+ will be bind to the module.

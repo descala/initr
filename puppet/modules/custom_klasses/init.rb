@@ -11,9 +11,7 @@ Initr::Plugin.register :custom_klasses do
     description 'Manage klasses without controller'
     version '0.0.1'
     project_module :initr do
-      permission :manage_custom_klasses,
-        { :custom_klass => [:new, :create, :configure] },
-        :require => :member
+      add_permission :edit_klasses, { :custom_klass => [:new, :create, :configure] }
     end
   end
   klasses  'custom_klass' => { :description => 'Klass without controller', :unique => false }

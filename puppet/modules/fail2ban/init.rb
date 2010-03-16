@@ -13,9 +13,8 @@ Initr::Plugin.register :fail2ban do
     project_module :initr do
       # add a permission so not everybody can configure fail2ban
       # see http://www.redmine.org/wiki/redmine/Plugin_Tutorial
-      permission :configure_fail2ban,
-        { :fail2ban => [:configure] },
-        :require => :member
+      # and http://www.redmine.org/issues/5095
+      add_permission :edit_klasses, { :fail2ban => [:configure] }
     end
   end
   # This plugin adds a puppet module called fail2ban
