@@ -76,10 +76,14 @@ class NodeController < ApplicationController
       end
     end
 
-    # node templates
+    # node templates with project
     @nodes.keys.each do |p|
       @templates[p] = p.node_templates if p.node_templates.any?
     end
+
+    (render_403; return) if (@project && !User.current.member_of?(@project) && !@nodes.any? && !@templates.any?)
+
+    # node templates without project
     unless @project
       User.current.node_templates.each do |t|
         next unless t.visible_by?(User.current)
@@ -96,12 +100,17 @@ class NodeController < ApplicationController
   def facts
     @fact=params[:id]
     if User.current.admin?
-      @nodes=Project.all.collect {|p| p.nodes }.flatten.compact
+      nodes=Project.all.collect {|p| p.node_instances }.flatten.compact
     else
-      @nodes=User.current.projects.collect {|p| p.nodes }.flatten.compact
+      nodes=User.current.projects.collect { |p|
+        p.node_instances if User.current.allowed_to?(:view_nodes, p)
+      }.flatten.compact
+      User.current.node_instances.each do |n|
+        nodes << n if !nodes.include?(n) && n.visible_by?(User.current)
+      end
     end
     @facts={}
-    @nodes.each do |n|
+    nodes.each do |n|
       @facts[n] = n.puppet_fact(params[:id]) unless n.puppet_fact(params[:id]).nil?
     end
   end
