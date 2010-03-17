@@ -1,6 +1,6 @@
 require 'puppet/rails/host'
 
-class NodeController < ApplicationController
+class NodeController < InitrController
   unloadable
 
   helper :projects, :initr
@@ -117,10 +117,15 @@ class NodeController < ApplicationController
 
   def destroy
     @node.destroy
-    redirect_to :action => 'list', :id => @project
+    if User.current.allowed_to?(:view_nodes, @project)
+      redirect_to :action => 'list', :id => @project
+    else
+      redirect_to :action => 'list'
+    end
   end
   
   def destroy_exported_resources
+    (render_403; return) unless @node && @node.editable_by?(User.current)
     @node.destroy_exported_resources
     redirect_to :controller => 'klass', :action => 'list', :id => @node
   end

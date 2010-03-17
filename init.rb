@@ -61,13 +61,14 @@ begin
          :klass => [:create, :move, :destroy]},
         :require => :member
       permission :edit_own_nodes,
-        {},
+        {:node  => [:destroy_exported_resources],
+         :klass => [:create, :move, :destroy]},
         :require => :loggedin
       permission :delete_nodes,
         {:node => [:destroy]},
         :require => :member
       permission :delete_own_nodes,
-        {},
+        {:node => [:destroy]},
         :require => :loggedin
       permission :edit_klasses,
         {:klass => [:configure]},

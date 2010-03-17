@@ -17,11 +17,15 @@ class Initr::Node < ActiveRecord::Base
   end
 
   def visible_by?(usr)
-    (usr == user && usr.allowed_to?(:view_own_nodes, project, :global=>true)) || usr.allowed_to?(:view_nodes, project)
+    return ((usr == user && usr.allowed_to?(:view_own_nodes, project, :global=>true)) || usr.allowed_to?(:view_nodes, project))
   end
 
   def editable_by?(usr)
-    (usr == user && usr.allowed_to?(:edit_own_nodes, project, :global=>true)) || usr.allowed_to?(:edit_nodes, project)
+    return ((usr == user && usr.allowed_to?(:edit_own_nodes, project, :global=>true)) || usr.allowed_to?(:edit_nodes, project))
+  end
+
+  def removable_by?(usr)
+    return ((usr == user && usr.allowed_to?(:delete_own_nodes, project, :global=>true)) || usr.allowed_to?(:delete_nodes, project))
   end
 
   def <=>(oth)

@@ -1,4 +1,4 @@
-class KlassController < ApplicationController
+class KlassController < InitrController
   unloadable
 
   before_filter :find_node, :only => [:list,:create]
@@ -10,7 +10,7 @@ class KlassController < ApplicationController
   menu_item :initr
   
   def list
-    (render_403; return) if @node && !@node.visible_by?(User.current)
+    (render_403; return) unless @node.visible_by?(User.current)
     node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
     @klass_definitions = []
     Initr::KlassDefinition.all.each do |kd|
@@ -29,6 +29,7 @@ class KlassController < ApplicationController
   end
  
   def create
+    (render_403; return) unless @node.editable_by?(User.current)
     begin
       # try old naming of plugin models,
       # until we migrate all them to initr namespace

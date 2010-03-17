@@ -1,4 +1,4 @@
-class InstallController < ApplicationController
+class InstallController < InitrController
   unloadable
 
   layout 'nested'
