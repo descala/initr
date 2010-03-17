@@ -1,4 +1,4 @@
-class WebBackupsServerController < ApplicationController
+class WebBackupsServerController < InitrController
   unloadable
 
   layout 'nested'

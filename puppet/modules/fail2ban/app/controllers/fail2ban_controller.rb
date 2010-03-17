@@ -1,11 +1,10 @@
-class Fail2banController < ApplicationController
+class Fail2banController < InitrController
   
   unloadable
 
   # authorize filter expects @project to be the current project
   # we set this on find_fail2ban filter
-  before_filter :find_fail2ban
-  before_filter :authorize
+  before_filter :find_fail2ban, :authorize
 
   # to make right menu appear
   layout "nested"

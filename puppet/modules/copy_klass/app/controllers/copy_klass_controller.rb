@@ -1,4 +1,4 @@
-class CopyKlassController < ApplicationController
+class CopyKlassController < InitrController
   unloadable
 
   layout 'nested'

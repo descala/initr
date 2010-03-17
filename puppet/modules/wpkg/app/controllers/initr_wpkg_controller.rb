@@ -1,4 +1,4 @@
-class InitrWpkgController < ApplicationController
+class InitrWpkgController < InitrController
 
   unloadable
 

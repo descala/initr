@@ -1,4 +1,4 @@
-class BindController < ApplicationController
+class BindController < InitrController
   
   unloadable
 

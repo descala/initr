@@ -1,4 +1,4 @@
-class BaseController < ApplicationController
+class BaseController < InitrController
   unloadable
   helper 'initr'
 

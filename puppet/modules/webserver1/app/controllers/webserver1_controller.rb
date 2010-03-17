@@ -1,4 +1,4 @@
-class Webserver1Controller < ApplicationController
+class Webserver1Controller < InitrController
   unloadable
 
   layout 'nested'

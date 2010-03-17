@@ -1,4 +1,4 @@
-class CustomKlassController < ApplicationController
+class CustomKlassController < InitrController
 
   unloadable
 
