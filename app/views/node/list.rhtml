@@ -14,15 +14,14 @@
   </thead>
 
   <tbody>
-    
-    <% if @project -%>
-    <%= render :partial => 'project_nodes', :locals => {:projects=>[@project]} %>
-    <% end -%>
-    
-    <% if @subprojects.any? -%>
-    <%= render :partial => 'project_nodes', :locals => {:projects=>@subprojects} %>
-    <% end -%>
 
+    <% @nodes.keys.sort.each do |proj| -%>
+      <%= content_tag("th", project_path(proj), :colspan=>6, :align=>"left") unless @project %>
+      <% @nodes[proj].sort.each do |node| -%>
+        <%= render :partial => 'node_line', :locals => {:node=>node} %>
+      <% end -%>
+    <% end -%>
+    
   </tbody>
 
 </table>
@@ -40,7 +39,18 @@
 
   <tbody>
 
-    <%= render :partial => 'templates', :locals => {:projects=>[@project]} %>
+    <% @templates.keys.sort.each do |proj| -%>
+      <%= content_tag("th", project_path(proj), :colspan=>6, :align=>"left") unless @project %>
+      <% @templates[proj].sort.each do |templ| -%>
+        <%= render :partial => 'template_line', :locals => {:templ=>templ} %>
+      <% end -%>
+    <% end -%>
+    <% if @templates_without_project.any? -%>
+      <%= content_tag("th", "Templates without project", :colspan=>6, :align=>"left") %>
+      <% @templates_without_project.each do |templ| -%>
+        <%= render :partial => 'template_line', :locals => {:templ=>templ} %>
+      <% end -%>
+    <% end -%>
 
   </tbody>
 

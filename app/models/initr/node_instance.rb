@@ -3,6 +3,18 @@ require 'puppet/rails/host'
 class Initr::NodeInstance < Initr::Node
   unloadable
   validates_uniqueness_of :name
+  validates_presence_of :project
+
+  #TODO
+#  def validate
+#    unless user.member_of?(project) or user.admin?
+#      errors.add_to_base "User #{user.name} don't belongs to #{project.name} project."
+#    end
+#  end
+
+  def visible_by?(usr)
+    (usr == user && usr.allowed_to?(:view_own_nodes, project, :global=>true)) || usr.allowed_to?(:view_nodes, project)
+  end
 
   def self.find(*args)
     if args.first && args.first.is_a?(String) && !args.first.match(/^\d*$/)

@@ -24,19 +24,20 @@ class NodeController < ApplicationController
   
   def new
     # find_project
-    @node = Initr::NodeInstance.new(params[:node_instance])
-    @node.user = User.current
-    @node.project = @project
-    if request.post? && @node.save
+    @node_instance = Initr::NodeInstance.new(params[:node_instance])
+    @node_instance.user = User.current
+    @node_instance.project = @project
+    if request.post? && @node_instance.save
       flash[:notice] = l(:notice_successful_create)
       redirect_to :action => 'list', :id => @project
     end
   end
 
   def new_template
-    # @template is an internal rails variable, don't use it
+    # caution: @template is an internal rails variable, don't use it
     @node_template = Initr::NodeTemplate.new(params[:node_template])
     @node_template.user = User.current
+    @node_template.project = Project.find(params[:id]) if params[:id]
     if request.post? && @node_template.save
       flash[:notice] = l(:notice_successful_create)
       redirect_to :controller=>'klass', :action=>'list', :id=>@node_template
@@ -44,18 +45,51 @@ class NodeController < ApplicationController
   end
 
   def list
-    @templates = User.current.node_templates
-    if @project.nil?
-      @subprojects = []
+    @nodes = {}
+    @templates = {}
+    @templates_without_project = []
+
+    if @project.nil?    # list all visible nodes
       if User.current.admin?
-        @subprojects = Project.all.sort
+        Project.all.each do |proj|
+          @nodes[proj] = proj.node_instances
+        end
       else
-        User.current.projects.sort.each do |p|
-          @subprojects << p
+        User.current.projects.sort.each do |proj|
+          @nodes[proj] = proj.node_instances if User.current.allowed_to?(:view_nodes, proj)
         end
       end
-    else
-      @subprojects = @project.descendants.visible.sort
+    else                # list all nodes of a project
+      @nodes[@project] = @project.node_instances if User.current.allowed_to?(:view_nodes, @project)
+      @project.descendants.visible.sort.each do |p|
+        @nodes[p] = p.node_instances if User.current.allowed_to?(:view_nodes, p)
+      end
+    end
+
+    # own nodes
+    User.current.node_instances.each do |n|
+      # check for "View own nodes" permission for "non-member" role
+      next unless n.visible_by?(User.current)
+      if (@project.nil? and !@nodes.keys.include? n.project) || (!@nodes.keys.include? n.project and n.project == @project)
+        @nodes[n.project] ||= []
+        @nodes[n.project] << n
+      end
+    end
+
+    # node templates
+    @nodes.keys.each do |p|
+      @templates[p] = p.node_templates if p.node_templates.any?
+    end
+    unless @project
+      User.current.node_templates.each do |t|
+        next unless t.visible_by?(User.current)
+        unless t.project.is_a? Initr::FakeProject
+          @templates[t.project] ||= []
+          @templates[t.project] << t unless @templates[t.project].include? t
+        else
+          @templates_without_project << t
+        end
+      end
     end
   end
 

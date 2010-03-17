@@ -1,15 +1,15 @@
 <tr class="<%= cycle('odd', 'even') %> issue">
 <td class="subject">
-  <%= link_to template.name, :controller => 'klass', :action => 'list', :id => template %>
+  <%= link_to templ.name, :controller => 'klass', :action => 'list', :id => templ %>
 </td>
 <td class="subject">
   <%=
     begin
-      template.klasses.sort.collect { |k|
+      templ.klasses.sort.collect { |k|
         link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
       }.join(", ")
     rescue ActiveRecord::SubclassNotFound => e
-      link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>template.id)
+      link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>templ.id)
     end
   -%>
 </td>

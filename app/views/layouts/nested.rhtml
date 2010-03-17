@@ -10,7 +10,7 @@
       <%= link_to("Project nodes", :controller => 'node', :action => 'list', :id => @project) %><br />
       <%= link_to_if_authorized("New node", :controller => 'node', :action => 'new', :id => @project) %><br />
     <% end -%>
-    <%= link_to("New template", :controller => 'node', :action => 'new_template') %>
+    <%= link_to("New template", :controller => 'node', :action => 'new_template', :id => @project) %>
     <% Initr::Plugin.all.each do |p| -%>
       <%=
         begin

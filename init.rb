@@ -42,15 +42,19 @@ begin
     # This plugin adds a project module
     # It can be enabled/disabled at project level (Project settings -> Modules)
     project_module :initr do
-      permission :add_nodes_and_templates,
-        {:node => [:new,:new_template,:scan_puppet_hosts]},
+      permission :add_nodes,
+        {:node => [:new,:scan_puppet_hosts]},
         :require => :member
+      permission :add_templates,
+        {:node => [:new_template]},
+        :require => :loggedin
       permission :view_nodes,
         {:node  => [:list,:facts],
          :klass => [:list]},
         :require => :member
       permission :view_own_nodes,
-        {},
+        {:node  => [:list,:facts],
+         :klass => [:list]},
         :require => :loggedin
       permission :edit_nodes,
         {:node  => [:destroy_exported_resources],

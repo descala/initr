@@ -10,6 +10,7 @@ class KlassController < ApplicationController
   menu_item :initr
   
   def list
+    (render_403; return) if @node && !@node.visible_by?(User.current)
     node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
     @klass_definitions = []
     Initr::KlassDefinition.all.each do |kd|
