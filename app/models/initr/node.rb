@@ -10,12 +10,20 @@ class Initr::Node < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :name
-  
+
   def after_create
     b = Initr::Base.new
     self.klasses << b
   end
-  
+
+  def visible_by?(usr)
+    (usr == user && usr.allowed_to?(:view_own_nodes, project, :global=>true)) || usr.allowed_to?(:view_nodes, project)
+  end
+
+  def editable_by?(usr)
+    (usr == user && usr.allowed_to?(:edit_own_nodes, project, :global=>true)) || usr.allowed_to?(:edit_nodes, project)
+  end
+
   def <=>(oth)
     self.name <=> oth.name
   end

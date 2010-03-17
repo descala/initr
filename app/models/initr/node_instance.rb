@@ -12,10 +12,6 @@ class Initr::NodeInstance < Initr::Node
 #    end
 #  end
 
-  def visible_by?(usr)
-    (usr == user && usr.allowed_to?(:view_own_nodes, project, :global=>true)) || usr.allowed_to?(:view_nodes, project)
-  end
-
   def self.find(*args)
     if args.first && args.first.is_a?(String) && !args.first.match(/^\d*$/)
       node = find_by_name(*args)
