@@ -8,7 +8,7 @@
     <%= link_to("All nodes",:controller=>'node',:action=>'list',:id=>nil) %><br />
     <% if @project and !@project.is_a? Initr::FakeProject -%>
       <%= link_to("Project nodes", :controller => 'node', :action => 'list', :id => @project) %><br />
-      <%= link_to_if_authorized("New node", :controller => 'node', :action => 'new', :id => @project) %><br />
+      <%= link_to_if_authorized("New node<br />", :controller => 'node', :action => 'new', :id => @project) %>
     <% end -%>
     <%= link_to("New template", :controller => 'node', :action => 'new_template', :id => @project) %>
     <% Initr::Plugin.all.each do |p| -%>

@@ -83,7 +83,7 @@ class Initr::NodeInstance < Initr::Node
 
   def os
     f = puppet_fact('lsbdistid')
-    f = puppet_fact('operatingsystem','FedoraCore') unless f
+    f = puppet_fact('operatingsystem') unless f
     logger.debug("OS= '#{f}'") if logger
     return f
   end
