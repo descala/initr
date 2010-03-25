@@ -12,12 +12,12 @@
         <exit code="0" />
         <exit code="128" />
     </install>
-    <install cmd='"%SOFTWARE%\firefox\Firefox Setup 3.6.2exe" -ms' />
+    <install cmd='"%SOFTWARE%\firefox\Firefox Setup 3.6.2.exe" -ms' />
     <upgrade cmd="taskkill /F /IM Firefox.exe">
         <exit code="0" />
         <exit code="128" />
     </upgrade>
-    <upgrade cmd='"%SOFTWARE%\firefox\Firefox Setup 3.6.2exe" -ms' />
+    <upgrade cmd='"%SOFTWARE%\firefox\Firefox Setup 3.6.2.exe" -ms' />
     <remove cmd="taskkill /F /IM Firefox.exe">
         <exit code="0" />
         <exit code="128" />
