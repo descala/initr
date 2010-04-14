@@ -16,7 +16,11 @@
   <tbody>
 
     <% @nodes.keys.sort.each do |proj| -%>
-      <%= content_tag("th", project_path(proj), :colspan=>6, :align=>"left") unless @project %>
+      <% unless @project or @nodes[proj].nil? or @nodes[proj].empty? -%>
+        <% content_tag :tr do -%>
+          <%= content_tag :th, project_path(proj), :colspan=>6, :align=>"left" %>
+        <% end -%>
+      <% end -%>
       <% @nodes[proj].sort.each do |node| -%>
         <%= render :partial => 'node_line', :locals => {:node=>node} %>
       <% end -%>

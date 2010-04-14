@@ -1,4 +1,5 @@
 <div class="contextual">
+<%= link_to l(:button_back), {:controller => 'node', :action => 'list', :id => @project}, :class => 'icon icon-back' %>
 <% if @node.editable_by?(User.current) -%>
  <%= link_to l(:button_delete), {:controller => 'node', :action => 'destroy', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
 <% end -%>
@@ -9,6 +10,7 @@
 
 <%= render :partial => 'klasses' %>
 
+<% if @klass_definitions.any? -%>
 <h3>Available classes</h2>
 
 <table class="list">
@@ -18,40 +20,68 @@
     <th></th>
   </tr>
   <% @klass_definitions.each do |kd| %>
- <tr class="<%= cycle('odd', 'even') %>">
+  <tr class="<%= cycle('odd', 'even') %>">
     <td><%= kd.name %></td>
     <td><%= kd.description %></td>
     <td><%= button_to("Add this class",:action => 'create', :id => @node, :klass_name => kd.name, :method => :post) %></td>
   </tr>
   <% end %>
 </table>
+<% end -%>
 
-<% unless @node.is_a? Initr::NodeTemplate -%>
- <h3>Facts</h3>
-  <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
+<% unless @node.is_a?(Initr::NodeTemplate) -%>
 
-  <% if !@exported_resources.empty? %>
-
-    <div class="contextual">
-      <% if @node.editable_by?(User.current) -%>
-        <%= link_to "Delete exported resources", {:controller => 'node', :action => 'destroy_exported_resources', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
-      <% end -%>
-    </div>
-    <h3>Exported resources</h3>
-    <%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
-
+  <% unless @templates.empty? -%>
+  <h3>Templates</h3>
+  <table class="list">
+    <tr>
+      <th>Name</th>
+      <th>Klasses</th>
+      <th></th>
+    </tr>
+  <% @templates.each do |templ| -%>
+    <tr>
+      <td><%=link_to templ.name, :controller => 'klass', :action => 'list', :id => templ%></td>
+      <td>
+      <%=
+        begin
+          templ.klasses.sort.collect { |k|
+            link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
+          }.join(", ")
+        rescue ActiveRecord::SubclassNotFound => e
+          link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
+        end
+      -%>
+      </td>
+      <td><%= button_to("Apply template", {:action => 'apply_template', :id => @node, :templ_id => templ.id}, :method => :post, :confirm => "Existing classes will be overwritten, are you sure?") %></td>
+    </tr>
+  <% end -%>
+  </table>
   <% end -%>
 
-  <h3>Puppet "external_nodes" YAML</h3>
-  <table class="list" style="table-layout: fixed;">
-    <tr>
-      <td>
-        <div class="wiki">
-        <pre style="margin: 0; border:0; padding:0;">
-  <%= @external_nodes_yaml %>
-          </pre>
-        </div>
-      </td>
-    </tr>
-  </table>
+  <% unless @facts.empty? -%>
+   <h3>Facts</h3>
+    <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
+  <% end -%>
+
+  <% unless @exported_resources.empty? %>
+      <div class="contextual">
+        <% if @node.editable_by?(User.current) -%>
+          <%= link_to "Delete exported resources", {:controller => 'node', :action => 'destroy_exported_resources', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+        <% end -%>
+      </div>
+      <h3>Exported resources</h3>
+      <%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
+      <h3>Puppet "external_nodes" YAML</h3>
+      <table class="list" style="table-layout: fixed;">
+        <tr>
+          <td>
+            <div class="wiki">
+              <pre style="margin: 0; border:0; padding:0;"><%= @external_nodes_yaml %></pre>
+            </div>
+          </td>
+        </tr>
+      </table>
+  <% end -%>
+
 <% end -%>

@@ -1,7 +1,7 @@
 class KlassController < InitrController
   unloadable
 
-  before_filter :find_node, :only => [:list,:create]
+  before_filter :find_node, :only => [:list,:create,:apply_template]
   before_filter :find_klass, :only => [:configure,:destroy,:move]
   before_filter :authorize
  
@@ -19,6 +19,10 @@ class KlassController < InitrController
       end
       @klass_definitions.sort!
     end
+    @templates = []
+    @templates = @node.project.node_templates if User.current.allowed_to?(:view_nodes,@node.project)
+    @templates += User.current.node_templates.collect {|t| t if t.visible_by?(User.current)}.compact
+    @templates.uniq!
     @facts = @node.puppet_host.get_facts_hash rescue []
     @external_nodes_yaml = YAML.dump @node.parameters
     if @node.puppet_host
@@ -57,6 +61,22 @@ class KlassController < InitrController
 
   def configure
     #TODO
+  end
+
+  def apply_template
+    if request.post?
+      templ = Initr::NodeTemplate.find(params[:templ_id])
+      actual_klasses = {}
+      @node.klasses.each do |k|
+        actual_klasses[k.name] = k
+      end
+      templ.klasses.each do |k|
+        actual_klasses[k.name].destroy if actual_klasses.keys.include? k.name
+        @node.klasses << k.class.new(k.attributes)
+      end
+      @node.save!
+    end
+    redirect_to :action => 'list', :id => @node
   end
 
   def move
