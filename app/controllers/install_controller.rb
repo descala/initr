@@ -2,6 +2,9 @@ class InstallController < InitrController
   unloadable
 
   layout 'nested'
+
+  def index
+  end
   
   def debian
     render :file => 'install/debian.sh'
