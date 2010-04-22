@@ -5,7 +5,7 @@
     compress
     delaycompress
     notifempty
-    create 640 <%=username%> <%=username%>
+    create 660 <%=username%> <%=httpd_user%>
     sharedscripts
     postrotate
       if [ -d "/var/www/<%=name%>/htdocs/<%=rails_root%>/../tmp" ]; then
