@@ -4,7 +4,6 @@ class NodeController < InitrController
   unloadable
 
   helper :projects, :initr
-  menu_item :initr
 
   before_filter :find_node, :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template]
   before_filter :find_project, :only => [:new]
@@ -12,11 +11,8 @@ class NodeController < InitrController
   before_filter :authorize, :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template]
   before_filter :authorize_global, :only => [:list,:facts,:new_template]
   before_filter :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
-  
-  layout 'nested'
-  
+
   skip_before_filter :check_if_login_required, :only => [ :get_host_definition ]
-  session :off, :only => [ :get_host_definition ]
 
   # skip ssl_requirement's plugin before_filter, in case it is
   # pressent in redmine, for get_host_definition
