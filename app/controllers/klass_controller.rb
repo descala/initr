@@ -125,10 +125,10 @@ class KlassController < InitrController
   end
 
   def authorize
-    if @node.is_a? Initr::NodeTemplate
-      return true
+    if params[:action] == "list"
+      deny_access unless @node.visible_by?(User.current)
     else
-      super
+      deny_access unless @node.editable_by?(User.current)
     end
   end
 
