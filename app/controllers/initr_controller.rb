@@ -1,6 +1,15 @@
 class InitrController < ApplicationController
   unloadable
 
+  # to make right menu appear
+  layout "nested"
+
+  # use initr helper
+  helper :initr
+
+  # make "initr" item on the top menu the selected one
+  menu_item :initr
+
   # Authorize the user for the requested action
   def authorize(ctrl = params[:controller], action = params[:action], global = false)
     if @klass

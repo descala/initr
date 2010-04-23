@@ -2,10 +2,6 @@ class CustomKlassController < InitrController
 
   unloadable
 
-  layout 'nested'
-  helper :initr
-  menu_item :initr
-
   before_filter :find_node,    :only => [:new]
   before_filter :find_node_id, :only => [:create]
   before_filter :find_klass,   :only => [:configure]

@@ -6,10 +6,6 @@ class BindController < InitrController
   before_filter :find_bind_zone, :only => [:edit_zone,:destroy_zone]
   before_filter :authorize
 
-  layout "nested"
-  helper :initr
-  menu_item :initr
-
   def configure
     if request.post?
       params["bind"] ||= {}

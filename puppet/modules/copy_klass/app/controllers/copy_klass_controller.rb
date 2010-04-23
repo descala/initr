@@ -1,10 +1,6 @@
 class CopyKlassController < InitrController
   unloadable
 
-  layout 'nested'
-  helper :initr
-  menu_item :initr
-
   before_filter :find_copy_klass
 
   def configure

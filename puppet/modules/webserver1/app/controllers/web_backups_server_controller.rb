@@ -1,10 +1,6 @@
 class WebBackupsServerController < InitrController
   unloadable
 
-  layout 'nested'
-  helper :initr
-  menu_item :initr
-  
   before_filter :find_web_backups_server
   before_filter :authorize
 

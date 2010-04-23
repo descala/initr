@@ -5,10 +5,6 @@ class InitrWpkgController < InitrController
   before_filter :find_wpkg
   before_filter :authorize
 
-  layout 'nested'
-  helper :initr
-  menu_item :initr
-
   def configure
     @packages = InitrWpkg.packages_available_from_xml
     if request.post?

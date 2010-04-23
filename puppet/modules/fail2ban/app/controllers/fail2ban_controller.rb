@@ -6,15 +6,6 @@ class Fail2banController < InitrController
   # we set this on find_fail2ban filter
   before_filter :find_fail2ban, :authorize
 
-  # to make right menu appear
-  layout "nested"
-
-  # use initr helper
-  helper :initr
-
-  # make "initr" item on the top menu the selected one
-  menu_item :initr
-
   def configure
     if request.post?
       params["fail2ban"] ||= {}
