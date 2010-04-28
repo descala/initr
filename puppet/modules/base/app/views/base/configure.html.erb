@@ -1,7 +1,5 @@
 <%= klass_menu %>
 
-<%= error_messages_for 'base' %>
-
 <% labelled_tabular_form_for(:base, @klass, :url=>{:action=>'configure'}) do |f| -%>
 
   <p><%= f.error_messages %></p>
