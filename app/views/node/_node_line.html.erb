@@ -20,13 +20,17 @@
   <%= render :partial => node.provider_partial, :locals => {:node=>node} if node.provider_is_configured? %>
 </td>
 <td>
-  <%=
+  <%
   begin
     node.klasses.each do |k|
-      render :partial => "#{k.class.to_s.split('::').last.underscore}/nodelist", :locals => {:klass=>k} rescue ""
+      begin
+      -%><%= render :partial => "#{k.class.to_s.split('::').last.underscore}/nodelist", :locals => {:klass=>k} %><%
+      rescue ActionView::MissingTemplate => e
+      end
     end
   rescue ActiveRecord::SubclassNotFound => e
-    link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
-  end %>
+  -%><%= link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id) %><%
+  end
+  -%>
 </td>
 </tr>
