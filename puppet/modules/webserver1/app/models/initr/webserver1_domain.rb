@@ -7,6 +7,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   belongs_to :web_backups_server, :class_name => "Initr::WebBackupsServer"
   validates_uniqueness_of :name, :scope => :webserver1_id
   validates_uniqueness_of :name, :scope => :web_backups_server_id
+  validates_format_of :name, :with => /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
   validates_uniqueness_of :dbname, :scope => :webserver1_id
   validates_uniqueness_of :username, :scope => :webserver1_id
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
@@ -54,6 +55,12 @@ class Initr::Webserver1Domain < ActiveRecord::Base
 
   def <=>(oth)
     self.name <=> oth.name
+  end
+
+  def name=(fqdn)
+    fqdn.gsub!(/^ */,'')
+    fqdn.gsub!(/ *$/,'')
+    write_attribute(:name,fqdn)
   end
 
   private
