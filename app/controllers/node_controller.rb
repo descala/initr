@@ -74,6 +74,7 @@ class NodeController < InitrController
 
     # node templates with project
     @nodes.keys.each do |p|
+      next if p.nil? # skip unassigned nodes
       @templates[p] = p.node_templates if p.node_templates.any?
     end
 
@@ -168,8 +169,8 @@ class NodeController < InitrController
   end
 
   def unassigned_nodes
-    @projects = Project.all
-    @users = User.all
+    @projects = Project.all.sort
+    @users = User.all.sort
     @node_instances = Initr::NodeInstance.find :all, :order => "project_id, name"
     @node_templates = Initr::NodeTemplate.find :all, :order => "project_id, name"
   end
