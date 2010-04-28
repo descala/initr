@@ -13,6 +13,8 @@ See `project homepage`_ for screenshots and documentation
 Quickstart
 ----------
 
+* You will need puppet lib to be in your RUBYLIB, or just install puppet from your package manager (gem, apt, yum ...)
+
 * Get latest `Redmine`_
 
 ::
