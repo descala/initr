@@ -12,6 +12,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
   validates_presence_of :name, :username, :password_ftp, :password_awstats
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank? }
+  validates_length_of :username, :in => 1..16
+
 
   def parameters
     parameters = { "name" => name,
