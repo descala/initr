@@ -1,5 +1,11 @@
 require 'redmine'
 
+require File.join(File.dirname(__FILE__), 'lib','klass_patch')
+
+Dispatcher.to_prepare do
+  Initr::Klass.send(:include,KlassPatch)
+end
+
 RAILS_DEFAULT_LOGGER.info 'Starting copy_klass plugin for Initr'
 
 Initr::Plugin.register :copy_klass do

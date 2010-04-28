@@ -103,10 +103,13 @@ class KlassController < InitrController
   end
 
   def destroy
-    k = Initr::Klass.find params[:id]
-    k.destroy
-    flash[:notice] = "Klass deleted"
-    redirect_to :action => 'list', :id => @node
+    @klass = Initr::Klass.find params[:id]
+    if @klass.destroy
+      flash[:notice] = "Klass deleted"
+      redirect_to :action => 'list', :id => @node
+    else
+      render "#{@klass.controller}/configure"
+    end
   end
     
   private
