@@ -130,7 +130,7 @@ class NodeController < InitrController
   def get_host_definition
     if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       begin
-        node = Initr::Node.find(params[:hostname])
+        node = Initr::NodeInstance.find(params[:hostname])
         render :text => YAML.dump(node.parameters)
       rescue ActiveRecord::RecordNotFound
         render :text => "Unknown hostname '#{params[:hostname]}'\n", :status => 404
