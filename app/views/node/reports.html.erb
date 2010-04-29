@@ -1,0 +1,16 @@
+<div class="contextual">
+<%= link_to l(:button_back), {:controller => 'node', :action => 'report', :id => @node.last_report}, :class => 'icon icon-back' %>
+</div>
+
+<h2><%=@node.fqdn%></h2>
+<h3>Reports</h2>
+
+<ul>
+<% @node.reports.sort.reverse.each do |report| %>
+  <li>
+  <%= link_to(time_ago_in_words(report.reported_at.getlocal),
+              {:action=>"report", :id=>report},
+              :title => format_time(report.reported_at.getlocal) )%>
+  </li>
+<% end -%>
+</ul>

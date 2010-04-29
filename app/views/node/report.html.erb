@@ -1,0 +1,49 @@
+<div class="contextual">
+
+  <%= link_to l(:button_back), {:action=>'list',:id=>@project}, :class => 'icon icon-back' %>
+
+<% if @node.editable_by?(User.current) -%>
+  <%= link_to l(:button_delete),
+    {:action=>'delete_report',:id=>@report},
+    :confirm => l(:text_are_you_sure),
+    :method => :post, :class => 'icon icon-del' %>
+<% end -%>
+
+<%= link_to "Older reports", {:controller=>'node', :action=> 'reports', :id=>@report.node}, :class=> 'icon icon-report' %>
+
+</div>
+
+<div>
+  <h2 style="border-bottom-style:none;" ><%= link_to @report.node.name, "todo" %> </h2>
+  Reported at <%= @report.reported_at.getlocal %>, which is <b><%= time_ago_in_words(@report.reported_at) %> ago</b>
+</div>
+
+<% if @report.log.logs.size > 0 -%> 
+  <div>
+    <%= render :partial => 'output', :locals => { :logs => @report.log.logs} %>
+  </div>
+<% end -%>
+
+<div class="flash">
+  <table width="100%" border="0">
+    <tr>
+      <td> <b>Metrics</b></td>
+      <td>
+        <table width="100%">
+          <% @report.log.metrics["time"].values.each do |name, label, value|-%>
+            <% if label == 'Total' then -%>
+              <%   @totaltime = value -%>
+              <%   next -%>
+            <% end -%>
+            <tr>
+              <td> <%= h label %> </td>
+              <td> <%= h value.round_with_precision(4) %> </td>
+            </tr>
+          <% end %>
+          <tr><td class="last_row">Total</td><td class="last_row"><%= h @totaltime.round_with_precision(4) %></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+

@@ -5,6 +5,7 @@ class Initr::Node < ActiveRecord::Base
 
   unloadable
 
+  has_many :reports, :dependent => :destroy, :class_name => "Initr::Report"
   has_many :klasses, :dependent => :destroy, :class_name => "Initr::Klass"
   belongs_to :project
   belongs_to :user

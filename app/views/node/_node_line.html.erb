@@ -15,7 +15,7 @@
     end
   -%>
 </td>
-<td><%= current_state(node) %></td>
+<td><%= last_report(node) %></td>
 <td>
   <%= render :partial => node.provider_partial, :locals => {:node=>node} if node.provider_is_configured? %>
 </td>

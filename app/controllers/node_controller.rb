@@ -5,18 +5,23 @@ class NodeController < InitrController
 
   helper :projects, :initr
 
-  before_filter :find_node, :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template]
+  before_filter :find_node,
+    :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:report]
   before_filter :find_project, :only => [:new]
   before_filter :find_optional_project, :only => [:list]
-  before_filter :authorize, :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template]
+  before_filter :find_report, :only => [:report]
+  before_filter :authorize,
+    :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report]
   before_filter :authorize_global, :only => [:list,:facts,:new_template]
   before_filter :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
 
-  skip_before_filter :check_if_login_required, :only => [ :get_host_definition ]
+  skip_before_filter :check_if_login_required, :only => [ :get_host_definition, :store_report ]
 
   # skip ssl_requirement's plugin before_filter, in case it is
-  # pressent in redmine, for get_host_definition
-  skip_before_filter :ensure_proper_protocol, :only => [:get_host_definition]  
+  # pressent in redmine, for get_host_definition and store_report
+  skip_before_filter :ensure_proper_protocol, :only => [:get_host_definition,:store_report]
+
+  protect_from_forgery :except=>[:store_report]
   
   def new
     # find_project
@@ -185,6 +190,27 @@ class NodeController < InitrController
     redirect_to :action => 'unassigned_nodes'
   end
 
+  def store_report
+    if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
+      respond_to do |format|
+        format.yml {
+          if Initr::Report.import params.delete("report")
+            render :text => "Imported report", :status => 200 and return
+          else
+            render :text => "Failed to import report", :status => 500
+          end
+        }
+      end
+    else
+      render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
+      logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr['puppetmaster_ip']}).\n"
+    end
+  end
+
+  def delete_report
+    #TODO
+  end
+
   private
 
   def find_node
@@ -209,6 +235,12 @@ class NodeController < InitrController
     authorize
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def find_report
+    @report = Initr::Report.find params[:id]
+    @node = @report.node
+    @project = @node.project
   end
 
 end

@@ -4,11 +4,21 @@ module InitrHelper
     i.modulo(2)==0 ? 'bglight' : 'bgdark'
   end
 
-  def current_state(node)
-    if node.puppet_host.nil?
-      content_tag(:span, 'Pending', :style=>'color: orange;', :title => 'The node has not contacted us yet')      
+  def last_report(node)
+    report=node.last_report
+    if report
+      if report.error?
+        img = "exclamation"
+      elsif report.changes?
+        img = "changeset"
+      else
+        img = "true"
+      end
+      link_to(image_tag("#{img}.png") + " " + time_ago_in_words(report.reported_at.getlocal),
+              {:action=>'report', :id=>report},
+              :title => format_time(report.reported_at.getlocal))
     else
-      content_tag(:span, 'Correct', :style=>'color: green;')
+      image_tag("warning.png") + " never"
     end
   end
 

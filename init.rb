@@ -49,11 +49,11 @@ begin
         {:node => [:new_template]},
         :require => :loggedin
       permission :view_nodes,
-        {:node  => [:list,:facts],
+        {:node  => [:list,:facts,:reports,:report],
          :klass => [:list]},
         :require => :member
       permission :view_own_nodes,
-        {:node  => [:list,:facts],
+        {:node  => [:list,:facts,:reports,:report],
          :klass => [:list]},
         :require => :loggedin
       permission :edit_nodes,
@@ -109,3 +109,5 @@ config.after_initialize do
   initr_loader.add_plugin_load_paths
 end
 
+# Needed to call node/store_report?format=yml
+Mime::Type.register_alias "text/plain", :yml

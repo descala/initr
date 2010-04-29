@@ -33,7 +33,7 @@ class Initr::NodeInstance < Initr::Node
   def provider_is_configured?
     true
   end
-  
+
   def provider_partial
     "no_provider"
   end
@@ -50,11 +50,11 @@ class Initr::NodeInstance < Initr::Node
     @host_object = puppet_host
     Puppet::Rails::Host.destroy @host_object if @host_object
   end
-  
+
   def exported_resources
     puppet_host.resources.find :all,:conditions => ['exported',true], :order => "restype, title"
   end
-  
+
   def destroy_exported_resources
     exported_resources.each do |r|
       r.destroy
@@ -89,7 +89,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def os_release
-    f = puppet_fact('lsbdistrelease')      
+    f = puppet_fact('lsbdistrelease')
     f = puppet_fact('operatingsystemrelease','?') unless f
     return f
   end
@@ -142,6 +142,20 @@ class Initr::NodeInstance < Initr::Node
 
   def config_errors?
     self.puppet_fact("puppet_classes","").split.include? "configuration_errors"
+  end
+
+  def last_report
+    self.reports.sort.last
+  end
+
+  # shamelessly taken from Foreman project (http://theforeman.org)
+  def status(type = nil)
+    raise "invalid type #{type}" if type and not Initr::Report::METRIC.include?(type)
+    h = {}
+    (type || Initr::Report::METRIC).each do |m|
+      h[m] = (read_attribute(:puppet_status) || 0) >> (Initr::Report::BIT_NUM*Initr::Report::METRIC.index(m)) & Initr::Report::MAX
+    end
+    return type.nil? ? h : h[type]
   end
 
 end
