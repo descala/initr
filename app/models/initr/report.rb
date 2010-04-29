@@ -29,7 +29,7 @@ class Initr::Report < ActiveRecord::Base
   # it is not supported to edit status values after it has been written once.
   def status=(st)
     s = st if st.is_a?(Integer)
-    s = Report.calc_status st if st.is_a?(Hash)
+    s = Initr::Report.calc_status st if st.is_a?(Hash)
     write_attribute(:status,s) unless s.nil?
   end
 
@@ -146,7 +146,7 @@ class Initr::Report < ActiveRecord::Base
     cond = "reported_at < \'#{(Time.now - timerange).to_formatted_s(:db)}\'"
     cond += " and status = #{status}" unless status.nil?
     # delete the reports
-    count = Report.delete_all(cond)
+    count = Initr::Report.delete_all(cond)
     logger.info Time.now.to_s + ": Expired #{count} Reports"
     return count
   end
@@ -156,7 +156,7 @@ class Initr::Report < ActiveRecord::Base
     now=Time.now
     (1..(30 / interval)).each do |i|
       ago = now - interval.minutes
-      counter << Report.count(:all, :conditions => {:reported_at => ago..(now-1.second)})
+      counter << Initr::Report.count(:all, :conditions => {:reported_at => ago..(now-1.second)})
       now = ago
     end
     counter
