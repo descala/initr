@@ -66,7 +66,7 @@ Considerations
 
 * You'll need to configure puppetmaster `external nodes`_ to call the script provided in bin/external_node.sh which gets node classes and parameters from an initr url.
 
-* To make reports appear on initr, you must copy puppet/initr_reports.rb to your puppet reports directory (on Debian /usr/lib/ruby/1.8/puppet/reports/) and configure puppetmaster with "reports = initr"
+* To make reports appear on initr, you must copy puppet/initr.rb to your puppet reports directory (on Debian /usr/lib/ruby/1.8/puppet/reports/) and configure puppetmaster with "reports = initr"
 
 .. _storeconfigs: http://reductivelabs.com/trac/puppet/wiki/UsingStoredConfiguration
 .. _external nodes: http://reductivelabs.com/trac/puppet/wiki/ExternalNodes
