@@ -4,8 +4,7 @@ module InitrHelper
     i.modulo(2)==0 ? 'bglight' : 'bgdark'
   end
 
-  def last_report(node)
-    report=node.report
+  def link_to_report(report)
     if report
       if report.error?
         img = "exclamation"
