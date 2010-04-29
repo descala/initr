@@ -93,7 +93,7 @@ class Initr::Report < ActiveRecord::Base
       # update node record
       # we update our node record, so we wont need to lookup the report information just to display the node list / info
       # save our report time
-      node.last_report = report.time.utc if node.last_report.nil? or node.last_report.utc < report.time.utc
+      node.last_report = report.time if node.last_report.nil? or node.last_report < report.time
 
       # we save the raw bit status value in our node too.
       node.puppet_status = st
@@ -105,7 +105,7 @@ class Initr::Report < ActiveRecord::Base
       node.save_with_validation(perform_validation = false)
 
       # and save our report
-      self.create! :node => node, :reported_at => report.time.utc, :log => report, :status => st
+      self.create! :node => node, :reported_at => report.time, :log => report, :status => st
 
     rescue Exception => e
       logger.warn "failed to process report for #{report.host} due to:#{e}"
@@ -143,7 +143,7 @@ class Initr::Report < ActiveRecord::Base
   def self.expire(conditions = {})
     timerange = conditions[:timerange] || 1.week
     status = conditions[:status]
-    cond = "reported_at < \'#{(Time.now.utc - timerange).to_formatted_s(:db)}\'"
+    cond = "reported_at < \'#{(Time.now - timerange).to_formatted_s(:db)}\'"
     cond += " and status = #{status}" unless status.nil?
     # delete the reports
     count = Report.delete_all(cond)
@@ -153,7 +153,7 @@ class Initr::Report < ActiveRecord::Base
 
   def self.count_puppet_runs(interval = 5)
     counter = []
-    now=Time.now.utc
+    now=Time.now
     (1..(30 / interval)).each do |i|
       ago = now - interval.minutes
       counter << Report.count(:all, :conditions => {:reported_at => ago..(now-1.second)})
