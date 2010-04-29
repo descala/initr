@@ -5,7 +5,7 @@ module InitrHelper
   end
 
   def last_report(node)
-    report=node.last_report
+    report=node.report
     if report
       if report.error?
         img = "exclamation"

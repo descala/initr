@@ -144,7 +144,7 @@ class Initr::NodeInstance < Initr::Node
     self.puppet_fact("puppet_classes","").split.include? "configuration_errors"
   end
 
-  def last_report
+  def report
     self.reports.sort.last
   end
 

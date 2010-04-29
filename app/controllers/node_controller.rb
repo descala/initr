@@ -22,6 +22,9 @@ class NodeController < InitrController
   skip_before_filter :ensure_proper_protocol, :only => [:get_host_definition,:store_report]
 
   protect_from_forgery :except=>[:store_report]
+
+  # avoids storing the report data in the log files
+  filter_parameter_logging :report
   
   def new
     # find_project
