@@ -14,7 +14,7 @@ module InitrHelper
         img = "true"
       end
       link_to(image_tag("#{img}.png") + " " + time_ago_in_words(report.reported_at.getlocal),
-              {:action=>'report', :id=>report},
+              {:controller=>'node', :action=>'report', :id=>report},
               :title => format_time(report.reported_at.getlocal))
     else
       image_tag("warning.png") + " never"
@@ -40,12 +40,13 @@ module InitrHelper
   end
 
   def klass_list_tabs
-    tabs = [{:name => 'klasses', :partial => 'klass/klasses', :label => :label_klasses},
-            {:name => 'external_nodes', :partial => 'klass/external_nodes', :label => :label_external_nodes}
+    tabs = [{:name => 'klasses', :partial => 'node/klasses', :label => :label_klasses},
+            {:name => 'external_nodes', :partial => 'node/external_nodes', :label => :label_external_nodes}
            ]
     unless @node.is_a? Initr::NodeTemplate
-      tabs << {:name => 'exported_resources', :partial => 'klass/exported_resources', :label => :label_exported_resources}
-      tabs << {:name => 'facts', :partial => 'klass/facts', :label => :label_facts}
+      tabs << {:name => 'exported_resources', :partial => 'node/exported_resources', :label => :label_exported_resources}
+      tabs << {:name => 'facts', :partial => 'node/facts', :label => :label_facts}
+      tabs << {:name => 'reports', :partial => 'node/reports', :label => :label_reports}
     end
     tabs
   end

@@ -1,16 +1,19 @@
-<table class="list" style="table-layout: fixed;">
-  <tr align="left">
-    <th width="18%">Fact</th>
-    <th width="82%"><%="Value"%></th>
-  </tr>
-<% f.sort.each do |key, value| %>
-  <tr class="<%= cycle('odd', 'even') %>">
-    <td style="font-weight: bold;"><div><%=link_to key, :controller=>'node', :action=>'facts', :id=>key%></div></td>
-    <% if value.first.value.size > 100 %>
-    <td><div class="wiki"><pre style="margin: 0;"><%= value.first.value %></pre></div></td>
-    <% else %>
-    <td><%= value.first.value %></td>
-    <% end %>
-  </tr>
-<% end %>
-</table>
+<% unless @facts.empty? -%>
+  <h3>Facts</h3>
+  <table class="list" style="table-layout: fixed;">
+    <tr align="left">
+      <th width="18%">Fact</th>
+      <th width="82%"><%="Value"%></th>
+    </tr>
+  <% @facts.sort.each do |key, value| %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td style="font-weight: bold;"><div><%=link_to key, :controller=>'node', :action=>'facts', :id=>key%></div></td>
+      <% if value.first.value.size > 100 %>
+      <td><div class="wiki"><pre style="margin: 0;"><%= value.first.value %></pre></div></td>
+      <% else %>
+      <td><%= value.first.value %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  </table>
+<% end -%>

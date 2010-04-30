@@ -16,3 +16,4 @@ es:
   label_facts: Facts
   label_exported_resources: "Exported resources"
   label_external_nodes: "External nodes YAML"
+  label_reports: "Reports"

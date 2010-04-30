@@ -1,6 +1,6 @@
 <div class="contextual">
 
-  <%= link_to l(:button_back), {:action=>'list',:id=>@project}, :class => 'icon icon-back' %>
+  <%= link_to l(:button_back), :back, :class => 'icon icon-back' %>
 
 <% if @node.editable_by?(User.current) -%>
   <%= link_to l(:button_delete),
@@ -9,7 +9,7 @@
     :method => :post, :class => 'icon icon-del' %>
 <% end -%>
 
-<%= link_to "Older reports", {:controller=>'node', :action=> 'reports', :id=>@report.node}, :class=> 'icon icon-report' %>
+<%= link_to "Older reports", {:controller=>'klass', :action=> 'list', :id=>@report.node, :tab => "reports"}, :class=> 'icon icon-report' %>
 
 </div>
 
