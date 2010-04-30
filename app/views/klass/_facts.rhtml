@@ -1,6 +1,4 @@
-<% unless @node.is_a?(Initr::NodeTemplate) -%>
-  <% unless @facts.empty? -%>
-   <h3>Facts</h3>
-    <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
-  <% end -%>
+<% unless @facts.empty? -%>
+ <h3>Facts</h3>
+  <%= render :partial => 'node/facts', :locals => { :f => @facts } %>
 <% end -%>

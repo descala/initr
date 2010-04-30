@@ -1,13 +1,9 @@
-<% unless @node.is_a?(Initr::NodeTemplate) -%>
-
-  <% unless @exported_resources.empty? %>
-      <div class="contextual">
-        <% if @node.editable_by?(User.current) -%>
-          <%= link_to "Delete exported resources", {:controller => 'node', :action => 'destroy_exported_resources', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
-        <% end -%>
-      </div>
-      <h3>Exported resources</h3>
-      <%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
-  <% end -%>
+<% unless @exported_resources.empty? %>
+    <div class="contextual">
+      <% if @node.editable_by?(User.current) -%>
+        <%= link_to "Delete exported resources", {:controller => 'node', :action => 'destroy_exported_resources', :id => @node}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+      <% end -%>
+    </div>
+    <h3>Exported resources</h3>
+    <%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
 <% end -%>
-
