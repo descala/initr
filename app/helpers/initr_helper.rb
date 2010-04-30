@@ -38,5 +38,16 @@ module InitrHelper
     end
     out
   end
+
+  def klass_list_tabs
+    tabs = [{:name => 'klasses', :partial => 'klass/klasses', :label => :label_klasses},
+            {:name => 'external_nodes', :partial => 'klass/external_nodes', :label => :label_external_nodes}
+           ]
+    unless @node.is_a? Initr::NodeTemplate
+      tabs << {:name => 'exported_resources', :partial => 'klass/exported_resources', :label => :label_exported_resources}
+      tabs << {:name => 'facts', :partial => 'klass/facts', :label => :label_facts}
+    end
+    tabs
+  end
   
 end

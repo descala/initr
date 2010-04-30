@@ -1,3 +1,5 @@
+<h3>Node classes</h2>
+
 <table class="list">
   <tr align="left">
     <th><%="Class"%></th>
@@ -23,3 +25,55 @@
     </tr>
   <% end -%>
 </table>
+
+<% if @klass_definitions.any? -%>
+<h3>Available classes</h2>
+
+<table class="list">
+  <tr align="left">
+    <th><%="Class"%></th>
+    <th><%="Description"%></th>
+    <th></th>
+  </tr>
+  <% @klass_definitions.each do |kd| %>
+  <tr class="<%= cycle('odd', 'even') %>">
+    <td><%= kd.name %></td>
+    <td><%= kd.description %></td>
+    <td><%= button_to("Add this class",:action => 'create', :id => @node, :klass_name => kd.name, :method => :post) %></td>
+  </tr>
+  <% end %>
+</table>
+<% end -%>
+
+<% unless @node.is_a?(Initr::NodeTemplate) -%>
+
+  <% unless @templates.empty? -%>
+  <h3>Templates</h3>
+  <table class="list">
+    <tr>
+      <th>Name</th>
+      <th>Klasses</th>
+      <th></th>
+    </tr>
+  <% @templates.each do |templ| -%>
+    <tr>
+      <td><%=link_to templ.name, :controller => 'klass', :action => 'list', :id => templ%></td>
+      <td>
+      <%=
+        begin
+          templ.klasses.sort.collect { |k|
+            link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
+          }.join(", ")
+        rescue ActiveRecord::SubclassNotFound => e
+          link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
+        end
+      -%>
+      </td>
+      <td><%= button_to("Apply template", {:action => 'apply_template', :id => @node, :templ_id => templ.id}, :method => :post, :confirm => "Existing classes will be overwritten, are you sure?") %></td>
+    </tr>
+  <% end -%>
+  </table>
+  <% end -%>
+
+<% end -%>
+

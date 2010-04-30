@@ -12,3 +12,7 @@ en:
   Temporarily parked: Temporarily parked
   field_node: Node
   field_puppet: Puppet
+  label_klasses: Klasses
+  label_facts: Facts
+  label_exported_resources: "Exported resources"
+  label_external_nodes: "External nodes YAML"
