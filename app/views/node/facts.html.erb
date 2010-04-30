@@ -6,7 +6,7 @@
   </tr>
 <% @facts.keys.sort.each do |node| %>
   <tr class="<%= cycle('odd', 'even') %>">
-    <td style="font-weight: bold;"><div><%= link_to node.fqdn, :controller=>'klass', :action=>'list', :id=>node %></div></td>
+    <td style="font-weight: bold;"><div><%= link_to node.fqdn, :controller=>'klass', :action=>'list', :id=>node, :tab => 'facts' %></div></td>
     <% if @facts[node].size > 100 %>
     <td><div class="wiki"><pre style="margin: 0;"><%= @facts[node] %></pre></div></td>
     <% else %>
