@@ -1,7 +1,7 @@
 class InstallController < InitrController
   unloadable
 
-  layout 'nested'
+  menu_item :initr
 
   def index
   end

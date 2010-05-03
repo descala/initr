@@ -3,6 +3,7 @@ require 'puppet/rails/host'
 class NodeController < InitrController
   unloadable
 
+  menu_item :initr
   helper :projects, :initr
 
   before_filter :find_node,

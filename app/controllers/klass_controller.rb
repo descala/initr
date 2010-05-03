@@ -1,14 +1,11 @@
 class KlassController < InitrController
   unloadable
 
+  menu_item :initr
   before_filter :find_node, :only => [:list,:create,:apply_template]
   before_filter :find_klass, :only => [:configure,:destroy,:move]
   before_filter :authorize
  
-  layout 'nested' 
-  helper :initr
-  menu_item :initr
-  
   def list
     (render_403; return) unless @node.visible_by?(User.current)
     node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
