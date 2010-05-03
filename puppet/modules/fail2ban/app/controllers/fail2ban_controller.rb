@@ -1,7 +1,7 @@
 class Fail2banController < InitrController
-  
   unloadable
 
+  menu_item :initr
   # authorize filter expects @project to be the current project
   # we set this on find_fail2ban filter
   before_filter :find_fail2ban, :authorize

@@ -1,7 +1,7 @@
 class CustomKlassController < InitrController
-
   unloadable
 
+  menu_item :initr
   before_filter :find_node,    :only => [:new]
   before_filter :find_node_id, :only => [:create]
   before_filter :find_klass,   :only => [:configure]

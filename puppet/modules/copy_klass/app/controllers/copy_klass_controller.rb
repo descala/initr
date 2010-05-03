@@ -1,6 +1,7 @@
 class CopyKlassController < InitrController
   unloadable
 
+  menu_item :initr
   before_filter :find_copy_klass
 
   def configure

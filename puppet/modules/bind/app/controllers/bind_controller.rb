@@ -1,7 +1,7 @@
 class BindController < InitrController
-  
   unloadable
 
+  menu_item :initr
   before_filter :find_bind, :except => [:edit_zone,:destroy_zone]
   before_filter :find_bind_zone, :only => [:edit_zone,:destroy_zone]
   before_filter :authorize

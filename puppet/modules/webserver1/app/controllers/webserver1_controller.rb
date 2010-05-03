@@ -1,6 +1,7 @@
 class Webserver1Controller < InitrController
   unloadable
 
+  menu_item :initr
   before_filter :find_webserver, :except => [:edit_domain,:rm_domain]
   before_filter :find_domain, :only => [:edit_domain,:rm_domain]
   before_filter :authorize
