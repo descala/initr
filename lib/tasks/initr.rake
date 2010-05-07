@@ -54,15 +54,13 @@ namespace :initr do
       end
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/app/controllers/#{name}_controller.rb"
       open("#{plugindir}/app/controllers/#{name}_controller.rb", 'w') do |f|
-        f << "class #{name.camelize}Controller < ApplicationController\n"
+        f << "class #{name.camelize}Controller < InitrController\n"
         f << "  unloadable\n"
+        f << "\n"
+        f << "  menu_item :initr\n"
         f << "\n"
         f << "  before_filter :find_#{name}\n"
         f << "  before_filter :authorize\n"
-        f << "\n"
-        f << "  layout 'nested'\n"
-        f << "  helper :initr\n"
-        f << "  menu_item :initr\n"
         f << "\n"
         f << "  private\n"
         f << "\n"
