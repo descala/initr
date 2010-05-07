@@ -2,7 +2,7 @@
   <caption>Puppet Output</capmion>
   <th>Level</th><th>Resource</th><th>message</th>
   <% logs.each do |log| -%>
-    <tr class="<%= cycle("even", "odd") -%>">
+    <tr class="<%= cycle("even", "odd") -%> <%=class_for(log.level)%>">
       <td><%= h log.level %></td>
       <td><%= h log.source %></td>
       <td><%= h log.message %></td>

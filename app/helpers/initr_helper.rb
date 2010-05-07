@@ -21,6 +21,15 @@ module InitrHelper
     end
   end
 
+  def class_for(log_level)
+    case log_level
+    when :err:
+      "report_err"
+    when :warning:
+      "report_warn"
+    end
+  end
+
   def klass_menu(title="")
     t = title.blank? ? "Configuration" : title
     render(:partial => 'klass/menu', :locals => {:title=>t})

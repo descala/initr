@@ -1,1 +1,5 @@
 .icon-back { background-image: url(/images/cancel.png); }
+
+.report_err { color: #CC0000; }
+
+.report_warn { color: #CC9900; }
