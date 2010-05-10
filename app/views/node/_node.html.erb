@@ -1,0 +1,22 @@
+<p class="box" style="text-align: center;">To complete your node installation choose your operating system and copy&paste lines in a root shell</p>
+
+<h4>CentOS</h4>
+<pre>
+<% if request.ssl? -%>
+wget --no-check-certificate -qO - https://<%=Setting.plugin_initr['initr_ip']%>/install/centos/<%=@node.name%> | /bin/sh
+</pre>
+<p>On CentOS you need to use --no-check-certificate because our CA is not yet included in /etc/pki/tls/certs/ca-bundle.crt</p>
+<% else -%>
+wget -qO - http://<%=Setting.plugin_initr['initr_ip']%>/install/centos/<%=@node.name%> | /bin/sh
+</pre>
+<% end -%>
+
+<h4>Debian</h4>
+<pre>
+<% if request.ssl? -%>
+apt-get install ca-certificates && wget -qO - https://<%=Setting.plugin_initr['initr_ip']%>/install/debian/<%=@node.name%> | /bin/sh
+<% else -%>
+wget -qO - http://<%=Setting.plugin_initr['initr_ip']%>/install/debian/<%=@node.name%> | /bin/sh
+<% end -%>
+</pre>
+

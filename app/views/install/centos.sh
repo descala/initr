@@ -12,8 +12,6 @@ cat << FI > /etc/puppet/puppet.conf
     masterport = 443
     factsync = true
     report = true
-    http_proxy_host = proxy.ingent.net
-    http_proxy_port = 80
 FI
 
 /etc/init.d/puppet start

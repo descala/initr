@@ -2,7 +2,7 @@
 <td><%= image_tag("os/#{node.os}.png", :title => "#{node.os} #{node.os_release} Kernel #{node.kernel}", :plugin => "initr") unless node.os.nil? %></td>
 <td class="subject">
   <%= image_tag("warning.png",:title=>"Node has configuration errors") if node.config_errors? %>
-  <%= link_to node.name, :controller => 'klass', :action => 'list', :id => node %>
+  <%= link_to node.fqdn, :controller => 'klass', :action => 'list', :id => node %>
 </td>
 <td class="subject">
   <%=

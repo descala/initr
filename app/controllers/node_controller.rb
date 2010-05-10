@@ -28,14 +28,12 @@ class NodeController < InitrController
   filter_parameter_logging :report
   
   def new
-    # find_project
-    @node_instance = Initr::NodeInstance.new(params[:node_instance])
-    @node_instance.user = User.current
-    @node_instance.project = @project
-    if request.post? && @node_instance.save
-      flash[:notice] = l(:notice_successful_create)
-      redirect_to :action => 'list', :id => @project
-    end
+    @node = Initr::NodeInstance.new
+    @node.user = User.current
+    @node.project = @project
+    @node.name = ActiveSupport::SecureRandom.hex(20)
+    @node.save!
+    redirect_to :controller => 'klass', :action => 'list', :id => @node
   end
 
   def new_template
@@ -138,10 +136,10 @@ class NodeController < InitrController
   
   def get_host_definition
     if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
-      begin
-        node = Initr::NodeInstance.find(params[:hostname])
+      node = Initr::NodeInstance.find_by_name(params[:hostname])
+      if node
         render :text => YAML.dump(node.parameters)
-      rescue ActiveRecord::RecordNotFound
+      else
         render :text => "Unknown hostname '#{params[:hostname]}'\n", :status => 404
         logger.error "Unknown hostname '#{params[:hostname]}'."
       end
