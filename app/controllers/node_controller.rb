@@ -164,13 +164,13 @@ class NodeController < InitrController
     @hosts_new = Array.new
     hosts = Puppet::Rails::Host.find :all
     hosts.each do |host|
-      if Initr::Node.find_by_name host.name
+      if Initr::NodeInstance.find_by_name host.name
         @hosts_exist << host.name
       else
         @hosts_new << host.name
-        node = Initr::Node.new
+        node = Initr::NodeInstance.new
         node.name = host.name
-        node.save
+        node.save(false)
       end
     end
   end
