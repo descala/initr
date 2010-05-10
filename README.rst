@@ -68,6 +68,8 @@ Considerations
 
 * To make reports appear on initr, you must copy puppet/initr.rb to your puppet reports directory (on Debian /usr/lib/ruby/1.8/puppet/reports/) and configure puppetmaster with "reports = initr"
 
+* On development all certificate requests are signed (see puppet/autosign.conf), but it is not desirable on production. See http://www.initr.org/projects/initr/wiki/Signing_certificates_automatically to automatically sign certificate requests
+
 .. _storeconfigs: http://reductivelabs.com/trac/puppet/wiki/UsingStoredConfiguration
 .. _external nodes: http://reductivelabs.com/trac/puppet/wiki/ExternalNodes
 .. _Redmine: http://www.redmine.org
