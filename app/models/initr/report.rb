@@ -3,7 +3,7 @@ class Initr::Report < ActiveRecord::Base
   
   unloadable
 
-  belongs_to :node, :class_name => "Initr::Node"
+  belongs_to :node, :class_name => "Initr::NodeInstance"
   serialize :log, Puppet::Transaction::Report
   validates_presence_of :log, :node_id, :reported_at, :status
   validates_uniqueness_of :reported_at, :scope => :node_id
@@ -83,7 +83,16 @@ class Initr::Report < ActiveRecord::Base
     raise "Invalid report" unless report.is_a?(Puppet::Transaction::Report)
     logger.info "processing report for #{report.host}"
     begin
-      node = Initr::Node.find_or_create_by_name report.host
+      #node = Initr::NodeInstance.find_or_create_by_name report.host
+	  #TODO: puppet should send certname with report, since it is the Puppet::Rails::Host name
+	  node=nil
+      Initr::NodeInstance.all.collect { |n|
+		if n.fqdn == report.host
+		  node = n
+		  break
+		end
+	  }
+	  raise "Can't find node #{report.host}" if node.nil?
 
       # parse report metrics
       raise "Invalid report: can't find metrics information for #{report.host} at #{report.id}" if report.metrics.nil?
