@@ -88,12 +88,7 @@ begin
     f.puts "# Changes will be lost"
     f.puts "RAILS_ROOT: #{RAILS_ROOT}"
     f.puts "RAILS_ENV: #{RAILS_ENV}"
-    #TODO: can we set this automatically?
-    if RAILS_ENV == 'production'
-      f.puts "DOMAIN: localhost:8020"
-    else
-      f.puts "DOMAIN: localhost:3000"
-    end
+    f.puts "DOMAIN: #{Setting.plugin_initr['initr_ip']}"
   end
   
 rescue MissingSourceFile
