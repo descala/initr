@@ -83,16 +83,16 @@ class Initr::Report < ActiveRecord::Base
     raise "Invalid report" unless report.is_a?(Puppet::Transaction::Report)
     logger.info "processing report for #{report.host}"
     begin
-      #node = Initr::NodeInstance.find_or_create_by_name report.host
-	  #TODO: puppet should send certname with report, since it is the Puppet::Rails::Host name
-	  node=nil
-      Initr::NodeInstance.all.collect { |n|
-		if n.fqdn == report.host
-		  node = n
-		  break
-		end
-	  }
-	  raise "Can't find node #{report.host}" if node.nil?
+      node = Initr::NodeInstance.find_by_name report.host
+      if node.nil? # old puppet versions send hostname instead of certname
+        Initr::NodeInstance.all.collect { |n|
+          if n.fqdn == report.host
+            node = n
+            break
+          end
+        }
+      end
+      raise "Can't find node #{report.host}" if node.nil?
 
       # parse report metrics
       raise "Invalid report: can't find metrics information for #{report.host} at #{report.id}" if report.metrics.nil?
