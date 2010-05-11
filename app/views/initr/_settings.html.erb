@@ -1,7 +1,3 @@
 <p><label>Puppetmaster IP</label><%= text_field_tag 'settings[puppetmaster_ip]', @settings['puppetmaster_ip'] %></p>
 <p>Only this IP will be allowed to call node/get_host_definition</p>
 <p>You can enter multiple IP separating them with a comma</p>
-
-<p><label>Initr Domain or IP</label><%=text_field_tag 'settings[initr_ip]', @settings['initr_ip'] %></p>
-<p>Domain or IP where initr is installed</p>
-<p>Used to retrieve node configuration, build node install url...</p>

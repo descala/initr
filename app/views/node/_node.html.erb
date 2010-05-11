@@ -2,21 +2,21 @@
 
 <h4>CentOS</h4>
 <pre>
-<% if request.ssl? -%>
-wget --no-check-certificate -qO - https://<%=Setting.plugin_initr['initr_ip']%>/install/centos/<%=@node.name%> | /bin/sh
+<% if Setting[:protocol] == "https" -%>
+wget --no-check-certificate -qO - https://<%=Setting[:host_name]%>/install/centos/<%=@node.name%> | /bin/sh
 </pre>
 <p>On CentOS you need to use --no-check-certificate because our CA is not yet included in /etc/pki/tls/certs/ca-bundle.crt</p>
 <% else -%>
-wget -qO - http://<%=Setting.plugin_initr['initr_ip']%>/install/centos/<%=@node.name%> | /bin/sh
+wget -qO - http://<%=Setting[:host_name]%>/install/centos/<%=@node.name%> | /bin/sh
 </pre>
 <% end -%>
 
 <h4>Debian</h4>
 <pre>
-<% if request.ssl? -%>
-apt-get install ca-certificates && wget -qO - https://<%=Setting.plugin_initr['initr_ip']%>/install/debian/<%=@node.name%> | /bin/sh
+<% if Setting[:protocol] == "https" -%>
+apt-get install ca-certificates && wget -qO - https://<%=Setting[:host_name]%>/install/debian/<%=@node.name%> | /bin/sh
 <% else -%>
-wget -qO - http://<%=Setting.plugin_initr['initr_ip']%>/install/debian/<%=@node.name%> | /bin/sh
+wget -qO - http://<%=Setting[:host_name]%>/install/debian/<%=@node.name%> | /bin/sh
 <% end -%>
 </pre>
 

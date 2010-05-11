@@ -88,7 +88,7 @@ begin
     f.puts "# Changes will be lost"
     f.puts "RAILS_ROOT: #{RAILS_ROOT}"
     f.puts "RAILS_ENV: #{RAILS_ENV}"
-    f.puts "DOMAIN: #{Setting.plugin_initr['initr_ip']}"
+    f.puts "DOMAIN: #{Setting[:protocol]}://#{Setting[:host_name]}"
   end
   
 rescue MissingSourceFile
