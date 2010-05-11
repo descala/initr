@@ -236,7 +236,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     ensure => $ensure,
     comment => "puppet managed, backups for $name",
     home => "$backups_path/webservers/$name",
-    shell => "/bin/bash", #TODO: allow only scp (http://redmine.ingent.net/issues/show/67)
+    shell => "/bin/bash", #TODO: allow only scp
     tag => "${web_backups_server}_backup",
   }
 

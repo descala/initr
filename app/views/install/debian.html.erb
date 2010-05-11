@@ -48,12 +48,8 @@ cat << FI > /etc/puppet/puppet.conf
     rundir = /var/run/puppet
     ssldir = /var/lib/puppet/ssl
 [puppetd]
-<% if RAILS_ENV == "production" -%>
-    server = one.ingent.net
-    masterport = 443
-<% else -%>
-    server = puppet
-<% end -%>
+    server = <%=Setting.plugin_initr['puppetmaster']%>
+    masterport = <%=Setting.plugin_initr['puppetmaster_port']%>
     classfile = /var/lib/puppet/state/classes.txt
     factsync = true
     report = true

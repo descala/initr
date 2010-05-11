@@ -1,22 +1,3 @@
-define remotefile($owner = root, $server = 'one.ingent.net', $group = root, $mode, $source, $backup = false, $recurse = false, $ensure = '') {
-  case $ensure {
-    "absent": {
-        file { $name: ensure => absent }
-    }
-
-    default: {
-      file { $name:
-        mode => $mode,
-        owner => $owner,
-        group => $group,
-        backup => $backup,
-        recurse => $recurse,
-        source => "puppet://$server/dist/$source",
-      }
-    }
-  }
-}
-
 # Usage:
 # append_if_no_such_line { dummy_modules:
 #       file => "/etc/modules",

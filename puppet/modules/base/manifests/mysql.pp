@@ -22,7 +22,6 @@ define mysql::database($ensure, $owner, $passwd) {
   $dbcr = "CREATE DATABASE IF NOT EXISTS $name;"
   $priv = "GRANT ALL PRIVILEGES ON $name.* TO $owner@localhost IDENTIFIED BY '$passwd';"
 
-  #TODO: acces al mysql com a root amb passwd - http://redmine.ingent.net/issues/show/168
   case $ensure {
     present: {
       exec {

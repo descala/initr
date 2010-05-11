@@ -1,3 +1,10 @@
-<p><label>Puppetmaster IP</label><%= text_field_tag 'settings[puppetmaster_ip]', @settings['puppetmaster_ip'] %></p>
+<h3>Puppetmaster information</h3>
+<p><label>Hostname</label><%= text_field_tag 'settings[puppetmaster]', @settings['puppetmaster'] %></p>
+<p>Puppetmaster hostname (this will be on all nodes puppet.conf "server=" parameter</p>
+
+<p><label>Port</label><%= text_field_tag 'settings[puppetmaster_port]', @settings['puppetmaster_port'] %></p>
+<p>Puppetmaster port (this will be on all nodes puppet.conf "masterport=" parameter</p>
+
+<p><label>IP</label><%= text_field_tag 'settings[puppetmaster_ip]', @settings['puppetmaster_ip'] %></p>
 <p>Only this IP will be allowed to call node/get_host_definition</p>
 <p>You can enter multiple IP separating them with a comma</p>
