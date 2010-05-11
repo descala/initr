@@ -4,20 +4,16 @@
 # This script expects that you configure incron to call it this way:
 #   <PATH_TO_PUPPET_SSL_DIR>/ca/requests IN_CLOSE_WRITE <PATH_TO_THIS_SCRIPT>sign_request.sh $#
 
-#SERVER="https://www.initr.net"
-SERVER="http://localhost:3000"
+DOMAIN=`cat $(dirname $0)/../server_info.yml | grep DOMAIN | cut -d" " -f2`
 
 token="`echo -n "$1" | sed 's/\.pem$//'`"
-valid="`curl -s -k $SERVER/install/can_sign/$token`"
+valid="`curl -s -k $DOMAIN/install/can_sign/$token`"
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 path_only=`dirname "$abspath"`
 
 log() {
   if [ ! -z "`which logger`" -a ! -z "$1" ]; then
-    IFS=$'\n'
-    for line in $1 ; do
-      logger -t sign_request -- "$line"
-    done
+    logger -t "sign_request" -- "$1"
   fi
 }
 

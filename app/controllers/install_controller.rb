@@ -16,12 +16,7 @@ class InstallController < InitrController
   end
 
   def can_sign
-    if @node.name == params[:id]
-      @node.sign_request && @node.save
-      render :text => true
-    else
-      render :text => false
-    end
+    render :text => true
   end
 
   private
