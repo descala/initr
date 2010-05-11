@@ -5,6 +5,7 @@
 #   <PATH_TO_PUPPET_SSL_DIR>/ca/requests IN_CLOSE_WRITE <PATH_TO_THIS_SCRIPT>sign_request.sh $#
 
 DOMAIN=`cat $(dirname $0)/../server_info.yml | grep DOMAIN | cut -d" " -f2`
+RAILS_ENV=`cat $(dirname $0)/../server_info.yml | grep RAILS_ENV | cut -d" " -f2`
 
 token="`echo -n "$1" | sed 's/\.pem$//'`"
 valid="`curl -s -k $DOMAIN/install/can_sign/$token`"
@@ -32,6 +33,10 @@ if [ -z "$RUBYLIB" ]; then
   export RUBYLIB="$(echo -n `gem contents --prefix puppet |grep "/lib/puppet.rb$" |sed 's#/puppet.rb$##'`)"
 fi
 
-output=$($puppetca --confdir $path_only --sign $token 2>&1)
+if [ "$RAILS_ENV" = "development"]; then
+  output=$($puppetca --confdir $path_only --sign $token 2>&1)
+else
+  output=$($puppetca --sign $token 2>&1)
+fi
 
 log "$output"
