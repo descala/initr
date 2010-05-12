@@ -29,7 +29,12 @@ class NodeController < InitrController
   
   def new
     if Setting.plugin_initr[:puppetmaster].blank? or Setting.plugin_initr[:puppetmaster_port].blank?
-      render "initr/unconfigured"
+      if User.current.admin?
+        flash[:error] = "Configure initr first"
+        redirect_to "/settings/plugin/initr"
+      else
+        render "initr/unconfigured"
+      end
       return
     end
     @node = Initr::NodeInstance.new
