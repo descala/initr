@@ -28,7 +28,7 @@ class NodeController < InitrController
   filter_parameter_logging :report
   
   def new
-    if Setting.plugin_initr[:puppetmaster].blank? or Setting.plugin_initr[:puppetmaster_port].blank?
+    if Setting.plugin_initr["puppetmaster"].blank? or Setting.plugin_initr["puppetmaster_port"].blank?
       if User.current.admin?
         flash[:error] = "Configure initr first"
         redirect_to "/settings/plugin/initr"
