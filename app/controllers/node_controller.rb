@@ -28,6 +28,10 @@ class NodeController < InitrController
   filter_parameter_logging :report
   
   def new
+    if Setting.plugin_initr[:puppetmaster].blank? or Setting.plugin_initr[:puppetmaster_port].blank?
+      render "initr/unconfigured"
+      return
+    end
     @node = Initr::NodeInstance.new
     @node.user = User.current
     @node.project = @project
