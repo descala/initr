@@ -12,6 +12,7 @@ cat << FI > /etc/puppet/puppet.conf
     masterport = <%=Setting.plugin_initr['puppetmaster_port']%>
     factsync = true
     report = true
+    certname = <%=@node.name%>
 FI
 
 /etc/init.d/puppet start
