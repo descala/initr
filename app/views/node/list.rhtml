@@ -16,7 +16,7 @@
   <tbody>
 
     <% @nodes.keys.sort.each do |proj| -%>
-      <% unless @project or @nodes[proj].nil? or @nodes[proj].empty? -%>
+      <% unless @project or @nodes[proj].nil? or @nodes[proj].empty? or proj.nil? -%>
         <% content_tag :tr do -%>
           <%= content_tag :th, project_path(proj), :colspan=>6, :align=>"left" %>
         <% end -%>
