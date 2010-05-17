@@ -9,7 +9,8 @@ class Initr::Klass < ActiveRecord::Base
   
   belongs_to :node, :class_name => "Initr::Node"
   
-  after_save :add_klasses
+  after_save :add_klasses, :trigger_puppetrun
+  after_destroy :trigger_puppetrun
   validates_uniqueness_of :type, :scope => :node_id , :if => Proc.new { |k| k.unique? }
   
   serialize :config
@@ -104,6 +105,17 @@ class Initr::Klass < ActiveRecord::Base
       if !self.node.klasses.find_by_type(k.to_s.split("::").last)
         self.node.klasses << k.new
       end
+    end
+  end
+
+  def trigger_puppetrun
+    # uncomment on rails 3, rails 2.3 does not detect changes on serialized columns
+    # https://rails.lighthouseapp.com/projects/8994/tickets/360-dirty-tracking-on-serialized-columns-is-broken
+    # return unless self.changed?
+    return unless self.valid?
+    begin
+      open("public/puppetrun_#{self.node.name}",'w') {|f| f << Time.now.to_i }
+    rescue
     end
   end
 

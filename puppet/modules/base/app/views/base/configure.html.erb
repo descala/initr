@@ -6,6 +6,7 @@
   <p><%= f.radio_button :puppet, :none %> Don't manage puppet</p>
   <p><%= f.radio_button :puppet, :lite %> Puppet daemon not running, called once from cron</p>
   <p><%= f.radio_button :puppet, :normal %> Puppet daemon running</p>
+  <p><%= f.radio_button :puppet, :insistent %> Puppet daemon running, restarted when configuration changes</p>
 
   <p><%= submit_tag("Send")%></p>
 

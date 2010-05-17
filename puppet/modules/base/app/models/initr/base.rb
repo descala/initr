@@ -27,15 +27,21 @@ class Initr::Base < Initr::Klass
       conf.delete(k) if v.nil?
     end
     conf.delete("puppet")
+    begin
+      conf["initr_url"]="#{Setting[:protocol]}://#{Setting[:host_name]}"
+    rescue
+    end
     return conf
   end
 
   def more_classes
     case self.config.puppet
     when "lite"
-      return ["puppet::litte"]
+      return ["puppet::lite"]
     when "normal"
       return ["puppet"]
+    when "insistent"
+      return ["puppet::insistent"]
     else
       return nil
     end

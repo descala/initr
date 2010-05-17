@@ -5,6 +5,8 @@ class Initr::NodeInstance < Initr::Node
   validates_uniqueness_of :name
   validates_presence_of :project
 
+  after_save :trigger_puppetrun
+
   #TODO
 #  def validate
 #    unless user.member_of?(project) or user.admin?
@@ -156,6 +158,18 @@ class Initr::NodeInstance < Initr::Node
       h[m] = (read_attribute(:puppet_status) || 0) >> (Initr::Report::BIT_NUM*Initr::Report::METRIC.index(m)) & Initr::Report::MAX
     end
     return type.nil? ? h : h[type]
+  end
+
+  private
+
+  def trigger_puppetrun
+    # uncomment on rails 3, rails 2.3.5 does not detect changes on serialized columns
+    # https://rails.lighthouseapp.com/projects/8994/tickets/360-dirty-tracking-on-serialized-columns-is-broken
+    # return unless self.changed?
+    begin
+      open("public/puppetrun_#{self.name}",'w') {|f| f << Time.now.to_i }
+    rescue
+    end
   end
 
 end

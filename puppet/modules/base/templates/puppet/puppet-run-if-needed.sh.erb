@@ -1,0 +1,33 @@
+#!/bin/bash
+
+function run_puppet {
+  echo $last_config > /etc/puppet/initr_conf_last_config
+  /etc/init.d/puppet restart
+}
+
+function run_puppet_if_needed {
+  sleep $[ ( $RANDOM % 10 ) ]
+  last_config=$(curl -f <%= initr_url%>/puppetrun_<%=node_name%>)
+  if [ -n "$last_config" ]; then
+    last_run=$(cat /etc/puppet/initr_conf_last_config)
+    if [ -z "$last_run" ]; then
+      run_puppet
+    else
+      if [ $last_config -gt $last_run ]; then
+        run_puppet
+      fi
+    fi
+  fi
+}
+
+# called from cron every minute, we want to check configuration changes every 15 sec
+
+
+COUNTER=0
+while [  $COUNTER -lt 4 ]; do
+  run_puppet_if_needed &
+  let COUNTER=COUNTER+1 
+  if [ $COUNTER -lt 4 ]; then
+    sleep 15
+  fi
+done
