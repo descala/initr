@@ -131,6 +131,7 @@ $manpages = $operatingsystem ? {
 }
 $samba_tdb_dir = $operatingsystem ? {
   Fedora => "/var/lib/samba",
+  Debian => "/var/lib/samba",
   default => "/var/cache/samba"
 }
 $yum_priorities_plugin = $lsbdistid ? {
