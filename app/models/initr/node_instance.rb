@@ -166,6 +166,7 @@ class Initr::NodeInstance < Initr::Node
     # uncomment on rails 3, rails 2.3.5 does not detect changes on serialized columns
     # https://rails.lighthouseapp.com/projects/8994/tickets/360-dirty-tracking-on-serialized-columns-is-broken
     # return unless self.changed?
+	return if self.last_report_changed? # avoid triggering puppetruns on report saves
     begin
       open("public/puppetrun_#{self.name}",'w') {|f| f << Time.now.to_i }
     rescue
