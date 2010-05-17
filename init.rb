@@ -90,7 +90,12 @@ begin
     f.puts "# Changes will be lost"
     f.puts "RAILS_ROOT: #{RAILS_ROOT}"
     f.puts "RAILS_ENV: #{RAILS_ENV}"
-    f.puts "DOMAIN: #{Setting[:protocol]}://#{Setting[:host_name]}"
+    begin
+      f.puts "DOMAIN: #{Setting[:protocol]}://#{Setting[:host_name]}"
+    rescue
+      # redmine has no settings table yet
+      f.puts "DOMAIN: http://localhost:3000"
+    end
   end
   
 rescue MissingSourceFile

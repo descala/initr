@@ -25,13 +25,13 @@ Quickstart
 
 ::
 
-  cd vendor/plugins ; git clone git://github.com/descala/initr.git
+  cd redmine/vendor/plugins ; git clone git://github.com/descala/initr.git
 
 * Apply redmine patches on initr/redmine_patches/
 
 ::
 
-  git apply vendor/plugins/initr/redmine_patches/*.patch
+  cd ../../ ; git apply vendor/plugins/initr/redmine_patches/*.patch
 
 * Configure config/database.yml
 
@@ -54,6 +54,10 @@ Quickstart
   rake db:migrate ; rake db:migrate:plugins
 
 * (Re)Start Redmine and check that it lists initr plugin on 'Admin -> Information' screen.
+
+* Configure Initr on 'Admin -> Plugins -> Initr' screen
+
+* Add Initr to a project ('Project -> Settings -> Modules') and Initr tab will appear on that project.
 
 * You can start a local puppetmaster by running puppet/start_puppetmaster.sh from initr plugin directory
 
