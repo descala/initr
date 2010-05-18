@@ -14,18 +14,19 @@ class puppet {
       owner => root,
       group => root,
       mode => 744,
+      before => Service["puppet"],
       source => "puppet:///base/puppet/puppet-restart.sh";
   }
   cron {
     puppet_restart:
       command => "/usr/local/sbin/puppet-restart.sh &> /dev/null",
+      before => Service["puppet"],
       user => root,
       hour => 5,
-      minute => 10,
-  }
-  cron {
+      minute => 10;
     "check_configuration_changes":
       command => "/usr/local/sbin/puppet-run-if-needed.sh &> /dev/null",
+      before => Service["puppet"],
       ensure => absent;
   }
 }

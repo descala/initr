@@ -35,7 +35,7 @@ class Initr::Node < ActiveRecord::Base
 
   def parameters
     # node parameters
-    parameters = {"node_name"=>self.name}
+    parameters = {"node_hash"=>self.name}
     # node classes
     classes = [ "base" ]
     begin
