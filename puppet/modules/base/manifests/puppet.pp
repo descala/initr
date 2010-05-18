@@ -1,6 +1,6 @@
 class puppet {
   package {
-    "puppet":
+    ["puppet","facter"]:
       ensure => installed,
       notify => Service["puppet"];
   }
