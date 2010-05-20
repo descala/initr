@@ -41,7 +41,7 @@ class webserver1 {
   }
 
   cron { "Backup virtualhosts":
-    command => "/usr/local/sbin/webserver_backup_all 2>&1 >> /var/log/messages",
+    command => "/usr/local/sbin/webserver_backup_all >> /var/log/messages 2>&1",
     hour => 3,
     minute => 30,
     require => [Package["rsync"],File["/usr/local/sbin/webserver_backup_all"]],
@@ -258,10 +258,9 @@ class webserver1::web_backups_server {
 
   include sshkeys
 
-  Ssh_authorized_key <<| tag == "$tags_for_sshkey" |>>
-  Cron <<| tag == "$tags_for_sshkey" |>>
-  User <<| tag == "$tags_for_sshkey" |>>
-  File <<| tag == "$tags_for_sshkey" |>>
+  Ssh_authorized_key <<| tag == "${address}_backup" |>>
+  User <<| tag == "${address}_backup" |>>
+  File <<| tag == "${address}_backup" |>>
 
   file {
     ["/$backups_path","$backups_path/webservers"]:
