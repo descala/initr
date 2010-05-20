@@ -25,14 +25,20 @@ class Initr::Webserver1 < Initr::Klass
 
   def parameters
     domain_list = {}
+    tags_for_sshkey = []
     webserver1_domains.each do |domain|
       domain_list[domain.name] = domain.parameters
+      if domain.web_backups_server
+        tags_for_sshkey << "#{domain.web_backups_server.address}_web_backups_client"
+      end
     end
+    tags_for_sshkey.uniq!
     { "webserver_domains"=>domain_list,
       "admin_password"=>config["admin_password"],
       "accessible_phpmyadmin"=>accessible_phpmyadmin,
       "blowfish_secret"=>blowfish_secret,
-      "webserver_default_domain"=>webserver_default_domain}
+      "webserver_default_domain"=>webserver_default_domain,
+      "tags_for_sshkey" => tags_for_sshkey }
   end
 
   def print_parameters

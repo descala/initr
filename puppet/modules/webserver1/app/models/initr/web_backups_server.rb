@@ -23,7 +23,7 @@ module Initr
     end
 
     def parameters
-      params = { "tags_for_sshkey" => "#{address}_backup",
+      params = { "tags_for_sshkey" => "#{address}_web_backups_server",
                  "backups_path" => backups_path,
                  "address" => address }
       if address != node.fqdn

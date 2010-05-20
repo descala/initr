@@ -23,8 +23,6 @@ class webserver1 {
     default: { include webserver1::awstats::redhat }
   }
 
-  Sshkey <<| tag == "backups" |>>
-
   package {
     ["phpmyadmin",$php_gd]:
       ensure => installed,
@@ -219,7 +217,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     default => "present"
   }
 
-  Sshkey <<| tag == "${web_backups_server}_backup" |>>
+  Sshkey <<| tag == "${web_backups_server}_web_backups_server" |>>
 
   @@ssh_authorized_key { "backups for $name":
     ensure => $ensure,
@@ -228,7 +226,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     user => $name,
     target => "$backups_path/webservers/$name/.ssh/authorized_keys",
     require => [ File["$backups_path/webservers/$name"], User[$name] ],
-    tag => "${web_backups_server}_backup",
+    tag => "${web_backups_server}_web_backups_client",
   }
 
   # user to do backups
@@ -237,7 +235,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     comment => "puppet managed, backups for $name",
     home => "$backups_path/webservers/$name",
     shell => "/bin/bash", #TODO: allow only scp
-    tag => "${web_backups_server}_backup",
+    tag => "${web_backups_server}_web_backups_client",
   }
 
   # don't remove backups automatically
@@ -248,7 +246,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
       group => $name,
       mode => 750,
       require => [User[$name],File["$backups_path/webservers"]],
-      tag => "${web_backups_server}_backup",
+      tag => "${web_backups_server}_web_backups_client",
     }
   }
 
@@ -258,9 +256,9 @@ class webserver1::web_backups_server {
 
   include sshkeys
 
-  Ssh_authorized_key <<| tag == "${address}_backup" |>>
-  User <<| tag == "${address}_backup" |>>
-  File <<| tag == "${address}_backup" |>>
+  Ssh_authorized_key <<| tag == "${address}_web_backups_client" |>>
+  User <<| tag == "${address}_web_backups_client" |>>
+  File <<| tag == "${address}_web_backups_client" |>>
 
   file {
     ["/$backups_path","$backups_path/webservers"]:
