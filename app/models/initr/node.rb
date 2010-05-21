@@ -45,10 +45,12 @@ class Initr::Node < ActiveRecord::Base
             if parameters.keys.include? k
               if parameters[k].class == Array
                 parameters[k] << v
+                parameters[k].flatten!
               elsif parameters[k].class == Hash
                 parameters[k].merge(v)
               else
                 parameters[k] = [parameters[k], v]
+                parameters[k].flatten!
               end
             else
               parameters[k] = v
