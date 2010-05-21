@@ -6,7 +6,7 @@ class sshkeys {
     ensure => present,
     key => $sshrsakey,
     type => "rsa",
-    alias => $alias_for_sshkey,
+    host_aliases => $host_alias_for_sshkey,
     tag => $tags_for_sshkey,
   }
 

@@ -27,7 +27,7 @@ module Initr
                  "backups_path" => backups_path,
                  "address" => address }
       if address != node.fqdn
-        params["alias_for_sshkey"] = address
+        params["host_alias_for_sshkey"] = address
       end
       params
     end
