@@ -5,5 +5,16 @@
       <% end -%>
     </div>
     <h3>Exported resources</h3>
-    <%= render :partial => 'node/resources', :locals => { :resources => @exported_resources } %>
+    <table class="list" style="table-layout: fixed;">
+      <tr align="left">
+        <th  width="33%">Resource</th>
+        <th  width="66%">Tags</th>
+      </tr>
+      <% @exported_resources.each do |resource| %>
+        <tr class="<%= cycle('odd', 'even') %>">
+          <td><%= link_to resource.name, :controller=>'node', :action=>'resource', :id=>resource %></td>
+          <td><%= resource.param_values.collect {|v| v.value if v.param_name.name == "tag"}.compact.sort.join(" ") %></td>
+        </tr>
+      <% end %>
+    </table>
 <% end -%>

@@ -51,11 +51,11 @@ begin
         {:node => [:new_template]},
         :require => :loggedin
       permission :view_nodes,
-        {:node  => [:list,:facts,:reports,:report],
+        {:node  => [:list,:facts,:reports,:report,:resource],
          :klass => [:list]},
         :require => :member
       permission :view_own_nodes,
-        {:node  => [:list,:facts,:reports,:report],
+        {:node  => [:list,:facts,:reports,:report,:resource],
          :klass => [:list]},
         :require => :loggedin
       permission :edit_nodes,

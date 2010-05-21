@@ -1,0 +1,23 @@
+<h1><%=@node.name%></h1>
+<h2><%=@resource.name%></h2>
+
+<p><span style="font-weight: bold;">Last modified:</span> <%=@resource.updated_at%></p>
+<p><span style="font-weight: bold;">Manifest:</span> <%=@resource.source_file.filename%></p>
+
+<h3>Parameters</h3>
+<p>
+<ul>
+<% @resource.param_values.each do |pv| -%>
+  <li><span style="font-weight: bold;"><%= pv.param_name.name %>:</span> <%= pv.value %></li>
+<% end -%>
+</ul>
+</p>
+
+<h3>Puppet Tags</h3>
+<p>
+<ul>
+<% @resource.puppet_tags.each do |tag| -%>
+  <li><%=tag.name%></li>
+<% end -%>
+</ul>
+</p>
