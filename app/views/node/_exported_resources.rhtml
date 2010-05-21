@@ -5,10 +5,10 @@
       <% end -%>
     </div>
     <h3>Exported resources</h3>
-    <table class="list" style="table-layout: fixed;">
+    <table class="list">
       <tr align="left">
-        <th  width="33%">Resource</th>
-        <th  width="66%">Tags</th>
+        <th>Resource</th>
+        <th>Tags</th>
       </tr>
       <% @exported_resources.each do |resource| %>
         <tr class="<%= cycle('odd', 'even') %>">
