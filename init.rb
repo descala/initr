@@ -82,6 +82,8 @@ begin
 
     # A new item is added to the project menu
     menu :project_menu, :initr, { :controller => 'node', :action => 'list' }, :caption => 'Initr'
+    # A new item is added to the aplication menu
+    menu :application_menu, :initr, { :controller => 'node', :action => 'list' }, :caption => 'Initr'
   end
 
   # dump to a file some server info need by scripts (see initr_login)
