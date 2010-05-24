@@ -2,6 +2,10 @@ require 'facter'
 
 Facter.add("rubygems_version") do
   setcode do
-    Gem::VERSION rescue nil
+    begin
+      Gem::VERSION
+    rescue
+      Gem::RubyGemsVersion rescue nil
+    end
   end
 end
