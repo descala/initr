@@ -118,6 +118,16 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       rails_root => $rails_root,
       username => $username,
     }
+    file {
+      "$rails_root/config/environment.rb": # Rails will be running as this file owner
+        owner => $username,
+        group => $username;
+      "$rails_root/config/database.yml": # this file contains passwords
+        mode => 640;
+      "$rails_root/log/production.log": # log should be writeable by apache
+        group => $httpd_user,
+        mode => 660;
+    }
   }
 
   webserver1::awstats::domain { $name:
