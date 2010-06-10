@@ -37,7 +37,7 @@ class puppet::lite inherits puppet {
     ensure => stopped,
   }
   File["/usr/local/sbin/puppet-restart.sh"] {
-    source => "puppet:///base/puppet/puppet-lite-restart.sh",
+    source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///base/puppet/puppet-lite-restart.sh"],
   }
 }
 
