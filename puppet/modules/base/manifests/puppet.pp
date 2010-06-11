@@ -34,7 +34,6 @@ class puppet {
 class puppet::lite inherits puppet {
   Service["puppet"] {
     enable => false,
-    ensure => stopped,
   }
   File["/usr/local/sbin/puppet-restart.sh"] {
     source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///base/puppet/puppet-lite-restart.sh"],
