@@ -56,6 +56,11 @@ class webserver1 {
       mode => 644,
       require => [Package["phpmyadmin"],Package[$httpd]],
       content => template("webserver1/phpmyadmin_config.erb");
+    "$httpd_confdir/phpmyadmin.conf":
+      mode => 640,
+      group => $httpd_user,
+      require => Package["phpmyadmin"],
+      content => template("webserver1/phpmyadmin_httpd.erb");
     "/usr/local/sbin/webserver_backup_all":
       mode => 700,
       content => template("webserver1/backup_all.sh.erb");
@@ -68,6 +73,14 @@ class webserver1 {
     "/usr/local/sbin/webserver_restore_all":
       mode => 700,
       content => template("webserver1/restore_all.sh.erb");
+  }
+
+  if $operatingsystem != "Debian" {
+    package {
+      "php-mbstring": # for squirelmail?
+        ensure => installed,
+        notify => Service[$httpd_service];
+    }
   }
 
   # TODO: make this consistent with Debian's ports.conf
@@ -345,18 +358,12 @@ class webserver1::awstats::debian inherits webserver1::awstats {
       content => template("webserver1/awstats_httpd.conf.erb"),
       require => Package[$httpd],
       notify => Service[$httpd_service];
-    "/etc/apache2/conf.d/phpmyadmin.conf":
-      mode => 640,
-      group => $httpd_user,
-      require => Package["phpmyadmin"],
-      content => template("webserver1/phpmyadmin_httpd.erb");
     "/usr/bin/awstats_updateall.pl":
       mode => 750,
       group => "www-data",
       source => "/usr/share/doc/awstats/examples/awstats_updateall.pl",
       require => Package["awstats"];
   }
-  #TODO: install php-mbstring from source?
 }
 
 class webserver1::awstats::redhat inherits webserver1::awstats {
@@ -370,22 +377,12 @@ class webserver1::awstats::redhat inherits webserver1::awstats {
       content => template("webserver1/awstats_httpd.conf.erb"),
       require => Package[$httpd],
       notify => Service[$httpd_service];
-    "/etc/httpd/conf.d/phpmyadmin.conf":
-      mode => 640,
-      group => $httpd_user,
-      require => Package["phpmyadmin"],
-      content => template("webserver1/phpmyadmin_httpd.erb");
 
     # TODO: why do we need this?
     #    "/var/lib/awstats":
     #      source => "/var/www/awstats",
     #      recurse => true;
     
-  }
-  package {
-    "php-mbstring":
-      ensure => installed,
-      notify => Service[$httpd_service];
   }
 }
 
