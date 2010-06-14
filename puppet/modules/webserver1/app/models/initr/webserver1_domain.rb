@@ -8,11 +8,11 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :webserver1_id
   validates_uniqueness_of :name, :scope => :web_backups_server_id
   validates_format_of :name, :with => /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
-  validates_uniqueness_of :dbname, :scope => :webserver1_id
+  validates_uniqueness_of :dbname, :scope => :webserver1_id, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_uniqueness_of :username, :scope => :webserver1_id
   validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
   validates_presence_of :name, :username, :password_ftp, :password_awstats
-  validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank? }
+  validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_length_of :username, :in => 1..16
 
 
