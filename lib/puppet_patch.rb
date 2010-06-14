@@ -12,7 +12,7 @@ module PuppetPatch
       begin
         establish_connection("puppet_#{RAILS_ENV}")
       rescue ActiveRecord::AdapterNotSpecified => e
-        logger.info "store_configs not configured (#{e.backtrace})"
+        logger.info "store_configs not configured (#{e.message})"
       end
     end
  
