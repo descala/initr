@@ -246,6 +246,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     ensure => $ensure,
     key => $sshdsakey,
     type => "dsa",
+    options => "no-port-forwarding",
     user => $name,
     target => "$backups_path/webservers/$name/.ssh/authorized_keys",
     require => [ File["$backups_path/webservers/$name"], User[$name] ],
