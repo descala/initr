@@ -258,7 +258,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     ensure => $ensure,
     comment => "puppet managed, backups for $name",
     home => "$backups_path/webservers/$name",
-    shell => "/bin/bash", #TODO: allow only scp
+    shell => "/usr/bin/scponly",
     tag => "${web_backups_server}_web_backups_client",
   }
 
@@ -296,6 +296,7 @@ class webserver1::web_backups_server {
     hour => 2,
     minute => 30,
   }
+  package { "scponly": ensure => installed; }
 
 }
 
