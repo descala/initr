@@ -1,0 +1,2 @@
+autoclean -q -y
+dist-upgrade -q -y -o APT::Get::Show-Upgraded=true -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/security.sources.list -o Dir::Etc::sourceparts=nonexistent -o DPkg::Options::=--force-confdef -o DPkg::Options::=--force-confold

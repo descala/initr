@@ -1,0 +1,20 @@
+##################
+# Puppet Managed #
+##################
+#
+# Highest priority to stable
+Package: *
+Pin: release a=stable
+Pin-Priority: 700
+
+Package: *
+Pin: release a=testing
+Pin-Priority: 600
+
+<% packages_from_testing.each do |package| -%>
+# we want <%=package%> from testing
+Package: <%=package%>
+Pin: release a=testing
+Pin-Priority: 700
+
+<% end -%>
