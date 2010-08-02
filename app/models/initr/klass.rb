@@ -93,6 +93,21 @@ class Initr::Klass < ActiveRecord::Base
     self.node.puppet_fact('puppet_classes','').split.include? self.puppetname
   end
 
+  def self.accessors_for(attributes)
+    attributes.each do |c|
+      src = <<-END_SRC
+      def #{c}
+        config["#{c}"]
+      end
+
+      def #{c}=(v)
+        config["#{c}"] = v
+      end
+      END_SRC
+      class_eval src, __FILE__, __LINE__
+    end
+  end
+
   private
 
   def self.adds_klass(*args)
