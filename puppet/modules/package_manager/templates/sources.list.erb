@@ -1,0 +1,11 @@
+##################
+# Puppet Managed #
+##################
+
+<% if lsbdistcodename == "lenny" -%>
+# debian stable
+deb http://ftp.fr.debian.org/debian lenny main contrib non-free
+
+<% end -%>
+# debian testing
+deb http://ftp.fr.debian.org/debian squeeze main contrib non-free

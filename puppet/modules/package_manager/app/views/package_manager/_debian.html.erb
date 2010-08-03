@@ -1,0 +1,8 @@
+<% begin -%>
+  <%= render :partial => "debian_#{@node.puppet_fact("lsbdistcodename").downcase}", :locals=>{:f=>f} %>
+<% rescue NoMethodError -%>
+  <h4>Missing fact "lsbdistcodename"</h4>
+<% rescue ActionView::MissingTemplate => e -%>
+  <%= e.message %>
+  no specific template for <%=@node.puppet_fact("lsbdistcodename")%>
+<% end -%>

@@ -1,0 +1,20 @@
+<%= klass_menu "PackageManager" %>
+
+<% labelled_tabular_form_for :package_manager, @klass, :url=>{:action=>'configure'} do |f| -%>
+  <%= f.error_messages %>
+
+  <% begin -%>
+    <%= render :partial => @node.puppet_fact("operatingsystem").downcase, :locals=>{:f=>f} %>
+  <% rescue NoMethodError -%>
+    <h3>Node has no facts yet, please run puppet</h3>
+  <% rescue ActionView::MissingTemplate -%>
+    <%= render :partial => "unsuported" %>
+  <% end -%>
+
+  <p><%= submit_tag("Save")%></p>
+
+<% end -%>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
