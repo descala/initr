@@ -8,6 +8,11 @@
     <%= link_to("All nodes",:controller=>'node',:action=>'list',:id=>nil) %><br />
     <% if @project and !@project.is_a? Initr::FakeProject -%>
       <%= link_to("Project nodes", :controller => 'node', :action => 'list', :id => @project) %><br />
+    <% end -%>
+    <% if @node -%>
+      <%= link_to("Current node", :controller => 'klass', :action => 'list', :id => @node) %><br />
+    <% end -%>
+    <% if @project and !@project.is_a? Initr::FakeProject -%>
       <%= link_to_if_authorized("New node<br />", :controller => 'node', :action => 'new', :id => @project) %>
     <% end -%>
     <%= link_to("New template", :controller => 'node', :action => 'new_template', :id => @project) %>
