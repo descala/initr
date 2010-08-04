@@ -42,6 +42,7 @@ class package_manager::debian::lenny::automatic_security_updates {
   }
   package {
     "cron-apt":
-      ensure => installed;
+      ensure => installed,
+      require => [File["/etc/apt/sources.list"],File["/etc/apt/preferences"]];
   }
 }
