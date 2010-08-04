@@ -5,7 +5,7 @@
 <% if lsbdistcodename == "lenny" -%>
 # debian stable
 deb http://security.debian.org lenny/updates main contrib non-free
-
-<% end -%>
+<% elsif lsbdistcodename == "squeeze" -%>
 # debian testing
 deb http://security.debian.org squeeze/updates main contrib non-free
+<% end -%>
