@@ -11,7 +11,7 @@ class PackageManagerController < InitrController
       params["package_manager"] ||= {}
       if @klass.update_attributes(params["package_manager"])
         flash[:notice]='Configuration saved'
-        redirect_to :action=>'configure'
+        redirect_to :controller => 'klass', :action => 'list', :id => @node
       else
         render :action=>'configure'
       end
