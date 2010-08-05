@@ -11,7 +11,7 @@
       <li><%= link_to("Project nodes", :controller => 'node', :action => 'list', :id => @project) %></li>
     <% end -%>
     <% if @node -%>
-      <li><%= link_to("Current node", :controller => 'klass', :action => 'list', :id => @node) %>
+      <li><%= link_to(@node.fqdn, :controller => 'klass', :action => 'list', :id => @node) %>
         <ul>
         <% begin -%>
         <% @node.klasses.each do |k| -%>
