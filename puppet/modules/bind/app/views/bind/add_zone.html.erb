@@ -1,4 +1,4 @@
-<h2>Add DNS zone to <%= @node.fqdn %></h2>
+<%= klass_menu("Add DNS zone") %>
 
 <% labelled_tabular_form_for :bind_zone, @bind_zone, :url => {:action=>'add_zone'} do |f| -%>
 
