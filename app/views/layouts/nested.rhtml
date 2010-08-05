@@ -26,7 +26,9 @@
     <% if @project and !@project.is_a? Initr::FakeProject -%>
       <%= link_to_if_authorized("<li>New node</li>", :controller => 'node', :action => 'new', :id => @project) %>
     <% end -%>
-    <li><%= link_to("New template", :controller => 'node', :action => 'new_template', :id => @project) %></li>
+      <li><%= link_to("New template", :controller => 'node', :action => 'new_template', :id => @project) %></li>
+    </ul>
+
     <% Initr::Plugin.all.each do |p| -%>
       <%=
         begin
@@ -36,7 +38,6 @@
         end
       %>
     <% end -%>
-    </ul>
     <% if User.current.admin? -%>
       <h3>Import from puppet</h3>
       <ul>
