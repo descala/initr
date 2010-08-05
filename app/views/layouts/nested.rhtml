@@ -14,7 +14,7 @@
       <li><%= link_to(@node.fqdn, :controller => 'klass', :action => 'list', :id => @node) %>
         <ul>
         <% begin -%>
-        <% @node.klasses.each do |k| -%>
+        <% @node.klasses.sort.each do |k| -%>
           <li><%=link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k)%></li>
         <% end -%>
       <% rescue ActiveRecord::SubclassNotFound => e -%>
