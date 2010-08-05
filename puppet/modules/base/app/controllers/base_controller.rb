@@ -2,8 +2,8 @@ class BaseController < InitrController
   unloadable
 
   menu_item :initr
-  before_filter :find_base
-  before_filter :authorize
+  layout "nested"
+  before_filter :find_base, :authorize
 
   def configure
     if request.post?

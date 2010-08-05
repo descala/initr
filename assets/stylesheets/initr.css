@@ -3,3 +3,7 @@
 .report_err { color: #CC0000; }
 
 .report_warn { color: #CC9900; }
+
+#sidebar ul {
+  padding-left: 15px;
+}
