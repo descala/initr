@@ -18,7 +18,7 @@
           <li>
           <%=link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k)%>
           <% begin
-        -%><%= render :partial => "#{k.class.to_s.split('::').last.underscore}/sidebar", :locals => {:klass=>k} %><%
+        -%><%= render :partial => "#{k.class.to_s.split('::').last.underscore}/sidebarmenu", :locals => {:klass=>k} %><%
              rescue ActionView::MissingTemplate => e ; end -%>
           </li>
         <% end -%>
