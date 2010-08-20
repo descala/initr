@@ -319,8 +319,10 @@ class webserver1::ftp inherits ::ftp {
 
 class webserver1::awstats {
 
+  include perl
+
   package {
-    [ "awstats", $perl_net_dns, $perl_net_ip, $perl_geo_ipfree, $perl_net_xwhois ]:
+    "awstats":
       ensure => installed;
   }
 
