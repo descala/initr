@@ -42,7 +42,8 @@ class wpkg {
       command => "wget 'http://wpkg.org/files/client/stable/$client'",
       logoutput => false,
       cwd => "$wpkg_base/software/",
-      creates => "$wpkg_base/software/$client";
+      creates => "$wpkg_base/software/$client",
+      require => File["$wpkg_base/software"];
   }
 
   define download($to,$url,$creates) {
