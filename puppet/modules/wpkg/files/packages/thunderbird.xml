@@ -3,7 +3,7 @@
   <package 
       id="thunderbird" 
       name="Mozilla Thunderbird" 
-      revision="20024" 
+      revision="31200" 
       reboot="false" 
       priority="0">
     <check type="uninstall" condition="exists" path="Mozilla Thunderbird (3.1.2)" />
