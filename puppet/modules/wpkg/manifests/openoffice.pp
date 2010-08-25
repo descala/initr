@@ -17,8 +17,8 @@ See http://wpkg.org/OpenOffice.org_3.x for instructions.
   download {
     "openoffice":
       to => "openoffice",
-      url => "http://www.softcatala.org/pub/softcatala/openoffice/3.1/windows/OOo_3.1.0_Win32Intel_install_ca.exe",
-      creates => "OOo_3.1.0_Win32Intel_install_ca.exe";
+      url => "http://ftp.udc.es/OpenOffice/localized/ca/3.2.1/OOo_3.2.1_Win_x86_install-wJRE_ca.exe",
+      creates => "OOo_3.2.1_Win_x86_install-wJRE_ca.exe";
   }
 
 }
