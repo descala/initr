@@ -32,9 +32,9 @@ fi
 
 # puppet restart
 if [ -f /var/log/syslog ]; then
-  alias pr="/etc/init.d/puppet restart; tail -f /var/log/syslog | grep puppetd"
+  alias pr="/etc/init.d/puppet restart; tail -f /var/log/syslog | grep '\(puppetd\|puppet-agent\)'"
 else
-  alias pr="/etc/init.d/puppet restart; tail -f /var/log/messages | grep puppetd"
+  alias pr="/etc/init.d/puppet restart; tail -f /var/log/messages | grep '\(puppetd\|puppet-agent\)'"
 fi
 
 export FACTERLIB=/var/lib/puppet/facts
