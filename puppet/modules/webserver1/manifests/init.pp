@@ -258,7 +258,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     ensure => $ensure,
     comment => "puppet managed, backups for $name",
     home => "$backups_path/webservers/$name",
-    shell => "/usr/bin/scponly",
+    shell => "/bin/bash",
     tag => "${web_backups_server}_web_backups_client",
   }
 
@@ -296,7 +296,18 @@ class webserver1::web_backups_server {
     hour => 2,
     minute => 30,
   }
-  package { "scponly": ensure => installed; }
+
+# we are not doing scp, we are doing ssh + rsync
+#  package { "scponly": ensure => installed; }
+
+# TODO. there is also rssh, but unfortunately it only works on debian backup servers
+# only debian applies a patch which allows rsync's -e option
+
+  case $operatingsystem {
+    "Debian": {
+      package { "rssh": ensure => installed; }
+    }
+  }
 
 }
 
