@@ -306,11 +306,9 @@ class webserver1::web_backups_server {
          ["/etc/rssh.conf"]:
            source => "puppet:///webserver1/rssh.conf",
        }
-       User <<| tag == "${address}_web_backups_client" |>>
-# TODO this override dows not work
-#       User <<| tag == "${address}_web_backups_client" |>> {
-#         shell => "/usr/bin/rssh"
-#       }
+       User <<| tag == "${address}_web_backups_client" |>> {
+         shell => "/usr/bin/rssh"
+       }
     }
     default: {
        User <<| tag == "${address}_web_backups_client" |>>
