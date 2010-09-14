@@ -281,7 +281,6 @@ class webserver1::web_backups_server {
   include sshkeys
 
   Ssh_authorized_key <<| tag == "${address}_web_backups_client" |>>
-  User <<| tag == "${address}_web_backups_client" |>>
   File <<| tag == "${address}_web_backups_client" |>>
 
   file {
@@ -297,15 +296,22 @@ class webserver1::web_backups_server {
     minute => 30,
   }
 
-# we are not doing scp, we are doing ssh + rsync
-#  package { "scponly": ensure => installed; }
-
 # TODO. there is also rssh, but unfortunately it only works on debian backup servers
 # only debian applies a patch which allows rsync's -e option
 
   case $operatingsystem {
     "Debian": {
-      package { "rssh": ensure => installed; }
+       package { "rssh": ensure => installed; }
+       file {
+         ["/etc/rssh.conf"]:
+           source => "puppet:///webserver1/rssh.conf",
+       }
+       User <<| tag == "${address}_web_backups_client" |>> {
+         shell => "/usr/bin/rssh"
+       }
+    }
+    default: {
+       User <<| tag == "${address}_web_backups_client" |>>
     }
   }
 
