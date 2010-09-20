@@ -1,8 +1,16 @@
 class puppet {
-  package {
-    ["puppet","facter"]:
-      ensure => installed,
-      notify => Service["puppet"];
+  case $operatingsystem {
+    ["CentOS","Fedora","Mandriva"]: {
+      # puppet < 0.25 install from rubygems or source
+      #TODO: newer versions of these OS have puppet > 0.25, check which ones.
+    }
+    default: {
+      package {
+        ["puppet","facter"]:
+          ensure => installed,
+          notify => Service["puppet"];
+      }
+    }
   }
   service {
     "puppet":
