@@ -93,6 +93,9 @@ end
 
 # Load initr plugins when all is initialized
 config.after_initialize do
+  # require an override of Rails::Plugin to set lib_path to rails_lib
+  require File.join(File.dirname(__FILE__), 'lib','rails','plugin')
+
   config.plugin_paths = %W( #{RAILS_ROOT}/vendor/plugins/initr/puppet/modules )
   initr_loader = Engines::Plugin::Loader.new(initializer)
   initr_loader.load_plugins
