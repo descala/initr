@@ -1,10 +1,5 @@
 class mysql {
 
-  #TODO: better way to know if node includes Nagios class?
-  if $nagios_proxytunnel == "0" or $nagios_proxytunnel == "1" {
-    include mysql::nagios
-  }
-
   service { $mysqld:
     ensure => "running",
     enable => true,
@@ -59,19 +54,3 @@ define mysql::database::backup($destdir, $user, $pass, $hour="3", $min="0") {
   }
 }
 
-class mysql::nagios {
-  nagios::nsca_node::wrapper_check { "mysql":
-    command => "/usr/local/nagios/libexec/check_mysql_with_passwd",
-  }
-
-  file { "/usr/local/nagios/libexec/check_mysql_with_passwd":
-    owner => root,
-    group => root,
-    mode => 700,
-    source => "puppet:///base/check_mysql_with_passwd",
-  }
-
-  package { $mysql_dev:
-    ensure => installed,
-  }
-}

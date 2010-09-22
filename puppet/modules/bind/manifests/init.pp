@@ -57,15 +57,6 @@ class bind {
   zoneconf { $bind_masterzones: }
 
   define zoneconf($zone,$ttl,$serial) {
-
-    # if nagios server is available then export resource
-    # TODO: better way to know if node includes Nagios class?
-    if $nagios_proxytunnel == "0" or $nagios_proxytunnel == "1" {
-      nagios::nsca_node::wrapper_check { "check_dig_$name":
-        command => "/usr/local/nagios/libexec/check_dig -T NS -l $name  -H 127.0.0.1",
-      }
-    }
-
     file {
       "$var_dir/puppet_zones/$name.zone":
         owner => $binduser,
