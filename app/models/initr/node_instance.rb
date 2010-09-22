@@ -161,7 +161,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def <=>(other)
-    self.fqdn <=> other.fqdn
+    self.fqdn.downcase <=> other.fqdn.downcase
   end
 
   private
