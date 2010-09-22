@@ -160,6 +160,10 @@ class Initr::NodeInstance < Initr::Node
     return type.nil? ? h : h[type]
   end
 
+  def <=>(other)
+    self.fqdn <=> other.fqdn
+  end
+
   private
 
   def trigger_puppetrun
