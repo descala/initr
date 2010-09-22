@@ -48,7 +48,7 @@ class webserver1 {
   file {
     "/usr/local/sbin/backup.rb":
       mode => 700,
-      source => "puppet:///webserver1/backup.rb";
+      source => "puppet:///modules/webserver1/backup.rb";
     "/etc/logrotate.d/$httpd_service":
       mode => 644,
       content => template("webserver1/logrotate_httpd.erb");
@@ -88,7 +88,7 @@ class webserver1 {
     file {
       "$httpd_confdir/vhosts.conf":
         mode => 644,
-        source => "puppet:///webserver1/vhosts.conf",
+        source => "puppet:///modules/webserver1/vhosts.conf",
         notify => Service[$httpd_service];
     }
   }
@@ -211,7 +211,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       group => $username,
       require => File["/var/www/$name/conf"],
       notify => Service[$httpd_service],
-      source => "puppet:///webserver1/vhost.conf",
+      source => "puppet:///modules/webserver1/vhost.conf",
       replace => false;
   }
 
@@ -304,7 +304,7 @@ class webserver1::web_backups_server {
        package { "rssh": ensure => installed; }
        file {
          ["/etc/rssh.conf"]:
-           source => "puppet:///webserver1/rssh.conf",
+           source => "puppet:///modules/webserver1/rssh.conf",
        }
        User <<| tag == "${address}_web_backups_client" |>> {
          shell => "/usr/bin/rssh"
@@ -347,7 +347,7 @@ class webserver1::awstats {
     "/etc/awstats/awstats.model.conf":
       mode => 644,
       require => Package["awstats"],
-      source => "puppet:///webserver1/awstats.model.conf";
+      source => "puppet:///modules/webserver1/awstats.model.conf";
   }
 
   exec {

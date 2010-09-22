@@ -38,7 +38,7 @@ class package_manager::debian::squeeze {
 class package_manager::debian::lenny::automatic_security_updates {
   file {
     "/etc/cron-apt/action.d/5-install":
-      source => "puppet:///package_manager/cron-apt_5-install",
+      source => "puppet:///modules/package_manager/cron-apt_5-install",
       require => Package["cron-apt"];
   }
   package {

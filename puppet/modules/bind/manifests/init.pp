@@ -43,7 +43,7 @@ class bind {
       force => true,
       recurse => true,
       ignore => ".gitignore",
-      source => "puppet:///bind/empty",
+      source => "puppet:///modules/bind/empty",
       mode => 770;
     "$var_dir/puppet_zones.conf":
       owner => root,
@@ -107,7 +107,7 @@ class bind::redhat {
       mode => 644,
       owner => root,
       group => root,
-      source => [ "puppet:///dist/specific/$fqdn/bind-named.conf", "puppet:///bind/named.conf" ],
+      source => [ "puppet:///dist/specific/$fqdn/bind-named.conf", "puppet:///modules/bind/named.conf" ],
       notify => Service["bind"],
       require => Package[$bind];
     "$var_dir/zones.conf":
@@ -116,7 +116,7 @@ class bind::redhat {
       mode => 644,
       owner => named,
       group => named,
-      source => [ "puppet:///dist/specific/$fqdn/bind-zones.conf", "puppet:///bind/zones.conf" ],
+      source => [ "puppet:///dist/specific/$fqdn/bind-zones.conf", "puppet:///modules/bind/zones.conf" ],
       notify => Service["bind"],
       require => Package[$bind];
   }
@@ -124,7 +124,7 @@ class bind::redhat {
   define bind_etc_file() {
     file { "$etc_dir/$name":
       mode => 644, owner => root, group => root,
-      source => [ "puppet:///bind/$name" ],
+      source => [ "puppet:///modules/bind/$name" ],
       notify => Service["bind"],
       require => Package[$bind],
     }
@@ -133,7 +133,7 @@ class bind::redhat {
   define bind_var_file() {
     file { "$var_dir/$name":
       mode => 644, owner => $binduser, group => $binduser,
-      source => [ "puppet:///bind/$name" ],
+      source => [ "puppet:///modules/bind/$name" ],
       notify => Service["bind"],
       require => Package[$bind],
     }

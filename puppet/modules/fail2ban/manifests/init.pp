@@ -28,7 +28,7 @@ class fail2ban {
       mode => 644,
       owner => root,
       group => root,
-      source => "puppet:///fail2ban/mail.conf",
+      source => "puppet:///modules/fail2ban/mail.conf",
       require => Package["fail2ban"],
       notify => Service["fail2ban"];
     "/etc/fail2ban/jail.local":
@@ -47,7 +47,7 @@ class fail2ban {
     file {
       "/etc/munin/plugins/fail2ban_all_jails":
         mode => 755,
-        source => "puppet:///fail2ban/munin-fail2ban_all_jails",
+        source => "puppet:///modules/fail2ban/munin-fail2ban_all_jails",
         require => Package[$munin],
         notify => Service["munin-node"];
       "/etc/munin/plugin-conf.d/fail2ban_all_jails":

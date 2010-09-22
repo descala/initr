@@ -13,12 +13,12 @@ class wpkg {
     "$wpkg_base/install.bat":
       content => template("wpkg/install.bat.erb");
     "/etc/samba/wpkg_smb.conf":
-      source => "puppet:///wpkg/wpkg_smb.conf",
+      source => "puppet:///modules/wpkg/wpkg_smb.conf",
       mode => 664;
     "$wpkg_base/wpkg/wpkg.js":
-      source => "puppet:///wpkg/wpkg.js";
+      source => "puppet:///modules/wpkg/wpkg.js";
     "$wpkg_base/wpkg/hosts/default.xml":
-      source => "puppet:///wpkg/hosts-default.xml";
+      source => "puppet:///modules/wpkg/hosts-default.xml";
     "$wpkg_base/wpkg/profiles/default.xml":
       content => template("wpkg/profiles.xml.erb");
     "$wpkg_base/wpkg/hosts.xml":
@@ -28,13 +28,13 @@ class wpkg {
     "$wpkg_base/wpkg/packages.xml":
       ensure => "packages/default.xml";    
     "$wpkg_base/wpkg/packages/":
-      source => "puppet:///wpkg/packages",
+      source => "puppet:///modules/wpkg/packages",
       recurse => true,
       ignore => ".svn";
     "$wpkg_base/scripts/wpkg_before.bat":
-      source => "puppet:///wpkg/wpkg_before.bat";
+      source => "puppet:///modules/wpkg/wpkg_before.bat";
     "$wpkg_base/scripts/wpkg_after.bat":
-      source => "puppet:///wpkg/wpkg_after.bat";
+      source => "puppet:///modules/wpkg/wpkg_after.bat";
   }
 
   exec {

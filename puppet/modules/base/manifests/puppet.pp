@@ -23,7 +23,7 @@ class puppet {
       group => root,
       mode => 744,
       before => Service["puppet"],
-      source => "puppet:///base/puppet/puppet-restart.sh";
+      source => "puppet:///modules/base/puppet/puppet-restart.sh";
   }
   cron {
     puppet_restart:
@@ -44,7 +44,7 @@ class puppet::lite inherits puppet {
     enable => false,
   }
   File["/usr/local/sbin/puppet-restart.sh"] {
-    source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///base/puppet/puppet-lite-restart.sh"],
+    source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///modules/base/puppet/puppet-lite-restart.sh"],
   }
 }
 
