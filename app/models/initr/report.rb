@@ -201,11 +201,10 @@ class Initr::Report < ActiveRecord::Base
   end
 
   def validate_meteric (type, name)
-    begin
-      log.metrics[type][name]
-    rescue
-      nil
-    end
+    log.metrics[type][name].to_f
+  rescue Exception => e
+    logger.warn "failed to process report due to #{e}"
+    nil
   end
 
 end
