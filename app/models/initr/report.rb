@@ -81,6 +81,9 @@ class Initr::Report < ActiveRecord::Base
   #imports a YAML report into database
   def self.import(yaml)
     report = YAML.load(yaml)
+    # delete_resource_statuses method added to Puppet::Transaction::Report by monkey-patch
+    # removes resource_statuses to allow log to fit in database text column
+    report.delete_resource_statuses
     raise "Invalid report" unless report.is_a?(Puppet::Transaction::Report)
     begin
       node = Initr::NodeInstance.find_by_name report.host

@@ -10,6 +10,7 @@ begin
   # Patches to the Redmine core.
   require 'dispatcher'
   require 'project_patch'
+  require 'puppet_report_patch'
   require 'puppet_patch'
   Dispatcher.to_prepare do
     Project.send(:include, ProjectPatch)
