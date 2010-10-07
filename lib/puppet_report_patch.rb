@@ -1,11 +1,6 @@
-#require_dependency 'puppet/transaction/report'
-
 module PuppetReportPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
-    base.class_eval do
-      unloadable
-    end
   end
 
   module InstanceMethods
