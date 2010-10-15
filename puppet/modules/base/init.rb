@@ -13,4 +13,5 @@ Initr::Plugin.register :base do
       add_permission :edit_klasses, { :base => [:configure] }
     end
   end
+  klasses  'base' => 'Basic configuration'
 end

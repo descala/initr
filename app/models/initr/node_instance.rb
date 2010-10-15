@@ -14,6 +14,11 @@ class Initr::NodeInstance < Initr::Node
 #    end
 #  end
 
+  def after_create
+    b = Initr::Base.new
+    self.klasses << b
+  end
+
   def self.find(*args)
     if args.first && args.first.is_a?(String) && !args.first.match(/^\d*$/)
       node = find_by_name(*args)
