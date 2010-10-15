@@ -164,6 +164,18 @@ class Initr::NodeInstance < Initr::Node
     self.fqdn.downcase <=> other.fqdn.downcase
   end
 
+  def valid_fqdn?
+    # http://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
+    f=fqdn
+    return false unless f
+    return false unless f.size <= 255
+    f.split('.').each do |label|
+      return false unless (1..64) === label.size
+    end
+    return false unless f.downcase =~ /^[a-z0-9][a-z0-9.-]+[a-z0-9]$/
+    true
+  end
+
   private
 
   def trigger_puppetrun
