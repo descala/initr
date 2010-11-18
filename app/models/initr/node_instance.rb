@@ -105,7 +105,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def fqdn
-    puppet_fact("fqdn", name)
+    puppet_fact("fqdn", hostname)
   end
 
   def reverse_fqdn

@@ -3,7 +3,7 @@ require 'facter'
 # fqdn without dots, to write an specific class for each node
 Facter.add("fqdnclass") do
   setcode do
-    Facter.fqdn.split('.').join('_')
+    Facter.fqdn.split('.').join('_') rescue "there_is_no_fqdn"
   end
 end
 
