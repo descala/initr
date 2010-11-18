@@ -1,4 +1,4 @@
-rpm -i http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
+rpm -i http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 yum -y install puppet
 
 cat << FI > /etc/puppet/puppet.conf
@@ -10,7 +10,7 @@ cat << FI > /etc/puppet/puppet.conf
 [puppetd]
     server = <%=Setting.plugin_initr['puppetmaster']%>
     masterport = <%=Setting.plugin_initr['puppetmaster_port']%>
-    factsync = true
+    pluginsync = true
     report = true
     certname = <%=@node.name%>
 FI

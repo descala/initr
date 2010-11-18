@@ -37,4 +37,4 @@ else
   alias pr="/etc/init.d/puppet restart; tail -f /var/log/messages | grep '\(puppetd\|puppet-agent\)'"
 fi
 
-export FACTERLIB=/var/lib/puppet/facts
+export FACTERLIB=/var/lib/puppet/lib/facter

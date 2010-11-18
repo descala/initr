@@ -1,8 +1,16 @@
 class puppet {
-  package {
-    ["puppet","facter"]:
-      ensure => installed,
-      notify => Service["puppet"];
+  case $operatingsystem {
+    "CentOS","Fedora","Mandriva": {
+      # puppet < 0.25 install from rubygems or source
+      #TODO: newer versions of these OS have puppet > 0.25, check which ones.
+    }
+    default: {
+      package {
+        ["puppet","facter"]:
+          ensure => installed,
+          notify => Service["puppet"];
+      }
+    }
   }
   service {
     "puppet":
@@ -15,7 +23,7 @@ class puppet {
       group => root,
       mode => 744,
       before => Service["puppet"],
-      source => "puppet:///base/puppet/puppet-restart.sh";
+      source => "puppet:///modules/base/puppet/puppet-restart.sh";
   }
   cron {
     puppet_restart:
@@ -36,7 +44,7 @@ class puppet::lite inherits puppet {
     enable => false,
   }
   File["/usr/local/sbin/puppet-restart.sh"] {
-    source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///base/puppet/puppet-lite-restart.sh"],
+    source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///modules/base/puppet/puppet-lite-restart.sh"],
   }
 }
 

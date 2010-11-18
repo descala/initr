@@ -51,7 +51,7 @@ cat << FI > /etc/puppet/puppet.conf
     server = <%=Setting.plugin_initr['puppetmaster']%>
     masterport = <%=Setting.plugin_initr['puppetmaster_port']%>
     classfile = /var/lib/puppet/state/classes.txt
-    factsync = true
+    pluginsync = true
     report = true
     certname = <%=@node.name%>
 FI

@@ -9,10 +9,6 @@ class debian inherits gnulinux {
   package { $ruby_devel:
     ensure => installed,
   }
-  package { $rdoc:
-    ensure => installed,
-    require => Package[$ruby],
-  }
 }
 
 class debian5_0 inherits debian {

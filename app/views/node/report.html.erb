@@ -38,10 +38,10 @@
             <% end -%>
             <tr>
               <td> <%= h label %> </td>
-              <td> <%= h value.round_with_precision(4) %> </td>
+              <td> <%= h value.round_with_precision(4) rescue "N/A" %> </td>
             </tr>
           <% end %>
-          <tr><td class="last_row">Total</td><td class="last_row"><%= h @totaltime.round_with_precision(4) %></td></tr>
+          <tr><td class="last_row">Total</td><td class="last_row"><%= h @totaltime.round_with_precision(4) rescue "N/A" %></td></tr>
         </table>
       </td>
     </tr>

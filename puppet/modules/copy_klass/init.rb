@@ -1,6 +1,6 @@
 require 'redmine'
 
-require File.join(File.dirname(__FILE__), 'initr_lib','klass_patch')
+require File.join(File.dirname(__FILE__), 'rails_lib','klass_patch')
 
 Dispatcher.to_prepare do
   Initr::Klass.send(:include,KlassPatch)

@@ -12,11 +12,6 @@ class Initr::Node < ActiveRecord::Base
 
   validates_presence_of :name
 
-  def after_create
-    b = Initr::Base.new
-    self.klasses << b
-  end
-
   def visible_by?(usr)
     return ((usr == user && usr.allowed_to?(:view_own_nodes, nil, :global=>true)) || usr.allowed_to?(:view_nodes, project))
   end

@@ -87,6 +87,7 @@ class Initr::Base < Initr::Klass
   end
 
   def removable?
+    return true if self.node.is_a? Initr::NodeTemplate
     false
   end
 

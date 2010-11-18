@@ -14,6 +14,11 @@ class Initr::NodeInstance < Initr::Node
 #    end
 #  end
 
+  def after_create
+    b = Initr::Base.new
+    self.klasses << b
+  end
+
   def self.find(*args)
     if args.first && args.first.is_a?(String) && !args.first.match(/^\d*$/)
       node = find_by_name(*args)
@@ -158,6 +163,22 @@ class Initr::NodeInstance < Initr::Node
       h[m] = (read_attribute(:puppet_status) || 0) >> (Initr::Report::BIT_NUM*Initr::Report::METRIC.index(m)) & Initr::Report::MAX
     end
     return type.nil? ? h : h[type]
+  end
+
+  def <=>(other)
+    self.fqdn.downcase <=> other.fqdn.downcase
+  end
+
+  def valid_fqdn?
+    # http://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
+    f=fqdn
+    return false unless f
+    return false unless f.size <= 255
+    f.split('.').each do |label|
+      return false unless (1..64) === label.size
+    end
+    return false unless f.downcase =~ /^[a-z0-9][a-z0-9.-]+[a-z0-9]$/
+    true
   end
 
   private
