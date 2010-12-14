@@ -1,0 +1,61 @@
+echo "Setting up initr node `hostname`..."
+curl -O -L "https://sites.google.com/a/explanatorygap.net/puppet/Home/facter-1.5.8.pkg.tar.bz2"
+tar xvjf facter-1.5.8.pkg.tar.bz2
+installer -pkg ./facter-1.5.8.pkg -target /
+curl -O -L "https://sites.google.com/a/explanatorygap.net/puppet/Home/puppet-2.6.4.pkg.tar.bz2"
+tar xvjf puppet-2.6.4.pkg.tar.bz2 
+installer -pkg ./puppet-2.6.4.pkg -target /
+mkdir -p /etc/puppet
+mkdir -o /var/puppet/log
+cat << FI > /etc/puppet/puppet.conf
+[main]
+    vardir = /var/lib/puppet
+    logdir = /var/log/puppet
+    rundir = /var/run/puppet
+    ssldir = /var/lib/puppet/ssl
+[agent]
+    server = <%=Setting.plugin_initr['puppetmaster']%>
+    masterport = <%=Setting.plugin_initr['puppetmaster_port']%>
+    classfile = /var/lib/puppet/state/classes.txt
+    pluginsync = true
+    report = true
+    certname = <%=@node.name%>
+FI
+cat << FI > /Library/LaunchDaemons/com.reductivelabs.puppet.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>EnvironmentVariables</key>
+        <dict>
+                <key>PATH</key>
+                <string>/sbin:/usr/sbin:/bin:/usr/bin</string>
+                <key>RUBYLIB</key>
+                <string>/usr/lib/ruby/site_ruby/1.8/</string>
+        </dict>
+        <key>Label</key>
+        <string>com.reductivelabs.puppet</string>
+        <key>OnDemand</key>
+        <false/>
+        <key>ProgramArguments</key>
+        <array>
+                <string>/usr/sbin/puppetd</string>
+                <string>--verbose</string>
+                <string>--no-daemonize</string>
+                <string>--logdest</string>
+                <string>-waitforcert</string>
+                <string>console</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>ServiceIPC</key>
+        <false/>
+        <key>StandardErrorPath</key>
+        <string>/var/lib/puppet/log/puppet.err</string>
+        <key>StandardOutPath</key>
+        <string>/var/lib/puppet/log/puppet.out</string>
+</dict>
+</plist>
+FI
+launchctl load -w /Library/LaunchDaemons/com.reductivelabs.puppet.plist && echo "OK! Look for puppet-agent logs in system log (tail -f /var/log/system.log)"
+

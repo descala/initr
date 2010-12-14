@@ -3,18 +3,20 @@ class InstallController < InitrController
 
   before_filter :find_node
   menu_item :initr
-
-  def index
-  end
-  
-  def debian
-    render :action => 'debian', :layout => false, :content_type => 'text'
-  end
   
   def centos
     render :action => 'centos', :layout => false, :content_type => 'text'
   end
 
+  def debian
+    render :action => 'debian', :layout => false, :content_type => 'text'
+  end
+
+  def darwin
+    render :action => 'darwin', :layout => false, :content_type => 'text'
+  end
+
+  # Used by puppet/sign_request.sh to find out if cert should be signed
   def can_sign
     render :text => true
   end

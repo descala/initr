@@ -20,3 +20,13 @@ wget -qO - http://<%=Setting[:host_name]%>/install/debian/<%=@node.name%> | /bin
 <% end -%>
 </pre>
 
+<h4>Mac OS X</h4>
+
+<pre>
+<% if Setting[:protocol] == "https" -%>
+sudo curl -k  https://<%=Setting[:host_name]%>/install/darwin/<%=@node.name%> | /bin/sh
+<% else -%>
+sudo curl http://<%=Setting[:host_name]%>/install/darwin/<%=@node.name%> | /bin/sh
+<% end -%>
+</pre>
+
