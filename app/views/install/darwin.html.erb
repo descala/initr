@@ -6,7 +6,6 @@ curl -O -L "https://sites.google.com/a/explanatorygap.net/puppet/Home/puppet-2.6
 tar xvjf puppet-2.6.4.pkg.tar.bz2 
 installer -pkg ./puppet-2.6.4.pkg -target /
 mkdir -p /etc/puppet
-mkdir -o /var/puppet/log
 cat << FI > /etc/puppet/puppet.conf
 [main]
     vardir = /var/lib/puppet
@@ -43,17 +42,17 @@ cat << FI > /Library/LaunchDaemons/com.reductivelabs.puppet.plist
                 <string>--verbose</string>
                 <string>--no-daemonize</string>
                 <string>--logdest</string>
-                <string>-waitforcert</string>
                 <string>console</string>
+                <string>-waitforcert</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
         <key>ServiceIPC</key>
         <false/>
         <key>StandardErrorPath</key>
-        <string>/var/lib/puppet/log/puppet.err</string>
+        <string>/var/log/puppet/puppet.err</string>
         <key>StandardOutPath</key>
-        <string>/var/lib/puppet/log/puppet.out</string>
+        <string>/var/log/puppet/puppet.out</string>
 </dict>
 </plist>
 FI
