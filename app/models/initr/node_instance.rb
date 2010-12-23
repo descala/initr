@@ -105,8 +105,12 @@ class Initr::NodeInstance < Initr::Node
     puppet_fact("hostname",name)
   end
 
+  # if there is no domain fact, we define domain as
+  # removing the hostname part of the fqdn
   def domain
-    puppet_fact("domain", (name.split(".").last 2).join(".") )
+    d = puppet_fact 'domain'
+    d = fqdn.gsub("#{hostname}.",'') if d.nil?
+    d
   end
 
   def fqdn
