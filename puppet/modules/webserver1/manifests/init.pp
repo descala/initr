@@ -284,7 +284,7 @@ class webserver1::web_backups_server {
   File <<| tag == "${address}_web_backups_client" |>>
 
   file {
-    ["/$backups_path","$backups_path/webservers"]:
+    ["$backups_path","$backups_path/webservers"]:
       ensure => directory;
   }
 
