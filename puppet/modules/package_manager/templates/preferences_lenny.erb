@@ -15,7 +15,7 @@ Pin-Priority: 100
 <% packages_from_squeeze.uniq.each do |package| -%>
 # we want <%=package%> from squeeze
 Package: <%=package%>
-Pin: release n=squeeze
+Pin: release a=stable
 Pin-Priority: 700
 
 <% end -%>
