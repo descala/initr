@@ -21,10 +21,6 @@ cat << EOF > $path_only/fileserver.conf
  path $path_only/files
  allow *
 
-[facts]
- path $path_only/facts
- allow *
-
 [plugins]
  allow *
 
