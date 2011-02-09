@@ -1,0 +1,21 @@
+##################
+# Puppet Managed #
+##################
+#
+# Apt doesn't allows pinning by codename until apt 0.7.22
+# Highest priority to lenny.
+Package: *
+Pin: release a=oldstable
+Pin-Priority: 700
+
+Package: *
+Pin: release a=stable
+Pin-Priority: 100
+
+<% packages_from_squeeze.uniq.each do |package| -%>
+# we want <%=package%> from squeeze
+Package: <%=package%>
+Pin: release n=squeeze
+Pin-Priority: 700
+
+<% end -%>

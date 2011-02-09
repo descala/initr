@@ -4,17 +4,17 @@
 #
 # Highest priority to stable
 Package: *
-Pin: release a=stable
+Pin: release n=squeeze
 Pin-Priority: 700
 
 Package: *
-Pin: release a=testing
-Pin-Priority: 600
+Pin: release n=wheezy
+Pin-Priority: 100
 
-<% packages_from_testing.each do |package| -%>
-# we want <%=package%> from testing
+<% packages_from_wheezy.uniq.each do |package| -%>
+# we want <%=package%> from wheezy
 Package: <%=package%>
-Pin: release a=testing
+Pin: release n=wheezy
 Pin-Priority: 700
 
 <% end -%>

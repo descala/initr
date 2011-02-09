@@ -2,10 +2,8 @@
 # Puppet Managed #
 ##################
 
-<% if lsbdistcodename == "lenny" -%>
-# debian stable
+<% if lsbdistcodename == "lenny" or (lsbdistcodename == "n/a" and lsbdistrelease =~ /^5/) -%>
 deb http://security.debian.org lenny/updates main contrib non-free
-<% elsif lsbdistcodename == "squeeze" -%>
-# debian testing
+<% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbdistrelease =~ /^6/) -%>
 deb http://security.debian.org squeeze/updates main contrib non-free
 <% end -%>
