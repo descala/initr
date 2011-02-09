@@ -1,7 +1,7 @@
 class Initr::PackageManager < Initr::Klass
   unloadable
 
-  self.accessors_for(["security_updates","packages_from_squeeze"])
+  self.accessors_for(["security_updates","packages_from_squeeze","packages_from_wheezy"])
 
   def initialize(attributes=nil)
     super
