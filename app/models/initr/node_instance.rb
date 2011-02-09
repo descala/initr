@@ -70,7 +70,13 @@ class Initr::NodeInstance < Initr::Node
 
   def puppet_fact(factname, default=nil)
     begin
-      puppet_host.fact(factname).first.value
+      if fv = puppet_host.fact_values.find(
+        :all, :include => :fact_name,
+        :conditions => "fact_names.name = '#{factname}'")
+        return fv.first.value
+      else
+        return nil
+      end
     rescue
       default
     end
