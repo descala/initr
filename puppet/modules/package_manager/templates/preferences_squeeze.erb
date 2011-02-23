@@ -11,7 +11,7 @@ Package: *
 Pin: release n=wheezy
 Pin-Priority: 100
 
-<% packages_from_wheezy.uniq.each do |package| -%>
+<% packages_from_wheezy ||= [] ; packages_from_wheezy.uniq.each do |package| -%>
 # we want <%=package%> from wheezy
 Package: <%=package%>
 Pin: release n=wheezy
