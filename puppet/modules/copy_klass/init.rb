@@ -1,4 +1,5 @@
 require 'redmine'
+require 'dispatcher'
 
 require File.join(File.dirname(__FILE__), 'rails_lib','klass_patch')
 
