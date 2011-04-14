@@ -42,6 +42,8 @@ class Initr::Base < Initr::Klass
       return ["puppet"]
     when "insistent"
       return ["puppet::insistent"]
+    when "lite_insistent"
+      return ["puppet::lite_insistent"]
     else
       return nil
     end

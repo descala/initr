@@ -2,7 +2,7 @@
 
 function run_puppet {
   echo $last_config > /etc/puppet/initr_conf_last_config
-  /etc/init.d/puppet restart
+  /usr/local/sbin/puppet-restart.sh --no-sleep
 }
 
 function run_puppet_if_needed {
@@ -21,7 +21,6 @@ function run_puppet_if_needed {
 }
 
 # called from cron every minute, we want to check configuration changes every 15 sec
-
 
 COUNTER=0
 while [  $COUNTER -lt 4 ]; do
