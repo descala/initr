@@ -59,15 +59,7 @@ class puppet::insistent inherits puppet {
   Cron["check_configuration_changes"] { ensure => present }
 }
 
-class puppet::lite_insistent inherits puppet {
-  # lite
-  Service["puppet"] {
-    enable => false,
-  }
-  File["/usr/local/sbin/puppet-restart.sh"] {
-    source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///modules/base/puppet/puppet-lite-restart.sh"],
-  }
-  # insistent
+class puppet::lite_insistent inherits puppet::lite {
   file {
     "/usr/local/sbin/puppet-run-if-needed.sh":
       owner => root,
