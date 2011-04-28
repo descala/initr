@@ -46,7 +46,6 @@ $ssh_service = $operatingsystem ? {
   default => sshd
 }
 $ruby = $operatingsystem ? {
-  Debian => "ruby1.8",
   default => ruby
 }
 $ruby_devel = $operatingsystem ? {
