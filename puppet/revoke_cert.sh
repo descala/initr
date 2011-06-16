@@ -46,10 +46,8 @@ if [ -z "$RUBYLIB" ]; then
 fi
 
 if [ "$RAILS_ENV" = "development" ]; then
-  log "$puppetca --confdir $path_only --revoke $token 2>&1"
   output=$($puppetca --confdir $path_only --revoke $token 2>&1)
 else
-  log "$puppetca --revoke $token 2>&1"
   output=$($puppetca --revoke $token 2>&1)
 fi
 

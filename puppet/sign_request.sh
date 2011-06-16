@@ -46,8 +46,6 @@ if [ -z "$RUBYLIB" ]; then
   export RUBYLIB="$(echo -n `gem contents --prefix puppet |grep "/lib/puppet.rb$" |sed 's#/puppet.rb$##'`)"
 fi
 
-log "RUBYLIB: $RUBYLIB"
-
 if [ "$RAILS_ENV" = "development" ]; then
   output=$($puppetca --confdir $path_only --sign $token 2>&1)
 else
