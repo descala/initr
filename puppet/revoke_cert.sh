@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# signs a ssl request if it has a initr node with the same name.
+# revoke a ssl certificate, called when node is deleted.
 # This script expects that you configure incron to call it this way:
-#   <PATH_TO_PUPPET_SSL_DIR>/ca/requests IN_CLOSE_WRITE <PATH_TO_THIS_SCRIPT>sign_request.sh $#
+#   <PATH_TO_REDMINE_ROOT>/tmp/revoke_requests IN_CLOSE_WRITE <PATH_TO_THIS_SCRIPT>revoke_cert.sh $#
 
 log() {
   if [ ! -z "`which logger`" -a ! -z "$1" ]; then
-    logger -t "sign_request" -- "$1"
+    logger -t "revoke_request" -- "$1"
   fi
 }
 
@@ -15,19 +15,18 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-PATH=$PATH:/usr/local/sbin
-DOMAIN=`cat $(dirname $0)/../server_info.yml | grep DOMAIN | cut -d" " -f2`
-RAILS_ENV=`cat $(dirname $0)/../server_info.yml | grep RAILS_ENV | cut -d" " -f2`
-
-token="`echo -n "$1" | sed 's/\.pem$//'`"
-valid="`curl -s -k $DOMAIN/install/can_sign/$token`"
-abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
-path_only=`dirname "$abspath"`
-
-if [ "$valid" != "true" ]; then
-  log "Rejecting invalid signature request token: $token"
+echo `basename $1` | egrep "^revoke_.+$" &> /dev/null
+if [ $? -ne 0 ]; then
+  log "$0 expects revoke_xxx file (called for `basename $1`)"
   exit 1
 fi
+
+PATH=$PATH:/usr/local/sbin
+token=`echo -n $(basename $1) | sed 's/^revoke_//'`
+RAILS_ENV=`cat $(dirname $0)/../server_info.yml | grep RAILS_ENV | cut -d" " -f2`
+
+abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
+path_only=`dirname "$abspath"`
 
 if [ -z "`which puppetca`" ] ; then
   puppetca=`gem contents --prefix  puppet | grep "puppetca$"`
@@ -40,18 +39,19 @@ if [ -z "$puppetca" ]; then
   exit 1
 fi
 
-log "sign request for $token"
+log "revoke request for $token"
 
 if [ -z "$RUBYLIB" ]; then
   export RUBYLIB="$(echo -n `gem contents --prefix puppet |grep "/lib/puppet.rb$" |sed 's#/puppet.rb$##'`)"
 fi
 
-log "RUBYLIB: $RUBYLIB"
-
 if [ "$RAILS_ENV" = "development" ]; then
-  output=$($puppetca --confdir $path_only --sign $token 2>&1)
+  log "$puppetca --confdir $path_only --revoke $token 2>&1"
+  output=$($puppetca --confdir $path_only --revoke $token 2>&1)
 else
-  output=$($puppetca --sign $token 2>&1)
+  log "$puppetca --revoke $token 2>&1"
+  output=$($puppetca --revoke $token 2>&1)
 fi
 
+rm $1
 log "$output"

@@ -11,6 +11,7 @@ class Initr::Node < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :name
+  after_destroy :revoke_cert
 
   def visible_by?(usr)
     return ((usr == user && usr.allowed_to?(:view_own_nodes, nil, :global=>true)) || usr.allowed_to?(:view_nodes, project))
@@ -66,6 +67,21 @@ class Initr::Node < ActiveRecord::Base
     result["parameters"]["classes"] = classes.uniq
     result["classes"] = classes.uniq
     result
+  end
+
+  private
+
+  # Creates an empty file on tmp/revoke_requests. In order to revoke deleted nodes
+  # puppet certificates, must configure inotify to monitor that directory and call
+  # puppet/revoke_cert.sh script
+  def revoke_cert
+    begin
+      revoke_requests_dir="#{RAILS_ROOT}/tmp/revoke_requests"
+      FileUtils.mkdir(revoke_requests_dir) unless File.directory? revoke_requests_dir
+      FileUtils.touch "#{revoke_requests_dir}/revoke_#{name}"
+    rescue Exception => e
+      logger.error("Can't create revoke certificate request (#{e.message})")
+    end
   end
 
 end
