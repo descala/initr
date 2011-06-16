@@ -4,6 +4,9 @@
 # This script expects that you configure incron to call it this way:
 #   <PATH_TO_REDMINE_ROOT>/tmp/revoke_requests IN_CLOSE_WRITE <PATH_TO_THIS_SCRIPT>revoke_cert.sh $#
 
+# Warning: apache needs restart to load new CRL:
+# https://issues.apache.org/bugzilla/show_bug.cgi?id=14104
+
 log() {
   if [ ! -z "`which logger`" -a ! -z "$1" ]; then
     logger -t "revoke_request" -- "$1"
