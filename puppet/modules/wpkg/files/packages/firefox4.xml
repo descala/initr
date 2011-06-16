@@ -3,7 +3,7 @@
   <package
     id="firefox4"
     name="Mozilla Firefox 4"
-    revision="%version%"
+    revision="4.0.1"
     reboot="false"
     priority="10">
 
