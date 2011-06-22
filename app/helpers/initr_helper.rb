@@ -59,6 +59,9 @@ module InitrHelper
       tabs << {:name => 'exported_resources', :partial => 'node/exported_resources', :label => :label_exported_resources}
       tabs << {:name => 'facts', :partial => 'node/facts', :label => :label_facts}
       tabs << {:name => 'reports', :partial => 'node/reports', :label => :label_reports}
+      unless @node.puppet_host.nil?
+        tabs << {:name => 'install', :partial => 'node/node', :label => :label_reinstall }
+      end
     end
     tabs
   end

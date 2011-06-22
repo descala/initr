@@ -18,3 +18,4 @@ ca:
   label_external_nodes: "External nodes YAML"
   label_reports: "Reports"
   label_install: "Install"
+  label_reinstall: "Re-install"
