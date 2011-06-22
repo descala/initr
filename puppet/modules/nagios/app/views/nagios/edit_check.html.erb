@@ -1,0 +1,13 @@
+<h2><%=@node.fqdn%></h2>
+
+<% labelled_tabular_form_for(:nagios_check, @nagios_check, :url => {:action => 'update_check', :id => @nagios_check}) do |f| -%>
+  <p><%= f.error_messages %></p>
+  <%= render(:partial => 'nagios_check', :locals => {:form => f}) %>
+  <p>
+  <%= f.hidden_field("nagios_id", :value => @klass.id) %>
+  <%= link_to("Cancel", { :action => 'configure', :id => @klass }) %>
+  </p>
+  <p>
+  <%= submit_tag("Update")%>
+  </p>
+<% end -%>

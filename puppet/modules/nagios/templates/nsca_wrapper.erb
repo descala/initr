@@ -1,0 +1,236 @@
+#!/bin/bash
+#
+#   Copyright Hari Sekhon 2007
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# NOTE: - added "-p" option to specify nagios port
+#        - added random sleep
+
+# This is a generic wrapper to allow you to make any service check into a 
+# passive service check without the need for writing wrappers for every
+# check since that is a waste of time and effort. You can put everything
+# you need on one line in order to submit a passive service check for Nagios
+
+version=0.6
+
+
+# Fill in the following 3 variables below if if you do not want to have to 
+# repeatedly put your Nagios server, send_nsca path and send_nsca.cfg on the 
+# command line
+
+# This should be the IP address of your Nagios/NSCA server. Can use DNS name
+# but not generally as good to do that. If you DNS server is down, your passive
+# service check results will not reach the NSCA/Nagios server and will 
+# therefore go stale causing warning/critical conditions.
+NAGIOS_SERVER="<%=nagios_server%>"
+
+# This should be the full path to the SEND_NSCA binary. Use this only if your
+# send _nsca program is not in the PATH of the user executing the nsca_wrapper
+SEND_NSCA="<%=send_nsca%>"
+
+# This should be the path to your send_nsca.cfg or equivalent config. This
+# config is necessary to tell the send_nsca program how to connect to your
+# NSCA daemon on your Nagios server. It contains the port and the connection 
+# password. If you do not set this, this script will look for send_nsca.cfg 
+# in the same directory as this script is located. 
+SEND_NSCA_CONFIG="<%=send_nsca_cfg%>"
+
+
+usage(){
+    echo "usage: ${0##*/} -H "'$HOSTNAME$'" -S "'$SERVICENAME$'" -C '/path/to/plugin/check_stuff -arg1 -arg2 ... -argN' [ -N <nagios.server.ip.address> -b /path/to/send_nsca -c /path/to/send_nsca.cfg ]"
+    echo 
+    echo 'All of the following options are necessary unless stated otherwise'
+    echo
+    echo '-H $HOSTNAME$              The Host name of the server being checked by the'
+    echo '                           plugin. It should be written exactly as it appears in'
+    echo '                           the Nagios config/interface.'
+    echo '-S $SERVICENAME$           The name of the service that is being checked by the'
+    echo '                           plugin. It should be written exactly as it appears'
+    echo '                           in the Nagios config/interface.'
+    echo '-C COMMAND                 The command line to run the plugin (should be quoted)'
+    echo '                           BE VERY CAREFUL WITH THIS. IT WILL EXECUTE USING SHELL'
+    echo '-N IPADDRESS               The IP address of the nagios/nsca server to send the'
+    echo '                           result of the plugin to. This should be an IP instead'
+    echo '                           of a DNS name. If you use a DNS name here and your'
+    echo '                           dns service breaks, then all your passive checks will'
+    echo '                           fail as they won'"'"'t find the nsca server.'
+    echo '-b /path/to/send_nsca      The path to the send_nsca binary. Optional. Only'
+    echo '                           necessary if send_nsca is not in your default PATH.' 
+    echo '-c /path/to/send_nsca.cfg  The path to the nsca config file. By default it will'
+    echo '                           look for this in the same directory as this wrapper'
+    echo '                           program. If the send_nsca config file is named'
+    echo '                           differently or located somewhere else, you must' 
+    echo '                           specify the path with this switch.'
+    echo '-e                         exit with the return code of the plugin rather than'
+    echo '                           the return code of the sending to the NSCA daemon'
+    echo '-q                         quiet mode. Do not show any output'
+    echo '-V --version               Show version and exit'
+    echo '-h --help                  Show this help'
+    echo
+    exit 3
+}
+
+
+die(){
+    echo "$@"
+    exit 3
+}
+
+if [ $# -eq 0 ]; then
+    usage
+fi
+
+
+until [ -z "$1" ]
+    do
+    case "$1" in
+        -h|--help)  usage
+                    ;;
+               -H)  host="$2"
+                    shift
+                    ;;
+               -S)  service="$2"
+                    shift
+                    ;;
+               -N)  nagios_server="$2"
+                    shift
+                    ;;
+               -p)  nagios_port="$2"
+                    shift
+                    ;;         
+               -C)  cmd="$2"
+                    shift
+                    ;;
+               -b)  send_nsca="$2"
+                    shift
+                    ;;
+               -c)  send_nsca_config="$2"
+                    shift
+                    ;;
+               -e)  return_plugin_code=true
+                    ;;
+               -q)  quiet_mode=true
+                    ;;
+       -s|--sleep)  sleep=true
+                    ;;
+     -V|--version)  version_check=true
+                    ;;
+                *)  usage
+                    ;;
+    esac
+    shift
+done
+
+
+if [ "$version_check" = "true" ]; then
+    die $version
+fi
+
+
+if [ -z "$host" ]; then
+    die "You must supply a Host name exactly as it appears in Nagios"
+elif [ -z "$service" ]; then
+    die "You must supply a Service name exactly as it appears in Nagios"
+elif [ -z "$cmd" ]; then
+    die "You must supply a command to execute"
+fi
+
+if [ -z "$nagios_server" ]; then
+    if [ -n "$NAGIOS_SERVER" ]; then
+        nagios_server="$NAGIOS_SERVER"
+    else
+        die "You must supply an address for the nagios server"
+    fi
+fi
+
+if [ -z "$nagios_port" ]; then
+    nagios_port=5667
+fi
+
+if [ -z "$send_nsca_config" ]; then
+    if [ -n "$SEND_NSCA_CONFIG" ]; then
+        send_nsca_config="$SEND_NSCA_CONFIG"
+    else
+        send_nsca_config=`dirname $0`/send_nsca.cfg
+    fi
+fi
+
+if [ -z "$send_nsca" ]; then
+    if [ -n "$SEND_NSCA" ]; then
+        send_nsca="$SEND_NSCA"
+    else
+        # assume send_nsca is in the PATH
+        send_nsca="send_nsca"
+    fi
+fi
+
+
+# Make sure we have send_nsca before we begin
+if [ "$send_nsca" = "send_nsca" ]; then
+    if ! which "$send_nsca" >/dev/null 2>&1; then
+        die "send_nsca was not found in the PATH!"
+    fi
+else
+    if [ ! -x  "$send_nsca" ]; then
+        if [ -f "$send_nsca" ]; then
+            die "send_nsca was found but is not executable. You may need to chmod +x it first"
+        else
+            die "send_nsca was not found at the expected place of '$send_nsca'"
+        fi
+    fi
+fi
+
+
+# Check for the presence of the nsca config file which is needed to run send_nsca
+if [ ! -f "$send_nsca_config" ]; then
+    die "The send_nsca config file '$send_nsca_config' was not found. Please use the -c switch to specify it's location"
+elif [ ! -r "$send_nsca_config" ]; then
+    die "The send_nsca config file cannot be read, please check permissions..."
+fi
+
+# random sleep ...
+if [ ! -z "$sleep" ]; then
+  S=$(expr $RANDOM % 60)
+  [ -z "$quiet_mode" ] && echo "Sleeping $S seconds ..."
+  sleep $S
+fi
+
+# Small safety check, this won't stop a kid.
+# Might help a careless person though (yeah right)
+dangerous_commands="rm rmdir dd del mv cp halt shutdown reboot init telinit kill killall pkill"
+for x in $cmd; do
+    for y in $dangerous_commands; do
+    if [ "$x" = "$y" ]; then
+        echo "DANGER: the $y command was found in the string given to execute under nsca_wrapper, aborting..."
+        exit 3
+    fi
+    done
+done
+
+output="`$cmd 2>&1`"
+result=$?
+[ -z "$quiet_mode" ] && echo "$output"
+output="`echo $output | sed 's/%/%%/g'`"
+
+send_output=`printf "$host\t$service\t$result\t$output\n" | $send_nsca -H $nagios_server -p $nagios_port -c $send_nsca_config 2>&1`
+send_result=$?
+[ -z "$quiet_mode" ] && echo "Sending to NSCA daemon: $send_output"
+
+if [ -n "$return_plugin_code" ]; then
+    exit "$result"
+else
+    exit "$send_result"
+fi

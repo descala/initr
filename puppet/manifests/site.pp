@@ -260,3 +260,22 @@ $vsftpd_conf_file = $operatingsystem ? {
   Debian => "/etc/vsftpd.conf",
   default => "/etc/vsftpd/vsftpd.conf"
 }
+$nagios_plugins_dir = $operatingsystem ? {
+  /Debian|Ubuntu/ => $lsbdistcodename ? {
+    dapper => "/usr/local/nagios/libexec",
+    default => "/usr/lib/nagios/plugins"
+  },
+  default => "/usr/local/nagios/libexec"
+}
+$nagios_group = $operatingsystem ? {
+  /Debian|Ubuntu/ => "nagios",
+  default => "nagcmd"
+}
+$send_nsca = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/usr/sbin/send_nsca",
+  default => "/usr/local/nsca/bin/send_nsca"
+}
+$send_nsca_cfg = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/etc/send_nsca.cfg",
+  default => "/usr/local/nsca/etc/send_nsca.cfg"
+}

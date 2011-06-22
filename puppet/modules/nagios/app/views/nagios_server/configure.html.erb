@@ -1,0 +1,16 @@
+<%= klass_menu %>
+<% labelled_tabular_form_for(:nagios_server, @klass, :url => {:action => 'configure'}, :html => { :method => 'post'}) do |f|%>
+  <p><%= f.error_messages %></p>
+  <p><%= f.text_field :address %></p>
+  <p><%= f.text_field :nagiosadmin_password, :disabled => true %></p>
+  <p><%= f.password_field :password %> (nagiosadmin)</p>
+  <p><%= f.password_field :password_confirmation %></p>
+  <p><%= f.text_field :nsca_decryption_password %></p>
+  <p><%= f.select :admin_contactgroup, @user_projects.collect {|p| [p.name,p.identifier] }, :include_blank=>true, :selected => @klass.config["admin_contactgroup"] %></p>
+  <p><%= submit_tag "Save" %></p>
+<% end -%>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+

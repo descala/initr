@@ -1,0 +1,13 @@
+es:
+  field_klass: Servidor nagios
+  field_command: Comando
+  field_check_freshness: Comprobar freshness
+  field_freshness: Freshness
+  field_minute: Minuto
+  field_hour: Hora
+  field_notifications_enabled: Notificaciones activas
+  field_nagiosadmin_password: Contraseña nagiosadmin
+  field_nagiosadmin_password_confirmation: Confirmación
+  field_nsca_decryption_password: Contraseña de encriptación NSCA
+  field_admin_contactgroup: Grupo administrador (recive las notificaciones de todos los grupos)
+  invalid_admin_contactgroup: Grupo administrador inválido

@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# sends heartbeat, then sends uptime
+# to check if server has been rebooted
+#
+### HEARTBEAT ###
+
+CONF=<%= send_nsca_cfg %>
+SERVER=<%= nagios_server %>
+PORT=5667
+
+S=$(expr $RANDOM % 60)
+echo "Sleeping $S seconds ..."
+sleep $S
+
+<%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= fqdn -%>	0	HOST UP.
+EOF
+
+# send uptime after host heartbeat check, this way we
+# always receive server rebooted warning although server was
+# in down state (first host gets up, then uptime sends warn)
+
+### UPTIME ###
+
+UPTIME_FILE=/var/run/uptime
+
+if [ -f /proc/uptime ]; then
+  UPTIME=`cat /proc/uptime | cut -d' ' -f1 | sed 's/\.//'`
+  UPTIME_S=`uptime | cut -d"," -f1`
+else
+  # send UNKNOWN status, /proc/uptime does not exist.
+  <%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= fqdn %>	uptime	3	UNKNOWN - /proc/uptime does not exist.
+EOF
+  exit
+fi
+
+if [ -f $UPTIME_FILE ]; then
+  LAST_UPTIME=`cat $UPTIME_FILE`
+  echo $UPTIME > $UPTIME_FILE
+else
+  echo $UPTIME > $UPTIME_FILE
+  # send UNKNOWN, first script run
+  <%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= fqdn %>	uptime	3	UNKNOWN - First run ($UPTIME_S)
+EOF
+  exit
+fi
+
+if [ $UPTIME -gt $LAST_UPTIME ] ; then
+  # send OK
+  <%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= fqdn %>	uptime	0	OK - $UPTIME_S.
+EOF
+exit
+fi
+
+# send WARNING, server rebooted
+<%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= fqdn %>	uptime	1	WARNING - SERVER REBOOTED ($UPTIME_S)
+EOF
+exit

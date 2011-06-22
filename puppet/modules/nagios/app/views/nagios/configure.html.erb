@@ -1,0 +1,60 @@
+<%= klass_menu %>
+<% labelled_tabular_form_for(:nagios, @klass, :url => {:action => 'configure'}, :html => { :method => 'post'}) do |f|%>
+  <p><%= f.error_messages %></p>
+  <p><%= f.select(:klass_id, @nagios_servers.collect {|ns| [ns.node.fqdn, ns.id]}, {:disabled => @nagios_servers.collect {|ns| ns.id unless ns.address}.compact, :include_blank=>true}) %></p>
+  <p><%= submit_tag "Save" %></p>
+<% end -%>
+
+<h3>Nagios checks</h3>
+
+<table>
+  <tr>
+    <th>Nagios check</th>
+    <th>Check freshness</th>
+    <th>Freshness threshold</th>
+    <th>Notifications enabled</th>
+    <th></th>
+    <th></th>
+  </tr>
+<% @klass.active_checks.each do |nc| -%>
+  <tr class="<%=cycle("odd","even")%>">
+    <td><%= nc.name %></td>
+    <td align="center"><%= image_tag 'true.png' if nc.check_freshness %></td>
+    <td align="center"><%= nc.freshness %></td>
+    <td align="center"><%= image_tag 'true.png' if nc.notifications_enabled %></td>
+    <td align="center"><%= link_to "Edit",   :controller => 'nagios', :action => 'edit_check', :id => nc.id %></td>
+    <td align="center"><%= link_to "Delete", { :controller => 'nagios', :action => 'before_destroy_check', :id => nc.id }, :confirm => 'Delete nagios check?', :method => :post %></td>
+  </tr>
+<% end -%>
+<% @klass.inactive_checks.each do |nc| -%>
+  <tr class="disabled">
+    <td><%= nc.name %></td>
+    <td align="center"><%= image_tag 'true.png' if nc.check_freshness %></td>
+    <td align="center"><%= nc.freshness %></td>
+    <td align="center"><%= image_tag 'true.png' if nc.notifications_enabled %></td>
+    <td align="center"></td>
+    <td align="center"><%= link_to "Delete", "#", :title=>"This check is marked as deleted, will disapear after 2 days"%></td>
+  </tr>
+<% end -%>
+</table>
+
+<% if @klass.recomended_checks.size > 0 -%>
+  <h3>Possibly interesting checks</h3>
+
+  <table>
+  <% @klass.recomended_checks.each do |name,command| -%>
+    <tr class="<%=cycle("odd","even")%>">
+      <td><%= name %></td>
+      <td align="center" style="padding-left:40px"><%= link_to "Add this check", :controller => 'nagios', :action => 'add_check', :id => @klass, :check => name %></td>
+    </tr>
+  <% end -%>
+  </table>
+<% end -%>
+
+<br />
+<%= link_to "Add check", :controller => 'nagios', :action => 'new_check', :id => @klass %>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+
