@@ -186,7 +186,7 @@ class Initr::NagiosServer < Initr::Klass
       # serviceescalations work like hostescalation, read above
       if all_contact_groups.any?
         nse[p.identifier+"_all"] = { 'hostgroup_name'        => p.identifier,
-                                     'contact_groups'        => all_contact_groups.join(","),
+                                     'contact_groups'        => all_contact_groups.uniq.join(","),
                                      'first_notification'    => 2,
                                      'last_notification'     => 0,
                                      'notification_interval' => 720, # 12h
