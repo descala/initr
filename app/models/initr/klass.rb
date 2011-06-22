@@ -72,8 +72,8 @@ class Initr::Klass < ActiveRecord::Base
     elsif current_value.class == Hash
       # merge if it is a hash
       current_value.merge!(self.parameters[key])
-    else
-      # otherwise create an array
+    elsif current_value != self.parameters[key]
+      # otherwise create an array, if values differ
       current_value = [current_value, self.parameters[key]]
       current_value.flatten!
     end
