@@ -30,3 +30,11 @@ sudo curl http://<%=Setting[:host_name]%>/install/darwin/<%=@node.name%> | /bin/
 <% end -%>
 </pre>
 
+<h4>Ubuntu</h4>
+<pre>
+<% if Setting[:protocol] == "https" -%>
+apt-get install ca-certificates && wget -qO - https://<%=Setting[:host_name]%>/install/ubuntu/<%=@node.name%> | /bin/sh
+<% else -%>
+wget -qO - http://<%=Setting[:host_name]%>/install/ubuntu/<%=@node.name%> | /bin/sh
+<% end -%>
+</pre>
