@@ -4,12 +4,16 @@ begin
   require 'redmine'
   require File.join(File.dirname(__FILE__), 'lib','project_patch')
   require File.join(File.dirname(__FILE__), 'lib','puppet_patch')
+  require File.join(File.dirname(__FILE__), 'lib','issue_status_patch')
+  require File.join(File.dirname(__FILE__), 'lib','tracker_patch')
 
   RAILS_DEFAULT_LOGGER.info 'Starting initr plugin for Redmine'
 
   # Patches to the Redmine core.
   require 'dispatcher'
   require 'project_patch'
+  require 'tracker_patch'
+  require 'issue_status_patch'
   require 'puppet_report_patch'
   require 'puppet_patch'
   Dispatcher.to_prepare do
@@ -52,11 +56,11 @@ begin
         {:node => [:new_template]},
         :require => :loggedin
       permission :view_nodes,
-        {:node  => [:list,:facts,:reports,:report,:resource],
+        {:node  => [:list,:facts,:report,:resource],
          :klass => [:list]},
         :require => :member
       permission :view_own_nodes,
-        {:node  => [:list,:facts,:reports,:report,:resource],
+        {:node  => [:list,:facts,:report,:resource],
          :klass => [:list]},
         :require => :loggedin
       permission :edit_nodes,
