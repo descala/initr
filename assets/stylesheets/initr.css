@@ -4,6 +4,8 @@
 
 .report_warn { color: #CC9900; }
 
+.disabled { background-color: #D0D0D0; }
+
 #sidebar ul {
   padding-left: 15px;
 }
