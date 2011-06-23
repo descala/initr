@@ -1,5 +1,9 @@
 class mysql {
 
+  if array_includes($classes,"nagios::nsca_node") {
+    include mysql::nagios
+  }
+
   service { $mysqld:
     ensure => "running",
     enable => true,
@@ -10,6 +14,11 @@ class mysql {
     ensure => "installed",
   }
   
+  file {
+    "/root/.my.cnf":
+      mode => 600;
+  }
+
 }
 
 define mysql::database($ensure, $owner, $passwd) {
@@ -54,3 +63,19 @@ define mysql::database::backup($destdir, $user, $pass, $hour="3", $min="0") {
   }
 }
 
+class mysql::nagios {
+  nagios::nsca_node::wrapper_check { "mysql":
+    command => "$nagios_plugins_dir/check_mysql_with_passwd",
+  }
+
+  file { "$nagios_plugins_dir/check_mysql_with_passwd":
+    owner => root,
+    group => root,
+    mode => 700,
+    content => template("base/check_mysql_with_passwd.erb"),
+  }
+
+  package { $mysql_dev:
+    ensure => installed,
+  }
+}

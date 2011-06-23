@@ -1,5 +1,9 @@
 class apache {
 
+  if array_includes($classes,"nagios::nsca_node") {
+    include apache::nagios
+  }
+
   package { $httpd:
     ensure => installed,
   }
@@ -68,12 +72,37 @@ class apache::ssl inherits apache {
   }
 
   # generates self-signed certs
-  if $operatingsystem == "Debian" {
-    package { "ssl-cert":
-      ensure => installed,
+  case $lsbdistid {
+    "Debian","Ubuntu": {
+      package { "ssl-cert":
+        ensure => installed,
+      }
     }
   }
 
+}
+
+class apache::nagios {
+  if $apache_procs_warn {
+    $warn=$apache_procs_warn
+  } else {
+    $warn="50"
+  }
+  if $apache_procs_crit {
+    $crit=$apache_procs_crit
+  } else {
+    $crit="100"
+  }
+  nagios::nsca_node::wrapper_check { "apache":
+    command => "$nagios_plugins_dir/check_procs -C $httpd_service -w 1:$warn -c 1:$crit",
+  }
+  include apache::nagios::check_port
+}
+
+class apache::nagios::check_port {
+  nagios::nsca_node::wrapper_check { "localhost_www":
+    command => "$nagios_plugins_dir/check_http -I 127.0.0.1 -e HTTP/1."
+  }
 }
 
 class apache::passenger {

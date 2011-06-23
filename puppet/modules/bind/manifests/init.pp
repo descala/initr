@@ -53,10 +53,37 @@ class bind {
       require => Package[$bind],
       content => template("bind/puppet_zones.conf.erb");
   }
+
+  if array_includes($classes,"nagios::nsca_node") {
+    file {
+      "/usr/local/bin/nagios_check_dig.sh":
+        owner => root, group => root, mode => 700,
+        content => template("bind/nagios_check_dig.sh.erb");
+    }
+    cron {
+      "check dig all domains":
+        command => "/usr/local/bin/nagios_check_dig.sh &> /dev/null",
+        user => root,
+        minute => "*/15",
+        ensure => present;
+    }
+  }
+
   
   zoneconf { $bind_masterzones: }
 
   define zoneconf($zone,$ttl,$serial) {
+
+    if array_includes($classes,"nagios::nsca_node") {
+      nagios::service {
+        "check_dig_$name":
+          checkfreshness => "1",
+          freshness => "1800",
+          ensure => present,
+          notifications_enabled => "0";
+      }
+    }
+
     file {
       "$var_dir/puppet_zones/$name.zone":
         owner => $binduser,
