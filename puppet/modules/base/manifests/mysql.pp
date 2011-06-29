@@ -13,7 +13,7 @@ class mysql {
   package { [$mysqlclient, "mysql-server"]:
     ensure => "installed",
   }
-  
+
   file {
     "/root/.my.cnf":
       mode => 600;

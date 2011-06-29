@@ -1,6 +1,7 @@
 class CustomKlasses < ActiveRecord::Migration
 
   def self.up
+    puts "\nYOU SHOULD UPDATE YOUR DATABASE WITH: update klasses set type=\"CustomKlass\" where type is NULL;\n\n"
     add_column(:klasses, :name, :string)
     add_column(:klasses, :description, :string)
     create_table :custom_klass_confs do |t|
@@ -17,7 +18,4 @@ class CustomKlasses < ActiveRecord::Migration
   end
 
 end
-
-# you should do in database:
-# update klasses set type="CustomKlass" where type is NULL;
 

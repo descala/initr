@@ -12,6 +12,7 @@ class webserver1 {
   include mysql
   include php
   include webserver1::ftp
+  include rsync
   case $operatingsystem {
     "Debian": { include webserver1::awstats::debian }
     "CentOS": {
@@ -27,8 +28,6 @@ class webserver1 {
     ["phpmyadmin",$php_gd]:
       ensure => installed,
       notify => Service[$httpd_service];
-    "rsync":
-      ensure => installed;
   }
 
   webserver1::domain { $webserver_domains: }
@@ -264,13 +263,22 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
 
   # don't remove backups automatically
   if $ensure == "present" {
-    @@file { "$backups_path/webservers/$name":
-      ensure => directory,
-      owner => $name,
-      group => $name,
-      mode => 750,
-      require => [User[$name],File["$backups_path/webservers"]],
-      tag => "${web_backups_server}_web_backups_client",
+    @@file {
+      "$backups_path/webservers/$name":
+        ensure => directory,
+        owner => $name,
+        group => $name,
+        mode => 750,
+        require => [User[$name],File["$backups_path/webservers"]],
+        tag => "${web_backups_server}_web_backups_client";
+      "$backups_path/webservers/$name/.ssh/authorized_keys":
+        owner => $name,
+        mode => 0640,
+        tag => "${web_backups_server}_web_backups_client";
+      "$backups_path/webservers/$name/.ssh":
+        owner => $name,
+        mode => 0700,
+        tag => "${web_backups_server}_web_backups_client";
     }
   }
 

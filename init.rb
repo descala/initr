@@ -32,7 +32,7 @@ begin
     ].each do |c|
       c.send(:include, PuppetPatch)
     end
-  end 
+  end
 
   Redmine::Plugin.register :initr do
     name 'initr'
@@ -89,6 +89,7 @@ begin
     menu :project_menu, :initr, { :controller => 'node', :action => 'list' }, :caption => 'Initr'
     # A new item is added to the aplication menu
     menu :application_menu, :initr, { :controller => 'node', :action => 'list' }, :caption => 'Initr'
+
   end
 
 rescue MissingSourceFile
@@ -121,7 +122,6 @@ config.after_initialize do
       f.puts "DOMAIN: http://localhost:3000"
     end
   end
-
 end
 
 # Needed to call node/store_report?format=yml

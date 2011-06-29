@@ -1,4 +1,5 @@
 # site.pp
+import "nodes/*"
 
 # TODO: find a way to handle globals through a module
 
@@ -25,9 +26,7 @@ schedule {
 }
 
 
-##### TODO: Ingent globals ###########
-
-#Package { schedule => "daily" }
+Package { schedule => "daily" }
 
 $osavn = "${lsbdistid}${lsbdistrelease_class}"
 
@@ -37,23 +36,29 @@ case $lsbdistid {
      notice("'$fqdn': Service provider for '$lsbdistid'")
   }
 }
+
+$p7zip_package = $operatingsystem ? {
+  /Debian|Ubuntu/ => p7zip-full,
+  default => p7zip
+}
+
 $ssh = $operatingsystem ? {
-  Debian => ssh,
+  /Debian|Ubuntu/ => ssh,
   default => openssh
 }
 $ssh_service = $operatingsystem ? {
-  Debian => ssh,
+  /Debian|Ubuntu/ => ssh,
   default => sshd
 }
 $ruby = $operatingsystem ? {
   default => ruby
 }
 $ruby_devel = $operatingsystem ? {
-  Debian => "ruby1.8-dev",
+  /Debian|Ubuntu/ => "ruby1.8-dev",
   default => ruby-devel
 }
 $rdoc = $operatingsystem ? {
-  Debian => "rdoc1.8",
+  /Debian|Ubuntu/ => "rdoc",
   Gentoo => undef,
   Fedora => $operatingsystemrelease ? {
     2 => ruby-rdoc,
@@ -65,72 +70,78 @@ $rdoc = $operatingsystem ? {
   default => ruby-rdoc
 }
 $cron_service = $operatingsystem ? {
-  Debian => cron,
+  /Debian|Ubuntu/ => cron,
   Gentoo => fcron,
   default => crond
 }
 $httpd = $operatingsystem ? {
-  Debian => apache2,
+  /Debian|Ubuntu/ => apache2,
   Mandriva => apache-base,
   default => httpd
 }
 $httpd_service = $operatingsystem ? {
-  Debian => apache2,
+  /Debian|Ubuntu/ => apache2,
   default => httpd
 }
 $ssl_module = $operatingsystem ? {
   Debian => $lsbmajdistrelease ? {
     # debian > 5.0 does not have libapache-mod-ssl
-    5 => "",
-    default => "libapache-mod-ssl"
+    4 => "libapache-mod-ssl",
+    default => ""
   },
+  # TODO ubuntu > 7.4 does not have libapache-mod-ssl
+  Ubuntu => "",
   Mandriva => "apache-mod_ssl",
   default => "mod_ssl"
 }
 $httpd_user = $operatingsystem ? {
-  Debian => www-data,
+  /Debian|Ubuntu/ => www-data,
   default => apache
 }
 $httpd_confdir = $operatingsystem ? {
-  Debian => "/etc/apache2/conf.d",
+  /Debian|Ubuntu/ => "/etc/apache2/conf.d",
   default => "/etc/httpd/conf.d"
 }
 $httpd_sitedir = $operatingsystem ? {
-  Debian => "/etc/apache2/sites-available",
+  /Debian|Ubuntu/ => "/etc/apache2/sites-available",
   default => "/etc/httpd/conf.d"
 }
+$httpd_conffile = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/etc/apache2/apache2.conf",
+  default => "/etc/httpd/conf/httpd.conf"
+}
 $httpd_documentroot = $operatingsystem ? {
-  Debian => "/var/www",
+  /Debian|Ubuntu/ => "/var/www",
   default => "/var/www/html"
 }
 $httpd_logdir = $operatingsystem ? {
-  Debian => "/var/log/apache2",
+  /Debian|Ubuntu/ => "/var/log/apache2",
   default => "/var/log/httpd"
 }
 $bind = $operatingsystem ? {
-  Debian => bind9,
+  /Debian|Ubuntu/ => bind9,
   default => bind
 }
 $binduser = $operatingsystem ? {
-  Debian => bind,
+  /Debian|Ubuntu/ => bind,
   default => named
 }
 $bindservice = $operatingsystem ? {
-  Debian => bind9,
+  /Debian|Ubuntu/ => bind9,
   default => named
 }
 $dnsutils = $operatingsystem ? {
-  Debian => dnsutils,
+  /Debian|Ubuntu/ => dnsutils,
   Gentoo => bind-tools,
   default => bind-utils
 }
 $manpages = $operatingsystem ? {
-  Debian => manpages,
+  /Debian|Ubuntu/ => manpages,
   default => man
 }
 $samba_tdb_dir = $operatingsystem ? {
   Fedora => "/var/lib/samba",
-  Debian => "/var/lib/samba",
+  /Debian|Ubuntu/ => "/var/lib/samba",
   default => "/var/cache/samba"
 }
 $yum_priorities_plugin = $lsbdistid ? {
@@ -143,21 +154,27 @@ $yum_priorities_plugin = $lsbdistid ? {
   default => undef
 }
 $postgres = $operatingsystem ? {
-  "Debian" => "postgresql",
+  /Debian|Ubuntu/ => "postgresql",
   "Gentoo" => "postgresql",
   default => "postgresql-server"
 }
 $postgres_service = $operatingsystem ? {
-  "Debian" => "postgresql-8.3",
+  /Debian|Ubuntu/ => $lsbmajdistrelease ? {
+    "5"     => "postgresql-8.3",
+    default => "postgresql"
+  },
   default => "postgresql"
 }
 $pg_hba = $operatingsystem ? {
-  "Debian" => "/etc/postgresql/8.3/main/pg_hba.conf",
+  /Debian|Ubuntu/ => $lsbmajdistrelease ? {
+    "5" => "/etc/postgresql/8.3/main/pg_hba.conf",
+    default => "/etc/postgresql/8.4/main/pg_hba.conf"
+  },
   "Gentoo" => "/home/elf/data/db/pg_hba.conf", #TODO: posar el generic de gentoo, aquest es nomes per ricoh
   default => "/var/lib/pgsql/data/pg_hba.conf"
 }
 $sqlite = $operatingsystem ? {
-  "Debian" => "sqlite3",
+  /Debian|Ubuntu/ => "sqlite3",
   default => "sqlite"
 }
 $dagrepo_source = $lsbdistid ? {
@@ -178,10 +195,14 @@ $munin = $operatingsystem ? {
   "Gentoo" => "munin",
   default => "munin-node"
 }
+$munin_html_dir = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/var/www/html/munin", #TODO: check this
+  default => "/var/www/html/munin"
+}
 $libmcrypt = $operatingsystem ? {
   "Mandriva" => "libmcrypt4-devel",
   "Gentoo" =>   "libmcrypt",
-  "Debian" =>   "libmcrypt-dev",
+  /Debian|Ubuntu/ =>   "libmcrypt-dev",
   default =>    "libmcrypt-devel"
 }
 $smartd_packagename = $operatingsystem ? { 
@@ -193,71 +214,96 @@ $smartd_packagename = $operatingsystem ? {
     "5"     => smartmontools,
     "5_2"   => smartmontools,
     "5_3"   => smartmontools,
+    "5_4"   => smartmontools,
     default => kernel-utils,
     },
   default => smartmontools,
 }
 
 $vim = $operatingsystem ? {
-  Debian  => "vim-full",
+  /Debian|Ubuntu/  => "vim-nox",
   Gentoo  => "vim",
   default => "vim-enhanced",
 }
 
 $incron_service = $operatingsystem ? {
-  Debian => "incron",
+  /Debian|Ubuntu/ => "incron",
   default => "incrond",
 }
 $exim = $operatingsystem ? {
-  Debian => "exim4",
+  /Debian|Ubuntu/ => "exim4",
   default => "exim"
 }
 $ntp = $lsbdistid ? {
   Ubuntu => "ntp-server",
   default => "ntp"
 }
+$squid_user = $operatingsystem ? {
+  /Debian|Ubuntu/ => "proxy",
+  default => "squid"
+}
+$ldap = $operatingsystem ? {
+  /Debian|Ubuntu/ => "slapd",
+  default => "openldap"
+}
+$ldap_service = $operatingsystem ? {
+  /Debian|Ubuntu/ => "slapd",
+  default => "ldap"
+}
+$ldap_conf_file = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/etc/ldap/slapd.conf",
+  default => "/etc/openldap/slapd.conf"
+}
+$ldap_user = $operatingsystem ? {
+  /Debian|Ubuntu/ => "openldap",
+  default => "ldap"
+}
 $mysqlclient = $operatingsystem ? {
-  Debian => "mysql-client",
+  /Debian|Ubuntu/ => "mysql-client",
   default => "mysql"
 }
 $mysqld = $operatingsystem ? {
-  Debian => "mysql",
+  /Debian|Ubuntu/ => "mysql",
   default => "mysqld"
 }
 $mysql_dev = $operatingsystem ? {
-  Debian => "libmysqlclient15-dev",
+  /Debian|Ubuntu/ => "libmysqlclient15-dev",
   default => "mysql-devel"
 }
 $perl_net_dns = $operatingsystem ? {
-  Debian => "libnet-dns-perl",
+  /Debian|Ubuntu/ => "libnet-dns-perl",
   default => "perl-Net-DNS"
 }
 $perl_net_ip = $operatingsystem ? {
-  Debian => "libnet-ip-perl",
+  /Debian|Ubuntu/ => "libnet-ip-perl",
   default => "perl-Net-IP"
 }
 $perl_geo_ipfree = $operatingsystem ? {
-  Debian => "libgeo-ipfree-perl",
-  default => "perl-Geo-IPfree"
+  /Debian|Ubuntu/ => "libgeo-ipfree-perl",
+  CentOS => $lsbdistrelease_class ? {
+    "4_6"     => "perl-Geo-IP",
+    default => "perl-Geo-IPfree"
+    },
+ default => "perl-Geo-IPfree"
 }
 $perl_net_xwhois = $operatingsystem ? {
-  Debian => "libnet-xwhois-perl",
+  /Debian|Ubuntu/ => "libnet-xwhois-perl",
   default => "perl-Net-XWhois"
 }
 $ruby_shadow = $operatingsystem ? {
-  Debian => "libshadow-ruby1.8",
+  /Debian|Ubuntu/ => "libshadow-ruby1.8",
   default => "ruby-shadow"
 }
 $php_gd = $operatingsystem ? {
-  Debian => "php5-gd",
+  /Debian|Ubuntu/ => "php5-gd",
   default => "php-gd"
 }
 $nologin = $operatingsystem ? {
-  Debian => "/usr/sbin/nologin",
+  /Debian|Ubuntu/ => "/usr/sbin/nologin",
   default => "/sbin/nologin"
 }
 $vsftpd_conf_file = $operatingsystem ? {
-  Debian => "/etc/vsftpd.conf",
+  /Debian|Ubuntu/ => "/etc/vsftpd.conf",
   default => "/etc/vsftpd/vsftpd.conf"
 }
 $nagios_plugins_dir = $operatingsystem ? {
@@ -278,4 +324,34 @@ $send_nsca = $operatingsystem ? {
 $send_nsca_cfg = $operatingsystem ? {
   /Debian|Ubuntu/ => "/etc/send_nsca.cfg",
   default => "/usr/local/nsca/etc/send_nsca.cfg"
+}
+$monitrc = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/etc/monit/monitrc",
+  default => ["/etc/monit.conf", "/etc/monitrc"]
+}
+$dhcp_package = $operatingsystem ? {
+  Debian => "isc-dhcp-server",
+  Ubuntu => "dhcp3-server",
+  default => "dhcp"
+}
+$dhcp_service = $operatingsystem ? {
+  Debian => "isc-dhcp-server",
+  Ubuntu => "dhcp3-server",
+  default => "dhcpd"
+}
+$dhcp_conf = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/etc/dhcp3/dhcpd.conf",
+  default => "/etc/dhcpd.conf"
+}
+$ddclient_user = $operatingsystem ? {
+  Centos => ddclient,
+  default => root
+}
+$ca_certificates = $operatingsystem ? {
+  Centos => "openssl",
+  default => "ca-certificates"
+}
+$openvpn_easyrsa = $operatingsystem ? {
+  Centos => "/usr/share/openvpn/easy-rsa/2.0",
+  default => "/usr/share/doc/openvpn/examples/easy-rsa/2.0"
 }
