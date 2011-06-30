@@ -3,6 +3,6 @@
 module Puppet::Parser::Functions
    newfunction(:hash_value, :type => :rvalue) do |args|
      return nil if args.size != 2
-     args[0][args[1]]
+     args[0][args[1]].nil? ? "" : args[0][args[1]]
    end
 end

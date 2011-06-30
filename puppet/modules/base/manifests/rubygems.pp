@@ -1,8 +1,10 @@
 class rubygems {
 
+  include build_essential
+
   case $operatingsystem {
     "Debian": {
-      package { "rubygems":
+      package { "rubygems1.8":
         ensure => latest,
       }
     }

@@ -5,17 +5,51 @@
 #  Web application to manage MySQL
 #
 
-<Directory "/usr/share/phpmyadmin">
-<% if accessible_phpmyadmin -%>
-  Order Deny,Allow
-  Allow from all
-<% else -%>
-  Order Deny,Allow
-  Deny from all
-  Allow from 127.0.0.1
-<% end -%>
-</Directory>
-
 Alias /phpmyadmin /usr/share/phpmyadmin
-Alias /phpMyAdmin /usr/share/phpmyadmin
-Alias /mysqladmin /usr/share/phpmyadmin
+
+<Directory /usr/share/phpmyadmin>
+        Options Indexes FollowSymLinks
+        DirectoryIndex index.php
+
+        <% if accessible_phpmyadmin -%>
+          Order Deny,Allow
+          Allow from all
+        <% else -%>
+          Order Deny,Allow
+          Deny from all
+          Allow from 127.0.0.1
+        <% end -%>
+
+        # Authorize for setup
+        <Files setup.php>
+            # For Apache 1.3 and 2.0
+            <IfModule mod_auth.c>
+                AuthType Basic
+                AuthName "phpMyAdmin Setup"
+                AuthUserFile /etc/phpmyadmin/htpasswd.setup
+            </IfModule>
+            # For Apache 2.2
+            <IfModule mod_authn_file.c>
+                AuthType Basic
+                AuthName "phpMyAdmin Setup"
+                AuthUserFile /etc/phpmyadmin/htpasswd.setup
+            </IfModule>
+            Require valid-user
+        </Files>
+        <IfModule mod_php4.c>
+                AddType application/x-httpd-php .php
+
+                php_flag magic_quotes_gpc Off
+                php_flag track_vars On
+                php_flag register_globals Off
+                php_value include_path .
+        </IfModule>
+        <IfModule mod_php5.c>
+                AddType application/x-httpd-php .php
+
+                php_flag magic_quotes_gpc Off
+                php_flag track_vars On
+                php_flag register_globals Off
+                php_value include_path .
+        </IfModule>
+</Directory>
