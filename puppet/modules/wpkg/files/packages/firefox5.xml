@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+  <package
+    id="firefox5"
+    name="Mozilla Firefox 5"
+    revision="5.0"
+    reboot="false"
+    priority="10">
+
+    <variable name="version" value="5.0" />
+    <variable name="architecture" value="x86" />
+    <variable name="locale" value="ca-ES" />
+
+    <check type="uninstall" condition="exists" path="Mozilla Firefox %version% (%architecture% %locale%)" />
+
+    <install cmd="taskkill /F /IM Firefox.exe">
+      <exit code="0" />
+      <exit code="-1073741515" />
+      <exit code="128" />
+    </install>
+
+    <install cmd='"%SOFTWARE%\firefox\Firefox Setup %version%.exe" -ms' />
+
+    <upgrade cmd="taskkill /F /IM Firefox.exe">
+      <exit code="0" />
+      <exit code="128" />
+      <exit code="-1073741515" />
+    </upgrade>
+
+    <upgrade cmd='"%SOFTWARE%\firefox\Firefox Setup %version%.exe" -ms' />
+
+    <remove cmd="taskkill /F /IM Firefox.exe">
+      <exit code="0" />
+      <exit code="128" />
+      <exit code="-1073741515" />
+    </remove>
+
+    <remove cmd='"%PROGRAMFILES%\Mozilla Firefox\uninstall\helper.exe" -ms' />
+  </package>
+</packages>
