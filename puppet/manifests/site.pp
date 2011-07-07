@@ -1,5 +1,6 @@
 # site.pp
 import "nodes/*"
+import "../modules/*/manifests/*"
 
 # TODO: find a way to handle globals through a module
 
