@@ -1,4 +1,4 @@
-require_dependency 'puppet/rails/host'
+require 'puppet/rails'
 
 module PuppetPatch
   def self.included(base) # :nodoc:
