@@ -85,12 +85,12 @@ class bind {
     }
 
     file {
-      "$var_dir/puppet_zones/$name.zone":
+      "$bind::var_dir/puppet_zones/$name.zone":
         owner => $binduser,
         group => $binduser,
         mode => 640,
         content => template("bind/zone.erb"),
-        require => [Package[$bind],File["$var_dir/puppet_zones"]],
+        require => [Package[$bind],File["$bind::var_dir/puppet_zones"]],
         notify => Service[$bind];
     }
   }
@@ -102,7 +102,7 @@ class bind {
 class bind::debian {
 
   file {
-    "$var_dir":
+    "$bind::var_dir":
       owner => $binduser,
       group => $binduser,
       mode => 770,
@@ -125,19 +125,19 @@ class bind::redhat {
 
 
   file {
-    "$var_dir":
+    "$bind::var_dir":
       ensure => directory,
       owner => root,
       group => $binduser,
       mode => 750;
-    "$etc_dir/named.conf":
+    "$bind::etc_dir/named.conf":
       mode => 644,
       owner => root,
       group => root,
       source => [ "puppet:///dist/specific/$fqdn/bind-named.conf", "puppet:///modules/bind/named.conf" ],
       notify => Service["bind"],
       require => Package[$bind];
-    "$var_dir/zones.conf":
+    "$bind::var_dir/zones.conf":
       # do not overwrite file, let it be manualy modified
       replace => no,
       mode => 644,
@@ -149,7 +149,7 @@ class bind::redhat {
   }
 
   define bind_etc_file() {
-    file { "$etc_dir/$name":
+    file { "$bind::etc_dir/$name":
       mode => 644, owner => root, group => root,
       source => [ "puppet:///modules/bind/$name" ],
       notify => Service["bind"],
@@ -158,7 +158,7 @@ class bind::redhat {
   }
 
   define bind_var_file() {
-    file { "$var_dir/$name":
+    file { "$bind::var_dir/$name":
       mode => 644, owner => $binduser, group => $binduser,
       source => [ "puppet:///modules/bind/$name" ],
       notify => Service["bind"],
