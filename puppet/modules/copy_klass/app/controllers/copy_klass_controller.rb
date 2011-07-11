@@ -3,6 +3,7 @@ class CopyKlassController < InitrController
 
   menu_item :initr
   before_filter :find_copy_klass
+  before_filter :authorize
 
   def configure
     @copiable_klasses = []
