@@ -9,3 +9,6 @@ To run a 0.25.x puppet client:
 
 env RUBYLIB=/var/lib/gems/1.8/gems/puppet-0.25.0/lib/:/var/lib/gems/1.8/gems/facter-1.5.6/lib/ /var/lib/gems/1.8/gems/puppet-0.25.0/sbin/puppetd --test
 
+
+To run puppetca run it with vardir and ssldir options:
+puppetca --vardir puppet/var --ssldir puppet/var/ssl/ ...
