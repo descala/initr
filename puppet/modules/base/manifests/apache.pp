@@ -3,6 +3,9 @@ class apache {
   if array_includes($classes,"nagios::nsca_node") {
     include apache::nagios
   }
+  if array_includes($classes,"munin") {
+    include apache::munin
+  }
 
   package { $httpd:
     ensure => installed,
@@ -80,6 +83,26 @@ class apache::ssl inherits apache {
     }
   }
 
+  #TODO: enmod ssl ?
+
+}
+
+class apache::munin {
+
+  case $lsbdistid {
+    "Debian","Ubuntu": {
+      apache::enmod { ["status.load","status.conf"]: }
+      package { "liblwp-useragent-determined-perl":
+        ensure => installed,
+      }
+    }
+    default: {
+      file { "/etc/httpd/conf.d/status.conf":
+        source => "puppet:///modules/base/apache/status.conf",
+        notify => Service[$httpd_service]
+      }
+    }
+  }
 }
 
 class apache::nagios {
