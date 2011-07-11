@@ -1,0 +1,18 @@
+##################
+# Puppet Managed #
+##################
+
+connect = host=localhost dbname=<%= scope.lookupvar('amavis::db_name') %> user=<%= scope.lookupvar('amavis::db_user') %> password=<%= scope.lookupvar('amavis::db_passwd') %>
+map {
+  pattern = priv/quota/storage
+  table = quota2
+  username_field = username
+  value_field = bytes
+}
+map {
+  pattern = priv/quota/messages
+  table = quota2
+  username_field = username
+  value_field = messages
+}
+

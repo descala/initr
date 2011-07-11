@@ -1,0 +1,3 @@
+CREATE DATABASE <%= db_name %>;
+
+GRANT CREATE,DELETE,INSERT,LOCK TABLES,SELECT,UPDATE ON <%= db_name %>.* TO <%= db_user %>@localhost IDENTIFIED BY '<%= db_passwd %>';

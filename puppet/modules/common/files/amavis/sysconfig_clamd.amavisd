@@ -1,0 +1,8 @@
+##################
+# Puppet managed #
+##################
+# WARN: Not used if clamav is installed from rpmforge
+#
+CLAMD_CONFIGFILE=/etc/clamd.d/amavisd.conf
+CLAMD_SOCKET=/var/spool/amavisd/clamd.sock
+CLAMD_OPTIONS=

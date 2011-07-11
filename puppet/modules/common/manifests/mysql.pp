@@ -72,7 +72,7 @@ class mysql::nagios {
     owner => root,
     group => root,
     mode => 700,
-    content => template("base/check_mysql_with_passwd.erb"),
+    content => template("common/check_mysql_with_passwd.erb"),
   }
 
   package { $mysql_dev:

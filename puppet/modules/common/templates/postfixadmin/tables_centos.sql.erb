@@ -1,0 +1,293 @@
+-- MySQL dump 10.11
+--
+-- Host: localhost    Database: postfix
+-- ------------------------------------------------------
+-- Server version	5.0.45
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE `admin` (
+  `username` varchar(255) NOT NULL default '',
+  `password` varchar(255) NOT NULL default '',
+  `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL default '0000-00-00 00:00:00',
+  `active` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Virtual Admins';
+
+--
+-- Dumping data for table `admin`
+--
+
+LOCK TABLES `admin` WRITE;
+/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES ('<%= postfixadmin_user %>',<%= 
+if db_passwd_encrypt=="md5"
+  "md5('#{postfixadmin_passwd}')"
+else
+  "'#{postfixadmin_passwd}'"
+end
+%>,'2008-08-08 12:08:17','2008-08-08 12:28:14',1);
+/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alias`
+--
+
+DROP TABLE IF EXISTS `alias`;
+CREATE TABLE `alias` (
+  `address` varchar(255) NOT NULL default '',
+  `goto` text NOT NULL,
+  `domain` varchar(255) NOT NULL default '',
+  `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL default '0000-00-00 00:00:00',
+  `active` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`address`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Virtual Aliases';
+
+--
+-- Dumping data for table `alias`
+--
+
+LOCK TABLES `alias` WRITE;
+/*!40000 ALTER TABLE `alias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `config`
+--
+
+DROP TABLE IF EXISTS `config`;
+CREATE TABLE `config` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(20) NOT NULL default '',
+  `value` varchar(20) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='PostfixAdmin settings';
+
+--
+-- Dumping data for table `config`
+--
+
+LOCK TABLES `config` WRITE;
+/*!40000 ALTER TABLE `config` DISABLE KEYS */;
+INSERT INTO `config` VALUES (1,'version','397');
+/*!40000 ALTER TABLE `config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `domain`
+--
+
+DROP TABLE IF EXISTS `domain`;
+CREATE TABLE `domain` (
+  `domain` varchar(255) NOT NULL default '',
+  `description` varchar(255) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `aliases` int(10) NOT NULL default '0',
+  `mailboxes` int(10) NOT NULL default '0',
+  `maxquota` bigint(20) NOT NULL default '0',
+  `quota` bigint(20) NOT NULL default '0',
+  `transport` varchar(255) default NULL,
+  `backupmx` tinyint(1) NOT NULL default '0',
+  `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL default '0000-00-00 00:00:00',
+  `active` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`domain`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Virtual Domains';
+
+--
+-- Dumping data for table `domain`
+--
+
+LOCK TABLES `domain` WRITE;
+/*!40000 ALTER TABLE `domain` DISABLE KEYS */;
+INSERT INTO `domain` VALUES ('ALL','',0,0,0,0,NULL,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',1);
+/*!40000 ALTER TABLE `domain` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `domain_admins`
+--
+
+DROP TABLE IF EXISTS `domain_admins`;
+CREATE TABLE `domain_admins` (
+  `username` varchar(255) NOT NULL default '',
+  `domain` varchar(255) NOT NULL default '',
+  `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `active` tinyint(1) NOT NULL default '1',
+  KEY `username` (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Domain Admins';
+
+--
+-- Dumping data for table `domain_admins`
+--
+
+LOCK TABLES `domain_admins` WRITE;
+/*!40000 ALTER TABLE `domain_admins` DISABLE KEYS */;
+INSERT INTO `domain_admins` VALUES ('<%= postfixadmin_user %>','ALL','2008-08-08 12:08:17',1);
+/*!40000 ALTER TABLE `domain_admins` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fetchmail`
+--
+
+DROP TABLE IF EXISTS `fetchmail`;
+CREATE TABLE `fetchmail` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `mailbox` varchar(255) NOT NULL default '',
+  `src_server` varchar(255) NOT NULL default '',
+  `src_auth` enum('password','kerberos_v5','kerberos','kerberos_v4','gssapi','cram-md5','otp','ntlm','msn','ssh','any') default NULL,
+  `src_user` varchar(255) NOT NULL default '',
+  `src_password` varchar(255) NOT NULL default '',
+  `src_folder` varchar(255) NOT NULL default '',
+  `poll_time` int(11) unsigned NOT NULL default '10',
+  `fetchall` tinyint(1) unsigned NOT NULL default '0',
+  `keep` tinyint(1) unsigned NOT NULL default '0',
+  `protocol` enum('POP3','IMAP','POP2','ETRN','AUTO') default NULL,
+  `extra_options` text,
+  `returned_text` text,
+  `mda` varchar(255) NOT NULL default '',
+  `date` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `fetchmail`
+--
+
+LOCK TABLES `fetchmail` WRITE;
+/*!40000 ALTER TABLE `fetchmail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `fetchmail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `log`
+--
+
+DROP TABLE IF EXISTS `log`;
+CREATE TABLE `log` (
+  `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
+  `username` varchar(255) NOT NULL default '',
+  `domain` varchar(255) NOT NULL default '',
+  `action` varchar(255) NOT NULL default '',
+  `data` varchar(255) NOT NULL default '',
+  KEY `timestamp` (`timestamp`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Log';
+
+--
+-- Dumping data for table `log`
+--
+
+LOCK TABLES `log` WRITE;
+/*!40000 ALTER TABLE `log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mailbox`
+--
+
+DROP TABLE IF EXISTS `mailbox`;
+CREATE TABLE `mailbox` (
+  `username` varchar(255) NOT NULL default '',
+  `password` varchar(255) NOT NULL default '',
+  `name` varchar(255) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `maildir` varchar(255) NOT NULL default '',
+  `quota` bigint(20) NOT NULL default '0',
+  `domain` varchar(255) NOT NULL default '',
+  `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL default '0000-00-00 00:00:00',
+  `active` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Virtual Mailboxes';
+
+--
+-- Dumping data for table `mailbox`
+--
+
+LOCK TABLES `mailbox` WRITE;
+/*!40000 ALTER TABLE `mailbox` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mailbox` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vacation`
+--
+
+DROP TABLE IF EXISTS `vacation`;
+CREATE TABLE `vacation` (
+  `email` varchar(255) NOT NULL,
+  `subject` varchar(255) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `body` text character set utf8 collate utf8_unicode_ci NOT NULL,
+  `cache` text NOT NULL,
+  `domain` varchar(255) NOT NULL,
+  `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `active` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`email`),
+  KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Virtual Vacation';
+
+--
+-- Dumping data for table `vacation`
+--
+
+LOCK TABLES `vacation` WRITE;
+/*!40000 ALTER TABLE `vacation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vacation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vacation_notification`
+--
+
+DROP TABLE IF EXISTS `vacation_notification`;
+CREATE TABLE `vacation_notification` (
+  `on_vacation` varchar(255) NOT NULL,
+  `notified` varchar(255) NOT NULL,
+  `notified_at` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`on_vacation`,`notified`),
+  CONSTRAINT `vacation_notification_pkey` FOREIGN KEY (`on_vacation`) REFERENCES `vacation` (`email`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Postfix Admin - Virtual Vacation Notifications';
+
+--
+-- Dumping data for table `vacation_notification`
+--
+
+LOCK TABLES `vacation_notification` WRITE;
+/*!40000 ALTER TABLE `vacation_notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vacation_notification` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2008-08-08 10:28:21
+
+
+INSERT INTO mailbox VALUES ('cyrus',md5('ingent'),'cyrus admin','',0,'',now(),now(),1);
+
+

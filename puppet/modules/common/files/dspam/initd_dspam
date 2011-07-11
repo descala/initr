@@ -1,0 +1,84 @@
+#!/bin/sh
+##########################
+#     Puppet managed     #
+##########################
+#
+# dspam:        Starts dspam in daemon mode
+#
+# chkconfig: 345 70 30
+# description: DSPAM (De-Spam) is a scalable, open-source statistical \
+#              anti-spam filter that provides high levels of accuracy \
+#              with minimal resources.
+# processname: dspam
+# pidfile: /var/run/dspam.pid
+#
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+PATH=/usr/local/sbin:/usr/local/bin:$PATH
+RETVAL=0
+
+start() {
+    echo -n $"Starting dspam: "
+    dspam --daemon 2>/dev/null & 
+    RETVAL=$?
+    if [ $RETVAL -eq 0 ] && touch /var/lock/subsys/dspam ; then
+            echo_success
+            echo
+    else
+            echo_failure
+            echo
+    fi
+
+}
+
+stop() {
+    echo -n $"Stopping dspam: "
+    killproc dspam
+    RETVAL=$?
+    echo
+    if [ $RETVAL -eq 0 ]; then
+        rm -f /var/lock/subsys/dspam
+    fi
+}
+
+reload() {
+    echo -n $"Reloading dspam.conf file: "
+    killproc dspam -HUP
+    retval=$?
+    echo
+    return $retval
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    reload)
+        reload
+        ;;
+    status)
+        status dspam
+        RETVAL=$?
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    condrestart)
+        if [ -f /var/lock/subsys/dspam ]; then
+            stop
+            start
+        fi
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|reload|status|restart|condrestart}"
+        ;;
+esac
+exit $RETVAL
+

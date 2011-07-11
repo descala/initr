@@ -1,0 +1,21 @@
+##################
+# Puppet Managed #
+##################
+
+driver = mysql
+connect = host=localhost dbname=<%= scope.lookupvar('dovecot::db_name') %> user=<%= scope.lookupvar('dovecot::db_user') %> password=<%= scope.lookupvar('dovecot::db_passwd') %>
+default_pass_scheme = <%= 
+if scope.lookupvar('dovecot::db_passwd_encrypt')=="cleartext"
+"PLAIN"
+else
+"PLAIN-MD5"
+end
+%>
+password_query = SELECT username as user, password FROM mailbox WHERE username = '%u' AND active = '1'
+<%=
+if operatingsystem == "Debian" # Dovecot 1.2+
+"user_query = SELECT 'vmail' AS uid, 'mail' AS  gid, CONCAT('/var/mail/virtual/', mailbox.maildir ) AS home, CONCAT('*:storage=', ROUND( mailbox.quota / 1024 ) ) AS quota_rule FROM mailbox, domain WHERE username = '%u' AND mailbox.active = '1' and domain.active='1' and mailbox.domain = domain.domain"
+else
+"user_query = SELECT 'vmail' AS uid, 'mail' AS  gid, CONCAT('/var/mail/virtual/', mailbox.maildir ) AS home, CONCAT('dirsize:storage=', ROUND( mailbox.quota / 1024 ) ) AS quota FROM mailbox, domain WHERE username = '%u' AND mailbox.active = '1' and domain.active='1' and mailbox.domain = domain.domain"
+end
+%>

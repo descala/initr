@@ -1,0 +1,51 @@
+#!/bin/bash
+##################
+# Puppet managed #
+##################
+
+function db_setup {
+  # instalacio / restauracio de la base de dades
+  scp backup_<%= hostname %>@<%= bak_host %>:/var/arxiver/backups/backup_<%= hostname %>/backup_mail_<%= hostname %>/maildb-bak.sql /root/ 
+
+  if [ -f /root/maildb-bak.sql ]; then
+    mysql < /usr/local/src/postfixadmin_db.sql
+    mysql -D <%= db_name %> < /root/maildb-bak.sql
+  else
+    mysql < /usr/local/src/postfixadmin_db.sql
+    mysql -D <%= db_name %> < /usr/local/src/postfixadmin_tables.sql
+  fi
+}
+<% if operatingsystem == "CentOS" -%>
+
+if [ -d /var/www/html/postfixadmin ]; then
+  echo "postfixadmin already installed at /var/www/html/postfixadmin"
+  exit 1
+fi
+
+# install postfixadmin
+cd /tmp
+wget http://downloads.sourceforge.net/postfixadmin/postfixadmin-2.2.1.1.tar.gz
+tar xvzf postfixadmin-2.2.1.1.tar.gz
+rm postfixadmin-2.2.1.1.tar.gz
+mv postfixadmin-2.2.1.1 /var/www/html/postfixadmin
+cd /var/www/html/postfixadmin
+chown -R root:root /var/www/html/postfixadmin
+touch /etc/postfix/local.domains
+chown root:apache /etc/postfix/local.domains
+chmod g+rw /etc/postfix/local.domains
+
+db_setup
+rm setup.php
+
+<% elsif operatingsystem == "Debian" -%>
+
+db_setup
+
+cd /usr/local/src
+wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.3.2/postfixadmin-2.3.2_all.deb
+debconf-set-selections < postfixadmin.debconf_selections
+dpkg -i --force-confold postfixadmin-2.3.2_all.deb
+
+<% else -%>
+# <%= operatingsystem %> not supported yet
+<% end -%>
