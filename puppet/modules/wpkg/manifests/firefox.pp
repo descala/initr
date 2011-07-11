@@ -16,8 +16,8 @@ class wpkg::firefox3 inherits firefox {
   download {
     "firefox":
       to => "firefox",
-      url => "http://download.mozilla.org/?product=firefox-3.6.8&os=win&lang=ca",
-      creates => "Firefox Setup 3.6.8.exe";
+      url => "http://download.mozilla.org/?product=firefox-3.6.17&os=win&lang=ca",
+      creates => "Firefox Setup 3.6.17.exe";
   }
 
 }

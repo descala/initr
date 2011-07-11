@@ -12,8 +12,8 @@ class wpkg::thunderbird {
   download {
     "thunderbird":
       to => "thunderbird",
-      url => "http://download.mozilla.org/?product=thunderbird-3.1.2&os=win&lang=ca",
-      creates => "Thunderbird Setup 3.1.2.exe";
+      url => "http://download.mozilla.org/?product=thunderbird-3.1.10&os=win&lang=ca",
+      creates => "Thunderbird Setup 3.1.10.exe";
   }
 
 }

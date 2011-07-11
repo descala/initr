@@ -22,11 +22,11 @@ class wpkg {
     "$wpkg_base/wpkg/profiles/default.xml":
       content => template("wpkg/profiles.xml.erb");
     "$wpkg_base/wpkg/hosts.xml":
-      ensure => "hosts/default.xml";    
+      ensure => "hosts/default.xml";
     "$wpkg_base/wpkg/profiles.xml":
-      ensure => "profiles/default.xml";    
+      ensure => "profiles/default.xml";
     "$wpkg_base/wpkg/packages.xml":
-      ensure => "packages/default.xml";    
+      ensure => "packages/default.xml";
     "$wpkg_base/wpkg/packages/":
       source => "puppet:///modules/wpkg/packages",
       recurse => true,
@@ -49,7 +49,7 @@ class wpkg {
   define download($to,$url,$creates) {
 
     $download_dir = "$wpkg_base/software/$to"
-    
+
     exec {
       "wpkg_$name":
         command => "wget -O '$creates' '$url'",
@@ -61,5 +61,9 @@ class wpkg {
     }
 
   }
-  
+
+  package { $p7zip_package:
+    ensure => installed;
+  }
+
 }

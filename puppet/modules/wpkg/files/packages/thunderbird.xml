@@ -3,12 +3,12 @@
   <package 
       id="thunderbird" 
       name="Mozilla Thunderbird" 
-      revision="31200" 
+      revision="311000"
       reboot="false" 
       priority="0">
-    <check type="uninstall" condition="exists" path="Mozilla Thunderbird (3.1.2)" />
-    <install cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 3.1.2.exe" -ms' />
-    <upgrade cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 3.1.2.exe" -ms' />
+    <check type="uninstall" condition="exists" path="Mozilla Thunderbird (3.1.10)" />
+    <install cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 3.1.10.exe" -ms' />
+    <upgrade cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 3.1.10.exe" -ms' />
     <remove cmd='"%PROGRAMFILES%\Mozilla Thunderbird\uninstall\helper.exe" /S' />
   </package>
 </packages>

@@ -1,38 +1,38 @@
 # Class name must match a package id in an XML in files/packages
 
+# http://sketchup.google.com/gsu8/download.html
 # Free         = http://dl.google.com/sketchup/GoogleSketchUpWES.exe
 # Professional = http://dl.google.com/sketchup/GoogleSketchUpProWES.exe
 
-class wpkg::sketchup7 {
+class wpkg::sketchup8 {
 
   file {
     "$wpkg_base/software/sketchup":
       ensure => directory;
-    "$wpkg_base/software/sketchup/readme.txt":
-      content => "http://wpkg.org/Sketchup
-
-The download file is an .exe that does not accept the default silent switches. Run a manual install using the .exe on a test PC. It extracts the .msi to a temp file (see http://www.appdeploy.com/messageboards/tm.asp?m=42458) which can be used successfully as your instalaltion msi.
-
-WPKG will look for GoogleSketchUp7.msi in this folder.
-";
   }
 
   download {
-    "sketchup7":
+    "sketchup8":
       to => "sketchup",
       url => "http://dl.google.com/sketchup/GoogleSketchUpWES.exe",
-      creates => "GoogleSketchUpWES.exe";
+      creates => "GoogleSketchUp8WES.exe";
+  }
+
+  exec {
+    "sketchup8_extract":
+      command => "/usr/bin/7za x GoogleSketchUp8WES.exe",
+      logoutput => false,
+      cwd => "$wpkg_base/software/sketchup",
+      timeout => 3600,
+      creates => "$wpkg_base/software/sketchup/GoogleSketchUp8.msi";
   }
 
 }
 
-class wpkg::sketchup7-pro inherits wpkg::sketchup7{
+class wpkg::sketchup8-pro inherits wpkg::sketchup8 {
 
-  download {
-    "sketchup7-pro":
-      to => "sketchup",
+  Download["sketchup8"] {
       url => "http://dl.google.com/sketchup/GoogleSketchUpProWES.exe",
-      creates => "GoogleSketchUpProWES.exe";
   }
 
 }
