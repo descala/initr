@@ -74,8 +74,8 @@ Considerations
 
 * On development all certificate requests are signed (see puppet/autosign.conf), but it is not desirable on production. See http://www.initr.org/projects/initr/wiki/Signing_certificates_automatically to automatically sign certificate requests
 
-.. _storeconfigs: http://reductivelabs.com/trac/puppet/wiki/UsingStoredConfiguration
-.. _external nodes: http://reductivelabs.com/trac/puppet/wiki/ExternalNodes
+.. _storeconfigs: http://projects.puppetlabs.com/projects/puppet/wiki/Using_Stored_Configuration
+.. _external nodes: http://docs.puppetlabs.com/guides/external_nodes.html
 .. _Redmine: http://www.redmine.org
-.. _Puppet: http://puppet.reductivelabs.com
+.. _Puppet: http://docs.puppetlabs.com/guides/introduction.html
 .. _project homepage: http://www.initr.org
