@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+  <package
+    id="googleearth"
+    name="Google Earth 5"
+    revision="521"
+    reboot="false"
+    priority="10">
+
+    <check type="uninstall" condition="exists" path="Google Earth" />
+    <install cmd='msiexec /qb /i "%SOFTWARE%\googleearth\v_5.2.1\google earth.msi" ALLUSERS=1' />
+    <upgrade cmd='msiexec /qb /i "%SOFTWARE%\googleearth\v_5.2.1\google earth.msi" ALLUSERS=1' />
+    <remove cmd='MsiExec.exe /qb /x {4286E640-B5FB-11DF-AC4B-005056C00008}' >
+      <!-- 
+      For other versions check out the line beginning "ProductCode=" from Setup.ini in same directory as google earth.msi.
+      -->
+      <exit code="0" />
+      <exit code="1605" reboot="true" />
+    </remove>
+  </package> 
+
+</packages>
