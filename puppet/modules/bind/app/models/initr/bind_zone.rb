@@ -9,7 +9,7 @@ class Initr::BindZone < ActiveRecord::Base
 
   def initialize(attributes=nil)
     super
-    self.ttl ||= "86400"
+    self.ttl ||= "300"
   end
 
   def parameters
