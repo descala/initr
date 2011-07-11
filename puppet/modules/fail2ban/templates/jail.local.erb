@@ -26,7 +26,11 @@ action   = iptables[name=SSH, port=ssh, protocol=tcp]
 <% unless mailto.blank? -%>
            sendmail-whois[name=SSH, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
 <% end -%>
+<% if operatingsystem == "Debian" -%>
+logpath  = /var/log/auth.log
+<% else -%>
 logpath  = /var/log/secure
+<% end -%>
 maxretry = 5
 
 [vsftpd-iptables]
