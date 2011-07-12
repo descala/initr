@@ -288,6 +288,6 @@ UNLOCK TABLES;
 -- Dump completed on 2008-08-08 10:28:21
 
 
-INSERT INTO mailbox VALUES ('cyrus',md5('ingent'),'cyrus admin','',0,'',now(),now(),1);
+INSERT INTO mailbox VALUES ('cyrus',md5('<%=postfixadmin_passwd%>'),'cyrus admin','',0,'',now(),now(),1);
 
 
