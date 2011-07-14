@@ -26,6 +26,7 @@ class CustomKlassController < InitrController
   end
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     if request.post?
       params[:custom_klass][:existing_custom_klass_conf_attributes] ||= {}
       if @klass.update_attributes(params[:custom_klass])

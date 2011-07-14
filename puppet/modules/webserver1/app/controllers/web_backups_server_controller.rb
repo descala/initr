@@ -6,6 +6,7 @@ class WebBackupsServerController < InitrController
   before_filter :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     if request.post?
       if @klass.update_attributes params[:web_backups_server]
           flash[:notice] = 'Configuration saved'

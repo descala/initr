@@ -7,6 +7,7 @@ class Fail2banController < InitrController
   before_filter :find_fail2ban, :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     if request.post?
       params["fail2ban"] ||= {}
       params["fail2ban"]["fail2ban_jails"] ||= {}

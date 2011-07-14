@@ -7,6 +7,7 @@ class KlassController < InitrController
   before_filter :authorize
  
   def list
+    @html_title=[@node.fqdn, "klasses"]
     (render_403; return) unless @node.visible_by?(User.current)
     node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
     @klass_definitions = []

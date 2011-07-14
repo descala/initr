@@ -6,6 +6,7 @@ class BaseController < InitrController
   before_filter :find_base, :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     if request.post?
       if @klass.update_attributes(params[:base])
         flash[:notice] = "Configuration successfully updated."
