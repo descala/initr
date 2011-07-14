@@ -1,48 +1,41 @@
-<h3>Node classes</h2>
 
-<table class="list">
-  <tr align="left">
-    <th><%="Class"%></th>
-    <th><%="Description"%></th>
-    <th><%="Configuration"%></th>
-  </tr>
-  <% begin -%>
-    <% @node.klasses.sort.each do |klass| %>
-    <tr class="<%= cycle('odd', 'even') %>">
-      <td>
-        <%= image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.node.is_a? Initr::NodeTemplate or klass.installed? %>
-        <%= link_to(klass.name, :controller=>klass.controller, :action=>'configure', :id=>klass) %>
-      </td>
-      <td><%= klass.description %></td>
-      <td><%= truncate(klass.print_parameters, :length=>80) %></td>
-    </tr>
+<% form_for :node, :url=>{:controller=>'klass', :action=>'activate', :id=>@node} do |f| -%>
+
+  <h3>Classes</h3>
+  <% @klass_definitions.each do |kd| -%>
+    <%
+      klass = @node.klasses.find_by_type kd.name.camelize
+      klass ||= @node.klasses.find_by_type "Initr#{kd.name.camelize}"
+    -%>
+    <% if klass -%>
+    <div class="klass<%=klass.active? ? " active" : "" %>">
+      <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%>
+      <%=image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.node.is_a? Initr::NodeTemplate or klass.installed? or !klass.active? %>
+      <%=link_to kd.name, :controller=>klass.controller, :action=>'configure', :id=>klass%>
+    </div>
+    <% else -%>
+    <div class="klass">
+      <%=check_box_tag "new_klasses[#{kd.name.camelize}]", "active", false%> <%=link_to kd.name, :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name -%>
+    </div>
     <% end -%>
-  <% rescue ActiveRecord::SubclassNotFound => e %>
-    <tr class="<%= cycle('odd', 'even') %>">
-      <td colspan="3">
-        Application error: <%= e.message %>
-      </td>
-    </tr>
   <% end -%>
-</table>
 
-<% if @klass_definitions.any? -%>
-<h3>Available classes</h2>
+  <% if @repeatable_klasses.any? -%>
+    <h3>Special classes</h3>
+    <% @repeatable_klasses.each do |kd| -%>
+      <% klasses = @node.klasses.find_all_by_type kd.name.camelize -%>
+      <% klasses.each do |klass| -%>
+        <div class="klass<%=klass.active? ? " active" : "" %>">
+          <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%> <%=link_to kd.name, :controller=>klass.controller, :action=>'configure', :id=>klass%>
+        </div>
+      <% end -%>
+      <div class="add_repeatable_klass">
+        <%= link_to "Add #{kd.name}", :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name %>
+      </div>
+    <% end -%>
+  <% end -%>
 
-<table class="list">
-  <tr align="left">
-    <th><%="Class"%></th>
-    <th><%="Description"%></th>
-    <th></th>
-  </tr>
-  <% @klass_definitions.each do |kd| %>
-  <tr class="<%= cycle('odd', 'even') %>">
-    <td><%= kd.name %></td>
-    <td><%= kd.description %></td>
-    <td><%= button_to("Add this class",:action => 'create', :id => @node, :klass_name => kd.name, :method => :post) %></td>
-  </tr>
-  <% end %>
-</table>
+  <%= f.submit %>
 <% end -%>
 
 <% unless @node.is_a?(Initr::NodeTemplate) -%>

@@ -20,6 +20,7 @@ class Initr::Klass < ActiveRecord::Base
   def initialize(attributes = nil)
     super
     self.config ||= {}
+    self.active = self.valid? if self.active.nil?
   end
 
   # Default to only one klass type per node
@@ -108,6 +109,10 @@ class Initr::Klass < ActiveRecord::Base
 
   def installed?
     self.node.puppet_fact('puppet_classes','').split.include? self.puppetname
+  end
+
+  def active?
+    active
   end
 
   def self.accessors_for(attributes)

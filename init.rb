@@ -65,11 +65,11 @@ begin
         :require => :loggedin
       permission :edit_nodes,
         {:node  => [:destroy_exported_resources],
-         :klass => [:create, :move, :destroy, :apply_template]},
+         :klass => [:create, :move, :destroy, :apply_template,:activate]},
         :require => :member
       permission :edit_own_nodes,
         {:node  => [:destroy_exported_resources],
-         :klass => [:create, :move, :destroy, :apply_template]},
+         :klass => [:create, :move, :destroy, :apply_template,:activate]},
         :require => :loggedin
       permission :delete_nodes,
         {:node => [:destroy]},

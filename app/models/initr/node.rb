@@ -36,6 +36,7 @@ class Initr::Node < ActiveRecord::Base
     classes = [ "base" ]
     begin
       klasses.sort.each do |klass|
+        next unless klass.active?
         begin
           klass.parameters.each do |k,v|
             if parameters.keys.include? k

@@ -2,20 +2,22 @@ class KlassController < InitrController
   unloadable
 
   menu_item :initr
-  before_filter :find_node, :only => [:list,:create,:apply_template]
+  before_filter :find_node, :only => [:list,:create,:apply_template,:activate]
   before_filter :find_klass, :only => [:configure,:destroy,:move]
   before_filter :authorize
  
   def list
     (render_403; return) unless @node.visible_by?(User.current)
-    node_klasses = Initr::KlassDefinition.all_for_node(@node).sort
     @klass_definitions = []
+    @repeatable_klasses = []
     Initr::KlassDefinition.all.each do |kd|
-      unless node_klasses.include?(kd) and kd.unique?
+      if kd.unique?
         @klass_definitions << kd
+      else
+        @repeatable_klasses << kd
       end
-      @klass_definitions.sort!
     end
+    @klass_definitions.sort!
     @templates = []
     @templates = @node.project.node_templates if User.current.allowed_to?(:view_nodes,@node.project)
     @templates += User.current.node_templates.collect {|t| t if t.visible_by?(User.current)}.compact
@@ -28,9 +30,38 @@ class KlassController < InitrController
       @exported_resources = []
     end
   end
- 
+
+  def activate
+    if request.post?
+      (render_403; return) unless @node.editable_by?(User.current)
+      active_klasses = params[:klasses].keys if params[:klasses]
+      active_klasses ||= []
+      @node.klasses.each do |k|
+        if active_klasses.include?(k.type) or active_klasses.include?(k.type.gsub(/^Initr/,''))
+          k.active = true
+        else
+          k.active = false
+        end
+        k.save(false)
+      end
+      new_klasses = params[:new_klasses].keys if params[:new_klasses]
+      new_klasses ||= []
+      new_klasses.each do |klass_name|
+        begin
+          # try old naming of plugin models,
+          # until we migrate all them to initr namespace
+          klass = Kernel.const_get("Initr#{klass_name}").new({:node_id=>@node.id,:active=>true})
+        rescue NameError
+          klass = Kernel.eval("Initr::#{klass_name}").new({:node_id=>@node.id,:active=>true})
+        end
+        klass.save(false)
+      end
+      flash[:info] = "Configuration saved"
+    end
+    redirect_to :action=>'list', :id=>@node, :tab=>'klasses'
+  end
+
   def create
-    (render_403; return) unless @node.editable_by?(User.current)
     begin
       # try old naming of plugin models,
       # until we migrate all them to initr namespace
