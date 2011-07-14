@@ -9,3 +9,19 @@
 #sidebar ul {
   padding-left: 15px;
 }
+
+ul.klasses {
+  list-style-type: none;
+}
+
+ul.klasses li {
+  background-color: #E4E4E4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  float: left;
+  margin: 5px;
+  padding: 2px 5px;
+  width: 200px;
+  min-height: 20px;
+}
+
