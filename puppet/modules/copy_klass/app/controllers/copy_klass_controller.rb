@@ -2,14 +2,28 @@ class CopyKlassController < InitrController
   unloadable
 
   menu_item :initr
-  before_filter :find_copy_klass, :except => [:new]
-  before_filter :find_node, :only => [:new]
+  before_filter :find_node, :except => [:configure]
+  before_filter :find_copy_klass, :only => [:configure]
   before_filter :set_copiable_klasses
   before_filter :authorize
 
   def new
     @klass = Initr::CopyKlass.new(:node=>@node)
-    render :action=>'configure'
+  end
+
+  def create
+    if request.post?
+      @klass = Initr::CopyKlass.new(params[:copy_klass])
+      @klass.node=@node
+      if @klass.save
+        flash[:notice]='Configuration saved'
+        redirect_to :controller => 'klass', :action=>'list', :id=>@node, :tab=>'klasses'
+      else
+        render :action=>'new'
+      end
+    else
+      redirect_to :controller=>'klass', :action=>'list', :id=>@node, :tab=>'klasses'
+    end
   end
 
   def configure
@@ -17,7 +31,7 @@ class CopyKlassController < InitrController
       params["copy_klass"] ||= {}
       if @klass.update_attributes(params["copy_klass"])
         flash[:notice]='Configuration saved'
-        redirect_to :controller => 'klass', :action=>'list', :id => @node
+        redirect_to :controller => 'klass', :action=>'list', :id => @node, :tab=>'klasses'
       else
         render :action=>'configure'
       end

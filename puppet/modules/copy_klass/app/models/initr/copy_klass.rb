@@ -1,8 +1,8 @@
 class Initr::CopyKlass < Initr::Klass
 
   unloadable
-  validates_presence_of :copied_klass_id, :on => :update
-  validate :copied_klass_unique_for_node, :on => :update
+  validates_presence_of :copied_klass_id
+  validate :copied_klass_unique_for_node
 
   def copied_klass_unique_for_node
     node.klasses.all(:conditions=>["type='CopyKlass'"]).each do |ck|
@@ -34,11 +34,13 @@ class Initr::CopyKlass < Initr::Klass
   end
 
   def copied_klass_id
-    config["copied_klass_id"]
+    self.config ||= {}
+    self.config["copied_klass_id"]
   end
 
   def copied_klass_id=(ckid)
-    config["copied_klass_id"]=ckid
+    self.config ||= {}
+    self.config["copied_klass_id"]=ckid
   end
 
   def copied_klass
