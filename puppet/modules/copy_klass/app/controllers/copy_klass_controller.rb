@@ -2,16 +2,17 @@ class CopyKlassController < InitrController
   unloadable
 
   menu_item :initr
-  before_filter :find_copy_klass
+  before_filter :find_copy_klass, :except => [:new]
+  before_filter :find_node, :only => [:new]
+  before_filter :set_copiable_klasses
   before_filter :authorize
 
+  def new
+    @klass = Initr::CopyKlass.new(:node=>@node)
+    render :action=>'configure'
+  end
+
   def configure
-    @copiable_klasses = []
-    User.current.projects.collect {|p| p.nodes }.compact.flatten.sort.each do |node|
-      next if node == @node
-      n = [node.fqdn, node.klasses.collect {|k| [k.name,k.id.to_s] unless k.respond_to?(:copyable?) and !k.copyable? }.compact]
-      @copiable_klasses << n unless n.last.size == 0
-    end
     if request.post?
       params["copy_klass"] ||= {}
       if @klass.update_attributes(params["copy_klass"])
@@ -23,10 +24,26 @@ class CopyKlassController < InitrController
     end
   end
 
+  private
+
   def find_copy_klass
     @klass = Initr::CopyKlass.find params[:id]
     @node = @klass.node
     @project = @node.project
+  end
+
+  def find_node
+    @node = Initr::Node.find params[:id]
+    @project = @node.project
+  end
+
+  def set_copiable_klasses
+    @copiable_klasses = []
+    User.current.projects.collect {|p| p.nodes }.compact.flatten.sort.each do |node|
+      next if node == @node
+      n = [node.fqdn, node.klasses.collect {|k| [k.name,k.id.to_s] unless k.respond_to?(:copyable?) and !k.copyable? }.compact]
+      @copiable_klasses << n unless n.last.size == 0
+    end
   end
 
 end
