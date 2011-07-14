@@ -1,8 +1,8 @@
 <%= klass_menu "New custom klass"%>
 
-<% form_for :custom_klass, @custom_klass, :url => {:action => 'create'} do |f| %>
+<% labelled_tabular_form_for :custom_klass, @klass, :url => {:action => 'create', :id => @node} do |f| %>
 
-  <%= render :partial => f %>
+  <%= render :partial => "form", :locals => {:f=>f} %>
   <%= submit_tag "Create" %>
 
 <% end %>

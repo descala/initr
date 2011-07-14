@@ -5,8 +5,10 @@ class Initr::CopyKlass < Initr::Klass
   validate :copied_klass_unique_for_node
 
   def copied_klass_unique_for_node
-    node.klasses.all(:conditions=>["type='CopyKlass'"]).each do |ck|
-      errors.add_to_base("Klass already copied on this node") if ck.copied_klass_id == copied_klass_id
+    if node
+      node.klasses.all(:conditions=>["type='CopyKlass'"]).each do |ck|
+        errors.add_to_base("Klass already copied on this node") if ck.copied_klass_id == copied_klass_id
+      end
     end
   end
 
