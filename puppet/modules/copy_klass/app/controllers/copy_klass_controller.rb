@@ -27,6 +27,7 @@ class CopyKlassController < InitrController
   end
 
   def configure
+    @html_title=[@node.fqdn, "#{@klass.name} (copy klass)"]
     if request.post?
       params["copy_klass"] ||= {}
       if @klass.update_attributes(params["copy_klass"])

@@ -6,6 +6,7 @@ class NagiosServerController < InitrController
   before_filter :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     @user_projects = Project.all.collect {|proj|
       proj if User.current.projects.include? proj or User.current.admin?
     }.compact.sort

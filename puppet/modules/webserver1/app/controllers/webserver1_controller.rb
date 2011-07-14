@@ -7,6 +7,7 @@ class Webserver1Controller < InitrController
   before_filter :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     if request.post?
       if @klass.update_attributes params[:webserver1]
           flash[:notice] = 'Configuration saved'

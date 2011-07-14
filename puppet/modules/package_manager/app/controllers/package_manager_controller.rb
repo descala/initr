@@ -7,6 +7,7 @@ class PackageManagerController < InitrController
   before_filter :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     if request.post?
       params["package_manager"] ||= {}
       if @klass.update_attributes(params["package_manager"])

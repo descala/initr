@@ -6,6 +6,7 @@ class InitrWpkgController < InitrController
   before_filter :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     @packages = InitrWpkg.packages_available_from_xml
     if request.post?
       @klass.config = params[:config] || {}

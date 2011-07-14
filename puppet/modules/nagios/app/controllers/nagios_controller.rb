@@ -7,6 +7,7 @@ class NagiosController < InitrController
   before_filter :authorize
 
   def configure
+    @html_title=[@node.fqdn, @klass.name]
     @nagios_servers = Initr::NagiosServer.all.collect {|ns|
       ns if User.current.projects.include? ns.node.project or User.current.admin?
     }.compact
