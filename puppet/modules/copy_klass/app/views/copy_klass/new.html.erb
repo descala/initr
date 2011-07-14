@@ -1,6 +1,6 @@
 <%=klass_menu "Choose a class to copy"%>
 
-<% labelled_tabular_form_for :copy_klass, @klass, :url=>{:action=>'configure'} do |f| -%>
+<% labelled_tabular_form_for :copy_klass, @klass, :url=>{:action=>'create',:id=>@node} do |f| -%>
 
   <%= render :partial => 'tabular_form', :locals=>{:f=>f} %>
 
