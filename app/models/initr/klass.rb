@@ -21,6 +21,7 @@ class Initr::Klass < ActiveRecord::Base
     super
     self.config ||= {}
     self.active = self.valid? if self.active.nil?
+    self.errors.clear
   end
 
   # Default to only one klass type per node
