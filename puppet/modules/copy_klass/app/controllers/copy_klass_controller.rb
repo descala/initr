@@ -2,7 +2,7 @@ class CopyKlassController < InitrController
   unloadable
 
   menu_item :initr
-  before_filter :find_node, :except => [:configure]
+  before_filter :find_node,       :except => [:configure]
   before_filter :find_copy_klass, :only => [:configure]
   before_filter :set_copiable_klasses
   before_filter :authorize

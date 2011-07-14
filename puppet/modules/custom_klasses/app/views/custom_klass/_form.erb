@@ -1,13 +1,9 @@
-<%= form.error_messages %>
+<p><%= f.error_messages %></p>
 
 <!--[form:custom_klass]-->
 
-<p><label for="custom_klass_name"><%="Name"%></label><br/>
-<%= form.text_field 'name'  %></p>
-<p><label for="custom_klass_description"><%="Description"%></label><br/>
-<%= form.text_field 'description'  %></p>
-
-<%= hidden_field_tag :node_id, @node.id %>
+<p><%= f.text_field 'name'  %></p>
+<p><%= f.text_field 'description'  %></p>
 
 <div id="custom_klass_confs">
   <%= render :partial => 'custom_klass_conf', :collection => @klass.custom_klass_confs -%>

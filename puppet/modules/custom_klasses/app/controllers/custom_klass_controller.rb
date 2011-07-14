@@ -2,21 +2,9 @@ class CustomKlassController < InitrController
   unloadable
 
   menu_item :initr
-  before_filter :find_node,    :only => [:new]
-  before_filter :find_node_id, :only => [:create]
-  before_filter :find_klass,   :only => [:configure]
+  before_filter :find_node,         :only => [:new,:create]
+  before_filter :find_custom_klass, :only => [:configure]
   before_filter :authorize
-
-  def configure
-    if request.post?
-      params[:custom_klass][:existing_custom_klass_conf_attributes] ||= {}
-      if @klass.update_attributes(params[:custom_klass])
-        redirect_to :controller => 'klass', :action => 'list', :id => @node.id
-      else
-        render :action => 'configure', :id=>@klass
-      end
-    end
-  end
 
   def new
     @klass = Initr::CustomKlass.new(:node=>@node)
@@ -27,9 +15,24 @@ class CustomKlassController < InitrController
       @klass = Initr::CustomKlass.new(params[:custom_klass])
       @klass.node = @node
       if @klass.save
-        redirect_to :controller=>'klass',:action=>'list',:id=>@node
+        flash[:notice]='Configuration saved'
+        redirect_to :controller=>'klass',:action=>'list',:id=>@node, :tab => 'klasses'
       else
         render :action=>'new', :id=>@node
+      end
+    else
+      redirect_to :controller=>'klass', :action=>'list', :id=>@node, :tab=>'klasses'
+    end
+  end
+
+  def configure
+    if request.post?
+      params[:custom_klass][:existing_custom_klass_conf_attributes] ||= {}
+      if @klass.update_attributes(params[:custom_klass])
+        flash[:notice]='Configuration saved'
+        redirect_to :controller => 'klass', :action => 'list', :id => @node.id, :tab => 'klasses'
+      else
+        render :action => 'configure'
       end
     end
   end
@@ -41,12 +44,7 @@ class CustomKlassController < InitrController
     @project = @node.project
   end
 
-  def find_node_id
-    @node = Initr::Node.find params[:node_id]
-    @project = @node.project
-  end
-
-  def find_klass
+  def find_custom_klass
     @klass = Initr::CustomKlass.find params[:id]
     @node = @klass.node
     @project = @node.project

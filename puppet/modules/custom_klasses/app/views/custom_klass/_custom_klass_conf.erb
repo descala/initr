@@ -1,4 +1,5 @@
 <div class="custom_klass_conf">
+<p>
 <% new_or_existing = custom_klass_conf.new_record? ? 'new' : 'existing' %>
 <% prefix = "custom_klass[#{new_or_existing}_custom_klass_conf_attributes][]" %>
 <% fields_for prefix, custom_klass_conf do |ckc_form| -%>
@@ -11,4 +12,5 @@
                                                 :rows=>(custom_klass_conf.value.blank? ? 10 : [[10, custom_klass_conf.value.length / 50].max, 100].min) %>
 <%= link_to_function "remove" , "$(this).up('.custom_klass_conf').remove()" %>
 <% end -%>
+</p>
 </div>
