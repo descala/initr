@@ -57,8 +57,7 @@ begin
         :require => :loggedin
       permission :view_nodes,
         {:node  => [:list,:facts,:report,:resource],
-         :klass => [:list]},
-        :require => :member
+         :klass => [:list]}
       permission :view_own_nodes,
         {:node  => [:list,:facts,:report,:resource],
          :klass => [:list]},
