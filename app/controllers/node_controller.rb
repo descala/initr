@@ -83,7 +83,8 @@ class NodeController < InitrController
     User.current.node_instances.each do |n|
       # check for "View own nodes" permission for "non-member" role
       next unless n.visible_by?(User.current)
-      if (@project.nil? and !@nodes.keys.include? n.project) || (!@nodes.keys.include? n.project and n.project == @project)
+      if (@project.nil? and (!@nodes[n.project] or !@nodes[n.project].include? n)) ||
+         (n.project == @project and (!@nodes[@project] or !@nodes[@project].include? n))
         @nodes[n.project] ||= []
         @nodes[n.project] << n
       end
