@@ -17,11 +17,27 @@ ul.klasses {
 ul.klasses li {
   background-color: #E4E4E4;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
   float: left;
   margin: 5px;
   padding: 2px 5px;
   width: 200px;
-  min-height: 20px;
+  height: 45px;
+  overflow: hidden;
 }
 
+.active { background-color:#507AAA !important; color:#f8f8f8 !important; }
+.active a, .context-menu-selection a:hover { color:#f8f8f8 !important; }
+.active:hover { background-color:#507AAA !important; color:#f8f8f8  !important; }
+
+ul.klasses p {
+  font-size: 69%;
+  margin: 4px 0 0;
+}
+
+ul.klasses a {
+    display: inline-block;
+    font-size: 18px;
+    height: 20px;
+    vertical-align: middle;
+    max-width: 176px;
+}
