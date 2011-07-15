@@ -209,7 +209,7 @@ class NodeController < InitrController
     if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       respond_to do |format|
         format.yml {
-          if Initr::Report.import params.delete("report")
+          if Initr::Report.import request.body
             render :text => "Imported report", :status => 200 and return
           else
             render :text => "Failed to import report", :status => 500
