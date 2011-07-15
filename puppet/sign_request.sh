@@ -29,10 +29,9 @@ if [ "$valid" != "true" ]; then
   exit 1
 fi
 
-if [ -z "`which puppetca`" ] ; then
+puppetca=`which puppetca`
+if [ -z "$puppetca" ] ; then
   puppetca=`gem contents --prefix  puppet | grep "puppetca$"`
-else
-  puppetca="puppetca"
 fi
 
 if [ -z "$puppetca" ]; then
