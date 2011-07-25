@@ -23,8 +23,9 @@
   <%
   begin
     node.klasses.each do |k|
+      next unless k.nodelist_partial
       begin
-      -%><%= render :partial => "#{k.class.to_s.split('::').last.underscore}/nodelist", :locals => {:klass=>k} %><%
+      -%><%= render :partial => k.nodelist_partial, :locals => {:klass=>k} %><%
       rescue ActionView::MissingTemplate => e
       end
     end

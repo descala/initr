@@ -125,6 +125,12 @@ class Initr::Klass < ActiveRecord::Base
     end
   end
 
+  # return a partial name to render it on node/list
+  # (see app/views/node/_node_line.html.erb)
+  def nodelist_partial
+    false
+  end
+
   private
 
   def self.adds_klass(*args)
