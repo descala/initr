@@ -78,10 +78,10 @@ Considerations
     reports = http
     reporturl = http://<your_url>/reports
 
-* On development all certificate requests are signed (see puppet/autosign.conf), but it is not desirable on production. See http://www.initr.org/projects/initr/wiki/Signing_certificates_automatically to automatically sign certificate requests
+* On development all certificate requests are signed (see puppet/autosign.conf), but it is not desirable on production. See http://www.ingent.net/projects/initr/wiki/SigningRevoking_certificates_automatically to automatically sign certificate requests
 
 .. _storeconfigs: http://projects.puppetlabs.com/projects/puppet/wiki/Using_Stored_Configuration
 .. _external nodes: http://docs.puppetlabs.com/guides/external_nodes.html
 .. _Redmine: http://www.redmine.org
 .. _Puppet: http://docs.puppetlabs.com/guides/introduction.html
-.. _project homepage: http://www.initr.org
+.. _project homepage: http://www.ingent.net/projects/initr/wiki
