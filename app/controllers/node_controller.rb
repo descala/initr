@@ -83,7 +83,8 @@ class NodeController < InitrController
     User.current.node_instances.each do |n|
       # check for "View own nodes" permission for "non-member" role
       next unless n.visible_by?(User.current)
-      if (@project.nil? and !@nodes.keys.include? n.project) || (!@nodes.keys.include? n.project and n.project == @project)
+      if (@project.nil? and (!@nodes[n.project] or !@nodes[n.project].include? n)) ||
+         (n.project == @project and (!@nodes[@project] or !@nodes[@project].include? n))
         @nodes[n.project] ||= []
         @nodes[n.project] << n
       end
@@ -209,7 +210,7 @@ class NodeController < InitrController
     if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       respond_to do |format|
         format.yml {
-          if Initr::Report.import params.delete("report")
+          if Initr::Report.import request.body
             render :text => "Imported report", :status => 200 and return
           else
             render :text => "Failed to import report", :status => 500

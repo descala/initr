@@ -1,7 +1,7 @@
 class bind {
   $osavn = "$lsbdistid$lsbdistrelease_class"
   case $operatingsystem {
-    Debian: {
+    Debian,Ubuntu: {
       $etc_dir = "/etc/bind"
       $var_dir = $etc_dir
       include bind::debian

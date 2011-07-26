@@ -70,7 +70,13 @@ Considerations
 
 * You'll need to configure puppetmaster `external nodes`_ to call the script provided in bin/external_node.sh which gets node classes and parameters from an initr url.
 
-* To make reports appear on initr, you must copy puppet/initr.rb to your puppet reports directory (on Debian /usr/lib/ruby/1.8/puppet/reports/) and configure puppetmaster with "reports = initr"
+* Initr accepts http reports on /reports url, so to make reports appear on initr, configure puppetmaster to use http reports
+
+::
+
+  [master]
+    reports = http
+    reporturl = http://<your_url>/reports
 
 * On development all certificate requests are signed (see puppet/autosign.conf), but it is not desirable on production. See http://www.initr.org/projects/initr/wiki/Signing_certificates_automatically to automatically sign certificate requests
 
