@@ -32,7 +32,7 @@ class webserver1 {
       notify => Service[$httpd_service];
   }
 
-  webserver1::domain { $webserver_domains: }
+  create_resources(webserver1::domain, $webserver_domains)
 
   package {
     $ruby_shadow:

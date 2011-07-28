@@ -30,7 +30,7 @@ class nagios::nsca_node::common {
   }
 
   nagios::service { "uptime": }
-  nagios::check { $nagios_checks: }
+  create_resources(nagios::check, $nagios_checks)
 
   package {
     $libmcrypt:
