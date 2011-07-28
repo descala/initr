@@ -84,9 +84,9 @@ class nagios::server::common {
     schedule => daily,
   }
   create_resources(nagios::server::common::contact, $nagios_contacts)
-  define contact($alias,$email) {
+  define contact($nagiosalias,$email) {
     nagios_contact { $name:
-      alias => $alias,
+      alias => $nagiosalias,
       email => $email,
       use => "generic-contact",
       notify => Service["nagios"],
@@ -94,19 +94,19 @@ class nagios::server::common {
     }
   }
   create_resources(nagios::server::common::contactgroup, $nagios_contactgroups)
-  define contactgroup($members,$alias) {
+  define contactgroup($members,$nagiosalias) {
     nagios_contactgroup { $name:
       members => $members,
-      alias => $alias,
+      alias => $nagiosalias,
       notify => Service["nagios"],
       require => File["/etc/nagios/nagios_contactgroup.cfg"],
     }
   }
   create_resources(nagios::server::common::hostgroup, $nagios_hostgroups)
-  define hostgroup($members,$alias) {
+  define hostgroup($members,$nagiosalias) {
     nagios_hostgroup { $name:
       members => $members,
-      alias => $alias,
+      alias => $nagiosalias,
       notify => Service["nagios"],
       require => File["/etc/nagios/nagios_hostgroup.cfg"],
     }

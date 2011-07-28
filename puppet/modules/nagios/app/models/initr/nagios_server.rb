@@ -46,13 +46,13 @@ class Initr::NagiosServer < Initr::Klass
   # nagios_contacts:
   #   name:
   #      email: name@example.com
-  #      alias: Name Surname
+  #      nagiosalias: Name Surname
   #   lluis: ...
   def nagios_contacts
     r = {}
     User.all.each do |u|
       if !u.is_a?(AnonymousUser) and u.active?
-         r[u.login] = { 'email' => u.mail, 'alias' => u.name }
+         r[u.login] = { 'email' => u.mail, 'nagiosalias' => u.name }
       end
     end
     r
@@ -60,7 +60,7 @@ class Initr::NagiosServer < Initr::Klass
 
   # nagios_contactgroups:
   #   group:
-  #      alias: Nagios notifications group
+  #      nagiosalias: Nagios notifications group
   #      members: name, name2
   def nagios_contactgroups
     ncgs = {}
@@ -76,9 +76,9 @@ class Initr::NagiosServer < Initr::Klass
         end.compact
         next unless logins.size > 0
         if r.id == 3 # admin role
-          ncgs[p.identifier] = { 'alias' => "#{p.identifier}#{r.id}", 'members' => logins.join(', ') }
+          ncgs[p.identifier] = { 'nagiosalias' => "#{p.identifier}#{r.id}", 'members' => logins.join(', ') }
         else
-          ncgs["#{p.identifier}#{r.id}"] = { 'alias' => "#{p.identifier}_#{r.name}", 'members' => logins.join(', ') }
+          ncgs["#{p.identifier}#{r.id}"] = { 'nagiosalias' => "#{p.identifier}_#{r.name}", 'members' => logins.join(', ') }
         end
       end
     end
@@ -100,7 +100,7 @@ class Initr::NagiosServer < Initr::Klass
 
   # nagios_hostgroups:
   #   project:
-  #      alias: A project
+  #      nagiosalias: A project
   #      hostgroup_members: host1.example.com, host2.example.com
   def nagios_hostgroups
     groups = {}
@@ -108,7 +108,7 @@ class Initr::NagiosServer < Initr::Klass
       next unless p.active?
       members = nagios_hosts_for(p).collect {|n| n.fqdn }.join(', ')
       next if members.blank?
-      groups[p.identifier] = { 'alias' => p.name ,'members' => members }
+      groups[p.identifier] = { 'nagiosalias' => p.name ,'members' => members }
     end
     groups
   end
