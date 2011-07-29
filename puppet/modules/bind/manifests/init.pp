@@ -134,7 +134,7 @@ class bind::redhat {
       mode => 644,
       owner => root,
       group => root,
-      source => [ "puppet:///dist/specific/$fqdn/bind-named.conf", "puppet:///modules/bind/named.conf" ],
+      source => [ "puppet:///specific/bind-named.conf", "puppet:///modules/bind/named.conf" ],
       notify => Service["bind"],
       require => Package[$bind];
     "$bind::var_dir/zones.conf":
@@ -143,7 +143,7 @@ class bind::redhat {
       mode => 644,
       owner => named,
       group => named,
-      source => [ "puppet:///dist/specific/$fqdn/bind-zones.conf", "puppet:///modules/bind/zones.conf" ],
+      source => [ "puppet:///specific/bind-zones.conf", "puppet:///modules/bind/zones.conf" ],
       notify => Service["bind"],
       require => Package[$bind];
   }

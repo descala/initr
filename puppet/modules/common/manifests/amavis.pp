@@ -115,7 +115,7 @@ enlogfile /var/log/maillog"
 class amavis::munin::centos inherits amavis::munin::common {
   file { "/usr/sbin/logtail":
     mode => 755,
-    source => "puppet:///dist/common/logtail",
+    source => "puppet:///modules/common/amavis/logtail",
     owner => "root",
     group => "root",
     replace => false,

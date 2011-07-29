@@ -23,7 +23,7 @@ class puppet {
       group => root,
       mode => 744,
       before => Service["puppet"],
-      source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///modules/base/puppet/puppet-restart.sh"];
+      source => ["puppet:///specific/puppet-restart.sh","puppet:///modules/base/puppet/puppet-restart.sh"];
   }
   cron {
     puppet_restart:
@@ -58,7 +58,7 @@ class puppet::lite inherits puppet {
     ensure => stopped,
   }
   File["/usr/local/sbin/puppet-restart.sh"] {
-    source => ["puppet:///dist/specific/$fqdn/puppet-restart.sh","puppet:///modules/base/puppet/puppet-lite-restart.sh"],
+    source => ["puppet:///specific/puppet-restart.sh","puppet:///modules/base/puppet/puppet-lite-restart.sh"],
     before => Service["puppet"],
   }
   if array_includes($classes,"nagios::nsca_node") {

@@ -18,7 +18,7 @@ class dhcpd {
 
   file { $dhcp_conf:
     mode => 644,
-    source => [ "puppet:///dist/specific/$fqdn/dhcpd.conf"],
+    source => [ "puppet:///specific/dhcpd.conf"],
     require => Package[$dhcp_package],
     notify => Service[$dhcp_service],
   }
