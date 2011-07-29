@@ -27,7 +27,7 @@ class ntp {
         mode => 644,
 		owner => root,
 		group => root,
-		source => [ "puppet:///dist/specific/$fqdn/ntp", "puppet:///modules/common/ntp_debian" ],
+		source => [ "puppet:///specific/ntp", "puppet:///modules/common/ntp_debian" ],
         require => Package[$ntp],
         notify => Service[$ntp],
       }
@@ -38,7 +38,7 @@ class ntp {
         mode => 644,
         owner => root,
         group => root,
-        source => [ "puppet:///dist/specific/$fqdn/ntp", "puppet:///modules/common/ntp" ],
+        source => [ "puppet:///specific/ntp", "puppet:///modules/common/ntp" ],
         require => Package["ntp"],
       }
       service { "ntpd":

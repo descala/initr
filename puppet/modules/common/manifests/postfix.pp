@@ -9,7 +9,7 @@ class postfix {
     mode => 644,
     owner => root,
     group => root,
-    source => [ "puppet:///dist/specific/$fqdn/postfix-main.cf", "puppet:///modules/common/postfix-main-default.cf" ],
+    source => [ "puppet:///specific/postfix-main.cf", "puppet:///modules/common/postfix-main-default.cf" ],
     notify => Service['postfix'],
     require => Package['postfix'],
   }
@@ -75,16 +75,16 @@ class spamassassin {
 class disclaimer {
   file { "/etc/disclaimer.txt":
     mode => 644,
-    source => "puppet:///dist/specific/$fqdn/disclaimer.txt",
+    source => "puppet:///specific/disclaimer.txt",
   }
   file { "/etc/disclaimer.html":
     mode => 644,
-    source => "puppet:///dist/specific/$fqdn/disclaimer.html",
+    source => "puppet:///specific/disclaimer.html",
   }
   file { "/usr/local/bin/disclaimer.sh":
     mode => 750,
     owner => "filter",
-    source => "puppet:///dist/specific/$fqdn/disclaimer.sh",
+    source => "puppet:///specific/disclaimer.sh",
   }
   user { "filter":
     comment => "Postfix Filters",

@@ -30,7 +30,7 @@ class dovecot::debian inherits dovecot::common {
     "/etc/dovecot/dovecot.conf":
       mode => 644,
       group => dovecot,
-      source => [ "puppet:///dist/specific/$fqdn/dovecot.conf", "puppet:///modules/common/dovecot/dovecot_debian.conf" ],
+      source => [ "puppet:///specific/dovecot.conf", "puppet:///modules/common/dovecot/dovecot_debian.conf" ],
       notify => Service["dovecot"],
       require => [Package["dovecot-imapd"],Package["dovecot-pop3d"]];
     "/etc/dovecot/dovecot-sql.conf":
@@ -57,7 +57,7 @@ class dovecot::centos inherits dovecot::common {
     "/etc/dovecot.conf":
       mode => 644,
       group => dovecot,
-      source => [ "puppet:///dist/specific/$fqdn/dovecot.conf", "puppet:///modules/common/dovecot/dovecot_centos.conf" ],
+      source => [ "puppet:///specific/dovecot.conf", "puppet:///modules/common/dovecot/dovecot_centos.conf" ],
       notify => Service["dovecot"],
       require => Package["dovecot"];
     "/etc/dovecot-sql.conf":

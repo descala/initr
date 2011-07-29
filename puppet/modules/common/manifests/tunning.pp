@@ -5,7 +5,7 @@ class tunning {
     mode => 644,
     owner => root,
     group => root,
-    source => ["puppet:///dist/specific/$fqdn/bashrc","puppet:///modules/common/tunning/bashrc"],
+    source => ["puppet:///specific/bashrc","puppet:///modules/common/tunning/bashrc"],
   }
   file { "/root/.bash_profile":
     mode => 644,
