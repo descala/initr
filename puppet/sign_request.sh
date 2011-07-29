@@ -20,7 +20,7 @@ DOMAIN=`cat $(dirname $0)/../server_info.yml | grep DOMAIN | cut -d" " -f2`
 RAILS_ENV=`cat $(dirname $0)/../server_info.yml | grep RAILS_ENV | cut -d" " -f2`
 
 token="`echo -n "$1" | sed 's/\.pem$//'`"
-valid="`curl -s -k $DOMAIN/install/can_sign/$token`"
+valid="`curl -L -s -k $DOMAIN/install/can_sign/$token`"
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 path_only=`dirname "$abspath"`
 

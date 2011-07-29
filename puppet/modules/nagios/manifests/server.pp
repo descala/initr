@@ -83,26 +83,58 @@ class nagios::server::common {
   Nagios_service <<| tag == $nagios_address |>> {
     schedule => daily,
   }
-  nagios_contact { $nagios_contacts:
-    use => "generic-contact",
-    notify => Service["nagios"],
-    require => File["/etc/nagios/nagios_contact.cfg"],
+  create_resources(nagios::server::common::contact, $nagios_contacts)
+  define contact($nagiosalias,$email) {
+    nagios_contact { $name:
+      alias => $nagiosalias,
+      email => $email,
+      use => "generic-contact",
+      notify => Service["nagios"],
+      require => File["/etc/nagios/nagios_contact.cfg"],
+    }
   }
-  nagios_contactgroup { $nagios_contactgroups:
-    notify => Service["nagios"],
-    require => File["/etc/nagios/nagios_contactgroup.cfg"],
+  create_resources(nagios::server::common::contactgroup, $nagios_contactgroups)
+  define contactgroup($members,$nagiosalias) {
+    nagios_contactgroup { $name:
+      members => $members,
+      alias => $nagiosalias,
+      notify => Service["nagios"],
+      require => File["/etc/nagios/nagios_contactgroup.cfg"],
+    }
   }
-  nagios_hostgroup { $nagios_hostgroups:
-    notify => Service["nagios"],
-    require => File["/etc/nagios/nagios_hostgroup.cfg"],
+  create_resources(nagios::server::common::hostgroup, $nagios_hostgroups)
+  define hostgroup($members,$nagiosalias) {
+    nagios_hostgroup { $name:
+      members => $members,
+      alias => $nagiosalias,
+      notify => Service["nagios"],
+      require => File["/etc/nagios/nagios_hostgroup.cfg"],
+    }
   }
-  nagios_hostescalation { $nagios_hostescalations:
-    notify => Service["nagios"],
-    require => File["/etc/nagios/nagios_hostescalation.cfg"],
+  create_resources(nagios::server::common::hostescalation, $nagios_hostescalations)
+  define hostescalation($last_notification,$contact_groups,$notification_interval,$first_notification,$hostgroup_name) {
+    nagios_hostescalation { $name:
+      last_notification => $last_notification,
+      contact_groups => $contact_groups,
+      notification_interval => $notification_interval,
+      first_notification => $first_notification,
+      hostgroup_name => $hostgroup_name,
+      notify => Service["nagios"],
+      require => File["/etc/nagios/nagios_hostescalation.cfg"],
+    }
   }
-  nagios_serviceescalation { $nagios_serviceescalations:
-    notify => Service["nagios"],
-    require => File["/etc/nagios/nagios_serviceescalation.cfg"],
+  create_resources(nagios::server::common::serviceescalation, $nagios_serviceescalations)
+  define serviceescalation($last_notification,$contact_groups,$notification_interval,$service_description,$first_notification,$hostgroup_name) {
+    nagios_serviceescalation { $name:
+      last_notification => $last_notification,
+      contact_groups => $contact_groups,
+      notification_interval => $notification_interval,
+      service_description => $service_description,
+      first_notification => $first_notification,
+      hostgroup_name => $hostgroup_name,
+      notify => Service["nagios"],
+      require => File["/etc/nagios/nagios_serviceescalation.cfg"],
+    }
   }
   # freshness_threshold is 950 in 'passive-host' template
 #  nagios_host { $fqdn:

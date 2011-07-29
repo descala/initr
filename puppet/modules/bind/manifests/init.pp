@@ -70,7 +70,7 @@ class bind {
   }
 
   
-  zoneconf { $bind_masterzones: }
+  create_resources(bind::zoneconf, $bind_masterzones)
 
   define zoneconf($zone,$ttl,$serial) {
 

@@ -1,6 +1,6 @@
 class configuration_errors {
 
-  errors { $errors: }
+  configuration_errors::errors { $errors: }
 
   define errors {
     err($name)

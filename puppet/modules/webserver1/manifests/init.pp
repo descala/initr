@@ -13,6 +13,8 @@ class webserver1 {
   include php
   include webserver1::ftp
   include rsync
+  include cron
+
   case $operatingsystem {
     "Debian": { include webserver1::awstats::debian }
     "CentOS": {
@@ -30,7 +32,7 @@ class webserver1 {
       notify => Service[$httpd_service];
   }
 
-  webserver1::domain { $webserver_domains: }
+  create_resources(webserver1::domain, $webserver_domains)
 
   package {
     $ruby_shadow:
