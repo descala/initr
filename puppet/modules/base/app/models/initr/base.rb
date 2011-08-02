@@ -37,13 +37,13 @@ class Initr::Base < Initr::Klass
   def more_classes
     case self.config.puppet
     when "lite"
-      return ["puppet::lite"]
+      return ["base::puppet::lite"]
     when "normal"
-      return ["puppet"]
+      return ["base::puppet"]
     when "insistent"
-      return ["puppet::insistent"]
+      return ["base::puppet::insistent"]
     when "lite_insistent"
-      return ["puppet::lite_insistent"]
+      return ["base::puppet::lite_insistent"]
     else
       return nil
     end

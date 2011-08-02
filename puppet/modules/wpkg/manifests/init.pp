@@ -1,6 +1,3 @@
-# Import required for external nodes to find wpkg::package classes
-import "*.pp"
-
 class wpkg {
 
   $client = "WPKG Client 1.2.1.msi"
@@ -44,22 +41,6 @@ class wpkg {
       cwd => "$wpkg_base/software/",
       creates => "$wpkg_base/software/$client",
       require => File["$wpkg_base/software"];
-  }
-
-  define download($to,$url,$creates) {
-
-    $download_dir = "$wpkg_base/software/$to"
-
-    exec {
-      "wpkg_$name":
-        command => "wget -O '$creates' '$url'",
-        logoutput => false,
-        cwd => $download_dir,
-        require => File[$download_dir],
-        timeout => 3600,
-        creates => "$download_dir/$creates";
-    }
-
   }
 
   package { $p7zip_package:

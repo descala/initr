@@ -1,4 +1,4 @@
-class tunning {
+class common::tunning {
 
   # BASH
   file { "/root/.bashrc":

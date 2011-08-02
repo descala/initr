@@ -1,5 +1,5 @@
 # set system time
-class ntp {
+class common::ntp {
   package { $ntp:
     ensure => installed,
   }

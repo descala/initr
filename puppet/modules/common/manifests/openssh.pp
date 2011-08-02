@@ -1,4 +1,4 @@
-class openssh {
+class common::openssh {
 
   package { $ssh:
     ensure => installed,

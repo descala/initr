@@ -11,35 +11,3 @@ class wpkg::firefox {
 
 }
 
-class wpkg::firefox3 inherits firefox {
-
-  download {
-    "firefox":
-      to => "firefox",
-      url => "http://download.mozilla.org/?product=firefox-3.6.17&os=win&lang=ca",
-      creates => "Firefox Setup 3.6.17.exe";
-  }
-
-}
-
-class wpkg::firefox4 inherits firefox {
-
-  download {
-    "firefox4":
-      to => "firefox",
-      url => "http://download.mozilla.org/?product=firefox-4.0.1&os=win&lang=ca",
-      creates => "Firefox Setup 4.0.1.exe";
-  }
-
-}
-
-class wpkg::firefox5 inherits firefox {
-
-  download {
-    "firefox5":
-      to => "firefox",
-      url => "http://download.mozilla.org/?product=firefox-5.0&os=win&lang=ca",
-      creates => "Firefox Setup 5.0.exe";
-  }
-
-}

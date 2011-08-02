@@ -1,4 +1,4 @@
-class sshkeys {
+class common::sshkeys {
 
   # export ssh host key
   # tags are given from initr (plusignment doesn't work http://projects.reductivelabs.com/issues/2825)

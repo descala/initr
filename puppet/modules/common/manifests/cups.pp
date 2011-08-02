@@ -1,4 +1,4 @@
-class cups {
+class common::cups {
   package { "cups":
     ensure => "installed",
   }

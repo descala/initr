@@ -7,7 +7,7 @@ class wpkg::googleearth {
       ensure => directory;
   }
 
-  download {
+  wpkg::download {
     "googleearth":
       to => "googleearth",
       url => "http://dl.google.com/earth/client/GE5/release_5_2_1/GoogleEarth-Win-Bundle-5.2.1.1588.exe",

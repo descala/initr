@@ -1,4 +1,4 @@
-class configuration_errors {
+class common::configuration_errors {
 
   configuration_errors::errors { $errors: }
 

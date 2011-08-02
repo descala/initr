@@ -14,7 +14,7 @@ See http://wpkg.org/OpenOffice.org_3.x for instructions.
 ";
   }
 
-  download {
+  wpkg::download {
     "openoffice":
       to => "openoffice",
       url => "http://ftp.udc.es/OpenOffice/localized/ca/3.2.1/OOo_3.2.1_Win_x86_install-wJRE_ca.exe",

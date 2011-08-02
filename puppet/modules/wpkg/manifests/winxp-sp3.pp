@@ -9,7 +9,7 @@ class wpkg::winxp-sp3 {
       ensure => directory;
   }
 
-  download {
+  wpkg::download {
     "service_packs_xp":
       to => "service_packs_xp",
       url => "http://download.microsoft.com/download/9/4/2/942080a4-ba69-496b-a379-d3b26d37b647/WindowsXP-KB936929-SP3-x86-ESN.exe",

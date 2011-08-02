@@ -11,7 +11,7 @@ class wpkg::sketchup8 {
       ensure => directory;
   }
 
-  download {
+  wpkg::download {
     "sketchup8":
       to => "sketchup",
       url => "http://dl.google.com/sketchup/GoogleSketchUpWES.exe",
@@ -29,10 +29,3 @@ class wpkg::sketchup8 {
 
 }
 
-class wpkg::sketchup8-pro inherits wpkg::sketchup8 {
-
-  Download["sketchup8"] {
-      url => "http://dl.google.com/sketchup/GoogleSketchUpProWES.exe",
-  }
-
-}

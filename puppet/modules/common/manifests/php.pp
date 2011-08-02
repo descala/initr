@@ -1,4 +1,4 @@
-class php {
+class common::php {
   $packages = $operatingsystem ? {
     Debian => ["php5", "php5-mysql"],
     default => ["php","php-eaccelerator","php-mysql"]
@@ -10,10 +10,3 @@ class php {
   }
 }
 
-class php_with_pear inherits php {
-  package {
-    "php-pear":
-      ensure => installed,
-      notify => Service[$httpd_service];
-  }
-}
