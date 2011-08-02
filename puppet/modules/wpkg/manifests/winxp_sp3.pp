@@ -2,7 +2,7 @@
 
 # Class name must match a package id in an XML in files/packages
 
-class wpkg::winxp-sp3 {
+class wpkg::winxp_sp3 {
 
   file {
     "$wpkg_base/software/service_packs_xp":

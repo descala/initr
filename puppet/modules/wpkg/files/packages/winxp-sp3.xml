@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <packages>
- <package id="winxp-sp3" name="Windows XP Service Pack 3" revision="1" reboot="true" priority="0">
+ <package id="winxp_sp3" name="Windows XP Service Pack 3" revision="1" reboot="true" priority="0">
   <check type="logical" condition="or">
     <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName" value="Microsoft Windows 2000" />
     <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName" value="Windows 7 Ultimate" />
