@@ -98,8 +98,8 @@ class webserver1 {
   ############################
 
   if $operatingsystem == "Debian" {
-    apache::ensite { "default": }
-    apache::enmod { "rewrite.load": }
+    common::apache::ensite { "default": }
+    common::apache::enmod { "rewrite.load": }
   }
   else
   {

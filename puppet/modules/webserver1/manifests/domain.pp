@@ -92,7 +92,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   }
 
   if $operatingsystem == "Debian" {
-    apache::ensite { "$name.conf":
+    common::apache::ensite { "$name.conf":
       require => File["$httpd_sitedir/$name.conf"],
     }
   }

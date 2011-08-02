@@ -2,7 +2,7 @@ class common::apache::munin {
 
   case $lsbdistid {
     "Debian","Ubuntu": {
-      apache::enmod { ["status.load","status.conf"]: }
+      common::apache::enmod { ["status.load","status.conf"]: }
       package { "liblwp-useragent-determined-perl":
         ensure => installed,
       }
