@@ -1,4 +1,4 @@
-define common::gem_package($ensure=installed) {
+define common::rubygems::gem_package($ensure=installed) {
   case $rubygems_version {
     "": {
       warning("Rubygems not installed: can not manage '$name' package. rubygems_version='$rubygems_version'")
