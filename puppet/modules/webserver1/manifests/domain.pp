@@ -29,12 +29,12 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   }
 
   if $database != "" {
-    mysql::database { $database:
+    common::mysql::database { $database:
       ensure => present,
       owner => $username,
       passwd => $password_db,
     }
-    # removed mysql::database::backup, we are doing it in backup.sh.erb now
+    # removed common::mysql::database::backup, we are doing it in backup.sh.erb now
   }
 
   file {
