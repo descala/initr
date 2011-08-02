@@ -1,5 +1,5 @@
 # signature with postfix
-class common::disclaimer {
+class common::postfix::disclaimer {
   file { "/etc/disclaimer.txt":
     mode => 644,
     source => "puppet:///specific/disclaimer.txt",
