@@ -69,7 +69,7 @@ class bind {
     }
   }
 
-  create_resources(bind::zoneconf, $bind_masterzones)
+  create_resources(bind::zone, $bind_masterzones)
 
 }
 

@@ -1,4 +1,4 @@
-define bind::zoneconf($zone,$ttl,$serial) {
+define bind::zone($zone,$ttl,$serial) {
 
   if array_includes($classes,"nagios::nsca_node") {
     nagios::service {
