@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <packages>
- <package id="winxp-sp3" name="Windows XP Service Pack 3" revision="1" reboot="true" priority="0">
+ <package id="winxp_sp3" name="Windows XP Service Pack 3" revision="1" reboot="true" priority="0">
   <check type="logical" condition="or">
     <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName" value="Microsoft Windows 2000" />
     <check type="registry"  condition="equals" path="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName" value="Windows 7 Ultimate" />
@@ -11,11 +11,5 @@
    <exit code="0" />
    <exit code="3010" />
   </install>
-<!-- Why unistall SP3!? do not uninstall it. ever.
-  <remove cmd='%WINDIR%\$NtServicePackUninstall$\spuninst\spuninst.exe /quiet /norestart'>
-   <exit code="0" />
-   <exit code="3010" />
-  </remove>
--->
  </package>
 </packages>

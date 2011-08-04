@@ -1,4 +1,4 @@
-class build_essential {
+class common::build_essential {
 
   case $operatingsystem {
     "Debian": {

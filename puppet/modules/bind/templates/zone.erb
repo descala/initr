@@ -4,13 +4,13 @@
 ; masterzone.erb template
 
 $TTL <%= ttl %>
-@   IN  SOA <%= nameservers.first %>.  webmaster.<%= name %>. (
+@   IN  SOA <%= scope.lookupvar('bind::nameservers').first %>.  webmaster.<%= name %>. (
             <%= serial %>  ; serial automatically incremented
             300         ; refresh, seconds
             7200        ; retry, seconds
             300         ; expire, seconds
             300 )       ; minimum, seconds
-<% nameservers.each do |ns| -%>
+<% scope.lookupvar('bind::nameservers').each do |ns| -%>
     IN  NS  <%= ns %>.
 <% end -%>
 <%= zone %>

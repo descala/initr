@@ -59,24 +59,43 @@ class Initr::Klass < ActiveRecord::Base
     'klass'
   end
 
-  # Variables for puppet
+  # top scope variables
+  #TODO: by default it returns klass.config, maybe should move this to class_parameters?
   def parameters
     return {} unless self.config.is_a? Hash
     self.config
   end
 
+  # class scope variables
+  # http://docs.puppetlabs.com/guides/parameterized_classes.html
+  def class_parameters
+    nil
+  end
+
+  def self.merge_parameters(current_hash, new_hash)
+    return new_hash if current_hash.nil?
+    new_hash.each do |k,v|
+      if current_hash[k]
+        current_hash[k] = Initr::Klass.merge_parameter(current_hash[k],v)
+      else
+        current_hash[k] = v
+      end
+    end
+    current_hash
+  end
+
   # merges an existing parameter
-  def merge_parameter(key,current_value)
+  def self.merge_parameter(current_value, new_value)
     if current_value.class == Array
       # add value if current value is an array
-      current_value << self.parameters[key]
+      current_value << new_value
       current_value.flatten!
     elsif current_value.class == Hash
       # merge if it is a hash
-      current_value.merge!(self.parameters[key])
-    elsif current_value != self.parameters[key]
+      current_value.merge!(new_value)
+    elsif current_value != new_value
       # otherwise create an array, if values differ
-      current_value = [current_value, self.parameters[key]]
+      current_value = [current_value, new_value]
       current_value.flatten!
     end
     return current_value
@@ -84,7 +103,7 @@ class Initr::Klass < ActiveRecord::Base
 
   # Array of additional puppet classes that should be included
   def more_classes
-    nil
+    []
   end
 
   # a class can be moved from node to another

@@ -1,4 +1,4 @@
-class cron {
+class common::cron {
 
   service {
     $cron_service:

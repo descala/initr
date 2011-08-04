@@ -33,40 +33,37 @@ class Initr::Node < ActiveRecord::Base
     # node parameters
     parameters = {"node_hash"=>self.name}
     # node classes
-    classes = [ "base" ]
+    classes = { "base" => nil }
     begin
       klasses.sort.each do |klass|
         next unless klass.active?
         begin
-          klass.parameters.each do |k,v|
-            if parameters.keys.include? k
-              parameters[k] = klass.merge_parameter(k,parameters[k])
-            else
-              parameters[k] = v
-            end
+          # top scope variables
+          parameters = Initr::Klass.merge_parameters(parameters,klass.parameters)
+          # class variables
+          classes[klass.puppetname] = Initr::Klass.merge_parameters(classes[klass.puppetname],klass.class_parameters)
+          # extra classes
+          klass.more_classes.each do |klass_to_add|
+            classes[klass_to_add] = nil unless classes[klass_to_add]
           end
-          classes << klass.puppetname
-          classes += klass.more_classes if klass.more_classes
         rescue Initr::Klass::ConfigurationError => e
           # if klass.parameters raises don't add klass to node
           err = "#{e.message} for node #{self.name}"
           logger.error(err) if logger
           # show message in puppet log
-          classes << "configuration_errors"
-          parameters["errors"]=[] unless parameters["errors"]
-          parameters["errors"] << err unless parameters["errors"].include? err
+          classes["configuration_errors"] = [] unless classes["configuration_errors"]
+          classes["configuration_errors"] << err unless classes["configuration_errors"].include? err
         end
       end
     rescue ActiveRecord::SubclassNotFound => e
       logger.error(e.message)
-      classes << "configuration_errors"
-      parameters["errors"]=[] unless parameters["errors"]
-      parameters["errors"] << e.message unless parameters["errors"].include? e.message
+      classes["configuration_errors"] = [] unless classes["configuration_errors"]
+      classes["configuration_errors"] << e.message unless classes["configuration_errors"].include? e.message
     end
     result = { }
     result["parameters"] = parameters
-    result["parameters"]["classes"] = classes.uniq
-    result["classes"] = classes.uniq
+    result["parameters"]["classes"] = classes.keys.sort
+    result["classes"] = classes
     result
   end
 

@@ -1,8 +1,6 @@
 class package_manager::ubuntu {
 
   case $lsbdistcodename {
-#    "lenny":   { include package_manager::debian::lenny   } # stable
-#    "squeeze": { include package_manager::debian::squeeze } # testing
     default: {}
   }
   exec {

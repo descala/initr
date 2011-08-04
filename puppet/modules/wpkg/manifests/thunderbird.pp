@@ -9,7 +9,7 @@ class wpkg::thunderbird {
       ensure => directory;
   }
 
-  download {
+  wpkg::download {
     "thunderbird":
       to => "thunderbird",
       url => "http://download.mozilla.org/?product=thunderbird-3.1.10&os=win&lang=ca",

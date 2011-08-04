@@ -1,4 +1,3 @@
-import "*.pp"
 class package_manager {
 
   case $operatingsystem {

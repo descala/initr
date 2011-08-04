@@ -1,7 +1,7 @@
-class stomp {
+class common::stomp {
 
-  include rubygems
-  gem_package {
+  include common::rubygems
+  common::rubygems::gem_package {
     "stomp":
       ensure => "1.1.6";
   }

@@ -1,5 +1,19 @@
-class bind {
-  $osavn = "$lsbdistid$lsbdistrelease_class"
+class bind($bind_masterzones={},$nameservers=[]) {
+
+  $bind = $operatingsystem ? {
+    /Debian|Ubuntu/ => bind9,
+    default => bind
+  }
+  $binduser = $operatingsystem ? {
+    /Debian|Ubuntu/ => bind,
+    default => named
+  }
+  $bindservice = $operatingsystem ? {
+    /Debian|Ubuntu/ => bind9,
+    default => named
+  }
+
+  $osavn = "$lsbdistid$lsbdistrelease"
   case $operatingsystem {
     Debian,Ubuntu: {
       $etc_dir = "/etc/bind"
@@ -8,7 +22,7 @@ class bind {
     }
     default: {
       $bind_base_dir = $osavn ? {
-        "MandrivaLinux2006_0" => "/var/lib/named",
+        "MandrivaLinux2006.0" => "/var/lib/named",
         default => ""
       }
       $etc_dir = "$bind_base_dir/etc"
@@ -69,114 +83,7 @@ class bind {
     }
   }
 
-  
-  create_resources(bind::zoneconf, $bind_masterzones)
-
-  define zoneconf($zone,$ttl,$serial) {
-
-    if array_includes($classes,"nagios::nsca_node") {
-      nagios::service {
-        "check_dig_$name":
-          checkfreshness => "1",
-          freshness => "1800",
-          ensure => present,
-          notifications_enabled => "0";
-      }
-    }
-
-    file {
-      "$bind::var_dir/puppet_zones/$name.zone":
-        owner => $binduser,
-        group => $binduser,
-        mode => 640,
-        content => template("bind/zone.erb"),
-        require => [Package[$bind],File["$bind::var_dir/puppet_zones"]],
-        notify => Service[$bind];
-    }
-  }
-  
-}
-
-# debian specific
-
-class bind::debian {
-
-  file {
-    "$bind::var_dir":
-      owner => $binduser,
-      group => $binduser,
-      mode => 770,
-      require => Package[$bind],
-      ensure => directory;
-  }
-
-  append_if_no_such_line { puppet_zones_include:
-    file => "/etc/bind/named.conf.local",
-    line => "include \"/etc/bind/puppet_zones.conf\"; // line added by puppet",
-    require => Package[$bind],
-    notify => Service["bind"],
-  }
+  create_resources(bind::zone, $bind_masterzones)
 
 }
 
-# redhat specific
-
-class bind::redhat {
-
-
-  file {
-    "$bind::var_dir":
-      ensure => directory,
-      owner => root,
-      group => $binduser,
-      mode => 750;
-    "$bind::etc_dir/named.conf":
-      mode => 644,
-      owner => root,
-      group => root,
-      source => [ "puppet:///specific/bind-named.conf", "puppet:///modules/bind/named.conf" ],
-      notify => Service["bind"],
-      require => Package[$bind];
-    "$bind::var_dir/zones.conf":
-      # do not overwrite file, let it be manualy modified
-      replace => no,
-      mode => 644,
-      owner => named,
-      group => named,
-      source => [ "puppet:///specific/bind-zones.conf", "puppet:///modules/bind/zones.conf" ],
-      notify => Service["bind"],
-      require => Package[$bind];
-  }
-
-  define bind_etc_file() {
-    file { "$bind::etc_dir/$name":
-      mode => 644, owner => root, group => root,
-      source => [ "puppet:///modules/bind/$name" ],
-      notify => Service["bind"],
-      require => Package[$bind],
-    }
-  }
-
-  define bind_var_file() {
-    file { "$bind::var_dir/$name":
-      mode => 644, owner => $binduser, group => $binduser,
-      source => [ "puppet:///modules/bind/$name" ],
-      notify => Service["bind"],
-      require => Package[$bind],
-    }
-  }
-
-  # root zones
-  bind_etc_file { "named.root.hints": }
-  bind_var_file { "named.root": }
-
-  # rfc1912.zones
-  bind_etc_file { "named.rfc1912.zones": }
-  bind_var_file { "localdomain.zone": }
-  bind_var_file { "localhost.zone": }
-  bind_var_file { "named.broadcast": }
-  bind_var_file { "named.ip6.local": }
-  bind_var_file { "named.local": }
-  bind_var_file { "named.zero": }
-
-}

@@ -1,8 +1,4 @@
-#########
-# dhcpd #
-#########
-
-class dhcpd {
+class common::dhcpd {
 
   package { $dhcp_package:
     ensure => "installed",

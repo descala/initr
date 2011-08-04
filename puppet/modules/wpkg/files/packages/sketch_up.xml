@@ -12,7 +12,7 @@
     <remove  cmd='msiexec /qn /x %SOFTWARE%\sketchup\GoogleSketchUp8.msi' />
 </package>
 <package
-    id="sketchup8-pro"
+    id="sketchup8_pro"
     name="Google SketchUp Pro 8"
     help="See Google SketchUp 8. This version requires a license."
     revision="81"

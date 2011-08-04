@@ -1,4 +1,4 @@
-class xinetd {
+class common::xinetd {
 
   package { xinetd:
     ensure => installed,
