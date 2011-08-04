@@ -18,7 +18,7 @@ Bind class expects 2 parameters:
 Functions
 ---------
 
-Bind module defines a function to manage zones: bind::zone($zone,$ttl,$serial)
+Bind module defines a function to manage zones:
 
 ::
 
@@ -42,11 +42,11 @@ Bind is a parameterized class, when using an `external node classifier`_ classes
         example2.com:
           serial: "2011080401"
           ttl: "300"
-          zone: "IN MX 10 smtp.example.com.\r\nsmtp IN A 1.2.3.4"
+          zone: "IN MX 10 smtp.example.com.\r\n smtp IN A 1.2.3.4"
         example.com:
           serial: "2011080401"
           ttl: "300"
-          zone: "@ IN A 1.2.3.4\r\nns1 IN A 1.2.3.4"
+          zone: "@ IN A 1.2.3.4\r\n ns1 IN A 1.2.3.4"
       nameservers:
         - ns1.example.com
 
@@ -66,7 +66,7 @@ that's:
   }
 
 
-node that apply this conf will have this 2 DNS zones:
+node that applies this conf will have 2 DNS zones:
 
 ::
 
