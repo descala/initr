@@ -1,5 +1,5 @@
 class bind {
-  $osavn = "$lsbdistid$lsbdistrelease_class"
+  $osavn = "$lsbdistid$lsbdistrelease"
   case $operatingsystem {
     Debian,Ubuntu: {
       $etc_dir = "/etc/bind"
@@ -8,7 +8,7 @@ class bind {
     }
     default: {
       $bind_base_dir = $osavn ? {
-        "MandrivaLinux2006_0" => "/var/lib/named",
+        "MandrivaLinux2006.0" => "/var/lib/named",
         default => ""
       }
       $etc_dir = "$bind_base_dir/etc"
