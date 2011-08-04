@@ -43,7 +43,7 @@ class Initr::Node < ActiveRecord::Base
           classes[klass.puppetname] = Initr::Klass.merge_parameters(classes[klass.puppetname],klass.class_parameters)
           # extra classes
           klass.more_classes.each do |klass_to_add|
-            classes[klass_to_add.puppetname] = Initr::Klass.merge_parameters(classes[klass_to_add.puppetname],klass_to_add.class_parameters)
+            classes[klass_to_add] = nil unless classes[klass_to_add]
           end
         rescue Initr::Klass::ConfigurationError => e
           # if klass.parameters raises don't add klass to node
