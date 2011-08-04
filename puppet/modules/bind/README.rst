@@ -33,6 +33,7 @@ Expected external node classifier YAML
 Bind is a parameterized class, when using an `external node classifier`_ classes must be a hash to pass required variables. This is an example YAML:
 
 ::
+
   classes:
     bind:
       bind_masterzones:
@@ -50,12 +51,14 @@ Bind is a parameterized class, when using an `external node classifier`_ classes
 that's:
 
 ::
+
   {"parameters"=>{"bind_masterzones"=>{"example2.com"=>{"serial"=>"2011080401", "ttl"=>"300", "zone"=>"IN MX 10 smtp.example.com.\r\n smtp IN A 1.2.3.4"}, "example.com"=>{"serial"=>"2011080401", "ttl"=>"300", "zone"=>"@ IN A 1.2.3.4\r\n ns1 IN A 1.2.3.4\r\n"}}, "nameservers"=>["ns1.example.com"]}}
 
 
 node that apply this conf will have this 2 DNS zones:
 
 ::
+
   $TTL 300
   @   IN  SOA ns1.example.com.  webmaster.example.com. (
               2011080401  ; serial automatically incremented
@@ -68,6 +71,7 @@ node that apply this conf will have this 2 DNS zones:
   ns1 IN A 1.2.3.4
 
 ::
+
   $TTL 300
   @   IN  SOA ns1.example.com.  webmaster.example2.com. (
               2011080401  ; serial automatically incremented
