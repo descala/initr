@@ -52,7 +52,16 @@ that's:
 
 ::
 
-  {"parameters"=>{"bind_masterzones"=>{"example2.com"=>{"serial"=>"2011080401", "ttl"=>"300", "zone"=>"IN MX 10 smtp.example.com.\r\n smtp IN A 1.2.3.4"}, "example.com"=>{"serial"=>"2011080401", "ttl"=>"300", "zone"=>"@ IN A 1.2.3.4\r\n ns1 IN A 1.2.3.4\r\n"}}, "nameservers"=>["ns1.example.com"]}}
+  { "classes" => {
+      "bind" => {
+        "bind_masterzones" => {
+          "example2.com" => { "serial" => "2011080401", "ttl" => "300", "zone" => "IN MX 10 smtp.example.com.\r\n smtp IN A 1.2.3.4" },
+          "example.com"  => { "serial" => "2011080401", "ttl" => "300", "zone" => "@ IN A 1.2.3.4\r\n ns1 IN A 1.2.3.4" }
+        },
+        "nameservers" => [ "ns1.example.com" ]
+      }
+    }
+  }
 
 
 node that apply this conf will have this 2 DNS zones:
