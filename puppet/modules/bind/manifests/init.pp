@@ -1,4 +1,18 @@
 class bind {
+
+  $bind = $operatingsystem ? {
+    /Debian|Ubuntu/ => bind9,
+    default => bind
+  }
+  $binduser = $operatingsystem ? {
+    /Debian|Ubuntu/ => bind,
+    default => named
+  }
+  $bindservice = $operatingsystem ? {
+    /Debian|Ubuntu/ => bind9,
+    default => named
+  }
+
   $osavn = "$lsbdistid$lsbdistrelease"
   case $operatingsystem {
     Debian,Ubuntu: {

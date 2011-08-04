@@ -12,12 +12,12 @@ define bind::zone($zone,$ttl,$serial) {
 
   file {
     "$bind::var_dir/puppet_zones/$name.zone":
-      owner => $binduser,
-      group => $binduser,
+      owner => $bind::binduser,
+      group => $bind::binduser,
       mode => 640,
       content => template("bind/zone.erb"),
-      require => [Package[$bind],File["$bind::var_dir/puppet_zones"]],
-      notify => Service[$bind];
+      require => [Package[$bind::bind],File["$bind::var_dir/puppet_zones"]],
+      notify => Service[$bind::bind];
   }
 }
 

@@ -119,18 +119,6 @@ $httpd_logdir = $operatingsystem ? {
   /Debian|Ubuntu/ => "/var/log/apache2",
   default => "/var/log/httpd"
 }
-$bind = $operatingsystem ? {
-  /Debian|Ubuntu/ => bind9,
-  default => bind
-}
-$binduser = $operatingsystem ? {
-  /Debian|Ubuntu/ => bind,
-  default => named
-}
-$bindservice = $operatingsystem ? {
-  /Debian|Ubuntu/ => bind9,
-  default => named
-}
 $dnsutils = $operatingsystem ? {
   /Debian|Ubuntu/ => dnsutils,
   Gentoo => bind-tools,

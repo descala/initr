@@ -6,7 +6,7 @@ class bind::redhat {
     "$bind::var_dir":
       ensure => directory,
       owner => root,
-      group => $binduser,
+      group => $bind::binduser,
       mode => 750;
     "$bind::etc_dir/named.conf":
       mode => 644,
@@ -14,7 +14,7 @@ class bind::redhat {
       group => root,
       source => [ "puppet:///specific/bind-named.conf", "puppet:///modules/bind/named.conf" ],
       notify => Service["bind"],
-      require => Package[$bind];
+      require => Package[$bind::bind];
     "$bind::var_dir/zones.conf":
       # do not overwrite file, let it be manualy modified
       replace => no,
@@ -23,7 +23,7 @@ class bind::redhat {
       group => named,
       source => [ "puppet:///specific/bind-zones.conf", "puppet:///modules/bind/zones.conf" ],
       notify => Service["bind"],
-      require => Package[$bind];
+      require => Package[$bind::bind];
   }
 
   define bind_etc_file() {
@@ -31,16 +31,16 @@ class bind::redhat {
       mode => 644, owner => root, group => root,
       source => [ "puppet:///modules/bind/$name" ],
       notify => Service["bind"],
-      require => Package[$bind],
+      require => Package[$bind::bind],
     }
   }
 
   define bind_var_file() {
     file { "$bind::var_dir/$name":
-      mode => 644, owner => $binduser, group => $binduser,
+      mode => 644, owner => $bind::binduser, group => $bind::binduser,
       source => [ "puppet:///modules/bind/$name" ],
       notify => Service["bind"],
-      require => Package[$bind],
+      require => Package[$bind::bind],
     }
   }
 
