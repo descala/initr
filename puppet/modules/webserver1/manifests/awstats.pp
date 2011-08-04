@@ -1,6 +1,7 @@
 class webserver1::awstats {
 
   include common::perl
+  include common::cron
 
   package {
     "awstats":
