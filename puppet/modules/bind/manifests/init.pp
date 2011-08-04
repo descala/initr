@@ -1,4 +1,4 @@
-class bind {
+class bind($bind_masterzones={},$nameservers=[]) {
 
   $bind = $operatingsystem ? {
     /Debian|Ubuntu/ => bind9,

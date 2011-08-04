@@ -11,6 +11,10 @@ class Initr::Bind < Initr::Klass
   end
 
   def parameters
+    {}
+  end
+
+  def class_parameters
     return { "nameservers"=>[], "bind_masterzones"=>{}} if bind_zones.size == 0
     if nameservers.nil? or nameservers.blank?
       raise Initr::Klass::ConfigurationError.new("Bind nameservers not configured")
@@ -28,6 +32,10 @@ class Initr::Bind < Initr::Klass
 
   def nameservers=(ns)
     config["nameservers"]=ns
+  end
+
+  def print_parameters
+    "#{bind_zones.size} zones configured"
   end
 
 end
