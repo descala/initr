@@ -21,7 +21,7 @@ Bind module defines a function to manage zones: bind::zone($zone,$ttl,$serial)
 ::
 
   bind::zone { "domain.com":
-   zone   => "    IN  MX  10 smtp.ingent.net.\r\n@       IN      A       82.103.128.215\r\nwww     IN      A       82.103.128.215\r\nadmin   IN      A       82.103.128.215",
+   zone   => "IN MX 10 smtp.domain.com.\r\n smtp IN A 1.2.3.4",
    ttl    => "300",
    serial => "2011080301",
   }
