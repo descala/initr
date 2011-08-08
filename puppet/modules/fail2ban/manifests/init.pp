@@ -2,7 +2,7 @@
 # it expects $jails to be an array of jails to be enabled
 # and $mailto an email address to send notifications to.
 # $custom_jails are additional custom jails
-class fail2ban(jails=[],mailto="",custom_jails="") {
+class fail2ban($jails=[],$mailto="",$custom_jails="") {
 
   package {
     [ "fail2ban", "gamin", "iptables" ]:
