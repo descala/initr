@@ -1,16 +1,8 @@
 # fail2ban puppet module
-# it expects $fail2ban_jails to be an array of jails to be enabled
+# it expects $jails to be an array of jails to be enabled
 # and $mailto an email address to send notifications to.
-# $fail2ban_custom_jails are additional custom jails
-class fail2ban {
-
-  # This ensures fail2ban_config is defined in the template
-  $fail2ban_custom_jails = "$fail2ban_custom_jails"
-
-  if $fail2ban_jails {
-  } else {
-    $fail2ban_jails=[]
-  }
+# $custom_jails are additional custom jails
+class fail2ban(jails=[],mailto="",custom_jails="") {
 
   package {
     [ "fail2ban", "gamin", "iptables" ]:
@@ -45,13 +37,13 @@ class fail2ban {
   # TODO better way to know if node is including munin class
   if $munin_graphs {
     file {
-      "/etc/munin/plugins/fail2ban_all_jails":
+      "/etc/munin/plugins/all_jails":
         mode => 755,
-        source => "puppet:///modules/fail2ban/munin-fail2ban_all_jails",
+        source => "puppet:///modules/fail2ban/munin-all_jails",
         require => Package[$munin],
         notify => Service["munin-node"];
-      "/etc/munin/plugin-conf.d/fail2ban_all_jails":
-        content => "[fail2ban_all_jails]
+      "/etc/munin/plugin-conf.d/all_jails":
+        content => "[all_jails]
 user root",
         require => Package[$munin],
         notify => Service["munin-node"];

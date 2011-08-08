@@ -6,13 +6,13 @@
 
   <p>Mail notifications to:<br />
   <%= f.text_field("mailto") %> (empty if don't want mail notifications)</p>
-  <p><%= check_box_tag("fail2ban[fail2ban_jails][pop3]", 1, @klass.fail2ban_jails.include?("pop3")) %> pop3</p>
-  <p><%= check_box_tag("fail2ban[fail2ban_jails][ssh]", 1, @klass.fail2ban_jails.include?("ssh")) %> ssh</p>
-  <p><%= check_box_tag("fail2ban[fail2ban_jails][vsftpd]", 1, @klass.fail2ban_jails.include?("vsftpd")) %> vsftpd</p>
+  <p><%= check_box_tag("fail2ban[jails][pop3]", 1, @klass.jails.include?("pop3")) %> pop3</p>
+  <p><%= check_box_tag("fail2ban[jails][ssh]", 1, @klass.jails.include?("ssh")) %> ssh</p>
+  <p><%= check_box_tag("fail2ban[jails][vsftpd]", 1, @klass.jails.include?("vsftpd")) %> vsftpd</p>
 
   <p>
-    <%= f.label("fail2ban_custom_jails", "Custom jails:") %><br/>
-    <%= f.text_area("fail2ban_custom_jails", :cols => 60, :rows => 15) %>
+    <%= f.label("custom_jails", "Custom jails:") %><br/>
+    <%= f.text_area("custom_jails", :cols => 60, :rows => 15) %>
   </p>
 
   <p><%= submit_tag("Save")%></p>
