@@ -13,7 +13,7 @@ Variables
 
 Fail2ban class accepts 3 parameters:
 
-* jails: Array with jails that should be enabled
+* jails: Array with jails that should be enabled (check values currently accepted at templates/jail.local.erb)
 
 * custom_jails: Text to add directly to configuration
 
