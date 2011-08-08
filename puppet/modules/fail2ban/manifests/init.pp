@@ -33,9 +33,7 @@ class fail2ban($jails=[],$mailto="",$custom_jails="") {
   }
 
   # munin
-
-  # TODO better way to know if node is including munin class
-  if $munin_graphs {
+  if array_includes($classes,"munin") {
     file {
       "/etc/munin/plugins/all_jails":
         mode => 755,
@@ -49,5 +47,5 @@ user root",
         notify => Service["munin-node"];
     }
   }
-  
+
 }
