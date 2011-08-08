@@ -4,7 +4,9 @@ Overview
 
 This module manages BIND and its master DNS zones. It can be used standalone or with `Initr`_.
 
-Initr is a Redmine plugin that acts as an external node classifier and provides a GUI to configure puppet modules. Stuff on app/ config/ db/ and init.rb is only needed by Initr.
+Initr is a Redmine plugin that acts as an external node classifier and provides a GUI to configure puppet modules.
+
+Stuff on app/ config/ db/ and init.rb is only needed by Initr.
 
 Variables
 ---------
