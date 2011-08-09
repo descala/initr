@@ -35,13 +35,13 @@ class fail2ban($jails=[],$mailto="",$custom_jails="") {
   # munin
   if array_includes($classes,"munin") {
     file {
-      "/etc/munin/plugins/all_jails":
+      "/etc/munin/plugins/fail2ban_all_jails":
         mode => 755,
-        source => "puppet:///modules/fail2ban/munin-all_jails",
+        source => "puppet:///modules/fail2ban/munin-fail2ban_all_jails",
         require => Package[$munin],
         notify => Service["munin-node"];
-      "/etc/munin/plugin-conf.d/all_jails":
-        content => "[all_jails]
+      "/etc/munin/plugin-conf.d/fail2ban_all_jails":
+        content => "[fail2ban_all_jails]
 user root",
         require => Package[$munin],
         notify => Service["munin-node"];
