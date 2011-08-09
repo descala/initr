@@ -19,6 +19,21 @@ Fail2ban class accepts 3 parameters:
 
 * mailto: email to send notifications to, if any
 
+Example of usage on site.pp
+---------------------------
+
+Applying this conf will configure fail2ban with ssh and vsftpd jails, and send notifications to alert@example.com
+
+::
+  
+  node "fqdn" {
+    class { "fail2ban":
+      mailto => "alert@example.com",
+      jails => ["vsftpd", "ssh"],
+    }
+  }
+
+
 Expected external node classifier YAML
 --------------------------------------
 
@@ -32,15 +47,6 @@ Fail2ban is a parameterized class, when using an `external node classifier`_ cla
       jails:
         - vsftpd
         - ssh
-
-that's:
-
-::
-
-  { "classes" => { "fail2ban" => { "mailto" => "alert@example.com", "jails" => ["vsftpd", "ssh"] } } }
-
-
-applying this conf will configure fail2ban with ssh and vsftpd jails, and notifications sent to alert@example.com
 
 
 .. _external node classifier: http://docs.puppetlabs.com/guides/external_nodes.html
