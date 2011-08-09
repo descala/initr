@@ -138,6 +138,8 @@ $yum_priorities_plugin = $lsbdistid ? {
     "5"     => "yum-priorities",
     "5_2"   => "yum-priorities",
     "5_3"   => "yum-priorities",
+    "5_4"   => "yum-priorities",
+    "5_5"   => "yum-priorities",
     default => "yum-plugin-priorities"
   },
   default => undef
