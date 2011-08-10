@@ -2,14 +2,14 @@
 # Puppet Managed #
 ##################
 
-<% if lsbdistcodename == "lenny" or (lsbdistcodename == "n/a" and lsbdistrelease =~ /^5/) -%>
+<% if lsbdistcodename == "lenny" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "5") -%>
 # debian leeny
 deb http://ftp.fr.debian.org/debian lenny main contrib non-free
 
 # debian squeeze
 deb http://ftp.fr.debian.org/debian squeeze main contrib non-free
 
-<% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbdistrelease =~ /^6/) -%>
+<% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "6") -%>
 # debian squeeze
 deb http://ftp.fr.debian.org/debian squeeze main contrib non-free
 
