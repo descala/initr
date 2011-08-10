@@ -25,7 +25,7 @@ Bind module defines a function to manage zones:
 ::
 
   bind::zone { "domain.com":
-   zone   => "IN MX 10 smtp.domain.com.\r\n smtp IN A 1.2.3.4",
+   zone   => "IN MX 10 smtp.domain.com.\n smtp IN A 1.2.3.4",
    ttl    => "300",
    serial => "2011080301",
   }
@@ -42,11 +42,11 @@ Example of class usage on site.pp
         "example2.com" => {
           "serial" => "2011080401",
           "ttl" => "300",
-          "zone" => "IN MX 10 smtp.example.com.\r\n smtp IN A 1.2.3.4" },
+          "zone" => "IN MX 10 smtp.example.com.\n smtp IN A 1.2.3.4" },
         "example.com" => {
           "serial" => "2011080401",
           "ttl" => "300",
-          "zone" => "@ IN A 1.2.3.4\r\n ns1 IN A 1.2.3.4" }
+          "zone" => "@ IN A 1.2.3.4\n ns1 IN A 1.2.3.4" }
       },
     }
   }
@@ -95,11 +95,11 @@ Bind is a parameterized class, when using an `external node classifier`_ classes
         example2.com:
           serial: "2011080401"
           ttl: "300"
-          zone: "IN MX 10 smtp.example.com.\r\n smtp IN A 1.2.3.4"
+          zone: "IN MX 10 smtp.example.com.\n smtp IN A 1.2.3.4"
         example.com:
           serial: "2011080401"
           ttl: "300"
-          zone: "@ IN A 1.2.3.4\r\n ns1 IN A 1.2.3.4"
+          zone: "@ IN A 1.2.3.4\n ns1 IN A 1.2.3.4"
       nameservers:
         - ns1.example.com
         - ns2.example.com
