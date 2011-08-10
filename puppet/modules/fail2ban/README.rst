@@ -4,7 +4,7 @@ Overview
 
 This module installs fail2ban and configures its jails and email notifications. It can be used standalone or with `Initr`_.
 
-Initr is a Redmine plugin that acts as an external node classifier and provides a GUI to configure puppet modules.
+Initr is a Redmine plugin that acts as an `external node classifier`_ and provides a GUI to configure puppet modules.
 
 Stuff on app/ and init.rb is only needed by Initr.
 
