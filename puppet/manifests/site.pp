@@ -135,7 +135,7 @@ $samba_tdb_dir = $operatingsystem ? {
 }
 $yum_priorities_plugin = $lsbdistid ? {
   "CentOS" => $lsbmajdistrelease ? {
-    "5":    => "yum-priorities",
+    "5"     => "yum-priorities",
     default => "yum-plugin-priorities"
   },
   default => undef
