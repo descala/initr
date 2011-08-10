@@ -1,0 +1,11 @@
+name    'ingent-wpkg'
+version '0.0.1'
+source 'https://github.com/ingent/initr/tree/master/puppet/modules/wpkg'
+author 'ingent'
+license 'GPLv2'
+summary 'Module to manage WPKG server. WPKG is an automated software deployment, upgrade and removal program for Windows.'
+description 'Module to manage WPKG server. WPKG is an automated software deployment, upgrade and removal program for Windows.'
+project_page 'http://www.ingent.net/projects/initr/wiki'
+
+## Add dependencies, if any:
+# dependency 'username/name', '>= 1.2.0'

@@ -1,4 +1,4 @@
-class wpkg {
+class wpkg($wpkg_base,$wpkg_profiles) {
 
   $client = "WPKG Client 1.2.1.msi"
 
