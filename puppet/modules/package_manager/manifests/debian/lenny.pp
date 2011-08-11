@@ -6,7 +6,7 @@ class package_manager::debian::lenny {
       notify => Exec["apt-get update"];
   }
 
-  if $security_updates == "1" { include package_manager::debian::automatic_security_updates }
+  if $package_manager::security_updates == "1" { include package_manager::debian::automatic_security_updates }
 
 }
 
