@@ -327,7 +327,7 @@ $dhcp_service = $operatingsystem ? {
   default => "dhcpd"
 }
 $dhcp_conf = $operatingsystem ? {
-  /Debian|Ubuntu/ => "/etc/dhcp3/dhcpd.conf",
+  /Debian|Ubuntu/ => "/etc/dhcp/dhcpd.conf",
   default => "/etc/dhcpd.conf"
 }
 $ddclient_user = $operatingsystem ? {
