@@ -12,7 +12,10 @@ Package: *
 Pin: release a=stable
 Pin-Priority: 100
 
-<% packages_from_squeeze ||=[] ; packages_from_squeeze.uniq.each do |package| -%>
+<% pfs = scope.lookupvar('::packages_from_squeeze')
+   pfs = [] unless pfs.is_a?(Array)
+   pfs.uniq.each do |package|
+-%>
 # we want <%=package%> from squeeze
 Package: <%=package%>
 Pin: release a=stable

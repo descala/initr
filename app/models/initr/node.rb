@@ -51,14 +51,14 @@ class Initr::Node < ActiveRecord::Base
           err = "#{e.message} for node #{self.name}"
           logger.error(err) if logger
           # show message in puppet log
-          classes["configuration_errors"] = [] unless classes["configuration_errors"]
-          classes["configuration_errors"] << err unless classes["configuration_errors"].include? err
+          classes["common::configuration_errors"] = [] unless classes["common::configuration_errors"]
+          classes["common::configuration_errors"] << err unless classes["common::configuration_errors"].include? err
         end
       end
     rescue ActiveRecord::SubclassNotFound => e
       logger.error(e.message)
-      classes["configuration_errors"] = [] unless classes["configuration_errors"]
-      classes["configuration_errors"] << e.message unless classes["configuration_errors"].include? e.message
+      classes["common::configuration_errors"] = [] unless classes["common::configuration_errors"]
+      classes["common::configuration_errors"] << e.message unless classes["common::configuration_errors"].include? e.message
     end
     result = { }
     result["parameters"] = parameters

@@ -1,2 +1,4 @@
 es:
   field_security_updates: "Actualizaciones de seguridad automáticas"
+  field_packages_from_squeeze: "Paquetes del repositorio de Squeeze (separados por comas)"
+  field_packages_from_wheezy: "Paquetes del repositorio de Wheezy (separados por comas)"

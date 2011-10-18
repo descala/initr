@@ -6,8 +6,8 @@ class Initr::Fail2ban < Initr::Klass
   def initialize(attributes=nil)
     super
     self.mailto ||= ""
-    self.fail2ban_jails ||= {}
-    self.fail2ban_custom_jails ||=""
+    self.jails ||= {}
+    self.custom_jails ||=""
   end
 
   # puppet class is named fail2ban
@@ -15,26 +15,31 @@ class Initr::Fail2ban < Initr::Klass
     "fail2ban"
   end
 
-  # here we don't need to override because Klass method does the job.
-  # parameters needed by puppet.
-  #def parameters
-  #  config
-  #end
+  # fail2ban don't need top scope vars
+  def parameters
+    {}
+  end
+
+  # here we define class scope variables
+  # (parameterized class)
+  def class_parameters
+    config
+  end
 
   # this will appear on klass list description
   def print_parameters
-    return super if fail2ban_jails.size == 0
-    "Active jails: #{fail2ban_jails.join(', ')}"
+    return super if jails.size == 0
+    "Active jails: #{jails.join(', ')}"
   end
 
   # getter for serialized attribute
-  def fail2ban_jails
-    config["fail2ban_jails"]
+  def jails
+    config["jails"]
   end
 
   # setter for serialized attribute
-  def fail2ban_jails=(jails)
-    config["fail2ban_jails"]=jails.keys
+  def jails=(jails)
+    config["jails"]=jails.keys
   end
 
   # getter for serialized attribute
@@ -47,12 +52,12 @@ class Initr::Fail2ban < Initr::Klass
     config["mailto"]=mail
   end
 
-  def fail2ban_custom_jails
-    config["fail2ban_custom_jails"]
+  def custom_jails
+    config["custom_jails"]
   end
 
-  def fail2ban_custom_jails=(v)
-    config["fail2ban_custom_jails"]=v
+  def custom_jails=(v)
+    config["custom_jails"]=v
   end
 
 end

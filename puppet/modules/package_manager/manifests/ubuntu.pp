@@ -1,6 +1,7 @@
 class package_manager::ubuntu {
 
   case $lsbdistcodename {
+    #TODO
     default: {}
   }
   exec {

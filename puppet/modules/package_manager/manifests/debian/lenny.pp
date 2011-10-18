@@ -1,4 +1,4 @@
-class package_manager::debian::lenny {
+class package_manager::debian::lenny inherits package_manager::debian::common {
 
   file {
     "/etc/apt/preferences":
@@ -6,7 +6,4 @@ class package_manager::debian::lenny {
       notify => Exec["apt-get update"];
   }
 
-  if $security_updates == "1" { include package_manager::debian::automatic_security_updates }
-
 }
-

@@ -134,10 +134,8 @@ $samba_tdb_dir = $operatingsystem ? {
   default => "/var/cache/samba"
 }
 $yum_priorities_plugin = $lsbdistid ? {
-  "CentOS" => $lsbdistrelease_class ? {
+  "CentOS" => $lsbmajdistrelease ? {
     "5"     => "yum-priorities",
-    "5_2"   => "yum-priorities",
-    "5_3"   => "yum-priorities",
     default => "yum-plugin-priorities"
   },
   default => undef
@@ -329,7 +327,7 @@ $dhcp_service = $operatingsystem ? {
   default => "dhcpd"
 }
 $dhcp_conf = $operatingsystem ? {
-  /Debian|Ubuntu/ => "/etc/dhcp3/dhcpd.conf",
+  /Debian|Ubuntu/ => "/etc/dhcp/dhcpd.conf",
   default => "/etc/dhcpd.conf"
 }
 $ddclient_user = $operatingsystem ? {

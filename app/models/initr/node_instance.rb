@@ -158,7 +158,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def config_errors?
-    self.puppet_fact("puppet_classes","").split.include? "configuration_errors"
+    self.puppet_fact("puppet_classes","").split.include? "common::configuration_errors"
   end
 
   def report

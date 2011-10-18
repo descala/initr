@@ -35,6 +35,13 @@ class Initr::CopyKlass < Initr::Klass
     copied_klass.parameters
   end
 
+  def class_parameters
+    if copied_klass.nil?
+      raise Initr::Klass::ConfigurationError.new("CopyKlass with empty or bad copied_klass_id")
+    end
+    copied_klass.class_parameters
+  end
+
   def copied_klass_id
     self.config ||= {}
     self.config["copied_klass_id"]

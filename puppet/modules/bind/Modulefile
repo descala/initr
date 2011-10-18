@@ -1,0 +1,11 @@
+name    'ingent-bind'
+version '0.0.1'
+source 'https://github.com/ingent/initr/tree/master/puppet/modules/bind'
+author 'ingent'
+license 'GPLv2'
+summary 'Manage BIND and its master DNS zones'
+description 'Manage BIND and its master DNS zones'
+project_page 'http://www.ingent.net/projects/initr/wiki'
+
+## Add dependencies, if any:
+# dependency 'username/name', '>= 1.2.0'

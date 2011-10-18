@@ -10,7 +10,7 @@ class Fail2banController < InitrController
     @html_title=[@node.fqdn, @klass.name]
     if request.post?
       params["fail2ban"] ||= {}
-      params["fail2ban"]["fail2ban_jails"] ||= {}
+      params["fail2ban"]["jails"] ||= {}
       if @klass.update_attributes(params["fail2ban"])
         flash[:notice]='Configuration saved'
         redirect_to :controller=>'klass', :action=>'list', :id=>@node

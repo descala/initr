@@ -1,0 +1,11 @@
+name    'ingent-package_manager'
+version '0.0.1'
+source 'https://github.com/ingent/initr/tree/master/puppet/modules/package_manager'
+author 'ingent'
+license 'GPLv2'
+summary 'Manage package manager (currently only APT)'
+description 'Manage package manager (currently only APT)'
+project_page 'http://www.ingent.net/projects/initr/wiki'
+
+## Add dependencies, if any:
+# dependency 'username/name', '>= 1.2.0'
