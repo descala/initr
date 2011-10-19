@@ -1,22 +1,23 @@
+<% node_name_url = @node.name =~ /\./ ? "?id=#{@node.name}" : @node.name -%>
 <p class="box" style="text-align: center;">To complete your node installation choose your operating system and copy&paste lines in a root shell</p>
 
 <h4>CentOS</h4>
 <pre>
 <% if Setting[:protocol] == "https" -%>
-wget --no-check-certificate -qO - https://<%=Setting[:host_name]%>/install/centos/<%=@node.name%> | /bin/sh
+wget --no-check-certificate -qO - https://<%=Setting[:host_name]%>/install/centos/<%=node_name_url%> | /bin/sh
 </pre>
 <p>On CentOS you need to use --no-check-certificate because our CA is not yet included in /etc/pki/tls/certs/ca-bundle.crt</p>
 <% else -%>
-wget -qO - http://<%=Setting[:host_name]%>/install/centos/<%=@node.name%> | /bin/sh
+wget -qO - http://<%=Setting[:host_name]%>/install/centos/<%=node_name_url%> | /bin/sh
 </pre>
 <% end -%>
 
 <h4>Debian</h4>
 <pre>
 <% if Setting[:protocol] == "https" -%>
-apt-get install ca-certificates && wget -qO - https://<%=Setting[:host_name]%>/install/debian/<%=@node.name%> | /bin/sh
+apt-get install ca-certificates && wget -qO - https://<%=Setting[:host_name]%>/install/debian/<%=node_name_url%> | /bin/sh
 <% else -%>
-wget -qO - http://<%=Setting[:host_name]%>/install/debian/<%=@node.name%> | /bin/sh
+wget -qO - http://<%=Setting[:host_name]%>/install/debian/<%=node_name_url%> | /bin/sh
 <% end -%>
 </pre>
 
@@ -24,17 +25,17 @@ wget -qO - http://<%=Setting[:host_name]%>/install/debian/<%=@node.name%> | /bin
 
 <pre>
 <% if Setting[:protocol] == "https" -%>
-sudo curl -k  https://<%=Setting[:host_name]%>/install/darwin/<%=@node.name%> | /bin/sh
+sudo curl -k  https://<%=Setting[:host_name]%>/install/darwin/<%=node_name_url%> | /bin/sh
 <% else -%>
-sudo curl http://<%=Setting[:host_name]%>/install/darwin/<%=@node.name%> | /bin/sh
+sudo curl http://<%=Setting[:host_name]%>/install/darwin/<%=node_name_url%> | /bin/sh
 <% end -%>
 </pre>
 
 <h4>Ubuntu</h4>
 <pre>
 <% if Setting[:protocol] == "https" -%>
-apt-get install ca-certificates && wget -qO - https://<%=Setting[:host_name]%>/install/ubuntu/<%=@node.name%> | /bin/sh
+apt-get install ca-certificates && wget -qO - https://<%=Setting[:host_name]%>/install/ubuntu/<%=node_name_url%> | /bin/sh
 <% else -%>
-wget -qO - http://<%=Setting[:host_name]%>/install/ubuntu/<%=@node.name%> | /bin/sh
+wget -qO - http://<%=Setting[:host_name]%>/install/ubuntu/<%=node_name_url%> | /bin/sh
 <% end -%>
 </pre>

@@ -6,8 +6,12 @@
 # debian leeny
 deb http://ftp.fr.debian.org/debian lenny main contrib non-free
 
+<% pfs = scope.lookupvar('::packages_from_squeeze')
+   pfs = [] unless pfs.is_a?(Array)
+   if pfs.any? -%>
 # debian squeeze
 deb http://ftp.fr.debian.org/debian squeeze main contrib non-free
+<% end -%>
 
 <% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "6") -%>
 # debian squeeze
@@ -16,7 +20,11 @@ deb http://ftp.fr.debian.org/debian squeeze main contrib non-free
 # squeeze-updates, previously known as 'volatile'
 deb http://ftp.fr.debian.org/debian/ squeeze-updates main
 
+<% pfw = scope.lookupvar('::packages_from_wheezy')
+   pfw = [] unless pfw.is_a?(Array)
+   if pfw.any? -%>
 # debian wheezy
 deb http://ftp.fr.debian.org/debian wheezy main contrib non-free
 
+<% end -%>
 <% end -%>
