@@ -20,6 +20,7 @@ class webserver1 {
     "CentOS": {
       case $operatingsystemrelease {
         "5.3": { include webserver1::awstats::centos53 }
+        "4.9": {}
         default: { include webserver1::awstats::redhat }
       }
     }
