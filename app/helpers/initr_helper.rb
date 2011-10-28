@@ -65,5 +65,11 @@ module InitrHelper
     end
     tabs
   end
-  
+
+  def help(topic)
+    content_tag("span",:class=>'help') do
+      image_tag('help.png', :title => l(topic))
+    end
+  end
+
 end
