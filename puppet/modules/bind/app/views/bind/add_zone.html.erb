@@ -4,7 +4,11 @@
 
   <p><%= f.error_messages %></p>
 
-  <%= render :partial => 'bind_zone', :locals => {:f => f} %>
+  <% if params[:master] == "false" or @bind_zone.master == false -%>
+    <%= render :partial => 'bind_slave_zone', :locals => {:f => f} %>
+  <% else -%>
+    <%= render :partial => 'bind_zone', :locals => {:f => f} %>
+  <% end -%>
 
   <%= submit_tag("Add")%><br />
   <%= link_to "Back", :action=>'configure', :id=>@klass %>

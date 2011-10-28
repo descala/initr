@@ -1,7 +1,7 @@
 ;##################
 ;# Puppet Managed #
 ;##################
-; masterzone.erb template
+; zone.erb template
 
 $TTL <%= ttl %>
 @   IN  SOA <%= scope.lookupvar('bind::nameservers').first %>.  webmaster.<%= name %>. (

@@ -1,0 +1,12 @@
+<%= f.hidden_field :master, :value => :false %>
+
+  <p><%= f.text_field "domain" %></p>
+  <p>
+  <label><%= l(:slave_of) %></label>
+    <% @bind_servers.each do |bs| -%>
+      <%= hidden_field_tag "bind_zone[slave_of][#{bs.node.name}]", "0" %>
+      <%= check_box_tag "bind_zone[slave_of][#{bs.node.name}]", bs.ip, @bind_zone.config.include?(bs.node.name) %> <%= bs.node.fqdn %><br />
+    <% end -%>
+    <br />
+    <%= text_field_tag "bind_zone[slave_of][custom]", (@bind_zone.config["custom"]["ip"] rescue "") %>
+  </p>

@@ -1,4 +1,4 @@
-class bind($bind_masterzones={},$nameservers=[]) {
+class bind($bind_masterzones={},$bind_slavezones={},$nameservers=[]) {
 
   $bind = $operatingsystem ? {
     /Debian|Ubuntu/ => bind9,
@@ -84,6 +84,7 @@ class bind($bind_masterzones={},$nameservers=[]) {
   }
 
   create_resources(bind::zone, $bind_masterzones)
+  create_resources(bind::slave_zone, $bind_slavezones)
 
 }
 

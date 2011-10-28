@@ -20,6 +20,7 @@ class BindController < InitrController
   end
 
   def add_zone
+    set_bind_servers
     @bind_zone = Initr::BindZone.new(params[:bind_zone])
     @bind_zone.bind = @klass
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
@@ -50,6 +51,29 @@ class BindController < InitrController
     redirect_to :action => 'configure', :id => @klass
   end
 
+  def add_master
+    set_bind_servers
+    @bind_servers = (@bind_servers - @klass.masters)
+    if request.post?
+      bind_to_add = Initr::Bind.find(params[:master])
+      if @bind_servers.include? bind_to_add
+        @klass.masters << bind_to_add
+      end
+      redirect_to :action => "configure", :id => @klass
+    end
+  end
+
+  def rm_master
+    if request.post?
+      set_bind_servers
+      bind_to_rm = Initr::Bind.find(params[:master])
+      if @bind_servers.include? bind_to_rm
+        @klass.masters.delete(bind_to_rm)
+      end
+    end
+    redirect_to :action => 'configure', :id => @klass
+  end
+
   private
 
   def find_bind
@@ -63,6 +87,14 @@ class BindController < InitrController
     @klass = @bind_zone.bind
     @node = @klass.node
     @project = @node.project
+    set_bind_servers
+  end
+
+  def set_bind_servers
+    @bind_servers = Initr::Bind.all.collect {|b|
+      next unless User.current.projects.include?(b.node.project) or User.current.admin?
+      b unless b.ip.blank? or b == @klass
+    }.compact
   end
 
 end

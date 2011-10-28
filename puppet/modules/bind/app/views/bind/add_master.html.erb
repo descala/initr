@@ -1,0 +1,11 @@
+<%= klass_menu("Add all zones of a server") %>
+
+<% @bind_servers.each do |bs| -%>
+
+  <%= link_to(bs.node.fqdn, {:action => "add_master", :id => @klass, :master => bs }, :method => "post") %><br />
+
+<% end -%>
+
+<% if @bind_servers.empty? -%>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% end -%>

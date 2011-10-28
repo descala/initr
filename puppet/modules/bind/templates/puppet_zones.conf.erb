@@ -5,6 +5,17 @@
 # this zones are managed by initr's bind module
 # you can configure them using initr
 
-<% bind_masterzones.each_key do |mz| -%>
-zone "<%= mz %>" { type master; file "<%=var_dir%>/puppet_zones/<%= mz %>.zone"; };
+# master zones
+<% bind_masterzones.each do |domain,conf| -%>
+<% if conf["slaves"].any? -%>
+zone "<%= domain %>" { type master; file "<%=var_dir%>/puppet_zones/<%= domain %>.zone"; allow-transfer { <%= conf["slaves"].join("; ") %>; }; };
+<% else -%>
+zone "<%= domain %>" { type master; file "<%=var_dir%>/puppet_zones/<%= domain %>.zone"; };
+<% end -%>
+<% end -%>
+
+# slave zones
+<% bind_slavezones.each do |domain,masters| -%>
+<% next unless masters and masters.any? and masters["masters"] and masters["masters"].any? -%>
+  zone "<%= domain %>" { type slave; file "<%=var_dir%>/slave_zones/<%= domain %>.zone"; masters { <%= masters["masters"].values.collect {|h| h["ip"]}.join("; ") %>; }; };
 <% end -%>
