@@ -14,7 +14,15 @@ File {
 }
 
 # Manage root's crontab
-Cron { user => "root" }
+# absent values are a workaround for bug http://projects.puppetlabs.com/issues/4528#note-5
+Cron {
+  user => "root",
+  minute => absent,
+  hour => absent,
+  monthday => absent,
+  month => absent,
+  weekday => absent,
+}
 
 schedule {
   "daily":

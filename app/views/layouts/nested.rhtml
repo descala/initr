@@ -1,5 +1,8 @@
 <% content_for :header_tags do -%>
+  <%= javascript_include_tag "initr", :plugin => "initr"%>
+  <%= javascript_include_tag "qTip", :plugin => "initr"%>
   <%= stylesheet_link_tag "initr", :plugin => "initr"%>
+  <%= stylesheet_link_tag "qTip", :plugin => "initr"%>
 <% end -%>
 <% @content_for_layout = capture do %>
 
