@@ -7,6 +7,7 @@ class Initr::PackageManager < Initr::Klass
     super
     config["packages_from_squeeze"] ||= ["puppet","rubygems","rubygems1.8"]
     config["packages_from_wheezy"]  ||= []
+    config["security_updates"] ||= "0"
   end
 
   def parameters

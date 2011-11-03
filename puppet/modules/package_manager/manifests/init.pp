@@ -1,4 +1,4 @@
-class package_manager($security_updates = "1") {
+class package_manager($security_updates="0") {
 
   case $operatingsystem {
     "Debian": { include package_manager::debian }
