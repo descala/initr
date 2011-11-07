@@ -9,7 +9,9 @@ class common::suphp {
       notify => Service[$httpd_service];
   }
   # Debian provided suphp.conf works
-  if ( $operatingsystem != 'Debian' ) and ( $operatingsystem != 'Ubuntu' ) {
+  if ( $operatingsystem == 'Debian' ) or ( $operatingsystem != 'Ubuntu' ) {
+    common::apache::enmod { "suphp": }
+  } else {
     file {
       "/etc/suphp.conf":
         source => "puppet:///modules/common/suphp/suphp-redhat.conf";
