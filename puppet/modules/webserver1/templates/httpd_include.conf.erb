@@ -32,6 +32,13 @@
     AllowOverride None
     Order allow,deny
     Allow from all
+<% if use_suphp == '1' -%>
+    # use suPHP instead mod_php
+    php_admin_value engine Off
+    <FilesMatch "\.ph(p3?|tml)$">
+    SetHandler application/x-httpd-suphp
+    </FilesMatch>
+<% end -%>
   </Directory>
 
   Include /var/www/<%=name%>/conf/vhost.conf

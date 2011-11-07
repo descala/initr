@@ -14,6 +14,9 @@ class webserver1 {
   include webserver1::ftp
   include common::rsync
   include common::cron
+  if $use_suphp == "1" {
+    include common::suphp
+  }
 
   case $operatingsystem {
     "Debian": { include webserver1::awstats::debian }
@@ -31,14 +34,11 @@ class webserver1 {
     ["phpmyadmin",$php_gd]:
       ensure => installed,
       notify => Service[$httpd_service];
-  }
-
-  create_resources(webserver1::domain, $webserver_domains)
-
-  package {
     $ruby_shadow:
       ensure => installed;
   }
+
+  create_resources(webserver1::domain, $webserver_domains)
 
   cron { "Backup virtualhosts":
     command => "/usr/local/sbin/webserver_backup_all >> /var/log/messages 2>&1",
