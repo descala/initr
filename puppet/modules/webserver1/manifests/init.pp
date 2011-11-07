@@ -14,9 +14,6 @@ class webserver1 {
   include webserver1::ftp
   include common::rsync
   include common::cron
-  if $use_suphp == "1" {
-    include common::suphp
-  }
 
   case $operatingsystem {
     "Debian": { include webserver1::awstats::debian }
