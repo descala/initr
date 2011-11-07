@@ -15,6 +15,8 @@ class common::suphp {
     file {
       "/etc/suphp.conf":
         source => "puppet:///modules/common/suphp/suphp-redhat.conf";
+      "/etc/logrotate.d/suphp":
+        source => "puppet:///modules/common/suphp/logrotate.conf";
     }
   }
 }
