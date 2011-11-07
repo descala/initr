@@ -32,6 +32,19 @@
     AllowOverride None
     Order allow,deny
     Allow from all
+<% if use_suphp == 'true' -%>
+    # use suPHP instead mod_php
+<% if operatingsystem == "Debian" or operatingsystem == "Ubuntu" -%>
+    php_admin_value engine Off
+    <FilesMatch "\.ph(p3?|tml)$">
+    SetHandler application/x-httpd-suphp
+    </FilesMatch>
+<% else -%>
+    suPHP_Engine on
+    AddHandler x-httpd-php .php .php3 .php4 .php5
+    suPHP_AddHandler x-httpd-php
+<% end -%>
+<% end -%>
   </Directory>
 
   Include /var/www/<%=name%>/conf/vhost.conf

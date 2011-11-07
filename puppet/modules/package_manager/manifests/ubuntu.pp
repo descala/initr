@@ -1,12 +1,10 @@
 class package_manager::ubuntu {
 
+  include common::apt
+
   case $lsbdistcodename {
     #TODO
     default: {}
-  }
-  exec {
-    "apt-get update":
-      refreshonly => true;
   }
   file {
     "/etc/apt/preferences":

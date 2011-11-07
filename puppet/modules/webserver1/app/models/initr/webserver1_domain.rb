@@ -23,7 +23,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
                    "password_awstats" => password_awstats,
                    "password_ftp" => crypted_password,
                    "database" => dbname,
-                   "force_www" => force_www.to_s }
+                   "force_www" => force_www.to_s,
+                   "use_suphp" => use_suphp.to_s }
     if web_backups_server
       parameters["web_backups_server"] = web_backups_server.address
       parameters["web_backups_server_port"] = web_backups_server.port

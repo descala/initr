@@ -1,6 +1,8 @@
 class Initr::Fail2ban < Initr::Klass
 
   unloadable
+  # simple getters and setters for serialized attributes
+  self.accessors_for(%w(mailto custom_jails))
 
   # set some defaults
   def initialize(attributes=nil)
@@ -37,27 +39,9 @@ class Initr::Fail2ban < Initr::Klass
     config["jails"]
   end
 
-  # setter for serialized attribute
+  # custom setter for serialized attribute
   def jails=(jails)
     config["jails"]=jails.keys
-  end
-
-  # getter for serialized attribute
-  def mailto
-    config["mailto"]
-  end
-
-  # setter for serialized attribute
-  def mailto=(mail)
-    config["mailto"]=mail
-  end
-
-  def custom_jails
-    config["custom_jails"]
-  end
-
-  def custom_jails=(v)
-    config["custom_jails"]=v
   end
 
 end

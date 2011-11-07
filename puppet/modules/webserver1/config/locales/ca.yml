@@ -17,3 +17,4 @@ ca:
   field_railsapp: Ruby On Rails Application
   field_rails_root: Rails public folder
   field_rails_spawn_method: Rails spawn method
+  field_use_suphp: Fer servir suPHP en comtes de mod_php

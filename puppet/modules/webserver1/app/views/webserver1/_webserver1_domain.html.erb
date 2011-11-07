@@ -6,6 +6,7 @@
   <p><%= form.text_field :rails_root %></p>
   <p><%= form.select(:rails_spawn_method, ["smart","smart-lv2","conservative"], :include_blank=>true) %></p>
   <p><%= form.select(:web_backups_server_id, @web_backups_servers, :include_blank=>true) %></p>
+  <p><%= form.check_box(:use_suphp) %></p>
 </fieldset>
 <fieldset>
   <legend>Authentication</legend>
