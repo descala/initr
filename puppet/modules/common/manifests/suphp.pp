@@ -9,7 +9,7 @@ class common::suphp {
       notify => Service[$httpd_service];
   }
   # Debian provided suphp.conf works
-  if ( $operatingsystem == 'Debian' ) or ( $operatingsystem != 'Ubuntu' ) {
+  if ( $operatingsystem == 'Debian' ) or ( $operatingsystem == 'Ubuntu' ) {
     common::apache::enmod { "suphp": }
   } else {
     file {
