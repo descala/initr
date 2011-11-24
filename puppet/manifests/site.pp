@@ -160,14 +160,6 @@ $postgres_service = $operatingsystem ? {
   },
   default => "postgresql"
 }
-$pg_hba = $operatingsystem ? {
-  /Debian|Ubuntu/ => $lsbmajdistrelease ? {
-    "5" => "/etc/postgresql/8.3/main/pg_hba.conf",
-    default => "/etc/postgresql/8.4/main/pg_hba.conf"
-  },
-  "Gentoo" => "/home/elf/data/db/pg_hba.conf", #TODO: posar el generic de gentoo, aquest es nomes per ricoh
-  default => "/var/lib/pgsql/data/pg_hba.conf"
-}
 $sqlite = $operatingsystem ? {
   /Debian|Ubuntu/ => "sqlite3",
   default => "sqlite"
