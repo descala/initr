@@ -88,7 +88,7 @@ for tup in mdData:
             status = 2
         elif current < normal:
             msg = device + ' degraded' + failed
-            status = 1
+            status = 2
     else:
         if current < normal:
             msg = device + ' failed' + failed
