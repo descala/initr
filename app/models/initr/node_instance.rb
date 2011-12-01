@@ -162,7 +162,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def config_errors
-    self.parameters["classes"]["common::configuration_errors"]
+    self.parameters["classes"]["common::configuration_errors"]["errors"]
   end
 
   def report
