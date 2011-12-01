@@ -23,6 +23,7 @@ class KlassController < InitrController
     @templates.uniq!
     @facts = @node.puppet_host.get_facts_hash rescue []
     @external_nodes_yaml = YAML.dump @node.parameters
+    flash.now[:error] = @node.config_errors if @node.config_errors?
     if @node.puppet_host
       @exported_resources = @node.exported_resources 
     else
