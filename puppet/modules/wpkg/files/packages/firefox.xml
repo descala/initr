@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <packages>
   <package
-    id="firefox4"
-    name="Mozilla Firefox 4"
-    revision="4.0.1"
+    id="firefox"
+    name="Mozilla Firefox"
+    revision="8.0.1"
     reboot="false"
     priority="10">
 
-    <variable name="version" value="4.0.1" />
+    <variable name="version" value="8.0" />
     <variable name="architecture" value="x86" />
     <variable name="locale" value="ca-ES" />
 
