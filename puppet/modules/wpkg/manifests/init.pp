@@ -1,6 +1,7 @@
 class wpkg {
 
-  $client = "WPKG Client 1.2.1.msi"
+  # $client = "WPKG Client 1.2.1.msi"
+  $client = "WPKG Client 1.3.14-x32.msi"
 
   file {
     [$wpkg_base,"$wpkg_base/wpkg","$wpkg_base/software","$wpkg_base/settings","$wpkg_base/scripts","$wpkg_base/wpkg/hosts","$wpkg_base/wpkg/profiles"]:

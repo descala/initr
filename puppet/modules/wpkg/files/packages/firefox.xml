@@ -3,11 +3,11 @@
   <package
     id="firefox"
     name="Mozilla Firefox"
-    revision="8.0.1"
+    revision="%version%"
     reboot="false"
     priority="10">
 
-    <variable name="version" value="8.0" />
+    <variable name="version" value="8.0.1" />
     <variable name="architecture" value="x86" />
     <variable name="locale" value="ca-ES" />
 
