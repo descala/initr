@@ -20,7 +20,12 @@ DOMAIN=`cat $(dirname $0)/../server_info.yml | grep DOMAIN | cut -d" " -f2`
 RAILS_ENV=`cat $(dirname $0)/../server_info.yml | grep RAILS_ENV | cut -d" " -f2`
 
 token="`echo -n "$1" | sed 's/\.pem$//'`"
-valid="`curl -L -s -k $DOMAIN/install/can_sign/$token`"
+# if token has a dot rails route don't works (for old nodes compatibility)
+if [[ "$token" =~ "." ]]; then
+  valid="`curl -L -s -k $DOMAIN/install/can_sign/?id=$token`"
+else
+  valid="`curl -L -s -k $DOMAIN/install/can_sign/$token`"
+fi
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 path_only=`dirname "$abspath"`
 

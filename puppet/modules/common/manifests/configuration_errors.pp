@@ -1,9 +1,5 @@
-class common::configuration_errors {
+class common::configuration_errors($errors) {
 
   configuration_errors::errors { $errors: }
-
-  define errors {
-    err($name)
-  }
 
 }
