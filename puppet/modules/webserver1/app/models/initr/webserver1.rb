@@ -11,10 +11,10 @@ class Initr::Webserver1 < Initr::Klass
 
   def initialize(attributes=nil)
     super
-    admin_password ||= ""
-    accessible_phpmyadmin ||= "0"
-    blowfish_secret ||= ""
-    manage_php ||= "1"
+    config["admin_password"] ||= ""
+    config["accessible_phpmyadmin"] ||= "0"
+    config["blowfish_secret"] ||= ""
+    config["manage_php"] ||= "1"
   end
 
   def before_validation
