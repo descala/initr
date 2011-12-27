@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # signs a ssl request if it has a initr node with the same name.
 # This script expects that you configure incron to call it this way:
