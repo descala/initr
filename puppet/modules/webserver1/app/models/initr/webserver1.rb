@@ -7,13 +7,14 @@ class Initr::Webserver1 < Initr::Klass
   validates_confirmation_of :password, :allow_nil => true
   validates_format_of :webserver_default_domain, :with => /http(|s):\/\/(.*)/, :on => :update 
   attr_accessor :password, :password_confirmation
-  self.accessors_for(%w(accessible_phpmyadmin blowfish_secret))
+  self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php))
 
   def initialize(attributes=nil)
     super
     admin_password ||= ""
     accessible_phpmyadmin ||= "0"
     blowfish_secret ||= ""
+    manage_php ||= "1"
   end
 
   def before_validation
@@ -38,8 +39,9 @@ class Initr::Webserver1 < Initr::Klass
       "admin_password"=>config["admin_password"],
       "accessible_phpmyadmin"=>accessible_phpmyadmin,
       "blowfish_secret"=>blowfish_secret,
+      "manage_php"=>manage_php,
       "webserver_default_domain"=>webserver_default_domain,
-      "tags_for_sshkey" => tags_for_sshkey }
+      "tags_for_sshkey"=>tags_for_sshkey }
   end
 
   def print_parameters

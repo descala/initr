@@ -51,6 +51,11 @@
   <p><%= f.text_field :blowfish_secret %> (you must fill in this for cookie auth)</p>
 </fieldset>
 
+<fieldset>
+  <legend>PHP</legend>
+  <p><%= f.check_box :manage_php %></p>
+</fieldset>
+
   <p><%= submit_tag("Save")%></p>
 <% end %>
 
