@@ -1,7 +1,7 @@
 define common::mysql::database($ensure, $owner, $passwd) {
 
   $dbcr = "CREATE DATABASE IF NOT EXISTS $name;"
-  $priv = "GRANT ALL PRIVILEGES ON $name.* TO $owner@localhost IDENTIFIED BY '$passwd';"
+  $priv = "GRANT ALL PRIVILEGES ON $name.* TO '$owner'@localhost IDENTIFIED BY '$passwd';"
 
   case $ensure {
     present: {
