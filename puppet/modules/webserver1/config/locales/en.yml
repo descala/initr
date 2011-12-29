@@ -18,3 +18,4 @@ en:
   field_rails_root: Rails public folder
   field_rails_spawn_method: Rails spawn method
   field_use_suphp: Use suPHP instead mod_php
+  field_manage_php: Manage PHP
