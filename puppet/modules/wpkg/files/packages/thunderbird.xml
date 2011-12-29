@@ -3,12 +3,12 @@
   <package 
       id="thunderbird" 
       name="Mozilla Thunderbird" 
-      revision="800000"
+      revision="900100"
       reboot="false" 
       priority="0">
-    <check type="uninstall" condition="exists" path="Mozilla Thunderbird (8.0)" />
-    <install cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 8.0.exe" -ms' />
-    <upgrade cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 8.0.exe" -ms' />
+    <check type="uninstall" condition="exists" path="Mozilla Thunderbird (9.0.1)" />
+    <install cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 9.0.1.exe" -ms' />
+    <upgrade cmd='"%SOFTWARE%\thunderbird\Thunderbird Setup 9.0.1.exe" -ms' />
     <remove cmd='"%PROGRAMFILES%\Mozilla Thunderbird\uninstall\helper.exe" /S' />
   </package>
 </packages>
