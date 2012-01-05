@@ -30,6 +30,7 @@ class Initr::Node < ActiveRecord::Base
   end
 
   def parameters
+    return @parameters if @parameters
     # node parameters
     parameters = {"node_hash"=>self.name}
     # node classes
@@ -48,22 +49,25 @@ class Initr::Node < ActiveRecord::Base
           end
         rescue Initr::Klass::ConfigurationError => e
           # if klass.parameters raises don't add klass to node
-          err = "#{e.message} for node #{self.name}"
+          err = e.message
           logger.error(err) if logger
           # show message in puppet log
-          classes["common::configuration_errors"] = [] unless classes["common::configuration_errors"]
-          classes["common::configuration_errors"] << err unless classes["common::configuration_errors"].include? err
+          classes["common::configuration_errors"] = {} unless classes["common::configuration_errors"]
+          classes["common::configuration_errors"]["errors"] = [] unless classes["common::configuration_errors"]["errors"]
+          classes["common::configuration_errors"]["errors"] << err unless classes["common::configuration_errors"]["errors"].include? err
         end
       end
     rescue ActiveRecord::SubclassNotFound => e
       logger.error(e.message)
-      classes["common::configuration_errors"] = [] unless classes["common::configuration_errors"]
-      classes["common::configuration_errors"] << e.message unless classes["common::configuration_errors"].include? e.message
+      classes["common::configuration_errors"] = {} unless classes["common::configuration_errors"]
+      classes["common::configuration_errors"]["errors"] = [] unless classes["common::configuration_errors"]["errors"]
+      classes["common::configuration_errors"]["errors"] << e.message unless classes["common::configuration_errors"]["errors"].include? e.message
     end
     result = { }
     result["parameters"] = parameters
     result["parameters"]["classes"] = classes.keys.sort
     result["classes"] = classes
+    @parameters = result
     result
   end
 

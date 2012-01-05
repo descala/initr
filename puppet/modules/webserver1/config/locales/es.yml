@@ -17,3 +17,5 @@ es:
   field_railsapp: Ruby On Rails Application
   field_rails_root: Rails public folder
   field_rails_spawn_method: Rails spawn method
+  field_use_suphp: Usar suPHP en vez de mod_php
+  field_manage_php: Gestionar el PHP

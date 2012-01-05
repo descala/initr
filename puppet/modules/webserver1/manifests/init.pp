@@ -1,19 +1,18 @@
 class webserver1 {
 
-  $phpmyadmindir = $operatingsystem ? {
-    Debian => "/usr/share/phpmyadmin",
-    default => $lsbdistrelease ? {
-      "5.4" => "/usr/share/phpMyAdmin",
-      default => "/usr/share/phpmyadmin"
-    }
-  }
-  
   include common::apache::ssl
   include common::mysql
-  include common::php
   include webserver1::ftp
   include common::rsync
   include common::cron
+
+  if $manage_php == "1" {
+    include common::php
+    class { "common::phpmyadmin":
+      accessible_phpmyadmin => $accessible_phpmyadmin,
+      blowfish_secret => $blowfish_secret
+    }
+  }
 
   case $operatingsystem {
     "Debian": { include webserver1::awstats::debian }
@@ -28,17 +27,11 @@ class webserver1 {
   }
 
   package {
-    ["phpmyadmin",$php_gd]:
-      ensure => installed,
-      notify => Service[$httpd_service];
-  }
-
-  create_resources(webserver1::domain, $webserver_domains)
-
-  package {
     $ruby_shadow:
       ensure => installed;
   }
+
+  create_resources(webserver1::domain, $webserver_domains)
 
   cron { "Backup virtualhosts":
     command => "/usr/local/sbin/webserver_backup_all >> /var/log/messages 2>&1",
@@ -54,15 +47,6 @@ class webserver1 {
     "/etc/logrotate.d/$httpd_service":
       mode => 644,
       content => template("webserver1/logrotate_httpd.erb");
-    "$phpmyadmindir/config.inc.php":
-      mode => 644,
-      require => [Package["phpmyadmin"],Package[$httpd]],
-      content => template("webserver1/phpmyadmin_config.erb");
-    "$httpd_confdir/phpmyadmin.conf":
-      mode => 640,
-      group => $httpd_user,
-      require => Package["phpmyadmin"],
-      content => template("webserver1/phpmyadmin_httpd.erb");
     "/usr/local/sbin/webserver_backup_all":
       mode => 700,
       content => template("webserver1/backup_all.sh.erb");
@@ -77,7 +61,7 @@ class webserver1 {
       content => template("webserver1/restore_all.sh.erb");
   }
 
-  if $operatingsystem != "Debian" {
+  if $operatingsystem != "Debian" and $manage_php == "1" {
     package {
       "php-mbstring": # for squirelmail?
         ensure => installed,
