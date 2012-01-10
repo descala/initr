@@ -1,5 +1,5 @@
 #TODO: controlar ensure
-define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database, $force_www='true', $railsapp, $rails_root="", $rails_spawn_method="", $use_suphp='false') {
+define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database, $add_www='true', $force_www='true', $railsapp, $rails_root="", $rails_spawn_method="", $use_suphp='false') {
 
   if $railsapp == "true" {
     include common::apache::passenger

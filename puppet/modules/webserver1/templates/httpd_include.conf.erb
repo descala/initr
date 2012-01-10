@@ -6,18 +6,13 @@
 # /var/www/<%=name%>/conf/vhost.conf
 
 <VirtualHost *:80>
-<% if force_www == 'true' -%>
-<%   if name =~ /^www\./i -%>
-  ServerName   <%=name%>
-<%   else -%>
+<% if add_www == 'true' and force_www == 'true' -%>
   ServerName   www.<%=name%>
-<%   end -%>
+<% elsif add_www -%>
+  ServerName   <%=name%>
+  ServerAlias  www.<%=name%>
 <% else -%>
-<%   if name =~ /^www\./i -%>
   ServerName   <%=name%>
-<%   else -%>
-  ServerName   <%=name%>
-<%   end -%>
 <% end -%>
   UseCanonicalName Off
   ServerAdmin  "webmaster@<%=name%>"
@@ -59,15 +54,6 @@
 </VirtualHost>
 <% if force_www == 'true' -%>
 
-<%   if name =~ /^www\./i -%>
-<VirtualHost *:80>
-  ServerName   <%=name.gsub(/^www\./i,'')%>
-  # redirect all requests to <%=name%>
-  RewriteEngine On
-  RewriteCond %{REQUEST_URI} !^/awstats(.*)$ [NC]
-  RewriteRule ^/(.*)         http://<%=name%>/$1 [L,R]
-</VirtualHost>
-<%   else -%>
 <VirtualHost *:80>
   ServerName   <%=name%>
   # redirect all requests to www.<%=name%>
@@ -75,5 +61,4 @@
   RewriteCond %{REQUEST_URI} !^/awstats(.*)$ [NC]
   RewriteRule ^/(.*)         http://www.<%=name%>/$1 [L,R]
 </VirtualHost>
-<%   end -%>
 <% end -%>

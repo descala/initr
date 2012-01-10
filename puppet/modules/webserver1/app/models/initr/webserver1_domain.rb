@@ -17,6 +17,10 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_length_of :user_ftp, :in => 1..16
 
+  def initialize(attributes=nil)
+    self.add_www = true if self.add_www.nil?
+    self.force_www = true if self.force_www.nil?
+  end
 
   def parameters
     parameters = { "name" => name,
@@ -27,6 +31,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
                    "password_awstats" => password_awstats,
                    "password_ftp" => crypted_password,
                    "database" => dbname,
+                   "add_www" => add_www.to_s,
                    "force_www" => force_www.to_s,
                    "use_suphp" => use_suphp.to_s }
     if web_backups_server

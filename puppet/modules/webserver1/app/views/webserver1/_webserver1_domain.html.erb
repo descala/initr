@@ -1,6 +1,7 @@
 <fieldset>
   <legend>Config</legend>
   <p><%= form.text_field :name %></p>
+  <p><%= form.check_box :add_www %></p>
   <p><%= form.check_box :force_www %></p>
   <p><%= form.check_box :railsapp %></p>
   <p><%= form.text_field :rails_root %></p>
@@ -22,13 +23,13 @@
 
 <script type="text/javascript">
 <!--
-  function copy_ftpuser(user) {
-    if ( $("webserver1_domain_user_awstats").value == "" ) {
-      $("webserver1_domain_user_awstats").value=user;
-    }
-    if ( $("webserver1_domain_user_mysql").value == "" ) {
-      $("webserver1_domain_user_mysql").value=user;
-    }
+function copy_ftpuser(user) {
+  if ( $("webserver1_domain_user_awstats").value == "" ) {
+    $("webserver1_domain_user_awstats").value=user;
   }
+  if ( $("webserver1_domain_user_mysql").value == "" ) {
+    $("webserver1_domain_user_mysql").value=user;
+  }
+}
 //-->
 </script>
