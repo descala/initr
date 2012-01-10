@@ -2,7 +2,6 @@ es:
   field_admin_password: Contraseña admin
   field_password_db: Contraseña de la BBDD
   field_password_awstats: Contraseña de awstats
-  field_username: Usuario
   field_password_ftp: Contraseña FTP/Shell
   field_dbname: Nombre de la BBDD
   field_shell: Acceso shell
@@ -19,3 +18,6 @@ es:
   field_rails_spawn_method: Rails spawn method
   field_use_suphp: Usar suPHP en vez de mod_php
   field_manage_php: Gestionar el PHP
+  field_user_ftp: Usuario FTP
+  field_user_awstats: Usuario awstats
+  field_user_mysql: Usuario MySQL

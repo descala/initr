@@ -2,7 +2,6 @@ ca:
   field_admin_password: Contrasenya admin
   field_password_db: Contrasenya de la BBDD
   field_password_awstats: Contrasenya awstats
-  field_username: Usuari
   field_password_ftp: Contrasenya FTP/Shell
   field_dbname: Nom de la BBDD
   field_shell: Accés shell
@@ -19,3 +18,6 @@ ca:
   field_rails_spawn_method: Rails spawn method
   field_use_suphp: Fer servir suPHP en comtes de mod_php
   field_manage_php: Gestionar el PHP
+  field_user_ftp: Usuari FTP
+  field_user_awstats: Usuari awstats
+  field_user_mysql: Usuari MySQL

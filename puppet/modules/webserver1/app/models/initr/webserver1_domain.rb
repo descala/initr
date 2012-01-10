@@ -9,16 +9,20 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :web_backups_server_id
   validates_format_of :name, :with => /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
   validates_uniqueness_of :dbname, :scope => :webserver1_id, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
-  validates_uniqueness_of :username, :scope => :webserver1_id
-  validates_exclusion_of :username, :in => %w( admin ), :message => "Can't use admin username"
-  validates_presence_of :name, :username, :password_ftp, :password_awstats
+  validates_uniqueness_of :user_ftp,     :scope => :webserver1_id
+  validates_uniqueness_of :user_awstats, :scope => :webserver1_id
+  validates_uniqueness_of :user_mysql,   :scope => :webserver1_id
+  validates_exclusion_of :user_ftp, :user_awstats, :user_mysql, :in => %w( admin root ), :message => "Can't use admin/root username"
+  validates_presence_of :name, :user_ftp, :user_awstats, :user_mysql, :password_ftp, :password_awstats
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
-  validates_length_of :username, :in => 1..16
+  validates_length_of :user_ftp, :in => 1..16
 
 
   def parameters
     parameters = { "name" => name,
-                   "username" => username,
+                   "user_ftp" => user_ftp,
+                   "user_awstats" => user_awstats,
+                   "user_mysql" => user_mysql,
                    "password_db" => password_db,
                    "password_awstats" => password_awstats,
                    "password_ftp" => crypted_password,
@@ -45,13 +49,10 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     webserver1
   end
 
-  def save
-    if valid?
-      if password_ftp_changed? or crypted_password.nil? or crypted_password.blank?
-        self.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
-      end
+  def before_validation
+    if password_ftp_changed? or crypted_password.nil? or crypted_password.blank?
+      self.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
     end
-    super
   end
 
   def <=>(oth)

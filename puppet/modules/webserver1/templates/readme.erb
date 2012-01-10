@@ -7,13 +7,13 @@ Servidor compartit <%=fqdn%> [<%=ipaddress%>]
 ACCES FTP <%= "i SSH" if shell!=$nologin %>
 
 Host: 	      <%= name %>
-Usuari:	      <%= username %>
+Usuari:	      <%= user_ftp %>
 Contrasenya:  ********
 
 ESTADISTIQUES DE VISITES
 
 URL:	      http://<%= name %>/awstats
-Usuari:	      <%= username %>
+Usuari:	      <%= user_awstats %>
 Contrasenya:  (la mateixa que el FTP)
 
 <% if database != "" %>
@@ -21,7 +21,7 @@ BASE DE DADES MySQL
 
 Host:              localhost
 Nom base de dades: <%= database %>
-Usuari:            <%= username %>
+Usuari:            <%= user_mysql %>
 Contrasenya:       (la mateixa que el FTP)
 
 <% end -%>
