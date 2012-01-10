@@ -14,11 +14,11 @@ class RemoveBaseConfs < ActiveRecord::Migration
       t.integer :base_id
       t.string :optshash
       t.timestamps
+    end
     Initr::Base.all.collect {|b|
       b.config={}
       b.save
     }
-    end
   end
 
 end
