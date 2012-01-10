@@ -2,7 +2,6 @@ en:
   field_admin_password: Admin password
   field_password_db: Database password
   field_password_awstats: Awstats password
-  field_username: Username
   field_password_ftp: FTP/Shell password
   field_dbname: Database name
   field_shell: Shell access
@@ -19,3 +18,6 @@ en:
   field_rails_spawn_method: Rails spawn method
   field_use_suphp: Use suPHP instead mod_php
   field_manage_php: Manage PHP
+  field_user_ftp: User FTP
+  field_user_awstats: User awstats
+  field_user_mysql: User MySQL

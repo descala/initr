@@ -10,10 +10,25 @@
 </fieldset>
 <fieldset>
   <legend>Authentication</legend>
-  <p><%= form.text_field :username %></p>
+  <p><%= form.text_field :user_ftp, :onblur => "javascript: copy_ftpuser(this.value);" %></p>
   <p><%= form.text_field :password_ftp %></p>
-  <p><%= form.check_box :shell %></p>
+  <p><%= form.check_box  :shell %></p>
+  <p><%= form.text_field :user_awstats %></p>
   <p><%= form.text_field :password_awstats %></p>
+  <p><%= form.text_field :user_mysql %></p>
   <p><%= form.text_field :dbname %></p>
   <p><%= form.text_field :password_db %></p>
 </fieldset>
+
+<script type="text/javascript">
+<!--
+  function copy_ftpuser(user) {
+    if ( $("webserver1_domain_user_awstats").value == "" ) {
+      $("webserver1_domain_user_awstats").value=user;
+    }
+    if ( $("webserver1_domain_user_mysql").value == "" ) {
+      $("webserver1_domain_user_mysql").value=user;
+    }
+  }
+//-->
+</script>

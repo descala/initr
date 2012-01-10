@@ -1,16 +1,16 @@
 #TODO: controlar ensure
-define webserver1::domain($username, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database, $force_www='true', $railsapp, $rails_root="", $rails_spawn_method="", $use_suphp='false') {
+define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, $password_db, $password_awstats, $web_backups_server="", $backups_path="", $web_backups_server_port="22", $shell=$nologin, $ensure='present', $database, $force_www='true', $railsapp, $rails_root="", $rails_spawn_method="", $use_suphp='false') {
 
   if $railsapp == "true" {
     include common::apache::passenger
     webserver1::logrotate_rails { $name:
       rails_root => $rails_root,
-      username => $username,
+      username => $user_ftp,
     }
     file {
       "/var/www/$name/htdocs/$rails_root/config/environment.rb": # Rails will be running as this file owner
-        owner => $username,
-        group => $username;
+        owner => $user_ftp,
+        group => $user_ftp;
       "/var/www/$name/htdocs/$rails_root/config/database.yml": # this file contains passwords
         mode => 640;
       "/var/www/$name/htdocs/$rails_root/log/production.log": # log should be writeable by apache
@@ -24,7 +24,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   }
 
   webserver1::awstats::domain { $name:
-    user => $username,
+    user => $user_awstats,
     pass => $password_awstats,
   }
   webserver1::domain::remotebackup { $name:
@@ -35,7 +35,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   if $database != "" {
     common::mysql::database { $database:
       ensure => present,
-      owner => $username,
+      owner => $user_mysql,
       passwd => $password_db,
     }
     # removed common::mysql::database::backup, we are doing it in backup.sh.erb now
@@ -43,36 +43,36 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
 
   file {
     "/var/www/$name":
-      owner => $username,
-      group => $username,
+      owner => $user_ftp,
+      group => $user_ftp,
       mode => 755,
       ensure => directory,
       require => Package[$httpd];
     "/var/www/$name/readme.txt":
-      group => $username,
+      group => $user_ftp,
       mode => 750,
       content => template("webserver1/readme.erb"),
-      require => [File["/var/www/$name"],User[$username]];
+      require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/htdocs":
-      owner => $username,
-      group => $username,
+      owner => $user_ftp,
+      group => $user_ftp,
       mode => 755,
       ensure => directory,
-      require => [File["/var/www/$name"],User[$username]];
+      require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/logs":
       mode => 755,
       ensure => directory,
-      require => [File["/var/www/$name"],User[$username]];
+      require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/conf":
       mode => 755,
       ensure => directory,
-      require => [File["/var/www/$name"],User[$username]];
+      require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/cgi-bin":
-      owner => $username,
-      group => $username,
+      owner => $user_ftp,
+      group => $user_ftp,
       mode => 755,
       ensure => directory,
-      require => [File["/var/www/$name"],User[$username]];
+      require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/backups":
       mode => 750,
       ensure => directory,
@@ -87,8 +87,8 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
       ensure => "/var/www/$name/conf/httpd_include.conf";
     "/var/www/$name/conf/vhost.conf":
       mode => 644,
-      owner => $username,
-      group => $username,
+      owner => $user_ftp,
+      group => $user_ftp,
       require => File["/var/www/$name/conf"],
       notify => Service[$httpd_service],
       source => "puppet:///modules/webserver1/vhost.conf",
@@ -102,7 +102,7 @@ define webserver1::domain($username, $password_ftp, $password_db, $password_awst
   }
 
   user {
-    $username:
+    $user_ftp:
       ensure => present,
       comment => "puppet managed",
       home => "/var/www/$name",

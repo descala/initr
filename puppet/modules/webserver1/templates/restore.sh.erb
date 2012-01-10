@@ -22,11 +22,11 @@ case "$DOMAIN" in
     SERVER=<%= v['web_backups_server'] %>
     u_sure
     <%= "rsync --delete -rlt -v -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/backups/ /var/www/$DOMAIN/restores/" %>
-    chown -R "<%= v['username'] %>":"<%= v['username'] %>" /var/www/$DOMAIN/htdocs
+    chown -R "<%= v['user_ftp'] %>":"<%= v['user_ftp'] %>" /var/www/$DOMAIN/htdocs
     <%= "rsync --delete -rlt -v --backup --backup-dir=/var/www/$DOMAIN/backups/old_htdocs -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/htdocs/ /var/www/$DOMAIN/htdocs/" %>
 <% if v['database'] != "" -%>
     echo -e '\n--\nUse this command if you also want to restore the database:'
-    <%= "echo \"cd /var/www/$DOMAIN/restores && gunzip $DOMAIN.sql.gz && mysql -u #{v['username']} -p#{v['password_db']} #{v['database']} < $DOMAIN.sql\"" %>
+    <%= "echo \"cd /var/www/$DOMAIN/restores && gunzip $DOMAIN.sql.gz && mysql -u #{v['user_mysql']} -p#{v['password_db']} #{v['database']} < $DOMAIN.sql\"" %>
 <% end -%>
     echo -e '--\n'
     ;;
