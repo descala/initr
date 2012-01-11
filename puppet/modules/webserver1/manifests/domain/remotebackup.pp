@@ -5,6 +5,17 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     default => "present"
   }
 
+  ######################################################################
+  # Warn: if ftp user is equal to the domain name, puppet can't run    #
+  # ("Duplicate definition: User[domain_name]"), so we check this here #
+  # and add backups_ prefix if it match                                #
+  ######################################################################
+  if $name == $user_ftp {
+    $username = "backups_$name"
+  } else {
+    $username = $name
+  }
+
   Sshkey <<| tag == "${web_backups_server}_web_backups_server" |>>
 
   @@ssh_authorized_key { "backups for $name":
@@ -12,14 +23,14 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     key => $sshdsakey,
     type => "dsa",
     options => "no-port-forwarding",
-    user => $name,
+    user => $username,
     target => "$backups_path/webservers/$name/.ssh/authorized_keys",
-    require => [ File["$backups_path/webservers/$name"], User[$name] ],
+    require => [ File["$backups_path/webservers/$name"], User[$username] ],
     tag => "${web_backups_server}_web_backups_client",
   }
 
   # user to do backups
-  @@user { $name:
+  @@user { $username:
     ensure => $ensure,
     comment => "puppet managed, backups for $name",
     home => "$backups_path/webservers/$name",
@@ -32,17 +43,17 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
     @@file {
       "$backups_path/webservers/$name":
         ensure => directory,
-        owner => $name,
-        group => $name,
+        owner => $username,
+        group => $username,
         mode => 750,
-        require => [User[$name],File["$backups_path/webservers"]],
+        require => [User[$username],File["$backups_path/webservers"]],
         tag => "${web_backups_server}_web_backups_client";
       "$backups_path/webservers/$name/.ssh/authorized_keys":
-        owner => $name,
+        owner => $username,
         mode => 0640,
         tag => "${web_backups_server}_web_backups_client";
       "$backups_path/webservers/$name/.ssh":
-        owner => $name,
+        owner => $username,
         mode => 0700,
         tag => "${web_backups_server}_web_backups_client";
     }
