@@ -6,7 +6,7 @@ class common::suphp {
   package {
     $suphp_package:
       ensure => installed,
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
   }
   # Debian provided suphp.conf works
   if ( $operatingsystem == 'Debian' ) or ( $operatingsystem == 'Ubuntu' ) {

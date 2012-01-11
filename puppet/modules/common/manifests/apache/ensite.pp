@@ -6,7 +6,7 @@ define common::apache::ensite() {
     file { "/etc/apache2/sites-enabled/000-default":
       ensure => "../sites-available/default",
       require => Package[$httpd],
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
     }
   }
   else
@@ -14,7 +14,7 @@ define common::apache::ensite() {
     file { "/etc/apache2/sites-enabled/$name":
       ensure => "../sites-available/$name",
       require => Package[$httpd],
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
     }
   }
 }

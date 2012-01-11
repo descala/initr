@@ -12,7 +12,7 @@ class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
   package {
     ["phpmyadmin",$php_gd]:
       ensure => installed,
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
   }
 
   file {

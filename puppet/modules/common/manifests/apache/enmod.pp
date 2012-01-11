@@ -5,7 +5,7 @@ define common::apache::enmod() {
   file { "/etc/apache2/mods-enabled/$name":
     ensure => "../mods-available/$name",
     require => Package[$httpd],
-    notify => Service[$httpd_service];
+    notify => Exec["apache reload"];
   }
 }
 
