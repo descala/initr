@@ -8,7 +8,7 @@ class webserver1::awstats::redhat inherits webserver1::awstats {
       mode => 644,
       content => template("webserver1/awstats_httpd.conf.erb"),
       require => Package[$httpd],
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
 
     # TODO: why do we need this?
     #    "/var/lib/awstats":

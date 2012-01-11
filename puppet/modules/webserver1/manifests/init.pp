@@ -65,7 +65,7 @@ class webserver1 {
     package {
       "php-mbstring": # for squirelmail?
         ensure => installed,
-        notify => Service[$httpd_service];
+        notify => Exec["apache reload"];
     }
   }
 
@@ -75,7 +75,7 @@ class webserver1 {
       "$httpd_confdir/vhosts.conf":
         mode => 644,
         source => "puppet:///modules/webserver1/vhosts.conf",
-        notify => Service[$httpd_service];
+        notify => Exec["apache reload"];
     }
   }
 
@@ -102,7 +102,7 @@ RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
 RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
-    notify => Service[$httpd_service],
+    notify => Exec["apache reload"];
   }
 
   

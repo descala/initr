@@ -10,7 +10,7 @@ class webserver1::awstats::debian inherits webserver1::awstats {
       group => $httpd_user,
       content => template("webserver1/awstats_httpd.conf.erb"),
       require => Package[$httpd],
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
     "/usr/bin/awstats_updateall.pl":
       mode => 750,
       group => "www-data",

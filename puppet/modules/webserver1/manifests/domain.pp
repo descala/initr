@@ -79,18 +79,18 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
       require => File["/var/www/$name"];
     "/var/www/$name/conf/httpd_include.conf":
       mode => 644,
-      notify => Service[$httpd_service],
+      notify => Exec["apache reload"],
       require => File["/var/www/$name/conf"],
       content => template("webserver1/httpd_include.conf.erb");
     "$httpd_sitedir/$name.conf":
-      notify => Service[$httpd_service],
+      notify => Exec["apache reload"],
       ensure => "/var/www/$name/conf/httpd_include.conf";
     "/var/www/$name/conf/vhost.conf":
       mode => 644,
       owner => $user_ftp,
       group => $user_ftp,
       require => File["/var/www/$name/conf"],
-      notify => Service[$httpd_service],
+      notify => Exec["apache reload"],
       source => "puppet:///modules/webserver1/vhost.conf",
       replace => false;
   }
