@@ -1,14 +1,14 @@
 <fieldset>
   <legend>Config</legend>
-  <p><%= form.text_field :name %></p>
-  <p><%= form.check_box :add_www %></p>
-  <p><%= form.check_box :force_www %></p>
-  <p><%= form.check_box :awstats_www %></p>
-  <p><%= form.check_box :railsapp %></p>
-  <p><%= form.text_field :rails_root %></p>
-  <p><%= form.select(:rails_spawn_method, ["smart","smart-lv2","conservative"], :include_blank=>true) %></p>
-  <p><%= form.select(:web_backups_server_id, @web_backups_servers, :include_blank=>true) %></p>
-  <p><%= form.check_box(:use_suphp) %></p>
+  <p><%= form.text_field :name %> <%= help :help_name %></p>
+  <p><%= form.check_box :add_www %> <%= help :help_add_www %></p>
+  <p><%= form.check_box :force_www %> <%= help :help_force_www %></p>
+  <p><%= form.check_box :awstats_www %> <%= help :help_awstats_www %></p>
+  <p><%= form.check_box :railsapp %> <%= help :help_railsapp %></p>
+  <p><%= form.text_field :rails_root %> <%= help :help_rails_root %></p>
+  <p><%= form.select(:rails_spawn_method, ["smart","smart-lv2","conservative"], :include_blank=>true) %> <%= help :help_rails_spawn_method %></p>
+  <p><%= form.select(:web_backups_server_id, @web_backups_servers, :include_blank=>true) %> <%= help :help_web_backups_server_id %></p>
+  <p><%= form.check_box(:use_suphp) %> <%= help :help_use_suphp %></p>
 </fieldset>
 <fieldset>
   <legend>Authentication</legend>

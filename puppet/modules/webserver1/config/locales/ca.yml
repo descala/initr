@@ -23,3 +23,12 @@ ca:
   field_user_mysql: Usuari MySQL
   field_add_www: Afegir www.
   field_awstats_www: "Usar www. a l'awstats"
+  help_name: "Nom del domini, sense www."
+  help_add_www: "Afegeix l'àlies www. a la configuració de l'Apache"
+  help_force_www: "Redirigeix les peticions per a que sempre facin servir www."
+  help_awstats_www: "Per accedir a les estadístiques amb www."
+  help_railsapp: "Configura Passenger per servir una aplicació RubyOnRails"
+  help_rails_root: "Si l'aplicació està a l'arrel, serà public"
+  help_rails_spawn_method: "Si no n'esteu segurs, escolliu Smart"
+  help_web_backups_server_id: "Necessita un servidor amb la classe web_backups_server"
+  help_use_suphp: "Executa els PHP amb l'usuari que n'és propietari, útil per a entorns multiusuari"
