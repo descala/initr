@@ -22,3 +22,4 @@ ca:
   field_user_awstats: Usuari awstats
   field_user_mysql: Usuari MySQL
   field_add_www: Afegir www.
+  field_awstats_www: "Usar www. a l'awstats"

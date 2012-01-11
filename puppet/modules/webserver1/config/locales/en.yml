@@ -22,3 +22,4 @@ en:
   field_user_awstats: User awstats
   field_user_mysql: User MySQL
   field_add_www: Add www.
+  field_awstats_www: "Use www. on awstats"

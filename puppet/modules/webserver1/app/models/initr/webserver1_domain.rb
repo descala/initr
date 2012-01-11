@@ -21,6 +21,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     super
     self.add_www = true if self.add_www.nil?
     self.force_www = true if self.force_www.nil?
+    self.awstats_www = false if self.awstats_www.nil?
   end
 
   def parameters
@@ -34,6 +35,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
                    "database" => dbname,
                    "add_www" => add_www.to_s,
                    "force_www" => force_www.to_s,
+                   "awstats_www" => awstats_www.to_s,
                    "use_suphp" => use_suphp.to_s }
     if web_backups_server
       parameters["web_backups_server"] = web_backups_server.address

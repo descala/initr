@@ -9,6 +9,18 @@ class webserver1::awstats {
   }
 
   file {
+    "/etc/awstats":
+      ensure => directory,
+      recurse => true,
+      purge => true;
+    "/etc/awstats/users":
+      owner => root,
+      group => $httpd_user,
+      mode => 640;
+    "/etc/awstats/awstats.conf":
+      owner => root,
+      group => root,
+      mode => 644;
     "/etc/awstats/awstats.model.conf":
       mode => 644,
       require => Package["awstats"],
