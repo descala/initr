@@ -18,6 +18,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_length_of :user_ftp, :in => 1..16
 
   def initialize(attributes=nil)
+    super
     self.add_www = true if self.add_www.nil?
     self.force_www = true if self.force_www.nil?
   end
