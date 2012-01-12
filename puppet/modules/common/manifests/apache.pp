@@ -7,6 +7,8 @@ class common::apache {
     include common::apache::munin
   }
 
+  include common::apache::logrotate
+
   package { $httpd:
     ensure => installed,
   }

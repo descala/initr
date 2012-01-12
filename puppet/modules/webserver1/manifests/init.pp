@@ -44,9 +44,9 @@ class webserver1 {
     "/usr/local/sbin/backup.rb":
       mode => 700,
       source => "puppet:///modules/webserver1/backup.rb";
-    "/etc/logrotate.d/$httpd_service":
+    "/etc/logrotate.d/webserver1":
       mode => 644,
-      content => template("webserver1/logrotate_httpd.erb");
+      content => template("webserver1/logrotate.erb");
     "/usr/local/sbin/webserver_backup_all":
       mode => 700,
       content => template("webserver1/backup_all.sh.erb");

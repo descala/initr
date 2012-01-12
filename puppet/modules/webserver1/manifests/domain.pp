@@ -63,6 +63,10 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
       mode => 755,
       ensure => directory,
       require => [File["/var/www/$name"],User[$user_ftp]];
+    ["/var/www/$name/logs/access_log","/var/www/$name/logs/error_log"]:
+      mode => 644, #TODO: 644 is too open, but with 640 ftp_user can't read logs
+      owner => root,
+      group => $httpd_user;
     "/var/www/$name/conf":
       mode => 755,
       ensure => directory,

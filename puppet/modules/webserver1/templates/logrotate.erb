@@ -1,12 +1,12 @@
-<% if operatingsystem == "Debian" -%>
-/var/log/apache2/*.log /var/www/*/logs/*log {
+<% if operatingsystem == "Debian" or operatingsystem == "Ubuntu" -%>
+/var/www/*/logs/*log {
     weekly
     missingok
     rotate 52
     compress
     delaycompress
     notifempty
-    create 644 root adm
+    create 640
     sharedscripts
     prerotate
       if [ -f /usr/bin/awstats_updateall.pl -a -f /usr/lib/cgi-bin/awstats.pl -a -d /etc/awstats ] ; then
