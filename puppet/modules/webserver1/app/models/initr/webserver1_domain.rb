@@ -15,7 +15,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_exclusion_of :user_ftp, :user_awstats, :user_mysql, :in => %w( admin root ), :message => "Can't use admin/root username"
   validates_presence_of :name, :user_ftp, :user_awstats, :user_mysql, :password_ftp, :password_awstats
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
-  validates_length_of :user_ftp, :in => 1..16
+  validates_length_of :user_mysql, :in => 1..16
 
   def initialize(attributes=nil)
     super
