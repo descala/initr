@@ -102,7 +102,8 @@ RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
 RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
-    notify => Exec["apache reload"];
+      require => Package[$httpd],
+      notify => Exec["apache reload"];
   }
 
   
