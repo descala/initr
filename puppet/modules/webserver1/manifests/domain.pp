@@ -44,8 +44,8 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
   file {
     "/var/www/$name":
       owner => $user_ftp,
-      group => $user_ftp,
-      mode => 755,
+      group => $httpd_user,
+      mode => 750,
       ensure => directory,
       require => Package[$httpd];
     "/var/www/$name/readme.txt":
