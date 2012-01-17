@@ -5,5 +5,5 @@
 
 <% webserver_domains.each do |k,v| -%>
 <% next unless v.has_key? "web_backups_server" -%>
-/usr/local/sbin/webserver_backup <%= v['name'] %>
+/usr/local/sbin/webserver_backup <%= "www." if v['awstats_www'] == 'true' %><%= v['name'] %>
 <% end -%>
