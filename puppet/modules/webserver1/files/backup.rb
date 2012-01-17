@@ -12,7 +12,7 @@
 class Backup
 
   # $name $web_backups_server $port $history $excludes
-  def initialize(domain, server, port=22, bdays=7, excludes="", remote_user=nil)
+  def initialize(domain, server, port, bdays, excludes, remote_user)
     validate(ARGV)
     @excludes = excludes
     @domain  = domain
@@ -20,8 +20,7 @@ class Backup
     @port    = port
     @bdays   = bdays #TODO
     @bakdir="\"../" + `date +%Y-%m-%d/%H-%M-%S`.sub(/\n/,  '') + "\""
-    @remote_user = remote_user
-    @remote_user ||= @domain
+    @remote_user = remote_user.blank? ? domain : remote_user
   end
 
   def do_backup
@@ -42,7 +41,7 @@ class Backup
   end
 
   def self.usage
-    puts "USAGE: backups.rb <domain.tld> [server] [excludes]"
+    puts "USAGE: backups.rb <domain.tld> [server] [excludes] [remote_user]"
   end
 
   private
@@ -60,7 +59,7 @@ if __FILE__ == $0
 
   retval = 0
 
-  if ARGV.size < 2 or ARGV.size > 4
+  if ARGV.size != 6
     Backup.usage
     puts "Exiting with status 3 (UNKNOWN)"
     exit 3
