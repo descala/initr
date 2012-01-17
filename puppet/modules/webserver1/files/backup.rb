@@ -20,7 +20,7 @@ class Backup
     @port    = port
     @bdays   = bdays #TODO
     @bakdir="\"../" + `date +%Y-%m-%d/%H-%M-%S`.sub(/\n/,  '') + "\""
-    @remote_user = remote_user.blank? ? domain : remote_user
+    @remote_user = remote_user.size > 0 ? remote_user : domain
   end
 
   def do_backup
