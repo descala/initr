@@ -43,7 +43,7 @@ class webserver1 {
   file {
     "/usr/local/sbin/backup.rb":
       mode => 700,
-      source => "puppet:///modules/webserver1/backup.rb";
+      source => ["puppet:///specific/webserver_backup.rb", "puppet:///modules/webserver1/backup.rb"];
     "/etc/logrotate.d/webserver1":
       mode => 644,
       content => template("webserver1/logrotate.erb");
