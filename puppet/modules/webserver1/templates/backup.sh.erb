@@ -23,13 +23,14 @@ case "$DOMAIN" in
 <% next unless v.has_key? 'web_backups_server' -%>
   <%= v['name'] %>)
     SERVER=<%= v['web_backups_server'] %>
-    SQLBAK=/var/www/$DOMAIN/backups/$DOMAIN.sql
+    USER=<%= "backups_" if v['user_ftp'] == v['name'] %><%= v['name'] %>
     u_sure
     rsync_local_files <%= v['awstats_www'] %>
 <% if v['database'] != "" -%>
+    SQLBAK=/var/www/$DOMAIN/backups/$DOMAIN.sql
     <%= "/usr/bin/mysqldump -u #{v['user_mysql']} -p#{v['password_db']} #{v['database']} > $SQLBAK ; gzip -f $SQLBAK ; chmod 600 $SQLBAK.gz" %>
 <% end -%>
-    <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" \"#{"backups_" if v['user_ftp'] == v['name']}#{v['name']}\"" %>
+    <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" \"$USER\"" %>
     ;;
 <% end -%>
   *)
