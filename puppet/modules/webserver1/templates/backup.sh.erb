@@ -30,7 +30,7 @@ case "$DOMAIN" in
     SQLBAK=/var/www/$DOMAIN/backups/$DOMAIN.sql
     <%= "/usr/bin/mysqldump -u #{v['user_mysql']} -p#{v['password_db']} #{v['database']} > $SQLBAK ; gzip -f $SQLBAK ; chmod 600 $SQLBAK.gz" %>
 <% end -%>
-    <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" \"$USER\"" %>
+    <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" $USER" %>
     ;;
 <% end -%>
   *)
