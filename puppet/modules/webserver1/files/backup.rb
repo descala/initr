@@ -12,7 +12,7 @@
 class Backup
 
   # $name $web_backups_server $port $history $excludes
-  def initialize(domain, server, port=22, bdays=7, excludes="")
+  def initialize(domain, server, port=22, bdays=7, excludes="", remote_user=nil)
     validate(ARGV)
     @excludes = excludes
     @domain  = domain
@@ -20,6 +20,8 @@ class Backup
     @port    = port
     @bdays   = bdays #TODO
     @bakdir="\"../" + `date +%Y-%m-%d/%H-%M-%S`.sub(/\n/,  '') + "\""
+    @remote_user = remote_user
+    @remote_user ||= @domain
   end
 
   def do_backup
@@ -29,7 +31,7 @@ class Backup
     end
     command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origin
-    command += " #{@domain}@#{@server}:incremental"                      # destination
+    command += " #{@remote_user}@#{@server}:incremental"                      # destination
     puts "Syncronizing backup with server, command: #{command}"
     system command
     return $?.exitstatus
