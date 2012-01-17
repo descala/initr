@@ -29,7 +29,7 @@ case "$DOMAIN" in
 <% if v['database'] != "" -%>
     <%= "/usr/bin/mysqldump -u #{v['user_mysql']} -p#{v['password_db']} #{v['database']} > $SQLBAK ; gzip -f $SQLBAK ; chmod 600 $SQLBAK.gz" %>
 <% end -%>
-    <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" \"#{"backups_#{v['name']}\"" if v['user_ftp'] == v['name']}" %>
+    <%= "/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" \"#{"backups_" if v['user_ftp'] == v['name']}#{v['name']}\"" %>
     ;;
 <% end -%>
   *)
