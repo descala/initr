@@ -36,10 +36,14 @@ class Initr::Webserver1 < Initr::Klass
       end
     end
     tags_for_sshkey.uniq!
-    params = { "webserver_domains"=>domain_list,
-               "webserver_default_domain"=>webserver_default_domain,
-               "tags_for_sshkey"=>tags_for_sshkey }
-    config.merge(params)
+    { "webserver_domains"=>domain_list,
+      "admin_password"=>config["admin_password"],
+      "accessible_phpmyadmin"=>accessible_phpmyadmin,
+      "blowfish_secret"=>blowfish_secret,
+      "manage_php"=>manage_php,
+      "allow_anonymous_ftp"=>allow_anonymous_ftp,
+      "webserver_default_domain"=>webserver_default_domain,
+      "tags_for_sshkey"=>tags_for_sshkey }
   end
 
   def print_parameters
