@@ -32,3 +32,4 @@ ca:
   help_rails_spawn_method: "Si no n'esteu segurs, escolliu Smart"
   help_web_backups_server_id: "Necessita un servidor amb la classe web_backups_server"
   help_use_suphp: "Executa els PHP amb l'usuari que n'és propietari, útil per a entorns multiusuari"
+  field_allow_anonymous_ftp: "Permet l'accés anònim a l'FTP"

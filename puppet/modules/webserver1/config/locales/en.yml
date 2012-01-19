@@ -32,3 +32,4 @@ en:
   help_rails_spawn_method: "Choose Smart if unsure"
   help_web_backups_server_id: "Needs a server with web_backups_server class"
   help_use_suphp: "Runs PHP files as its owner, usefull on multiuser environments"
+  field_allow_anonymous_ftp: "Allow anonymous FTP access"

@@ -7,7 +7,7 @@
 listen=YES
 #
 # Allow anonymous FTP? (Beware - allowed by default if you comment this out).
-anonymous_enable=NO
+anonymous_enable=<%= allow_anonymous_ftp == "1" ? "YES" : "NO" %>
 #
 # Uncomment this to allow local users to log in.
 local_enable=YES

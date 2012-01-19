@@ -56,6 +56,11 @@
   <p><%= f.check_box :manage_php %></p>
 </fieldset>
 
+<fieldset>
+  <legend>FTP</legend>
+  <p><%= f.check_box :allow_anonymous_ftp %></p>
+</fieldset>
+
   <p><%= submit_tag("Save")%></p>
 <% end %>
 

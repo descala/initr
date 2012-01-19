@@ -7,7 +7,7 @@ class Initr::Webserver1 < Initr::Klass
   validates_confirmation_of :password, :allow_nil => true
   validates_format_of :webserver_default_domain, :with => /http(|s):\/\/(.*)/, :on => :update 
   attr_accessor :password, :password_confirmation
-  self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php))
+  self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php allow_anonymous_ftp))
 
   def initialize(attributes=nil)
     super
@@ -15,6 +15,7 @@ class Initr::Webserver1 < Initr::Klass
     config["accessible_phpmyadmin"] ||= "0"
     config["blowfish_secret"] ||= ""
     config["manage_php"] ||= "1"
+    config["allow_anonymous_ftp"] ||= "0"
   end
 
   def before_validation
@@ -35,13 +36,10 @@ class Initr::Webserver1 < Initr::Klass
       end
     end
     tags_for_sshkey.uniq!
-    { "webserver_domains"=>domain_list,
-      "admin_password"=>config["admin_password"],
-      "accessible_phpmyadmin"=>accessible_phpmyadmin,
-      "blowfish_secret"=>blowfish_secret,
-      "manage_php"=>manage_php,
-      "webserver_default_domain"=>webserver_default_domain,
-      "tags_for_sshkey"=>tags_for_sshkey }
+    params = { "webserver_domains"=>domain_list,
+               "webserver_default_domain"=>webserver_default_domain,
+               "tags_for_sshkey"=>tags_for_sshkey }
+    config.merge(params)
   end
 
   def print_parameters
