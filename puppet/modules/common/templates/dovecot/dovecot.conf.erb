@@ -90,7 +90,6 @@ plugin {
 <% end -%>
 }
 
-<% if operatingsystem == "Debian" -%>
-# Include specific configuration (not suported on dovecot-1.0 - centos)
-!include_try /etc/dovecot/dovecot-extra.conf
-<% end -%>
+# Some dovecots versions show this error, try to update:
+# Error in configuration file /etc/dovecot.conf line 78: Expecting '='
+!include_try /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-extra.conf
