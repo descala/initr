@@ -2,7 +2,7 @@
 # Puppet Managed #
 ##################
 
-<% if $operatingsystem == "Debian" -%>
+<% if operatingsystem == "Debian" -%>
 protocols = imap imaps pop3 pop3s
 log_timestamp = "%Y-%m-%d %H:%M:%S "
 
@@ -46,11 +46,11 @@ auth default {
 #      }
 
       userdb sql {
-         args = /etc/<%= "dovecot/" if $operatingsystem == "Debian" %>dovecot-sql.conf
+         args = /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-sql.conf
       }
 
       passdb sql {
-         args = /etc/<%= "dovecot/" if $operatingsystem == "Debian" %>dovecot-sql.conf
+         args = /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-sql.conf
       }
 
   userdb prefetch {
@@ -75,14 +75,14 @@ auth default {
 
     }
 
-<% if $operatingsystem == "Debian" -%>
+<% if operatingsystem == "Debian" -%>
 dict {
   quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
 }
 
 <% end -%>
 plugin {
-<% if $operatingsystem == "Debian" -%>
+<% if operatingsystem == "Debian" -%>
   quota = dict:user::proxy::quotadict
 <% else -%>
   # 250 MB quota
@@ -90,4 +90,4 @@ plugin {
 }
 
 # Include specific configuration
-!include_try /etc/<%= "dovecot/" if $operatingsystem == "Debian" %>dovecot-extra.conf
+!include_try /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-extra.conf
