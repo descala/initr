@@ -86,8 +86,11 @@ plugin {
   quota = dict:user::proxy::quotadict
 <% else -%>
   # 250 MB quota
-  quota = maildir:storage=256000                                                                                                                           <<% end -%>
+  quota = maildir:storage=256000
+<% end -%>
 }
 
-# Include specific configuration
-!include_try /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-extra.conf
+<% if operatingsystem == "Debian" -%>
+# Include specific configuration (not suported on dovecot-1.0 - centos)
+!include_try /etc/dovecot/dovecot-extra.conf
+<% end -%>
