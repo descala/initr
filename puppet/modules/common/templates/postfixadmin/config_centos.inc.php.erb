@@ -131,13 +131,13 @@ $CONF['default_aliases'] = array (
 // Examples:
 //   YES: /usr/local/virtual/domain.tld/username@domain.tld
 //   NO:  /usr/local/virtual/username@domain.tld
-$CONF['domain_path'] = 'NO';
+$CONF['domain_path'] = '<%=domain_path == "0" ? "NO" : "YES" %>';
 // If you don't want to have the domain in your mailbox set this to 'NO'.
 // Examples:
 //   YES: /usr/local/virtual/domain.tld/username@domain.tld
 //   NO:  /usr/local/virtual/domain.tld/username
 // Note: If $CONF['domain_path'] is set to NO, this setting will be forced to YES.
-$CONF['domain_in_mailbox'] = 'YES';
+$CONF['domain_in_mailbox'] = '<%=domain_in_mailbox == "0" ? "NO" : "YES" %>';
 
 // Default Domain Values
 // Specify your default values below. Quota in MB.

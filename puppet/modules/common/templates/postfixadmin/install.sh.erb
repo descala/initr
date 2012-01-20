@@ -16,6 +16,7 @@ function db_setup {
   fi
 }
 <% if operatingsystem == "CentOS" -%>
+#TODO: upgrade to last version
 
 if [ -d /var/www/html/postfixadmin ]; then
   echo "postfixadmin already installed at /var/www/html/postfixadmin"
