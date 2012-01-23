@@ -11,6 +11,10 @@ class InstallController < InitrController
     render :text => true
   end
 
+  def ssl_required?
+    return true
+  end
+
   private
 
   def find_node
