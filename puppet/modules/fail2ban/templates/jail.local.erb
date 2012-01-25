@@ -14,7 +14,7 @@ enabled  = <%= jails.include? "pop3" %>
 filter   = mail
 action   = iptables[name=pop3, port=pop3, protocol=tcp]
 <% unless mailto.blank? -%>
-           sendmail-whois[name=POP3, <%= mailto %>, sender=fail2ban@<%= fqdn %>]
+           sendmail-whois[name=POP3, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
 <% end -%>
 logpath  = /var/log/maillog
 maxretry = 5
