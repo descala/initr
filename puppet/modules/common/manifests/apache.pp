@@ -21,7 +21,7 @@ class common::apache {
 
   exec {
     "apache reload":
-      command => "/etc/init.d/apache2 reload",
+      command => "/etc/init.d/$httpd_service reload",
       refreshonly => true,
       require => Service[$httpd_service];
   }
