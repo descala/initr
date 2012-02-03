@@ -5,7 +5,7 @@
 <% end -%>
 </div>
 
-<h2><%=@node.fqdn%> <%= image_tag("warning.png",:title=>"Node has configuration errors") if @node.config_errors? %></h2>
+<h2><%=os_img(@node)%> <%=@node.fqdn%> <%= image_tag("warning.png",:title=>"Node has configuration errors") if @node.config_errors? %></h2>
 
 <%= render_tabs klass_list_tabs %>
 
