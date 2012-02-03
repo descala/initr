@@ -63,6 +63,9 @@ rsa_cert_file=/etc/ssl/certs/vsftpd.pem
 #
 userlist_file=/etc/ftpusers
 #
+<% elsif operatingsystem == "CentOS" and lsbmajdistrelease == "4" -%>
+# centos 4 vsftpd has no reverse_lookup_enable option
+#reverse_lookup_enable=NO
 <% else -%>
 reverse_lookup_enable=NO
 #
