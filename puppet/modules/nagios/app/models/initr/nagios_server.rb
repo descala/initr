@@ -51,7 +51,7 @@ class Initr::NagiosServer < Initr::Klass
   def nagios_contacts
     r = {}
     User.all.each do |u|
-      if !u.is_a?(AnonymousUser) and u.active?
+      if !u.is_a?(AnonymousUser) and u.active? and u.projects.any?
          r[u.login] = { 'email' => u.mail, 'nagiosalias' => u.name }
       end
     end
