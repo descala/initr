@@ -1,4 +1,4 @@
-define webserver1::domain::remotebackup($web_backups_server, $backups_path) {
+define webserver1::domain::remotebackup($web_backups_server, $backups_path, $user_ftp) {
 
   $ensure = $web_backups_server ? {
     "" => "absent",

@@ -31,6 +31,7 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
   webserver1::domain::remotebackup { $name:
     web_backups_server => $web_backups_server,
     backups_path => $backups_path,
+    user_ftp => $user_ftp,
   }
 
   if $database != "" {
