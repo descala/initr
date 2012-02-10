@@ -26,6 +26,7 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
   webserver1::awstats::domain { $name:
     user => $user_awstats,
     pass => $password_awstats,
+    awstats_www => $awstats_www,
   }
   webserver1::domain::remotebackup { $name:
     web_backups_server => $web_backups_server,

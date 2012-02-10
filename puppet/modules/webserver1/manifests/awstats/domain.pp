@@ -1,4 +1,4 @@
-define webserver1::awstats::domain($user, $pass) {
+define webserver1::awstats::domain($user, $pass, $awstats_www) {
   
   if ( $operatingsystem == "CentOS" ) and ( $operatingsystemrelease == "4.9" ) {
   } else {
