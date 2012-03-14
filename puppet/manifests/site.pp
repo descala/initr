@@ -254,7 +254,7 @@ $mysqld = $operatingsystem ? {
   default => "mysqld"
 }
 $mysql_dev = $operatingsystem ? {
-  /Debian|Ubuntu/ => "libmysqlclient15-dev",
+  /Debian|Ubuntu/ => "libmysqlclient-dev",
   default => "mysql-devel"
 }
 $perl_net_dns = $operatingsystem ? {
