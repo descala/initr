@@ -7,19 +7,19 @@ Dispatcher.to_prepare do
   Initr::Klass.send(:include,KlassPatch)
 end
 
-RAILS_DEFAULT_LOGGER.info 'Starting copy_klass plugin for Initr'
+RAILS_DEFAULT_LOGGER.info 'Starting link_klass plugin for Initr'
 
-Initr::Plugin.register :copy_klass do
+Initr::Plugin.register :link_klass do
   redmine do
-    name 'copy_klass'
+    name 'link_klass'
     author 'Ingent'
-    description 'CopyKlasses plugin for initr'
+    description 'LinkKlass plugin for initr'
     version '0.0.1'
     project_module :initr do
-      add_permission :edit_klasses, { :copy_klass => [:new,:create,:configure] }
+      add_permission :edit_klasses, { :link_klass => [:new,:create,:configure] }
     end
   end
-  klasses 'copy_klass' => {:description => 'copy a class from other node', :unique => false}
+  klasses 'link_klass' => {:description => 'use a class from other node, link it', :unique => false}
 end
 
 ::I18n.load_path += Dir.glob(File.join("#{File.dirname(__FILE__)}", 'config', 'locales', '*.yml'))

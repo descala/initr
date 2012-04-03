@@ -111,6 +111,11 @@ class Initr::Klass < ActiveRecord::Base
     true
   end
 
+  # a class can be copied from node to another
+  def copyable?
+    true
+  end
+
   # a class can be removed from a node
   def removable?
     true
