@@ -80,4 +80,15 @@ class Initr::Webserver1 < Initr::Klass
     }.compact
   end
 
+  def clone
+    copy = Initr::Webserver1.new(self.attributes)
+    self.webserver1_domains.each do |ws|
+      ws_copy = ws.clone
+      ws_copy.webserver1_id=nil
+      ws_copy.web_backups_server_id=nil
+      copy.webserver1_domains << ws_copy
+    end
+    copy
+  end
+
 end
