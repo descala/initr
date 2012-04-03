@@ -8,6 +8,10 @@
   <%= link_to l(:button_move), {:controller => 'klass', :action => 'move', :id => @klass }, :class => 'icon icon-move' %>
 <% end -%>
 
+<% if @node.editable_by?(User.current) && @klass.copyable? && !@klass.new_record? -%>
+  <%= link_to l(:button_copy), {:controller => 'klass', :action => 'copy', :id => @klass }, :class => 'icon icon-copy' %>
+<% end -%>
+
 <% if @node.editable_by?(User.current) && @klass.removable? && !@klass.new_record? -%>
   <%= link_to l(:button_delete), {:controller => 'klass', :action => 'destroy', :id => @klass}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
 <% end -%>

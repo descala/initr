@@ -157,6 +157,11 @@ class Initr::Klass < ActiveRecord::Base
     false
   end
 
+  # override this method if klass defines other relationships
+  def clone
+    self.class.new(self.attributes)
+  end
+
   private
 
   def self.adds_klass(*args)

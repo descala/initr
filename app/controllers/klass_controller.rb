@@ -3,7 +3,7 @@ class KlassController < InitrController
 
   menu_item :initr
   before_filter :find_node, :only => [:list,:create,:apply_template]
-  before_filter :find_klass, :only => [:configure,:destroy,:move]
+  before_filter :find_klass, :only => [:configure,:destroy,:move,:copy]
   before_filter :authorize
  
   def list
@@ -97,6 +97,30 @@ class KlassController < InitrController
         redirect_to :action => 'list', :id => params[:klass][:node_id]
       else
         render :action => 'move'
+      end
+    end
+  end
+
+  def copy
+    unless @klass.copyable?
+      flash[:error] = "This klass can't be copied"
+      redirect_to :action => 'list', :id => @node.id
+      return
+    end
+    @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
+    if request.post?
+      unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
+        flash[:error] = "Invalid node to copy to"
+        render :action => 'copy'
+        return
+      end
+      @new_klass = @klass.clone
+      @new_klass.node_id = params[:klass][:node_id]
+      if @new_klass.save
+        flash[:notice] = "Klass copied"
+        redirect_to :action => 'list', :id => params[:klass][:node_id]
+      else
+        render :action => 'copy'
       end
     end
   end
