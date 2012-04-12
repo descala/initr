@@ -122,9 +122,9 @@ class Initr::Report < ActiveRecord::Base
 
     rescue Exception => e
       if node.nil?
-        logger.warn "Failed to process report for #{report.host}"
+        logger.warn "Failed to process report for #{report.host} due to: #{e}"
       else
-        logger.warn "Failed to process report for #{node.fqdn} due to:#{e}"
+        logger.warn "Failed to process report for #{node.fqdn} due to: #{e}"
       end
       false
     end
@@ -187,6 +187,7 @@ class Initr::Report < ActiveRecord::Base
   # this hash is required by the calc_status method
   def self.metrics_to_hash(report)
     resources = report.metrics["resources"]
+    resources ||= {}
     report_status = {}
 
     # find our metric values
