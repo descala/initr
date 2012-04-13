@@ -82,30 +82,31 @@ class webserver1 {
   # redirect to default domain
   ############################
 
-  if $operatingsystem == "Debian" {
-    common::apache::ensite { "default": }
-    common::apache::enmod { "rewrite.load": }
-  }
-  else
-  {
-    file {
-      "$httpd_sitedir/000-default.conf":
-        ensure => "$httpd_sitedir/default",
+  if $manage_default_domain == "1" {
+    if $operatingsystem == "Debian" {
+      common::apache::ensite { "default": }
+      common::apache::enmod { "rewrite.load": }
     }
-  }
+    else
+    {
+      file {
+        "$httpd_sitedir/000-default.conf":
+          ensure => "$httpd_sitedir/default",
+      }
+    }
   
-  file {
-    "$httpd_sitedir/default":
-      content => inline_template('# Puppet managed
+    file {
+      "$httpd_sitedir/default":
+        content => inline_template('# Puppet managed
 <VirtualHost *:80>
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
 RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
-      require => Package[$httpd],
-      notify => Exec["apache reload"];
+        require => Package[$httpd],
+        notify => Exec["apache reload"];
+    }
   }
 
-  
 }
 

@@ -32,6 +32,7 @@
 <fieldset>
   <legend><%= l :field_webserver_default_domain %></legend>
   <p><%= f.text_field :webserver_default_domain %></p>
+  <p><%= f.check_box :manage_default_domain %> <%= help :help_manage_default_domain %></p>
 </fieldset>
 
 <br/>
