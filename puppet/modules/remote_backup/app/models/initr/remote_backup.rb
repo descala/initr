@@ -2,9 +2,9 @@ class Initr::RemoteBackup < Initr::Klass
   unloadable
 
   belongs_to :remote_backup_server, :class_name => "Initr::RemoteBackupServer", :foreign_key => "klass_id"
-  validates_presence_of :klass_id, :signkey, :encryptkey, :keypassword, :on => :update
+  validates_presence_of :klass_id, :encryptkey, :keypassword, :on => :update
 
-  self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword))
+  self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword bandwidthlimit))
 
   def initialize(attributes=nil)
     super
@@ -12,6 +12,7 @@ class Initr::RemoteBackup < Initr::Klass
     self.reportsuccess ||= false
     self.includefiles ||= DEFAULT_INCLUDE_FILES
     self.excludefiles ||= DEFAULT_EXCLUDE_FILES
+    self.bandwidthlimit ||= "0"
   end
 
   def parameters

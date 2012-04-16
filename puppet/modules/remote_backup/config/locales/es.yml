@@ -10,3 +10,4 @@ es:
   field_excludefiles: "Ficheros a excluir"
   about_gpg: "Sobre GPG"
   help_remote_backup_server_id: "Nodos que incluyen la clase remote_backup_server"
+  field_bandwidthlimit: "Limite de ancho de banda"

@@ -10,3 +10,4 @@ ca:
   field_excludefiles: "Fitxers a excloure"
   about_gpg: "Sobre el GPG"
   help_remote_backup_server_id: "Nodes que inclouen la classe remote_backup_server"
+  field_bandwidthlimit: "Límit d'ample de banda"

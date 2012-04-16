@@ -144,7 +144,7 @@ keep = 60
 # if using 'desturl' above, 'bandwidthlimit' must not be set
 # an example setting of 128 kbps would be:
 #bandwidthlimit = 128
-bandwidthlimit = 300
+bandwidthlimit = <%=bandwidthlimit%>
 
 # passed directly to ssh, scp (and sftp in duplicity >=0.4.2)
 # warning: sftp does not support all scp options, especially -i; as
@@ -155,7 +155,7 @@ sshoptions = -o IdentityFile=/etc/ssh/ssh_host_dsa_key
 # put the backups under this destination directory
 # if using 'desturl' above, this must not be set
 # in all other cases, this must be set!
-destdir = ~/
+destdir = .
 
 # the machine which will receive the backups
 # if using 'desturl' above, this must not be set
