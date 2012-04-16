@@ -1,0 +1,12 @@
+en:
+  field_klass: "Remote backup server"
+  field_remotebackups_path: "Backup store directory"
+  field_mailto: "Notification mail"
+  field_reportsuccess: "Report success backups"
+  field_signkey: "Signature key"
+  field_encryptkey: "Encryption key"
+  field_keypassword: "Key password"
+  field_includefiles: "Include files"
+  field_excludefiles: "Exclude files"
+  about_gpg: "About GPG"
+  help_remote_backup_server_id: "Nodes with remote_backup_server class"

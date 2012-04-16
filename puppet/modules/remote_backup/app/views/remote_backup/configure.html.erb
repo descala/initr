@@ -1,0 +1,91 @@
+<%= klass_menu "RemoteBackup" %>
+
+<% labelled_tabular_form_for(:remote_backup, @klass, :url=>{:action=>'configure'}) do |f| -%>
+
+  <%= f.error_messages %>
+
+  <p><%= f.select(:klass_id, @remote_backup_servers, :include_blank=>true) %> <%= help :help_remote_backup_server_id %></p>
+
+  <p><%= f.text_field :mailto %></p>
+
+  <p><%= f.check_box :reportsuccess %></p>
+
+  <p><%= f.text_field :signkey %></p>
+
+  <p><%= f.text_field :encryptkey %></p>
+
+  <p><%= f.text_field :keypassword%></p>
+
+  <p><%= f.text_area :includefiles, :rows => 5, :cols => 50 %></p>
+
+  <p><%= f.text_area :excludefiles, :rows => 5, :cols => 50 %></p>
+
+  <p><%= submit_tag("Save")%></p>
+
+<% end -%>
+
+<h3><%= l(:about_gpg) %></h3>
+
+<p>A la estació de treball generem una clau per a aquest servidor</p>
+
+<pre>
+usuari@desktop:~$ gpg --gen-key
+</pre>
+
+<p>Llistem les claus i busquem la que acabem de generar</p>
+
+<pre>
+usuari@desktop:~$ gpg --list-keys
+/home/lluis/.gnupg/pubring.gpg
+------------------------------
+pub   1024R/DFC1E29A 2012-04-16
+uid                  vbox1.ingent.local (Clau per als backups remots)
+sub   1024R/6A77C478 2012-04-16
+</pre>
+
+<p>Ara exportarem la clau pública i la privada, les copiarem al node que ha de fer els backups i allà les importarem</p>
+
+<pre>
+usuari@desktop:~$ gpg --output DFC1E29A_pub.gpg --armor --export DFC1E29A
+usuari@desktop:~$ gpg --output DFC1E29A_sec.gpg --armor --export-secret-key DFC1E29A
+usuari@desktop:~$ scp DFC1E29A_* root@192.168.13.55:
+usuari@desktop:~$ rm DFC1E29A_*
+# al node
+[root@vbox1 ~]# gpg --import DFC1E29A_pub.gpg
+[root@vbox1 ~]# gpg --import DFC1E29A_sec.gpg
+[root@vbox1 ~]# gpg --list-keys
+/root/.gnupg/pubring.gpg
+------------------------
+pub   1024R/DFC1E29A 2012-04-16
+uid                  vbox1.ingent.local (Clau per als backups remots)
+sub   1024R/6A77C478 2012-04-16
+[root@vbox1 ~]# rm DFC1E29A_*
+</pre>
+
+<p>Per últim cal dir que confiem en aquesta clau</p>
+
+<pre>
+[root@vbox1 ~]# gpg --edit-key DFC1E29A
+gpg> trust
+pub  1024R/DFC1E29A  created: 2012-04-16  expires: never       usage: SC
+                     trust: unknown       validity: unknown
+sub  1024R/6A77C478  created: 2012-04-16  expires: never       usage: E
+[ unknown] (1). vbox1.ingent.local (Clau per als backups remots)
+
+Please decide how far you trust this user to correctly verify other users' keys
+(by looking at passports, checking fingerprints from different sources, etc.)
+
+  1 = I don't know or won't say
+  2 = I do NOT trust
+  3 = I trust marginally
+  4 = I trust fully
+  5 = I trust ultimately
+  m = back to the main menu
+
+Your decision? 5
+Do you really want to set this key to ultimate trust? (y/N) y
+</pre>
+
+<p>La clau té dos ID, el de la clau primària i el de la secundària. Per signar s'acostuma a fer servir la primària i per xifrar la secundària. Reconeixem la clau primària perquè té "pub" al davant, mentre la secundària té "sub".</p>
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

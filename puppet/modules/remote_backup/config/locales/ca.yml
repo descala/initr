@@ -1,0 +1,12 @@
+ca:
+  field_klass: "Servidor de còpies remotes"
+  field_remotebackups_path: "Directori per les còpies"
+  field_mailto: "Email per notificacions"
+  field_reportsuccess: "Notificar còpies exitoses"
+  field_signkey: "Clau per signar"
+  field_encryptkey: "Clau per xifrar"
+  field_keypassword: "Contrasenya de la clau"
+  field_includefiles: "Fitxers a copiar"
+  field_excludefiles: "Fitxers a excloure"
+  about_gpg: "Sobre el GPG"
+  help_remote_backup_server_id: "Nodes que inclouen la classe remote_backup_server"

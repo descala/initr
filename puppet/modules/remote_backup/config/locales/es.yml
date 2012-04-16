@@ -1,0 +1,12 @@
+es:
+  field_klass: "Servidor de copias remotas"
+  field_remotebackups_path: "Directorio para las copias"
+  field_mailto: "Correo para notificaciones"
+  field_reportsuccess: "Reportar copias exitosas"
+  field_signkey: "Clave para firma"
+  field_encryptkey: "Clave para cifrado"
+  field_keypassword: "Contraseña de la clave"
+  field_includefiles: "Ficheros a copiar"
+  field_excludefiles: "Ficheros a excluir"
+  about_gpg: "Sobre GPG"
+  help_remote_backup_server_id: "Nodos que incluyen la clase remote_backup_server"
