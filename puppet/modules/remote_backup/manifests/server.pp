@@ -1,6 +1,14 @@
 class remote_backup::server {
 
   include common::sshkeys
+  if array_includes($classes,"nagios::nsca_node") {
+    remote_backup::nagios_check { $remote_backups: }
+    file {
+      "$nagios_plugins_dir/check_newest_file_age":
+        mode => 755,
+        source => "puppet:///modules/remote_backup/check_newest_file_age";
+    }
+  }
 
   Ssh_authorized_key <<| tag == "${node_hash}_remote_backup_client" |>>
   File <<| tag == "${node_hash}_remote_backup_client" |>>

@@ -17,6 +17,13 @@ class Initr::RemoteBackupServer < Initr::Klass
     if address != node.fqdn
       params["host_alias_for_sshkey"] = address
     end
+    if Initr::Nagios.for_node(self.node)
+      params["remote_backups"] = []
+      remote_backups.each do |rb|
+        # useful to configure nagios checks:
+        params["remote_backups"] << "remotebackup_#{rb.node.name[0...8]}"
+      end
+    end
     params
   end
 
