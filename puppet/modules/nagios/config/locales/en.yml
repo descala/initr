@@ -1,5 +1,5 @@
 en:
-  field_klass: Nagios server
+  field_nagios_server: Nagios server
   field_command: Comand
   field_check_freshness: Check freshness
   field_freshness: Freshness

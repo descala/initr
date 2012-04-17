@@ -1,5 +1,5 @@
 es:
-  field_klass: Servidor nagios
+  field_nagios_server: Servidor nagios
   field_command: Comando
   field_check_freshness: Comprobar freshness
   field_freshness: Freshness

@@ -1,5 +1,5 @@
 ca:
-  field_klass: "Servidor de còpies remotes"
+  field_remote_backup_server: "Servidor de còpies remotes"
   field_remotebackups_path: "Directori per les còpies"
   field_mailto: "Email per notificacions"
   field_reportsuccess: "Notificar còpies exitoses"

@@ -1,5 +1,5 @@
 en:
-  field_klass: "Remote backup server"
+  field_remote_backup_server: "Remote backup server"
   field_remotebackups_path: "Backup store directory"
   field_mailto: "Notification mail"
   field_reportsuccess: "Report success backups"

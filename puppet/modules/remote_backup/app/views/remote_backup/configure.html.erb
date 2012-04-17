@@ -4,7 +4,7 @@
 
   <%= f.error_messages %>
 
-  <p><%= f.select(:klass_id, @remote_backup_servers, :include_blank=>true) %> <%= help :help_remote_backup_server_id %></p>
+  <p><%= f.select(:klass_id, @remote_backup_servers, :include_blank=>true, :label=>l(:field_remote_backup_server) ) %> <%= help :help_remote_backup_server_id %></p>
 
   <p><%= f.text_field :mailto %></p>
 

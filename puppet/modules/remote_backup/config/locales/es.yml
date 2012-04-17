@@ -1,5 +1,5 @@
 es:
-  field_klass: "Servidor de copias remotas"
+  field_remote_backup_server: "Servidor de copias remotas"
   field_remotebackups_path: "Directorio para las copias"
   field_mailto: "Correo para notificaciones"
   field_reportsuccess: "Reportar copias exitosas"
