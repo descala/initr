@@ -2,7 +2,7 @@ class remote_backup::server {
 
   include common::sshkeys
   if array_includes($classes,"nagios::nsca_node") {
-    remote_backup::nagios_check { $remote_backups: }
+    remote_backup::nagios_check_backup_files { $remote_backups: }
     file {
       "$nagios_plugins_dir/check_newest_file_age":
         mode => 755,

@@ -1,4 +1,4 @@
-define remote_backup::nagios_check() {
+define remote_backup::nagios_check_backup_files() {
 
   nagios::check { "${name}_is_current":
     # 129600 = 36h // 172800 = 48h

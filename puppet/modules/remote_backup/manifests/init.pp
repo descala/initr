@@ -1,6 +1,9 @@
 class remote_backup {
 
   include common::sshkeys
+  if array_includes($classes,"nagios::nsca_node") {
+    remote_backup::nagios_check_log { "${remotebackup}_is_ok": }
+  }
 
   package {
     ["backupninja","duplicity"]:
