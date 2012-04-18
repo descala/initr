@@ -11,3 +11,4 @@ en:
   about_gpg: "About GPG"
   help_remote_backup_server_id: "Nodes with remote_backup_server class"
   field_bandwidthlimit: "Bandwidth limit"
+  field_used_space_alert: "Used space alert (Mb)"

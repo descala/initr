@@ -11,3 +11,4 @@ es:
   about_gpg: "Sobre GPG"
   help_remote_backup_server_id: "Nodos que incluyen la clase remote_backup_server"
   field_bandwidthlimit: "Limite de ancho de banda"
+  field_used_space_alert: "Alerta de espacio usado (Mb)"

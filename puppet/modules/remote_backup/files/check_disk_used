@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+  echo "Usage:"
+  echo "    check_disk_used <directory> <threshold>"
+  exit
+fi
+
+if [ ! -d $1 ]; then
+  echo "No such folder ($1) CRITICAL"
+  exit 2
+fi
+
+let "crit = $2 * 1024"
+let "warn = $2 * 1024 * 80 / 100"
+
+diskused=`du -s $1 | awk '{print $1}'`
+if [ $diskused -lt $warn ]; then
+  echo "$1 usage is OK: $diskused of $crit"
+  exit
+elif [ $diskused -lt $crit ]; then
+  echo "$1 usage is WARN: $diskused of $crit"
+  exit 1
+else
+  echo "$1 usage is CRITICAL: $diskused of $crit"
+  exit 2
+fi
+exit 3

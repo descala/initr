@@ -19,9 +19,13 @@ class Initr::RemoteBackupServer < Initr::Klass
     end
     if Initr::Nagios.for_node(self.node)
       params["remote_backups"] = []
+      params["remote_backups_disk_usage_checks"] = {}
       remote_backups.each do |rb|
         # useful to configure nagios checks:
-        params["remote_backups"] << "remotebackup_#{rb.node.name[0...8]}"
+        params["remote_backups"] << rb.folder
+        if rb.used_space_alert.to_i > 0
+          params["remote_backups_disk_usage_checks"][rb.folder] = { "threshold" => rb.used_space_alert }
+        end
       end
     end
     params

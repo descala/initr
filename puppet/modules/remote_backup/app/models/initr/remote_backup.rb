@@ -4,7 +4,8 @@ class Initr::RemoteBackup < Initr::Klass
   belongs_to :remote_backup_server, :class_name => "Initr::RemoteBackupServer", :foreign_key => "klass_id"
   validates_presence_of :klass_id, :encryptkey, :keypassword, :on => :update
 
-  self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword bandwidthlimit))
+  self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword
+                        bandwidthlimit used_space_alert))
 
   def initialize(attributes=nil)
     super
@@ -24,12 +25,16 @@ class Initr::RemoteBackup < Initr::Klass
       raise Initr::Klass::ConfigurationError.new("Selected remote backup server has no node associated")
     end
     params = super
-    params["remotebackup"] = "remotebackup_#{node.name[0...8]}"
+    params["remotebackup"] = self.folder
     params["remotebackups_path"] = remote_backup_server.remotebackups_path
     params["tags_for_sshkey"] = "#{remote_backup_server.node.name}_remote_backups_client"
     params["remote_backup_server_hash"] = remote_backup_server.node.name
     params["remote_backup_server_address"] = remote_backup_server.address
     params
+  end
+
+  def folder
+    "remotebackup_#{self.node.name[0...8]}"
   end
 
   def self.remote_backup_servers_for_current_user

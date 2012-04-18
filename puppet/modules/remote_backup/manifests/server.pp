@@ -3,6 +3,7 @@ class remote_backup::server {
   include common::sshkeys
   if array_includes($classes,"nagios::nsca_node") {
     remote_backup::nagios_check_backup_files { $remote_backups: }
+    create_resources(remote_backup::nagios_check_disk_used, $remote_backups_disk_usage_checks)
     file {
       "$nagios_plugins_dir/check_newest_file_age":
         mode => 755,
