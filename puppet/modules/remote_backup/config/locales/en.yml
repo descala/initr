@@ -12,3 +12,5 @@ en:
   help_remote_backup_server_id: "Nodes with remote_backup_server class"
   field_bandwidthlimit: "Bandwidth limit"
   field_used_space_alert: "Used space alert (Mb)"
+  field_webreports_url: "Reports domain name"
+  field_reportspassword: "Reports password"

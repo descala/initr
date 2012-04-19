@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerName <%=webreports_url%>
+    DocumentRoot /var/www/remotebackup_reports
+    <Directory /var/www/remotebackup_reports>
+        Options FollowSymLinks
+        AllowOverride none
+        Order allow,deny
+        Allow from all
+        AuthUserFile /etc/apache2/remotebackup_users
+        AuthName "Remote backup reports"
+        AuthType Basic
+        Require valid-user
+    </Directory>
+</VirtualHost>
+
+ScriptAlias /munincgi /usr/lib/cgi-bin/munin-cgi-graph

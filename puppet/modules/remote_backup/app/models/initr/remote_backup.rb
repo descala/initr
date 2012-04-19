@@ -2,10 +2,11 @@ class Initr::RemoteBackup < Initr::Klass
   unloadable
 
   belongs_to :remote_backup_server, :class_name => "Initr::RemoteBackupServer", :foreign_key => "klass_id"
-  validates_presence_of :klass_id, :encryptkey, :keypassword, :on => :update
+  validates_presence_of :klass_id, :encryptkey, :keypassword, :reportspassword, :on => :update
+  validates_numericality_of :bandwidthlimit, :used_space_alert, :only_integer => true
 
   self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword
-                        bandwidthlimit used_space_alert))
+                        bandwidthlimit used_space_alert reportspassword))
 
   def initialize(attributes=nil)
     super
@@ -63,5 +64,15 @@ EOF
 /home/*/gtk-gnutella-downloads
 /var/cache/backupninja/duplicity
 EOF
+
+  private
+
+  def bandwidthlimit_before_type_cast
+    bandwidthlimit
+  end
+
+  def used_space_alert_before_type_cast
+    used_space_alert
+  end
 
 end

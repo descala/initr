@@ -1,0 +1,73 @@
+#!/bin/bash
+# -*- sh -*-
+
+: <<EOF
+
+=head1 NAME
+
+remotebackup_ - Wildcard-plugin to monitor backups disk usage
+
+=head1 CONFIGURATION
+
+To read backup directories we need to be root:
+  [remotebackup_*]
+      user root
+
+This is a wildcard plugin. To monitor an backup, link
+if_<backup_hash> to this file. E.g.
+
+  ln -s /usr/share/munin/plugins/remotebackup_ \
+        /etc/munin/plugins/remotebackup_4c7ac0f8
+
+...will monitor <%=remotebackups_path%>/remotebackup_4c7ac0f8
+
+=head1 AUTHORS
+
+Unknown author
+
+=head1 LICENSE
+
+Unknown license
+
+=head1 BUGS
+
+
+=head1 MAGIC MARKERS
+
+ #%# family=manual
+ #%# capabilities=autoconf
+
+=cut
+
+EOF
+
+. $MUNIN_LIBDIR/plugins/plugin.sh
+
+HASH=${0##*remotebackup_}
+BAKDIR="<%=remotebackups_path%>/remotebackup_$HASH"
+HASHNAME="$(clean_fieldname bak_$HASH)"
+
+if [ "$1" = "autoconf" ]; then
+    echo yes
+    exit 0
+fi
+
+if [ "$1" = "config" ]; then
+
+    echo 'graph_title Backup filesystem usage'
+    echo 'graph_args --base 1024 --lower-limit 0'
+    echo 'graph_vlabel bytes'
+    echo 'graph_category disk'
+    du -s $BAKDIR |
+    while read size dir; do
+        name="$HASHNAME"
+        echo "$name.label $HASHNAME"
+        echo "$name.cdef $HASHNAME,1024,*"
+    done
+    exit 0
+fi
+
+du -s $BAKDIR |
+while read size dir; do
+    echo "$(clean_fieldname $HASHNAME).value $size"
+done

@@ -16,6 +16,10 @@
 
   <p><%= f.text_field :keypassword%></p>
 
+  <p><label for="user"><%=l(:reportsuser)%></label><input type="text" name="" value="<%=@klass.node.name[0...8]%>" readonly="readonly" /></p>
+
+  <p><%= f.text_field :reportspassword%></p>
+
   <p><%= f.text_area :includefiles, :rows => 5, :cols => 50 %></p>
 
   <p><%= f.text_area :excludefiles, :rows => 5, :cols => 50 %></p>

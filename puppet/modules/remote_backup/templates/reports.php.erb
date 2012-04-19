@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>Remote backup disk usage report</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <? if ($_SERVER['REMOTE_USER']) { ?>
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-day.png" alt="" />
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-week.png" alt="" />
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-month.png" alt="" />
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-year.png" alt="" />
+    <? } else { ?>
+    <p>Not logged in</p>
+    <? } ?>
+  </body>
+</html>

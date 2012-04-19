@@ -62,6 +62,9 @@ class remote_backup {
       owner => $remotebackup,
       mode => 0700,
       tag => "${remote_backup_server_hash}_remote_backup_client";
+    "/etc/munin/plugins/${remotebackup}":
+      ensure => "/usr/share/munin/plugins/remotebackup_",
+      tag => "${remote_backup_server_hash}_remote_backup_client";
   }
 
 }
