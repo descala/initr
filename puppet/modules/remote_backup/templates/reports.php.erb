@@ -6,10 +6,10 @@
   </head>
   <body>
     <? if ($_SERVER['REMOTE_USER']) { ?>
-    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-day.png" alt="" />
-    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-week.png" alt="" />
-    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-month.png" alt="" />
-    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= $_SERVER['REMOTE_USER']; ?>-year.png" alt="" />
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= str_replace('.', '_', $_SERVER['REMOTE_USER']); ?>-day.png" alt="" />
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= str_replace('.', '_', $_SERVER['REMOTE_USER']); ?>-week.png" alt="" />
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= str_replace('.', '_', $_SERVER['REMOTE_USER']); ?>-month.png" alt="" />
+    <img src="/munincgi/<%=domain%>/<%=fqdn%>/remotebackup_<?= str_replace('.', '_', $_SERVER['REMOTE_USER']); ?>-year.png" alt="" />
     <? } else { ?>
     <p>Not logged in</p>
     <? } ?>
