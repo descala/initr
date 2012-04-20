@@ -12,11 +12,13 @@ class common::munin::server {
       owner => munin,
       group => $httpd_user;
     "/var/log/munin/munin-graph.log":
+      ensure => present,
       owner => munin,
       group => $httpd_user,
       mode => 660,
       require => Package["munin"];
     "/var/log/munin/munin-cgi-graph.log":
+      ensure => present,
       owner => munin,
       group => $httpd_user,
       mode => 660,

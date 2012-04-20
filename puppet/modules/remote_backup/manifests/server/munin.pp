@@ -8,8 +8,6 @@ class remote_backup::server::munin {
       content => template("remote_backup/munin.conf.erb");
     "/var/www/remotebackup_reports":
       ensure => directory;
-    "/var/www/remotebackup_reports/index.html":
-      content => "hola";
     "/usr/share/munin/plugins/remotebackup_":
       mode => 755,
       content => template("remote_backup/munin_graph.erb");
