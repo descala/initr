@@ -1,5 +1,11 @@
 define webserver1::domain::remotebackup($web_backups_server, $backups_path, $user_ftp) {
 
+  if array_includes($classes,"nagios::nsca_node") {
+    nagios::service { "${name}_to_${web_backups_server}":
+      freshness => 93600,
+    }
+  }
+
   $ensure = $web_backups_server ? {
     "" => "absent",
     default => "present"

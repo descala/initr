@@ -41,7 +41,29 @@ class Backup
   end
 
   def self.usage
-    puts "USAGE: backups.rb <domain.tld> [server] [excludes] [remote_user]"
+    puts "USAGE: backups.rb <domain.tld> [server] [port] [bdays] [excludes] [remote_user]"
+  end
+
+  def rsync_code(val)
+    h = {  0  => "Success",
+      1 => "Syntax or usage error",
+      2 => "Protocol incompatibility",
+      3 => "Errors selecting input/output files, dirs",
+      4 => "Requested action not supported: an attempt was made to manipulate 64-bit files on a platform that  cannot  support them; or an option was specified that is supported by the client and not by the server.",
+      5 => "Error starting client-server protocol",
+      6 => "Daemon unable to append to log-file",
+      10 => "Error in socket I/O",
+      11 => "Error in file I/O",
+      12 => "Error in rsync protocol data stream",
+      13 => "Errors with program diagnostics",
+      21 => "Some error returned by waitpid()",
+      22 => "Error allocating core memory buffers",
+      23 => "Partial transfer due to error",
+      24 => "Partial transfer due to vanished source files",
+      25 => "The --max-delete limit stopped deletions",
+      30 => "Timeout in data send/receive"
+    }
+    "#{val} #{h[val]}"
   end
 
   private
@@ -58,6 +80,7 @@ end
 if __FILE__ == $0
 
   retval = 0
+  info = ""
 
   if ARGV.size != 6
     Backup.usage
@@ -68,6 +91,7 @@ if __FILE__ == $0
   begin
     cop = Backup.new(*ARGV)
     retval += cop.do_backup
+    info = cop.rsync_code(retval)
   rescue Exception => e
     puts e.to_s
     puts e.backtrace
@@ -75,8 +99,8 @@ if __FILE__ == $0
     exit 3
   end
 
-  puts "Exiting with status 1 (WARNING)" if retval != 0
+  puts "#{info} (WARNING)" if retval != 0
   exit 1 if retval != 0
 
-  puts "Exiting with status 0 (OK)"
+  puts "#{info} (OK)"
 end
