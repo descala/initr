@@ -34,7 +34,7 @@ class Backup
     command = "nice -n 19 rsync -a /var/www/#{@domain}/conf /var/www/#{@domain}/cgi-bin /var/www/#{@domain}/backups/ &> /dev/null"
     system command
     retval = $?.exitstatus
-    add_info(rsync_code(retval))
+    add_info("conf_cgi",rsync_code(retval))
     return retval
   end
 
@@ -46,7 +46,7 @@ class Backup
     end
     system command
     retval = $?.exitstatus
-    add_info(rsync_code(retval))
+    add_info("awstats",rsync_code(retval))
     return retval
   end
 
@@ -57,7 +57,7 @@ class Backup
       command = "(/usr/bin/mysqldump -u #{@db_user} -p#{@db_passwd} #{@database} > #{sqlbak} && gzip -f #{sqlbak} && chmod 600 #{sqlbak}.gz) &> /dev/null"
       system command
       retval = $?.exitstatus
-      add_info("Error with database backup") if retval != 0
+      add_info("mysqldump","Error with database backup") if retval != 0
     end
     return retval
   end
@@ -72,7 +72,7 @@ class Backup
     command += " #{@remote_user}@#{@server}:incremental &> /dev/null"    # destination
     system command
     retval = $?.exitstatus
-    add_info(rsync_code(retval))
+    add_info("remote",rsync_code(retval))
     return retval
   end
 
@@ -106,9 +106,9 @@ class Backup
     end
   end
 
-  def add_info(to_add)
-    @info = "#{@info} - " if @info.size > 0
-    @info = "#{@info}#{to_add}"
+  def add_info(where,to_add)
+    @info = "#{where}: #{@info} - " if @info.size > 0
+    @info = "#{where}: #{@info}#{to_add}"
   end
 
   private
