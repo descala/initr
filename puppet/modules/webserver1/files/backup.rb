@@ -11,8 +11,10 @@
 
 class Backup
 
-  # $name $web_backups_server $port $history $excludes
-  def initialize(domain, server, port, bdays, excludes, remote_user)
+  attr_reader :info
+
+  # $name $web_backups_server $port $history $excludes $awstats_www, $database
+  def initialize(domain, server, port, bdays, excludes, remote_user, awstats_www, database, db_user, db_passwd)
     validate(ARGV)
     @excludes = excludes
     @domain  = domain
@@ -21,6 +23,43 @@ class Backup
     @bdays   = bdays #TODO
     @bakdir="\"../" + `date +%Y-%m-%d/%H-%M-%S`.sub(/\n/,  '') + "\""
     @remote_user = remote_user.size > 0 ? remote_user : domain
+    @awstats_www = awstats_www
+    @database = database
+    @db_user = db_user
+    @db_passwd = db_passwd
+    @info = ""
+  end
+
+  def local_backup_conf_and_cgi
+    command = "nice -n 19 rsync -a /var/www/#{@domain}/conf /var/www/#{@domain}/cgi-bin /var/www/#{@domain}/backups/ &> /dev/null"
+    system command
+    retval = $?.exitstatus
+    add_info(rsync_code(retval))
+    return retval
+  end
+
+  def local_backup_awstats
+    if @awstats_www == "true"
+      command = "nice -n 19 rsync -a /var/lib/awstats/awstats??????.www.#{@domain}.??? /var/www/#{@domain}/backups/awstats/ &> /dev/null"
+    else
+      command = "nice -n 19 rsync -a /var/lib/awstats/awstats??????.#{@domain}.??? /var/www/#{@domain}/backups/awstats/ &> /dev/null"
+    end
+    system command
+    retval = $?.exitstatus
+    add_info(rsync_code(retval))
+    return retval
+  end
+
+  def local_backup_database
+    retval = 0
+    if @database.size > 0
+      sqlbak="/var/www/#{@domain}/backups/#{@domain}.sql"
+      command = "(/usr/bin/mysqldump -u #{@db_user} -p#{@db_passwd} #{@database} > #{sqlbak} && gzip -f #{sqlbak} && chmod 600 #{sqlbak}.gz) &> /dev/null"
+      system command
+      retval = $?.exitstatus
+      add_info("Error with database backup") if retval != 0
+    end
+    return retval
   end
 
   def do_backup
@@ -30,18 +69,15 @@ class Backup
     end
     command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origin
-    command += " #{@remote_user}@#{@server}:incremental"                      # destination
-    puts "Syncronizing backup with server, command: #{command}"
+    command += " #{@remote_user}@#{@server}:incremental &> /dev/null"    # destination
     system command
-    return $?.exitstatus
+    retval = $?.exitstatus
+    add_info(rsync_code(retval))
+    return retval
   end
 
   def self.already_running?
     return false # TODO
-  end
-
-  def self.usage
-    puts "USAGE: backups.rb <domain.tld> [server] [port] [bdays] [excludes] [remote_user]"
   end
 
   def rsync_code(val)
@@ -63,7 +99,16 @@ class Backup
       25 => "The --max-delete limit stopped deletions",
       30 => "Timeout in data send/receive"
     }
-    "#{val} #{h[val]}"
+    if h.keys.include?(val)
+      "#{val} #{h[val]}"
+    else
+      "#{val} (unknown return code)"
+    end
+  end
+
+  def add_info(to_add)
+    @info = "#{@info} - " if @info.size > 0
+    @info = "#{@info}#{to_add}"
   end
 
   private
@@ -82,16 +127,18 @@ if __FILE__ == $0
   retval = 0
   info = ""
 
-  if ARGV.size != 6
-    Backup.usage
+  if ARGV.size != 10
     puts "Exiting with status 3 (UNKNOWN)"
     exit 3
   end
 
   begin
     cop = Backup.new(*ARGV)
+    retval += cop.local_backup_conf_and_cgi
+    retval += cop.local_backup_awstats
+    retval += cop.local_backup_database
     retval += cop.do_backup
-    info = cop.rsync_code(retval)
+    info = cop.info
   rescue Exception => e
     puts e.to_s
     puts e.backtrace

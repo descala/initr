@@ -9,15 +9,6 @@ u_sure() {
   echo "Launching a backup of $DOMAIN to $SERVER ..."
 }
 
-rsync_local_files() {
-  rsync -a /var/www/$DOMAIN/conf /var/www/$DOMAIN/cgi-bin /var/www/$DOMAIN/backups/
-  if [ "$1" = "true" ]; then
-    rsync -a /var/lib/awstats/awstats??????.www.$DOMAIN.??? /var/www/$DOMAIN/backups/awstats/
-  else
-    rsync -a /var/lib/awstats/awstats??????.$DOMAIN.??? /var/www/$DOMAIN/backups/awstats/
-  fi
-}
-
 <% if puppet_classes =~ /nagios::nsca_node/ -%>
 # $1 = exit code of backup.rb
 # $2 = info string
@@ -34,17 +25,10 @@ case "$DOMAIN" in
     USER=<%= "#{"backups_" if v['user_ftp'] == v['name']}#{v['name']}"[0...32] %>
     u_sure
     retval=0
-    rsync_local_files <%= v['awstats_www'] %>
-    let retval+=$?
-<% if v['database'] != "" -%>
-    SQLBAK=/var/www/$DOMAIN/backups/$DOMAIN.sql
-    <%= "/usr/bin/mysqldump -u #{v['user_mysql']} -p#{v['password_db']} #{v['database']} > $SQLBAK && gzip -f $SQLBAK && chmod 600 $SQLBAK.gz" %>
-    let retval+=$?
-<% end -%>
-    <%= "info=`/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" $USER`" %>
+    <%= "info=`/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" $USER #{v['awstats_www']} \"#{v['database']}\" \"#{v['user_mysql']}\" \"#{v['password_db']}\"`" %>
     let retval+=$?
 <% if puppet_classes =~ /nagios::nsca_node/ -%>
-    nagios_notify $retval $info
+    nagios_notify $retval "$info"
 <% end -%>
     ;;
 <% end -%>
