@@ -107,8 +107,8 @@ class Backup
   end
 
   def add_info(where,to_add)
-    @info = "#{where}: #{@info} - " if @info.size > 0
-    @info = "#{where}: #{@info}#{to_add}"
+    @info = "#{@info} - " if @info.size > 0
+    @info = "#{@info}#{where}: #{to_add}"
   end
 
   private
