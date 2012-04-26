@@ -31,7 +31,7 @@ case "$DOMAIN" in
 <% next unless v.has_key? 'web_backups_server' -%>
   <%= v['name'] %>)
     SERVER=<%= v['web_backups_server'] %>
-    USER=<%= "backups_" if v['user_ftp'] == v['name'] %><%= v['name'] %>
+    USER=<%= "#{"backups_" if v['user_ftp'] == v['name']}#{v['name']}"[0...32] %>
     u_sure
     retval=0
     rsync_local_files <%= v['awstats_www'] %>
