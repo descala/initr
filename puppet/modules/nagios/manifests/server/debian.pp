@@ -67,5 +67,12 @@ class nagios::server::debian inherits nagios::server::common {
       mode => 755,
       source => "puppet:///modules/nagios/nagios_init_script_debian";
   }
+  cron {
+    # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=479330
+    "purge nagios logs":
+      command => "find /var/log/nagios3/archives/ -type f -mtime +180 -delete",
+      hour => 6,
+      minute => 40;
+  }
 }
 
