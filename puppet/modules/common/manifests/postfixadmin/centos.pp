@@ -7,8 +7,9 @@ class common::postfixadmin::centos inherits common::postfixadmin {
       mode => 600,
       content => template("common/postfixadmin/tables_centos.sql.erb"),
       require => File["/usr/local/src/postfixadmin_db.sql"];
-    "/var/www/html/postfixadmin/config.inc.php":
-      mode => 664,
+    "/var/www/html/postfixadmin/config.local.php":
+      mode => 640,
+      group => $httpd_user,
       content => template("common/postfixadmin/config_centos.inc.php.erb"),
       require => Exec["/bin/bash /usr/local/src/postfixadmin_install.sh"];
 #TODO: apache config?

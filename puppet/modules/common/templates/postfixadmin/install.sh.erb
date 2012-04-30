@@ -24,15 +24,18 @@ if [ -d /var/www/html/postfixadmin ]; then
 fi
 
 # install postfixadmin
+VER=2.3.5
 cd /tmp
-wget http://downloads.sourceforge.net/postfixadmin/postfixadmin-2.2.1.1.tar.gz
-tar xvzf postfixadmin-2.2.1.1.tar.gz
-rm postfixadmin-2.2.1.1.tar.gz
-mv postfixadmin-2.2.1.1 /var/www/html/postfixadmin
+wget http://downloads.sourceforge.net/postfixadmin/postfixadmin-$VER.tar.gz
+tar xvzf postfixadmin-$VER.tar.gz
+rm postfixadmin-$VER.tar.gz
+mv postfixadmin-$VER /var/www/html/postfixadmin
 cd /var/www/html/postfixadmin
-chown -R root:root /var/www/html/postfixadmin
+find -type f -print0 | xargs -0 chmod 640
+find -type d -print0 | xargs -0 chmod 750
+chown -R root:<%=$httpd_user%> /var/www/html/postfixadmin
 touch /etc/postfix/local.domains
-chown root:apache /etc/postfix/local.domains
+chown root:<%=$httpd_user%> /etc/postfix/local.domains
 chmod g+rw /etc/postfix/local.domains
 
 db_setup
