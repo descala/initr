@@ -10,7 +10,7 @@ class common::postfixadmin::centos inherits common::postfixadmin {
     "/var/www/html/postfixadmin/config.local.php":
       mode => 640,
       group => $httpd_user,
-      content => template("common/postfixadmin/config_centos.inc.php.erb"),
+      content => template("common/postfixadmin/config.local.php.erb"),
       require => Exec["/bin/bash /usr/local/src/postfixadmin_install.sh"];
 #TODO: apache config?
   }

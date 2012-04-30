@@ -15,6 +15,9 @@ function db_setup {
     mysql -D <%= db_name %> < /usr/local/src/postfixadmin_tables.sql
   fi
 }
+
+VER=2.3.5
+
 <% if operatingsystem == "CentOS" -%>
 #TODO: upgrade to last version
 
@@ -24,12 +27,11 @@ if [ -d /var/www/html/postfixadmin ]; then
 fi
 
 # install postfixadmin
-VER=2.3.5
 cd /tmp
-wget http://downloads.sourceforge.net/postfixadmin/postfixadmin-$VER.tar.gz
-tar xvzf postfixadmin-$VER.tar.gz
-rm postfixadmin-$VER.tar.gz
-mv postfixadmin-$VER /var/www/html/postfixadmin
+wget http://downloads.sourceforge.net/postfixadmin/postfixadmin-${VER}.tar.gz
+tar xvzf postfixadmin-${VER}.tar.gz
+rm postfixadmin-${VER}.tar.gz
+mv postfixadmin-${VER} /var/www/html/postfixadmin
 cd /var/www/html/postfixadmin
 find -type f -print0 | xargs -0 chmod 640
 find -type d -print0 | xargs -0 chmod 750
@@ -46,9 +48,9 @@ rm setup.php
 db_setup
 
 cd /usr/local/src
-wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.3.2/postfixadmin-2.3.2_all.deb
+wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-${VER}/postfixadmin-${VER}_all.deb
 debconf-set-selections < postfixadmin.debconf_selections
-dpkg -i --force-confold postfixadmin-2.3.2_all.deb
+dpkg -i --force-confold postfixadmin-${VER}_all.deb
 
 <% else -%>
 # <%= operatingsystem %> not supported yet
