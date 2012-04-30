@@ -49,7 +49,7 @@ db_setup
 cd /usr/local/src
 wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-${VER}/postfixadmin_${VER}-1_all.deb
 debconf-set-selections < postfixadmin.debconf_selections
-dpkg -i --force-confold postfixadmin-${VER}_all.deb
+dpkg -i --force-confold postfixadmin_${VER}-1_all.deb
 
 <% else -%>
 # <%= operatingsystem %> not supported yet
