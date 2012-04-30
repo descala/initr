@@ -19,7 +19,6 @@ function db_setup {
 VER=2.3.5
 
 <% if operatingsystem == "CentOS" -%>
-#TODO: upgrade to last version
 
 if [ -d /var/www/html/postfixadmin ]; then
   echo "postfixadmin already installed at /var/www/html/postfixadmin"
@@ -48,7 +47,7 @@ rm setup.php
 db_setup
 
 cd /usr/local/src
-wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-${VER}/postfixadmin-${VER}_all.deb
+wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-${VER}/postfixadmin_${VER}-1_all.deb
 debconf-set-selections < postfixadmin.debconf_selections
 dpkg -i --force-confold postfixadmin-${VER}_all.deb
 
