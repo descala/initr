@@ -28,6 +28,7 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
     pass => $password_awstats,
     awstats_www => $awstats_www,
   }
+  #TODO: create a config file to avoid having to pass too many parameters to backup.rb
   webserver1::domain::remotebackup { $name:
     web_backups_server => $web_backups_server,
     backups_path => $backups_path,

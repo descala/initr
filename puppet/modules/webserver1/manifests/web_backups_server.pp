@@ -23,11 +23,7 @@ class webserver1::web_backups_server {
 
   case $operatingsystem {
     "Debian": {
-       package { "rssh": ensure => installed; }
-       file {
-         ["/etc/rssh.conf"]:
-           source => "puppet:///modules/webserver1/rssh.conf",
-       }
+      include common::rssh
        User <<| tag == "${address}_web_backups_client" |>> {
          shell => "/usr/bin/rssh"
        }

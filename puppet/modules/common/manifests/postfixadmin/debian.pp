@@ -23,10 +23,10 @@ class common::postfixadmin::debian inherits common::postfixadmin {
       require => File["/usr/local/src/postfixadmin_db.sql"];
     "/etc/postfixadmin":
       ensure => directory;
-    "/etc/postfixadmin/config.inc.php":
+    "/etc/postfixadmin/config.local.php":
       mode => 640, owner => root, group => www-data,
       require => Exec["install postfixadmin"],
-      content => template("common/postfixadmin/config_debian.inc.php.erb");
+      content => template("common/postfixadmin/config.local.php.erb");
     "$httpd_confdir/postfixadmin":
       ensure => "/etc/postfixadmin/apache.conf";
   }

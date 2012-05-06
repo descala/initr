@@ -7,7 +7,7 @@ class Initr::Webserver1 < Initr::Klass
   validates_confirmation_of :password, :allow_nil => true
   validates_format_of :webserver_default_domain, :with => /http(|s):\/\/(.*)/, :on => :update 
   attr_accessor :password, :password_confirmation
-  self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php allow_anonymous_ftp))
+  self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php allow_anonymous_ftp manage_default_domain))
 
   def initialize(attributes=nil)
     super
@@ -16,6 +16,7 @@ class Initr::Webserver1 < Initr::Klass
     config["blowfish_secret"] ||= ""
     config["manage_php"] ||= "1"
     config["allow_anonymous_ftp"] ||= "0"
+    config["manage_default_domain"] ||= "1"
   end
 
   def before_validation
@@ -43,7 +44,8 @@ class Initr::Webserver1 < Initr::Klass
       "manage_php"=>manage_php,
       "allow_anonymous_ftp"=>allow_anonymous_ftp,
       "webserver_default_domain"=>webserver_default_domain,
-      "tags_for_sshkey"=>tags_for_sshkey }
+      "tags_for_sshkey"=>tags_for_sshkey,
+      "manage_default_domain"=>manage_default_domain }
   end
 
   def print_parameters

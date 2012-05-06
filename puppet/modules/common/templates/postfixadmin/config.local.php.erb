@@ -1,0 +1,34 @@
+<?php
+/****************
+  Puppet managed
+ ****************/
+$CONF['configured'] = true;
+$CONF['postfix_admin_url'] = 'http://<%= fqdn %>/postfixadmin';
+$CONF['database_type'] = 'mysqli';
+$CONF['database_user'] = '<%= db_user %>';
+$CONF['database_password'] = '<%= db_passwd %>';
+$CONF['database_name'] = '<%= db_name %>';
+$CONF['admin_email'] = '<%= admin_email %>';
+$CONF['encrypt'] = '<%= db_passwd_encrypt %>';
+$CONF['default_aliases'] = array (
+    'abuse'      => '<%= admin_email %>',
+    'hostmaster' => '<%= admin_email %>',
+    'postmaster' => '<%= admin_email %>',
+    'webmaster'  => '<%= admin_email %>'
+);
+$CONF['domain_path'] = '<%=domain_path == "0" ? "NO" : "YES" %>';
+$CONF['domain_in_mailbox'] = '<%=domain_in_mailbox == "0" ? "NO" : "YES" %>';
+$CONF['maxquota'] = '250';
+$CONF['quota'] = 'YES';
+$CONF['quota_multiplier'] = '1048576';
+$CONF['welcome_text'] = <<<EOM
+Benvingut/benvinguda al nou compte d'e-mail!
+Welcome to your new account!
+EOM;
+// unused?
+$CONF['show_custom_count']=2;
+// specific config
+if (file_exists(dirname(__FILE__) . '/config.specific.php')) {
+      include(dirname(__FILE__) . '/config.specific.php');
+}
+?>

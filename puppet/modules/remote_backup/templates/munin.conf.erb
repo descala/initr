@@ -1,0 +1,22 @@
+##################
+# Puppet managed #
+##################
+
+dbdir   /var/lib/munin
+htmldir /var/www/html/munin<%= "cgi" if munin_cgi == "1" %>
+logdir  /var/log/munin
+rundir  /var/run/munin
+tmpldir /etc/munin/templates
+max_processes 10
+
+<% if munin_cgi == "1" -%>
+cgiurl_graph /munincgi
+graph_strategy cgi
+<% end -%>
+
+# this server ...
+
+[<%= fqdn.downcase %>]
+  address 127.0.0.1
+  port 4949
+  use_node_name yes
