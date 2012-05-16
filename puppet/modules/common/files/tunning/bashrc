@@ -38,3 +38,8 @@ else
 fi
 
 export FACTERLIB=/var/lib/puppet/lib/facter
+
+# local stuff
+if [ -f ~/.bashrc_local ]; then
+    . ~/.bashrc_local
+fi
