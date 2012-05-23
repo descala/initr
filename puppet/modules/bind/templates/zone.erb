@@ -6,10 +6,12 @@
 $TTL <%= ttl %>
 @   IN  SOA <%= scope.lookupvar('bind::nameservers').first %>.  webmaster.<%= name %>. (
             <%= serial %>  ; serial automatically incremented
-            300         ; refresh, seconds
-            7200        ; retry, seconds
-            300         ; expire, seconds
+            3600        ; refresh, seconds
+            600         ; retry, seconds
+            604800      ; expire, seconds
             300 )       ; minimum, seconds
+                        ; This value was used to serve as a default TTL for records without a given TTL value
+                        ; and now is used for negative caching (indicates how long a resolver may cache the negative answer)
 <% scope.lookupvar('bind::nameservers').each do |ns| -%>
     IN  NS  <%= ns %>.
 <% end -%>
