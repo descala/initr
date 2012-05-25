@@ -16,6 +16,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_presence_of :name, :user_ftp, :user_awstats, :password_ftp, :password_awstats
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_length_of :user_mysql, :in => 1..16
+  after_save :trigger_puppetrun
+  after_destroy :trigger_puppetrun
 
   def initialize(attributes=nil)
     super
