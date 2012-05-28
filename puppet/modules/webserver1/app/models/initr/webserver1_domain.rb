@@ -84,4 +84,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     return salt
   end
 
+  def trigger_puppetrun
+    self.webserver.trigger_puppetrun
+  end
+
 end
