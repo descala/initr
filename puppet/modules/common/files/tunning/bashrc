@@ -1,3 +1,6 @@
+##################
+# Puppet managed #
+##################
 if [ -f /etc/bash.bashrc ]; then
   . /etc/bash.bashrc
 elif [ -f /etc/bashrc ]; then
