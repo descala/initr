@@ -118,7 +118,7 @@ class KlassController < InitrController
       @new_klass.node_id = params[:klass][:node_id]
       if @new_klass.save
         flash[:notice] = "Klass copied"
-        redirect_to :action => 'list', :id => params[:klass][:node_id]
+        redirect_to :action => 'list', :id => @node
       else
         render :action => 'copy'
       end
