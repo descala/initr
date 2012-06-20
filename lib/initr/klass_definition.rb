@@ -48,5 +48,9 @@ class Initr::KlassDefinition
     self.name.to_s.downcase <=> oth.name.to_s.downcase
   end
 
+  def pretty_name
+    name.camelize
+  end
+
 end
 

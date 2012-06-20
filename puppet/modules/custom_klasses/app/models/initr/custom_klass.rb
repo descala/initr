@@ -21,6 +21,10 @@ class Initr::CustomKlass < Initr::Klass
     read_attribute :name
   end
 
+  def pretty_name
+    name.split("::").join(":: ")
+  end
+
   def description
     read_attribute :description
   end

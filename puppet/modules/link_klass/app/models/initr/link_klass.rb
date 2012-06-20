@@ -20,6 +20,10 @@ class Initr::LinkKlass < Initr::Klass
     copied_klass.nil? ? "LinkKlass" : copied_klass.name
   end
 
+  def pretty_name
+    copied_klass.pretty_name
+  end
+
   def print_parameters
     if copied_klass
       "Copied klass from #{copied_klass.node.fqdn}"

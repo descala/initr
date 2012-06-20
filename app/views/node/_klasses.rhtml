@@ -23,14 +23,15 @@
           <li class="klass<%=klass.active? ? " active" : "" %>">
             <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?, :onclick=>"toogle_class($(this));"%>
             <%=image_tag("changeset.png",:title=>"Class has stored configuration") unless klass.active? %>
+            <%=image_tag("link.png",:title=>"Linked on #{klass.linked_klasses.collect {|lk| lk.node.fqdn}.join(", ") }") if klass.linked_klasses.any? %>
             <%=image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.node.is_a? Initr::NodeTemplate or klass.installed? or !klass.active? %>
-            <%=link_to kd.name.camelize, :controller=>klass.controller, :action=>'configure', :id=>klass%>
+            <%=link_to kd.pretty_name, :controller=>klass.controller, :action=>'configure', :id=>klass%>
             <p><%= kd.description %></p>
           </li>
         <% else -%>
           <li class="klass">
             <%=check_box_tag "new_klasses[#{kd.name.camelize}]", "active", false, :onclick=>"toogle_class($(this));"%>
-            <%=link_to kd.name.camelize, :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name -%>
+            <%=link_to kd.pretty_name, :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name -%>
             <p><%= kd.description %></p>
           </li>
         <% end -%>
@@ -47,12 +48,14 @@
       <% klasses = @node.klasses.find_all_by_type kd.name.camelize -%>
       <% klasses.each do |klass| -%>
         <li class="klass<%=klass.active? ? " active" : "" %>">
-          <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%> <%=link_to klass.name, :controller=>klass.controller, :action=>'configure', :id=>klass%>
+        <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%>
+        <%=image_tag("link.png",:title=>"Linked on #{klass.linked_klasses.collect {|lk| lk.node.fqdn}.join(", ") }") if klass.linked_klasses.any? %>
+        <%=link_to klass.pretty_name, :controller=>klass.controller, :action=>'configure', :id=>klass%>
         </li>
       <% end -%>
       </ul>
       <div class="icon icon-add" style="clear:left;">
-        <%= link_to "Add #{kd.name}", :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name %>
+        <%= link_to "Add #{kd.pretty_name}", :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name %>
       </div>
     <% end -%>
     </div>

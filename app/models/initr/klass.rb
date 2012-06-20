@@ -46,6 +46,10 @@ class Initr::Klass < ActiveRecord::Base
     self.class.to_s.split('::').last.underscore
   end
 
+  def pretty_name
+    name.camelize
+  end
+
   # you should override this method and return a description for the class
   def description
   end

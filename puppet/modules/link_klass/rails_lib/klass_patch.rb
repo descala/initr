@@ -15,6 +15,14 @@ module KlassPatch
         end
       end
     end
+
+    def linked_klasses
+      lks = []
+      Initr::LinkKlass.all.each do |lk|
+        lks << lk if lk.copied_klass_id == self.id.to_s
+      end
+      lks
+    end
   end
 
 end
