@@ -3,14 +3,11 @@ class Initr::Base < Initr::Klass
   unloadable
   require "ostruct"
 
-  ATTRIBUTES = ["puppet"]
+  self.accessors_for(%w(puppet))
 
-  def after_create
-    if read_attribute(:config).nil?
-      self.config=OpenStruct.new(ATTRIBUTES)
-      self.config.puppet=:none
-    end
-    save
+  def initialize(attributes=nil)
+    super
+    self.puppet ||= "none"
   end
 
   def name
@@ -22,11 +19,8 @@ class Initr::Base < Initr::Klass
   end
 
   def parameters
-    conf = self.config.marshal_dump.stringify_keys
-    conf.each do |k,v|
-      conf.delete(k) if v.nil?
-    end
-    conf.delete("puppet")
+    conf = self.config
+    conf.delete("puppet") # see more_classes
     begin
       conf["initr_url"]="#{Setting[:protocol]}://#{Setting[:host_name]}"
     rescue
@@ -35,7 +29,7 @@ class Initr::Base < Initr::Klass
   end
 
   def more_classes
-    case self.config.puppet
+    case self.puppet
     when "lite"
       return ["base::puppet::lite"]
     when "normal"
@@ -49,33 +43,8 @@ class Initr::Base < Initr::Klass
     end
   end
 
-  def config
-    return OpenStruct.new(ATTRIBUTES) if read_attribute(:config).nil?
-    return read_attribute(:config)
-  end
-
-  def respond_to?(m)
-    return true if(ATTRIBUTES.include?(m.to_s) or ATTRIBUTES.include?(m.to_s.gsub(/=$/,'')))
-    super(m)
-  end
-
   def print_parameters
     ""
-  end
-
-  def new_base_conf_attributes=(ic_attributes)
-    base_conf.build(ic_attributes.first)
-  end
-
-  def existing_base_conf_attributes=(ic_attributes)
-    ic_id = base_conf.id.to_s
-    attributes = ic_attributes[ic_id]
-    if attributes
-      base_conf.attributes = attributes
-      base_conf.save
-    else
-      base_conf.delete(base_conf.reject(&:new_record?).first)
-    end
   end
 
   # Don't allow to copy this class
@@ -91,16 +60,6 @@ class Initr::Base < Initr::Klass
   def removable?
     return true if self.node.is_a? Initr::NodeTemplate
     false
-  end
-
-  protected
-
-  def method_missing(m, *args)
-    if ATTRIBUTES.include?(m.to_s) or ATTRIBUTES.collect {|a| "#{a}="}.include?(m.to_s)
-      return config.send(m,*args)
-    else
-      super
-    end
   end
 
 end
