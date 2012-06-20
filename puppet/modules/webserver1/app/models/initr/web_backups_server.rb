@@ -4,6 +4,7 @@ module Initr
 
     has_many :webserver1_domains, :class_name => "Initr::Webserver1Domain"
     validate :address_is_unique, :on => :update
+    validates_presence_of :backups_path, :port, :address, :on => :update
 
     def address_is_unique
       if WebBackupsServer.all(:conditions=>["id != ?",id]).collect {|wbs| wbs.address }.include? address

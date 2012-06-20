@@ -6,11 +6,13 @@
 # /var/www/<%=name%>/conf/vhost.conf
 
 <VirtualHost *:80>
-<% if force_www == 'true' -%>
+<% if add_www == 'true' and force_www == 'true' -%>
   ServerName   www.<%=name%>
-<% else -%>
+<% elsif add_www -%>
   ServerName   <%=name%>
   ServerAlias  www.<%=name%>
+<% else -%>
+  ServerName   <%=name%>
 <% end -%>
   UseCanonicalName Off
   ServerAdmin  "webmaster@<%=name%>"

@@ -6,11 +6,12 @@ class common::suphp {
   package {
     $suphp_package:
       ensure => installed,
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
   }
   # Debian provided suphp.conf works
   if ( $operatingsystem == 'Debian' ) or ( $operatingsystem == 'Ubuntu' ) {
-    common::apache::enmod { "suphp": }
+    common::apache::enmod { "suphp.load": }
+    common::apache::enmod { "suphp.conf": }
   } else {
     file {
       "/etc/suphp.conf":

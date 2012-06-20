@@ -21,3 +21,17 @@ en:
   field_user_ftp: User FTP
   field_user_awstats: User awstats
   field_user_mysql: User MySQL
+  field_add_www: Add www.
+  field_awstats_www: "Use www. on awstats"
+  help_name: "Domain name, without www."
+  help_add_www: "Adds a www. alias to Apache configuration"
+  help_force_www: "Redirects requests to always use www."
+  help_awstats_www: "Access stastics with www."
+  help_railsapp: "Configures Passenger to serve a RubyOnRails application"
+  help_rails_root: "If application its on DocumentRoot, will be public"
+  help_rails_spawn_method: "Choose Smart if unsure"
+  help_web_backups_server_id: "Needs a server with web_backups_server class"
+  help_use_suphp: "Runs PHP files as its owner, usefull on multiuser environments"
+  field_allow_anonymous_ftp: "Allow anonymous FTP access"
+  field_manage_default_domain: "Redirect"
+  help_manage_default_domain: "Redirect requests with no virtualhost to default domain"

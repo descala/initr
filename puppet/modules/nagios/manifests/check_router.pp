@@ -6,6 +6,8 @@ class nagios::check_router {
     notify => Service["nagios"],
     tag => $nagios_server,
     address => "${fqdn}.${ddns_domain}",
+    check_interval => 30,
+    notification_interval => 120,
   }
 
 }

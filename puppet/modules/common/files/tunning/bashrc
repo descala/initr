@@ -1,3 +1,6 @@
+##################
+# Puppet managed #
+##################
 if [ -f /etc/bash.bashrc ]; then
   . /etc/bash.bashrc
 elif [ -f /etc/bashrc ]; then
@@ -38,3 +41,8 @@ else
 fi
 
 export FACTERLIB=/var/lib/puppet/lib/facter
+
+# local stuff
+if [ -f ~/.bashrc_local ]; then
+    . ~/.bashrc_local
+fi

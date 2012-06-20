@@ -6,17 +6,25 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   belongs_to :webserver1, :class_name => "Initr::Webserver1"
   belongs_to :web_backups_server, :class_name => "Initr::WebBackupsServer"
   validates_uniqueness_of :name, :scope => :webserver1_id
-  validates_uniqueness_of :name, :scope => :web_backups_server_id
+  validates_uniqueness_of :name, :scope => :web_backups_server_id, :unless => Proc.new {|domain| domain.web_backups_server_id.nil? }
   validates_format_of :name, :with => /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
   validates_uniqueness_of :dbname, :scope => :webserver1_id, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_uniqueness_of :user_ftp,     :scope => :webserver1_id
   validates_uniqueness_of :user_awstats, :scope => :webserver1_id
-  validates_uniqueness_of :user_mysql,   :scope => :webserver1_id
+  validates_uniqueness_of :user_mysql,   :scope => :webserver1_id, :allow_nil => true, :allow_blank => true
   validates_exclusion_of :user_ftp, :user_awstats, :user_mysql, :in => %w( admin root ), :message => "Can't use admin/root username"
-  validates_presence_of :name, :user_ftp, :user_awstats, :user_mysql, :password_ftp, :password_awstats
+  validates_presence_of :name, :user_ftp, :user_awstats, :password_ftp, :password_awstats
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
-  validates_length_of :user_ftp, :in => 1..16
+  validates_length_of :user_mysql, :in => 1..16
+  after_save :trigger_puppetrun
+  after_destroy :trigger_puppetrun
 
+  def initialize(attributes=nil)
+    super
+    self.add_www = true if self.add_www.nil?
+    self.force_www = true if self.force_www.nil?
+    self.awstats_www = false if self.awstats_www.nil?
+  end
 
   def parameters
     parameters = { "name" => name,
@@ -27,7 +35,9 @@ class Initr::Webserver1Domain < ActiveRecord::Base
                    "password_awstats" => password_awstats,
                    "password_ftp" => crypted_password,
                    "database" => dbname,
+                   "add_www" => add_www.to_s,
                    "force_www" => force_www.to_s,
+                   "awstats_www" => awstats_www.to_s,
                    "use_suphp" => use_suphp.to_s }
     if web_backups_server
       parameters["web_backups_server"] = web_backups_server.address
@@ -72,6 +82,10 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     salt = ''
     8.times { |i| salt << chars[rand(chars.size-1)] }
     return salt
+  end
+
+  def trigger_puppetrun
+    self.webserver.trigger_puppetrun
   end
 
 end

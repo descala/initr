@@ -113,6 +113,11 @@ class Initr::Klass < ActiveRecord::Base
     true
   end
 
+  # a class can be copied from node to another
+  def copyable?
+    true
+  end
+
   # a class can be removed from a node
   def removable?
     true
@@ -158,6 +163,22 @@ class Initr::Klass < ActiveRecord::Base
     false
   end
 
+  # override this method if klass defines other relationships
+  def clone
+    self.class.new(self.attributes)
+  end
+
+  def trigger_puppetrun
+    # uncomment on rails 3, rails 2.3 does not detect changes on serialized columns
+    # https://rails.lighthouseapp.com/projects/8994/tickets/360-dirty-tracking-on-serialized-columns-is-broken
+    # return unless self.changed?
+    return unless self.valid?
+    begin
+      open("public/puppetrun_#{self.node.name}",'w') {|f| f << Time.now.to_i }
+    rescue
+    end
+  end
+
   private
 
   def self.adds_klass(*args)
@@ -170,17 +191,6 @@ class Initr::Klass < ActiveRecord::Base
       if !self.node.klasses.find_by_type(k.to_s.split("::").last)
         self.node.klasses << k.new
       end
-    end
-  end
-
-  def trigger_puppetrun
-    # uncomment on rails 3, rails 2.3 does not detect changes on serialized columns
-    # https://rails.lighthouseapp.com/projects/8994/tickets/360-dirty-tracking-on-serialized-columns-is-broken
-    # return unless self.changed?
-    return unless self.valid?
-    begin
-      open("public/puppetrun_#{self.node.name}",'w') {|f| f << Time.now.to_i }
-    rescue
     end
   end
 

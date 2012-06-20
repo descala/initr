@@ -254,7 +254,7 @@ $mysqld = $operatingsystem ? {
   default => "mysqld"
 }
 $mysql_dev = $operatingsystem ? {
-  /Debian|Ubuntu/ => "libmysqlclient15-dev",
+  /Debian|Ubuntu/ => "libmysqlclient-dev",
   default => "mysql-devel"
 }
 $perl_net_dns = $operatingsystem ? {
@@ -269,6 +269,9 @@ $perl_geo_ipfree = $operatingsystem ? {
   /Debian|Ubuntu/ => "libgeo-ipfree-perl",
   CentOS => $lsbdistrelease_class ? {
     "4_6"     => "perl-Geo-IP",
+    "4_7"     => "perl-Geo-IP",
+    "4_8"     => "perl-Geo-IP",
+    "4_9"     => "perl-Geo-IP",
     default => "perl-Geo-IPfree"
     },
  default => "perl-Geo-IPfree"

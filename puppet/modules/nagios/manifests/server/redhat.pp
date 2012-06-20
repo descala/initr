@@ -38,14 +38,14 @@ class nagios::server::redhat inherits nagios::server::common {
       group => root,
       mode => 644,
       source => "puppet:///modules/nagios/nagios_httpd.conf",
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
     "/usr/local/nagios/etc/htpasswd.users":
       owner => root,
       group => $httpd_user,
       mode => 640,
       content => template("nagios/htpasswd.users.erb"),
       require => Package[$httpd],
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
     "/etc/init.d/nagios":
       owner => root,
       group => root,

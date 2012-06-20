@@ -43,10 +43,10 @@ class webserver1 {
   file {
     "/usr/local/sbin/backup.rb":
       mode => 700,
-      source => "puppet:///modules/webserver1/backup.rb";
-    "/etc/logrotate.d/$httpd_service":
+      source => ["puppet:///specific/webserver_backup.rb", "puppet:///modules/webserver1/backup.rb"];
+    "/etc/logrotate.d/webserver1":
       mode => 644,
-      content => template("webserver1/logrotate_httpd.erb");
+      content => template("webserver1/logrotate.erb");
     "/usr/local/sbin/webserver_backup_all":
       mode => 700,
       content => template("webserver1/backup_all.sh.erb");
@@ -65,7 +65,7 @@ class webserver1 {
     package {
       "php-mbstring": # for squirelmail?
         ensure => installed,
-        notify => Service[$httpd_service];
+        notify => Exec["apache reload"];
     }
   }
 
@@ -75,36 +75,38 @@ class webserver1 {
       "$httpd_confdir/vhosts.conf":
         mode => 644,
         source => "puppet:///modules/webserver1/vhosts.conf",
-        notify => Service[$httpd_service];
+        notify => Exec["apache reload"];
     }
   }
 
   # redirect to default domain
   ############################
 
-  if $operatingsystem == "Debian" {
-    common::apache::ensite { "default": }
-    common::apache::enmod { "rewrite.load": }
-  }
-  else
-  {
-    file {
-      "$httpd_sitedir/000-default.conf":
-        ensure => "$httpd_sitedir/default",
+  if $manage_default_domain == "1" {
+    if $operatingsystem == "Debian" {
+      common::apache::ensite { "default": }
+      common::apache::enmod { "rewrite.load": }
     }
-  }
+    else
+    {
+      file {
+        "$httpd_sitedir/000-default.conf":
+          ensure => "$httpd_sitedir/default",
+      }
+    }
   
-  file {
-    "$httpd_sitedir/default":
-      content => inline_template('# Puppet managed
+    file {
+      "$httpd_sitedir/default":
+        content => inline_template('# Puppet managed
 <VirtualHost *:80>
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
 RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
-    notify => Service[$httpd_service],
+        require => Package[$httpd],
+        notify => Exec["apache reload"];
+    }
   }
 
-  
 }
 

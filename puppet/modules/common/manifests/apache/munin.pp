@@ -10,7 +10,7 @@ class common::apache::munin {
     default: {
       file { "/etc/httpd/conf.d/status.conf":
         source => "puppet:///modules/common/apache/status.conf",
-        notify => Service[$httpd_service]
+        notify => Exec["apache reload"],
       }
     }
   }

@@ -1,3 +1,6 @@
+""""""""""""""""""
+" Puppet Managed "
+""""""""""""""""""
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -22,6 +25,9 @@ set title
 
 " Colorets
 syntax on
+
+" Carrega els comentaris que son indicacions per al vim
+set modeline
 
 " Resalta els resultats de la cerca
 set hlsearch

@@ -1,0 +1,11 @@
+<%=klass_menu "Choose a class to link"%>
+
+<% labelled_tabular_form_for :link_klass, @klass, :url=>{:action=>'configure'} do |f| -%>
+
+  <%= render :partial => 'tabular_form', :locals=>{:f=>f} %>
+
+  <p><%= submit_tag("Save") %></p>
+
+<% end -%>
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

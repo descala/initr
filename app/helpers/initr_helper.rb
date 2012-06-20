@@ -72,4 +72,8 @@ module InitrHelper
     end
   end
 
+  def os_img(node)
+    image_tag("os/#{node.os}.png", :title => "#{node.os} #{node.os_release} Kernel #{node.kernel}", :plugin => "initr") unless node.os.nil?
+  end
+
 end

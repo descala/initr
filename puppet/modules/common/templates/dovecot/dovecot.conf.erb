@@ -1,0 +1,95 @@
+##################
+# Puppet Managed #
+##################
+
+<% if operatingsystem == "Debian" -%>
+protocols = imap imaps pop3 pop3s
+log_timestamp = "%Y-%m-%d %H:%M:%S "
+
+<% end -%>
+mail_location = maildir:~
+first_valid_uid = 201
+last_valid_uid = 201
+
+protocol imap {
+  mail_plugins = quota imap_quota
+  imap_client_workarounds = outlook-idle delay-newmail
+}
+protocol pop3 {
+  mail_plugins = quota
+  pop3_client_workarounds = outlook-no-nuls oe-ns-eoh
+# Note that Outlook 2003 seems to have problems with %v.%u format which was Dovecot's default,
+# so if you're building a new server it would be a good idea to change this.
+#  UW's ipop3d         : %08Xv%08Xu
+#  Courier             : %f or %v-%u (both might be used simultaneosly)
+#  Cyrus (<= 2.1.3)    : %u
+#  Cyrus (>= 2.1.4)    : %v.%u
+#  Dovecot v0.99.x     : %v.%u
+#  tpop3d              : %Mf
+  pop3_uidl_format = %08Xu%08Xv
+}
+protocol lda {
+  postmaster_address = postmaster@ingent.net
+  mail_plugins = quota
+#  log_path = /var/log/dovecot-deliver.log
+#  info_log_path = /var/log/dovecot-deliver.log
+}
+
+auth default {
+
+# Having "login" also as a mechanism make sure outlook can use the auth smtpd as well
+# http://wiki.dovecot.org/Authentication/Mechanisms
+  mechanisms = plain login
+
+#      userdb static {
+#         args = uid=vmail gid=mail home=/var/mail/virtual/%d/%n
+#      }
+
+      userdb sql {
+         args = /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-sql.conf
+      }
+
+      passdb sql {
+         args = /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-sql.conf
+      }
+
+  userdb prefetch {
+  }
+
+      socket listen {
+         master {
+           path = /var/run/dovecot/auth-master
+           mode = 0660
+           user = vmail
+           group = mail
+        }
+        client {
+          # Assuming the default Postfix $queue_directory setting
+          path = /var/spool/postfix/private/auth
+          mode = 0660
+          # Assuming the default Postfix user and group
+          user = postfix
+          group = postfix
+        }
+      }
+
+    }
+
+<% if operatingsystem == "Debian" -%>
+dict {
+  quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
+}
+
+<% end -%>
+plugin {
+<% if operatingsystem == "Debian" -%>
+  quota = dict:user::proxy::quotadict
+<% else -%>
+  # 250 MB quota
+  quota = maildir:storage=256000
+<% end -%>
+}
+
+# Some dovecots versions show this error, try to update:
+# Error in configuration file /etc/dovecot.conf line 78: Expecting '='
+!include_try /etc/<%= "dovecot/" if operatingsystem == "Debian" %>dovecot-extra.conf

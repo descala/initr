@@ -6,7 +6,7 @@ class common::php {
   package {
     $packages:
       ensure => installed,
-      notify => Service[$httpd_service];
+      notify => Exec["apache reload"];
   }
 }
 

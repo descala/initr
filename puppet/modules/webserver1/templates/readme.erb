@@ -12,9 +12,9 @@ Contrasenya:  ********
 
 ESTADISTIQUES DE VISITES
 
-URL:	      http://<%= name %>/awstats
+URL:	      http://<%= "www." if awstats_www %><%= name %>/awstats
 Usuari:	      <%= user_awstats %>
-Contrasenya:  (la mateixa que el FTP)
+Contrasenya:  ********
 
 <% if database != "" %>
 BASE DE DADES MySQL
@@ -22,7 +22,7 @@ BASE DE DADES MySQL
 Host:              localhost
 Nom base de dades: <%= database %>
 Usuari:            <%= user_mysql %>
-Contrasenya:       (la mateixa que el FTP)
+Contrasenya:       ********
 
 <% end -%>
 SUPORT

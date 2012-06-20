@@ -7,7 +7,7 @@
 listen=YES
 #
 # Allow anonymous FTP? (Beware - allowed by default if you comment this out).
-anonymous_enable=NO
+anonymous_enable=<%= allow_anonymous_ftp == "1" ? "YES" : "NO" %>
 #
 # Uncomment this to allow local users to log in.
 local_enable=YES
@@ -63,6 +63,9 @@ rsa_cert_file=/etc/ssl/certs/vsftpd.pem
 #
 userlist_file=/etc/ftpusers
 #
+<% elsif operatingsystem == "CentOS" and lsbmajdistrelease == "4" -%>
+# centos 4 vsftpd has no reverse_lookup_enable option
+#reverse_lookup_enable=NO
 <% else -%>
 reverse_lookup_enable=NO
 #

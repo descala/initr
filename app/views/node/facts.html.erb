@@ -1,11 +1,13 @@
 <h3>All <%= @fact %> facts</h3>
 <table class="list" style="table-layout: fixed;">
   <tr align="left">
+    <th width="2%"></th>
     <th width="28%">Node</th>
-    <th width="72%"><%="Value"%></th>
+    <th width="70%"><%="Value"%></th>
   </tr>
 <% @facts.keys.sort.each do |node| %>
   <tr class="<%= cycle('odd', 'even') %>">
+    <td><%= os_img(node) %></td>
     <td style="font-weight: bold;"><div><%= link_to node.fqdn, :controller=>'klass', :action=>'list', :id=>node, :tab => 'facts' %></div></td>
     <% if @facts[node].size > 100 %>
     <td><div class="wiki"><pre style="margin: 0;"><%= @facts[node] %></pre></div></td>

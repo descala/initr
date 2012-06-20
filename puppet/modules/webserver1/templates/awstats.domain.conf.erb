@@ -1,4 +1,4 @@
 Include "awstats.model.conf"
 LogFile="/var/www/<%=name%>/logs/access_log"
-SiteDomain="<%=name%>"
+SiteDomain="<%=awstats_www == "true" ? "www.#{name}" : name%>"
 AllowAccessFromWebToFollowingAuthenticatedUsers="admin <%=name%> <%=user%>"

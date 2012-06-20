@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerName <%=munin_server_url%>
+    DocumentRoot <%=munin_html_dir%>
+    <Directory <%=munin_html_dir%>>
+        <Files ~ "\.(html)$">
+            order allow,deny
+            deny from all
+        </Files>
+        Options FollowSymLinks
+        AllowOverride none
+        Order allow,deny
+        Allow from all
+    </Directory>
+</VirtualHost>
+
+ScriptAlias /munincgi /usr/lib/cgi-bin/munin-cgi-graph

@@ -15,6 +15,9 @@ function db_setup {
     mysql -D <%= db_name %> < /usr/local/src/postfixadmin_tables.sql
   fi
 }
+
+VER=2.3.5
+
 <% if operatingsystem == "CentOS" -%>
 
 if [ -d /var/www/html/postfixadmin ]; then
@@ -24,14 +27,16 @@ fi
 
 # install postfixadmin
 cd /tmp
-wget http://downloads.sourceforge.net/postfixadmin/postfixadmin-2.2.1.1.tar.gz
-tar xvzf postfixadmin-2.2.1.1.tar.gz
-rm postfixadmin-2.2.1.1.tar.gz
-mv postfixadmin-2.2.1.1 /var/www/html/postfixadmin
+wget http://downloads.sourceforge.net/postfixadmin/postfixadmin-${VER}.tar.gz
+tar xvzf postfixadmin-${VER}.tar.gz
+rm postfixadmin-${VER}.tar.gz
+mv postfixadmin-${VER} /var/www/html/postfixadmin
 cd /var/www/html/postfixadmin
-chown -R root:root /var/www/html/postfixadmin
+find -type f -print0 | xargs -0 chmod 640
+find -type d -print0 | xargs -0 chmod 750
+chown -R root:<%=$httpd_user%> /var/www/html/postfixadmin
 touch /etc/postfix/local.domains
-chown root:apache /etc/postfix/local.domains
+chown root:<%=$httpd_user%> /etc/postfix/local.domains
 chmod g+rw /etc/postfix/local.domains
 
 db_setup
@@ -42,9 +47,9 @@ rm setup.php
 db_setup
 
 cd /usr/local/src
-wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-2.3.2/postfixadmin-2.3.2_all.deb
+wget http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-${VER}/postfixadmin_${VER}-1_all.deb
 debconf-set-selections < postfixadmin.debconf_selections
-dpkg -i --force-confold postfixadmin-2.3.2_all.deb
+dpkg -i --force-confold postfixadmin_${VER}-1_all.deb
 
 <% else -%>
 # <%= operatingsystem %> not supported yet

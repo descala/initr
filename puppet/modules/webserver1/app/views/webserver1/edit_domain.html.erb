@@ -22,7 +22,8 @@
 Dades del hosting <%= @domain.name %>
 --
 
-Servidor compartit <%= @domain.webserver1.node.fqdn %> [<%=@domain.webserver1.node.puppet_fact('ipaddress')%>]
+Servidor: <%= @domain.webserver1.node.fqdn %>
+IP: <%=@domain.webserver1.node.puppet_fact('ipaddress')%>
 
 ACCÉS FTP <%= "i SSH" unless @domain.shell == "0" %>
 
@@ -32,7 +33,7 @@ Contrasenya:  <%= @domain.password_ftp %>
 
 ESTADÍSTIQUES DE VISITES
 
-URL:          http://<%= @domain.name %>/awstats
+URL:          http://<%= "www." if @domain.awstats_www %><%= @domain.name %>/awstats
 Usuari:       <%= @domain.user_awstats %>
 Contrasenya:  <%= @domain.password_awstats %>
 

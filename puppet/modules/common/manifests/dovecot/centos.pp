@@ -8,7 +8,7 @@ class common::dovecot::centos inherits common::dovecot::common {
     "/etc/dovecot.conf":
       mode => 644,
       group => dovecot,
-      source => [ "puppet:///specific/dovecot.conf", "puppet:///modules/common/dovecot/dovecot_centos.conf" ],
+      content => template("common/dovecot/dovecot.conf.erb"),
       notify => Service["dovecot"],
       require => Package["dovecot"];
     "/etc/dovecot-sql.conf":

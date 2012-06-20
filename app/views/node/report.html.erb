@@ -24,7 +24,7 @@
   </div>
 <% end -%>
 
-<% if @report.log.metrics -%>
+<% if @report.log.metrics and @report.log.metrics["time"] -%>
 <div class="flash">
   <table width="100%" border="0">
     <tr>

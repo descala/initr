@@ -7,6 +7,8 @@ class common::apache {
     include common::apache::munin
   }
 
+  include common::apache::logrotate
+
   package { $httpd:
     ensure => installed,
   }
@@ -15,6 +17,13 @@ class common::apache {
     ensure => running,
     enable => true,
     require => Package[$httpd],
+  }
+
+  exec {
+    "apache reload":
+      command => "/etc/init.d/$httpd_service reload",
+      refreshonly => true,
+      require => Service[$httpd_service];
   }
 
 }
