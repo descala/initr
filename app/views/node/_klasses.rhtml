@@ -49,7 +49,11 @@
       <% klasses.each do |klass| -%>
         <li class="klass<%=klass.active? ? " active" : "" %>">
         <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%>
-        <%=image_tag("link.png",:title=>"Linked on #{klass.linked_klasses.collect {|lk| lk.node.fqdn}.join(", ") }") if klass.linked_klasses.any? %>
+        <% if kd.name == "link_klass" -%>
+          <%=image_tag("link.png",:title=>"Linked to #{klass.copied_klass.node.fqdn}")%>
+        <% else -%>
+          <%=image_tag("link.png",:title=>"Linked on #{klass.linked_klasses.collect {|lk| lk.node.fqdn}.join(", ") }") if klass.linked_klasses.any? %>
+        <% end -%>
         <%=link_to klass.pretty_name, :controller=>klass.controller, :action=>'configure', :id=>klass%>
         </li>
       <% end -%>
