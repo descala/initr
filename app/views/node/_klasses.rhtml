@@ -22,14 +22,15 @@
         <% if klass -%>
           <li class="klass<%=klass.active? ? " active" : "" %>">
             <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?, :onclick=>"toogle_class($(this));"%>
+            <%=image_tag("changeset.png",:title=>"Class has stored configuration") unless klass.active? %>
             <%=image_tag("warning.png",:title=>"Node has not yet applied this class") unless klass.node.is_a? Initr::NodeTemplate or klass.installed? or !klass.active? %>
-            <%=link_to kd.name, :controller=>klass.controller, :action=>'configure', :id=>klass%>
+            <%=link_to kd.name.camelize, :controller=>klass.controller, :action=>'configure', :id=>klass%>
             <p><%= kd.description %></p>
           </li>
         <% else -%>
           <li class="klass">
             <%=check_box_tag "new_klasses[#{kd.name.camelize}]", "active", false, :onclick=>"toogle_class($(this));"%>
-            <%=link_to kd.name, :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name -%>
+            <%=link_to kd.name.camelize, :controller=>'klass', :action=>'create', :id=>@node, :klass_name=>kd.name -%>
             <p><%= kd.description %></p>
           </li>
         <% end -%>
