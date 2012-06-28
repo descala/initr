@@ -3,7 +3,7 @@ class Initr::RemoteBackup < Initr::Klass
 
   belongs_to :remote_backup_server, :class_name => "Initr::RemoteBackupServer", :foreign_key => "klass_id"
   validates_presence_of :klass_id, :encryptkey, :keypassword, :reportspassword, :on => :update
-  validates_numericality_of :bandwidthlimit, :used_space_alert, :only_integer => true
+  validates_numericality_of :bandwidthlimit, :used_space_alert, :only_integer => true, :on => :update
 
   self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword
                         bandwidthlimit used_space_alert reportspassword))
