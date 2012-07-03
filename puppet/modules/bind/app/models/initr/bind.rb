@@ -38,4 +38,14 @@ class Initr::Bind < Initr::Klass
     "#{bind_zones.size} zones configured"
   end
 
+  def clone
+    copy = Initr::Bind.new(self.attributes)
+    self.bind_zones.each do |bz|
+      bz_copy = bz.clone
+      bz_copy.bind_id = nil
+      copy.bind_zones << bz_copy
+    end
+    copy
+  end
+
 end
