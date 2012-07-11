@@ -1,7 +1,6 @@
 class Initr::Base < Initr::Klass
 
   unloadable
-  require "ostruct"
 
   self.accessors_for(%w(puppet))
 
@@ -19,7 +18,7 @@ class Initr::Base < Initr::Klass
   end
 
   def parameters
-    conf = self.config
+    conf = self.config.dup
     conf.delete("puppet") # see more_classes
     begin
       conf["initr_url"]="#{Setting[:protocol]}://#{Setting[:host_name]}"
