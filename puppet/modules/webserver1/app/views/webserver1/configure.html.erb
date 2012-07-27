@@ -6,13 +6,22 @@
   <% unless @klass.domains.size == 0 -%>
   <tr>
     <th>Domain</th>
+    <th>Bind</th>
     <th>Stastics</th>
     <th>Ftp</th>
+    <th></th>
   </tr>
   <% end -%>
 <% @klass.domains.sort.each do |domain| -%>
   <tr>
     <td><%= link_to domain.name, :action => 'edit_domain', :id => domain %></td>
+    <td>
+      <% if bind_zone = domain.bind %>
+        <%=  link_to_if_authorized('Yes', {:controller => 'bind', :action => 'edit_zone', :id => bind_zone }) %>
+      <% else %>
+        No
+      <%end%>
+    </td>
     <td><%= link_to "http://#{"www." if domain.awstats_www}#{domain.name}/awstats", "http://#{domain.user_awstats}:#{domain.password_awstats}@#{"www." if domain.awstats_www}#{domain.name}/awstats", :target => 'blank' %></td>
     <td><%= link_to "ftp://#{domain.name}", "ftp://#{domain.user_ftp}@#{domain.name}", :target => 'blank' %></td>
     <td><%= link_to image_tag("cross.gif", :plugin => "initr", :border => 0), {:action => 'rm_domain', :id => domain}, :confirm => "Delete #{domain.name}?", :method => :post %></td>
