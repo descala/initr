@@ -75,6 +75,11 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     write_attribute(:name,fqdn)
   end
 
+  def bind
+    bind = Initr::Bind.for_node(webserver.node)
+    bind.bind_zones.find(:first, :conditions=>["domain=?",name.split('.')[-2..-1].join('.')]) if bind
+  end
+
   private
 
   def random_salt
