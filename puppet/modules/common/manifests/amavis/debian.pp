@@ -17,15 +17,13 @@ class common::amavis::debian inherits common::amavis::common {
       minute => 15;
   }
 
-#TODO: /etc/amavis/conf.d/ files
-#  file {
-#    "/etc/amavisd/amavisd.conf":
-#      mode => 644,
-#      content => template("common/amavisd.conf.erb"),
-#      require => Package["amavisd-new"],
-#      notify => Service["amavis"];
-#  }
+  file {
+    "/etc/amavis/conf.d/15-content_filter_mode":
+      source => ["puppet:///specific/amavis-15-content_filter_mode","puppet:///modules/common/amavis/15-content_filter_mode"],
+      mode => 644,
+      require => Package["amavisd-new"],
+      notify => Service["amavis"];
+  }
 
 }
-
 
