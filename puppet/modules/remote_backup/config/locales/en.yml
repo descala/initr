@@ -14,3 +14,4 @@ en:
   field_used_space_alert: "Used space alert (Mb)"
   field_webreports_url: "Reports domain name"
   field_reportspassword: "Reports password"
+  field_num_retries: "Número de reintentos"

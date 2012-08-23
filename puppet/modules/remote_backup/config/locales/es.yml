@@ -14,3 +14,4 @@ es:
   field_used_space_alert: "Alerta de espacio usado (Mb)"
   field_webreports_url: "Dominio para los informes"
   field_reportspassword: "Contraseña para los informes"
+  field_num_retries: "Number of retries"

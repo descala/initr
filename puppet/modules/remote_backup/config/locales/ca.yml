@@ -14,3 +14,4 @@ ca:
   field_used_space_alert: "Alerta d'espai usat (Mb)"
   field_webreports_url: "Domini per als informes"
   field_reportspassword: "Contrasenya per als informes"
+  field_num_retries: "Nombre de reintents"
