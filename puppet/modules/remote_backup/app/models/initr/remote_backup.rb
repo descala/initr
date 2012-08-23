@@ -68,6 +68,10 @@ EOF
 
   private
 
+  def num_retries_before_type_cast
+    num_retries
+  end
+
   def bandwidthlimit_before_type_cast
     bandwidthlimit
   end
