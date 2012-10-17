@@ -339,13 +339,13 @@ if [ -n "${ROOT_CA}" ] ; then
 fi
 
 if [ -n "${CRITICAL}" ] ; then
-    if ! echo "${CRITICAL}" | grep -q [0-9][0-9]* ; then
+    if ! echo "${CRITICAL}" | grep -q "[0-9][0-9]*" ; then
         unknown "invalid number of days ${CRITICAL}"
     fi
 fi
 
 if [ -n "${WARNING}" ] ; then
-    if ! echo ${WARNING} | grep -q [0-9][0-9]* ; then
+    if ! echo ${WARNING} | grep -q "[0-9][0-9]*" ; then
         unknown "invalid number of days ${WARNING}"
     fi
 fi
