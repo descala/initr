@@ -23,9 +23,9 @@ module InitrHelper
 
   def class_for(log_level)
     case log_level
-    when :err:
+    when :err then
       "report_err"
-    when :warning:
+    when :warning then
       "report_warn"
     end
   end

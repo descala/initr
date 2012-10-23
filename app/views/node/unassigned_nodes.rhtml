@@ -4,7 +4,8 @@
   <th align="right">Project</th>
   <th align="right">Owner</th>
 
-  <% @node_instances.each do |@node| %>
+  <% @node_instances.each do |node|
+       @node = node -%>
 
       <tr class="<%= cycle('odd', 'even') %>">
         <td><%= @node.fqdn %></td>
@@ -34,7 +35,8 @@
   <th align="right">Project</th>
   <th align="right">Owner</th>
 
-  <% @node_templates.each do |@node| %>
+  <% @node_templates.each do |node|
+       @node = node -%>
 
       <tr class="<%= cycle('odd', 'even') %>">
         <td><%= @node.fqdn %></td>
