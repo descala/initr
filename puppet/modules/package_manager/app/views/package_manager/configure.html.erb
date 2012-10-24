@@ -1,7 +1,7 @@
 <%= klass_menu "PackageManager" %>
 
 <% labelled_tabular_form_for :package_manager, @klass, :url=>{:action=>'configure'} do |f| -%>
-  <%= f.error_messages %>
+  <%= error_messages_for 'klass' %>
 
   <% begin -%>
     <%= render :partial => @node.puppet_fact("operatingsystem").downcase, :locals=>{:f=>f} %>

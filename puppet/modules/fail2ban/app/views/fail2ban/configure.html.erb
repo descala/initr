@@ -2,7 +2,7 @@
 
 <% form_for(:fail2ban, @klass, :url => {:action => 'configure'} ) do |f| -%>
 
-  <%= f.error_messages %>
+  <%= error_messages_for 'klass' %>
 
   <p>Mail notifications to:<br />
   <%= f.text_field("mailto") %> (empty if don't want mail notifications)</p>

@@ -1,4 +1,4 @@
-<p><%= f.error_messages %></p>
+<p><%= error_messages_for 'klass' %></p>
 <p><%= f.select('copied_klass_id',grouped_options_for_select(@copiable_klasses, @klass.copied_klass_id), :include_blank=>true) %></p>
 <% if @klass.copied_klass -%>
   <p><%= link_to("configure #{@klass.copied_klass.name} at #{@klass.copied_klass.node.fqdn}", :controller=>@klass.copied_klass.controller, :action=>'configure', :id=>@klass.copied_klass_id) %></p>

@@ -21,7 +21,7 @@
 
 <% labelled_tabular_form_for :bind, @klass, :url=>{:action=>'configure'} do |f| -%>
 
-  <p><%= f.error_messages %></p>
+  <p><%= error_messages_for 'klass' %></p>
 
   <p><%= f.text_area("nameservers", :cols=>40, :rows=>3) %><br />(<%= l "one nameserver per line" %>)</p>
 

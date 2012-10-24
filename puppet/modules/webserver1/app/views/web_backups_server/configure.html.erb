@@ -2,7 +2,7 @@
 
 <% labelled_tabular_form_for(:web_backups_server, @klass, :url=>{:action=>'configure'}) do |f| %>
 
-<%= f.error_messages %>
+<%= error_messages_for 'klass' %>
 
   <p><%= f.text_field :address %>
     <br/><em>The adress webservers will ssh to.</em></p>

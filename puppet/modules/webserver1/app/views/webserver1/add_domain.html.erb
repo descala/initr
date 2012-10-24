@@ -3,7 +3,7 @@
 <h3>Add new domain</h3>
 
 <% labelled_tabular_form_for('webserver1_domain', @domain, :url=>{:action=>'add_domain'}) do |f| -%>
-  <p><%= f.error_messages %></p>
+  <p><%= error_messages_for 'domain' %></p>
   <%= render :partial => 'webserver1_domain', :locals => {:form => f} %>
   <p>
   <%= submit_tag("Add")%>

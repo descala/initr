@@ -1,7 +1,7 @@
 <h2><%=@node.fqdn%></h2>
 
 <% labelled_tabular_form_for(:nagios_check, @nagios_check, :url => {:action => 'update_check', :id => @nagios_check}) do |f| -%>
-  <p><%= f.error_messages %></p>
+  <p><%= error_messages_for 'nagios_check' %></p>
   <%= render(:partial => 'nagios_check', :locals => {:form => f}) %>
   <p>
   <%= f.hidden_field("nagios_id", :value => @klass.id) %>

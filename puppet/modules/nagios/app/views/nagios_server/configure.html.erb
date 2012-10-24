@@ -1,6 +1,6 @@
 <%= klass_menu %>
 <% labelled_tabular_form_for(:nagios_server, @klass, :url => {:action => 'configure'}, :html => { :method => 'post'}) do |f|%>
-  <p><%= f.error_messages %></p>
+  <p><%= error_messages_for 'klass' %></p>
   <p><%= f.text_field :address %></p>
   <p><%= f.text_field :nagiosadmin_password, :disabled => true %></p>
   <p><%= f.password_field :password %> (nagiosadmin)</p>

@@ -2,7 +2,7 @@
 
 <% labelled_tabular_form_for :bind_zone, @bind_zone, :url => {:action=>'edit_zone'} do |f| -%>
 
-  <p><%= f.error_messages %></p>
+  <p><%= error_messages_for 'bind_zone' %></p>
 
   <%= render :partial => 'bind_zone', :locals => {:f => f} %>
 

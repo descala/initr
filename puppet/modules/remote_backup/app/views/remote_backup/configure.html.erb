@@ -2,7 +2,7 @@
 
 <% labelled_tabular_form_for(:remote_backup, @klass, :url=>{:action=>'configure'}) do |f| -%>
 
-  <%= f.error_messages %>
+  <%= error_messages_for 'klass' %>
 
   <p><%= f.select(:klass_id, @remote_backup_servers, :include_blank=>true, :label=>l(:field_remote_backup_server) ) %> <%= help :help_remote_backup_server_id %></p>
 
