@@ -2,6 +2,7 @@
 
 begin
   require 'redmine'
+  require File.join(File.dirname(__FILE__), 'lib','access_control_patch')
   require File.join(File.dirname(__FILE__), 'lib','project_patch')
   require File.join(File.dirname(__FILE__), 'lib','puppet_patch')
   require File.join(File.dirname(__FILE__), 'lib','issue_status_patch')

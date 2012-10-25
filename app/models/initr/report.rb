@@ -39,11 +39,17 @@ class Initr::Report < ActiveRecord::Base
   #passing a METRIC member will return its value
   def status(type = nil)
     raise "invalid type #{type}" if type and not METRIC.include?(type)
+    type_hash = METRIC if type.nil?
+    type_hash = [type] if type.is_a? String
     h = {}
-    (type || METRIC).each do |m|
+    type_hash.each do |m|
       h[m] = (read_attribute(:status) || 0) >> (BIT_NUM*METRIC.index(m)) & MAX
     end
-    return type.nil? ? h : h[type]
+    if type
+      return h[type]
+    else
+      return h
+    end
   end
 
   # generate dynamically methods for all metrics
