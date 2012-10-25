@@ -2,7 +2,7 @@
 Initr
 ===== 
 
-Adds a user interface to configure `Puppet`_  modules and acts as an external node classifier to puppet server. See `included puppet modules`
+Adds a user interface to configure `Puppet`_  modules and acts as an external node classifier to puppet server. See `included puppet modules`_
 
 Initr is a `Redmine`_ plugin.
 
