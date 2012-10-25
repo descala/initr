@@ -38,8 +38,8 @@ begin
   Redmine::Plugin.register :initr do
     name 'initr'
     author 'Ingent'
-    description 'Node management with redmine and puppet'
-    version '0.0.1'
+    description 'A fronted for puppet modules'
+    version '0.1'
     settings :default => {
       'puppetmaster'      => 'puppet',
       'puppetmaster_ip'   => '127.0.0.1',

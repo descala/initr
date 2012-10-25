@@ -1,21 +1,18 @@
 
-Initr plugin
-============
+Initr
+===== 
 
-Initr automates the lifecycle of computer systems.
+Adds a user interface to configure `Puppet`_  modules and acts as an external node classifier to puppet server. See `included puppet modules`
 
-From provision to operations, puts and keeps the nodes on track.
+Initr is a `Redmine`_ plugin.
 
-It uses `Puppet`_ as enabling technology.
-
-See `project homepage`_ for screenshots and documentation
 
 Quickstart
 ----------
 
 * You will need puppet lib to be in your RUBYLIB, or just install puppet from your package manager (gem, apt, yum ...)
 
-* Get latest `Redmine`_
+* Get latest `Redmine`_  (versions <= 1.4.x)
 
 ::
 
@@ -26,12 +23,6 @@ Quickstart
 ::
 
   cd redmine/vendor/plugins ; git clone git://github.com/descala/initr.git
-
-* Apply redmine patches on initr/redmine_patches/
-
-::
-
-  cd ../../ ; git apply vendor/plugins/initr/redmine_patches/*.patch
 
 * Configure config/database.yml
 
@@ -64,7 +55,7 @@ Quickstart
 Considerations
 --------------
 
-* Initr is a `Redmine`_ plugin, therefore you need a Redmine installation where install the plugin.
+* Initr is a `Redmine`_ plugin, therefore you need a Redmine installation to install the plugin in.
 
 * It is recomended to run a Puppetmaster configured with `storeconfigs`_.
 
@@ -83,5 +74,6 @@ Considerations
 .. _storeconfigs: http://projects.puppetlabs.com/projects/puppet/wiki/Using_Stored_Configuration
 .. _external nodes: http://docs.puppetlabs.com/guides/external_nodes.html
 .. _Redmine: http://www.redmine.org
-.. _Puppet: http://docs.puppetlabs.com/guides/introduction.html
+.. _Puppet: http://puppetlabs.com/puppet/what-is-puppet/
 .. _project homepage: http://www.ingent.net/projects/initr/wiki
+.. _included puppet modules: https://github.com/descala/initr/tree/master/puppet/modules
