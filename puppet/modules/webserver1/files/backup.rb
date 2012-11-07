@@ -54,7 +54,11 @@ class Backup
       sqlbak="/var/www/#{@domain}/backups/#{@domain}.sql"
       `/usr/bin/mysqldump -u #{@db_user} -p#{@db_passwd} #{@database} > #{sqlbak} && gzip -f #{sqlbak} && chmod 600 #{sqlbak}.gz`
       retval = $?.exitstatus
-      add_info("mysqldump","Error with database backup") if retval != 0
+      if retval == 0
+        add_info("mysqldump","#{retval} Database backup")
+      else
+        add_info("mysqldump","#{retval} Error with database backup")
+      end
     end
     return retval
   end
