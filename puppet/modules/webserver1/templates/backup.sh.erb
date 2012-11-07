@@ -25,7 +25,7 @@ case "$DOMAIN" in
     USER=<%= "#{"backups_" if v['user_ftp'] == v['name']}#{v['name']}"[0...32] %>
     u_sure
     retval=0
-    <%= "info=`/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" $USER #{v['awstats_www']} \"#{v['database']}\" \"#{v['user_mysql']}\" \"#{v['password_db']}\"`" %>
+    <%= "info=`/usr/local/sbin/backup.rb $DOMAIN $SERVER #{v['web_backups_server_port']||22} #{v['history']||7} \"#{v['excludes']}\" $USER #{v['awstats_www']} \"#{v['database']}\" \"#{v['user_mysql']}\" \"#{v['password_db']}\"` 2>> /var/log/webserver_backup_erros.log" %>
     let retval+=$?
 <% if puppet_classes =~ /nagios::nsca_node/ -%>
     nagios_notify $retval "$info"
