@@ -70,6 +70,7 @@ class Backup
     command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origin
     command += " #{@remote_user}@#{@server}:incremental"                 # destination
+    command += " &> /dev/null"
     system command
     retval = $?.exitstatus
     add_info("remote",rsync_code(retval))
