@@ -6,16 +6,17 @@ class Initr::RemoteBackup < Initr::Klass
   validates_numericality_of :num_retries,:bandwidthlimit, :used_space_alert, :only_integer => true, :on => :update
 
   self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword
-                        bandwidthlimit used_space_alert reportspassword num_retries))
+                        bandwidthlimit used_space_alert reportspassword num_retries archive_dir))
 
   def initialize(attributes=nil)
     super
     self.mailto ||= "root"
     self.reportsuccess ||= false
-    self.includefiles ||= DEFAULT_INCLUDE_FILES
+    self.includefiles ||= "/srv/samba"
     self.excludefiles ||= DEFAULT_EXCLUDE_FILES
     self.bandwidthlimit ||= "0"
     self.num_retries ||= "5"
+    self.archive_dir ||= "/srv/duplicity"
   end
 
   def parameters
@@ -46,15 +47,6 @@ class Initr::RemoteBackup < Initr::Klass
     }.compact
   end
 
-  DEFAULT_INCLUDE_FILES = <<EOF
-/var/spool/cron/crontabs
-/var/backups
-/etc
-/root
-/usr/local/*bin
-/var/lib/dpkg/status*
-EOF
-
   DEFAULT_EXCLUDE_FILES = <<EOF
 /home/*/.gnupg
 /home/*/.local/share/Trash
@@ -63,7 +55,6 @@ EOF
 /home/*/.beagle
 /home/*/.aMule
 /home/*/gtk-gnutella-downloads
-/var/cache/backupninja/duplicity
 EOF
 
   private
