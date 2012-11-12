@@ -35,7 +35,7 @@ PASSPHRASE=<%=keypassword%> SIGN_PASSPHRASE=<%=keypassword%> duplicity inc \
     --name remotebackup \
     --archive-dir <%=archive_dir%> \
     --ssh-options="-oIdentityFile /etc/ssh/ssh_host_dsa_key" \
-    <%=includefiles%> rsync://<%=remotebackup%>@<%=remote_backup_server_address%>:.
+    <%=includefiles%> rsync://<%=remotebackup%>@<%=remote_backup_server_address%>/.
 
 duplicity_return_code=$?
 
