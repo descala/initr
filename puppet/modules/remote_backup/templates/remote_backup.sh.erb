@@ -10,15 +10,21 @@ function send_nagios {
   fi
 }
 
+function log {
+  echo "`date +"%b %d %X"` $1"
+}
+
+log "Launching remote backup against <%=remote_backup_server_address%>"
+
 if [ -e "$LOCKFILE" ]; then
-  echo "Seems Duplicity is already running, if not, please remove $LOCKFILE"
+  log "Seems Duplicity is already running, if not, please remove $LOCKFILE"
   send_nagios 3 "$LOCKFILE already exists (is duplicity still running?)"
   exit
 fi
 
 touch $LOCKFILE
 if [ ! -e "$LOCKFILE" ]; then
-  echo "Can't create $LOCKFILE, please fix it"
+  log "Can't create $LOCKFILE, please fix it"
   send_nagios 2 "Can't create $LOCKFILE already exists (is duplicity still running?)"
   exit
 fi
@@ -43,12 +49,14 @@ duplicity_return_code=$?
 rm $LOCKFILE
 if [ -e "$LOCKFILE" ]; then
   send_nagios 3 "Can't remove $LOCKFILE after duplicity run, please fix it"
-  echo "Can't remove $LOCKFILE, please fix it"
+  log "Can't remove $LOCKFILE, please fix it"
   exit
 fi
 
 if [ $duplicity_return_code -eq 0 ]; then
+  log "Remote backup finished successfully"
   send_nagios 0 "Duplicity OK"
 else
+  log "Remote backup finished with errors (duplicity exit: $duplicity_return_code)"
   send_nagios 2 "Duplicity exited with $duplicity_return_code"
 fi
