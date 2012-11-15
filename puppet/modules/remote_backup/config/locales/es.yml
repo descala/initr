@@ -15,6 +15,5 @@ es:
   field_webreports_url: "Dominio para los informes"
   field_reportspassword: "Contraseña para los informes"
   field_reportsuser: "Usuario para los informes"
-  field_num_retries: "Number of retries"
-  field_use_backupninja: "Usar Backupninja"
+  field_num_retries: "Número de reintentos"
   field_archive_dir: "archive-dir"

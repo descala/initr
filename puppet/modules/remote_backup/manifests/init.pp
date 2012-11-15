@@ -7,11 +7,7 @@ class remote_backup {
       ensure => present;
   }
 
-  if $use_backupninja == "1" {
-    include remote_backup::backupninja
-  } else {
-    include remote_backup::standalone
-  }
+  include remote_backup::standalone
 
   # add server key to /etc/ssh/ssh_known_hosts
   Sshkey <<| tag == "${remote_backup_server_hash}_remote_backups_server" |>>

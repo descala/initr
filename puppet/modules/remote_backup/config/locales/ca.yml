@@ -16,5 +16,4 @@ ca:
   field_reportspassword: "Contrasenya per als informes"
   field_reportsuser: "Usuari per als informes"
   field_num_retries: "Nombre de reintents"
-  field_use_backupninja: "Fer servir Backupninja"
   field_archive_dir: "archive-dir"

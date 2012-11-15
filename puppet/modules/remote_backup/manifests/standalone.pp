@@ -4,11 +4,6 @@ class remote_backup::standalone {
     nagios::service { "${remotebackup}_is_ok": }
   }
 
-  package {
-    "backupninja":
-      ensure => absent;
-  }
-
   file {
     "/usr/local/sbin/remote_backup.sh":
       content => template("remote_backup/remote_backup.sh.erb"),
