@@ -20,7 +20,7 @@ class remote_backup::standalone {
   #TODO nagios_check for this log file
   cron {
     "remote backup":
-      command => "/usr/local/sbin/remote_backup.sh &>> /var/log/remote_backup.log",
+      command => "/usr/local/sbin/remote_backup.sh >> /var/log/remote_backup.log 2>&1",
       user => root,
       hour => 0,
       minute => 0;
