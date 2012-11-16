@@ -1,7 +1,10 @@
 class remote_backup::standalone {
 
   if array_includes($classes,"nagios::nsca_node") {
-    nagios::service { "${remotebackup}_is_ok": }
+    nagios::service {
+      "${remotebackup}_is_ok":
+        freshness => "172800";
+    }
   }
 
   file {
