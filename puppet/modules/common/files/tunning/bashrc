@@ -7,10 +7,16 @@ elif [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 export LANG=en_US.UTF-8
+show_bg_jobs() {
+  bg_jobs=`jobs | wc -l | sed -e "s/ //g"`
+  if [ "$bg_jobs" -ne "0" ]; then
+    echo -n " [$bg_jobs]"
+  fi
+}
 if [ -f /etc/bash_completion.d/git ]; then
-  export PS1='[\u@\[\e[36;1m\]\h\[\e[0m\] \W$(__git_ps1 " (%s)")]\$ '
+  export PS1='[\u@\[\e[36;1m\]\h\[\e[0m\] \W$(__git_ps1 " (%s)")]`show_bg_jobs`\$ '
 else
-  export PS1='[\u@\[\e[36;1m\]\h\[\e[0m\] \W]\$ '
+  export PS1='[\u@\[\e[36;1m\]\h\[\e[0m\] \W]`show_bg_jobs`\$ '
 fi
 export HISTSIZE=9999
 
