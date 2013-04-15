@@ -98,6 +98,7 @@ debug=0
 # and this is the default location for nagios2:
 #command_file=/var/lib/nagios2/rw/nagios.cmd
 # and this is the default location for nagios3:
+#command_file=/var/lib/nagios3/rw/nagios.cmd
 command_file=<%= operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nagios.cmd" : "/usr/local/nagios/var/rw/nagios.cmd" %>
 
 
