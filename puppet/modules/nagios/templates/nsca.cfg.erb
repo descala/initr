@@ -5,9 +5,20 @@
 # Sample NSCA Daemon Config File
 # Written by: Ethan Galstad (nagios@nagios.org)
 #
-# Last Modified: 04-03-2006
+# Last Modified: 11-23-2007
 ####################################################
 
+
+# LOG FACILITY
+# The syslog facility that should be used for logging purposes.
+
+log_facility=daemon
+
+# Check Result directory.  If passed, skip command pipe and submit
+# directly into the checkresult directory.  Requires Nagios 3+
+# For best results, mount dir on ramdisk.
+
+#check_result_path=/usr/local/nagios/var/checkresults
 
 # PID FILE
 # The name of the file in which the NSCA daemon should write it's process ID
@@ -80,7 +91,14 @@ debug=0
 # COMMAND FILE
 # This is the location of the Nagios command file that the daemon
 # should write all service check results that it receives.
-
+# Note to debian users: nagios 1.x and nagios 2.x have
+# different default locations for this file.  this is the
+# default location for nagios 1.x:
+#command_file=/var/run/nagios/nagios.cmd
+# and this is the default location for nagios2:
+#command_file=/var/lib/nagios2/rw/nagios.cmd
+# and this is the default location for nagios3:
+#command_file=/var/lib/nagios3/rw/nagios.cmd
 command_file=<%= operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nagios.cmd" : "/usr/local/nagios/var/rw/nagios.cmd" %>
 
 
@@ -94,6 +112,7 @@ command_file=<%= operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nagios.cmd" 
 # it starts Nagios.  Or you may simply choose to ignore any
 # check results received while Nagios was not running...
 
+#alternate_dump_file=/var/run/nagios/nsca.dump
 alternate_dump_file=<%= operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nsca.dump" : "/usr/local/nagios/var/rw/nsca.dump" %>
 
 
