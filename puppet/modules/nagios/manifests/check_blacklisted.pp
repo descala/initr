@@ -9,7 +9,7 @@ class nagios::check_blacklisted {
     # Define ip on initr
     nagios::nsca_node::wrapper_check {
       "blacklisted":
-        command => "$nagios_plugins_dir/check_bl -H $check_bl_ip zen.spamhaus.org,dnsbl.njabl.org",
+        command => "$nagios_plugins_dir/check_bl -H $check_bl_ip zen.spamhaus.org",
         minute => "*/30",
         freshness => "6000";
     }
@@ -18,7 +18,7 @@ class nagios::check_blacklisted {
       # Dynamic IP address with dyndns module
       nagios::nsca_node::wrapper_check {
         "blacklisted":
-          command => "$nagios_plugins_dir/check_bl -H $fqdn.$ddns_domain zen.spamhaus.org,dnsbl.njabl.org",
+          command => "$nagios_plugins_dir/check_bl -H $fqdn.$ddns_domain zen.spamhaus.org",
           minute => "*/30",
           freshness => "6000";
       }
@@ -26,7 +26,7 @@ class nagios::check_blacklisted {
       # Host with static ip_address
       nagios::nsca_node::wrapper_check {
         "blacklisted":
-          command => "$nagios_plugins_dir/check_bl -H $ipaddress_internet zen.spamhaus.org,dnsbl.njabl.org",
+          command => "$nagios_plugins_dir/check_bl -H $ipaddress_internet zen.spamhaus.org",
           minute => "*/30",
           freshness => "6000";
       }
