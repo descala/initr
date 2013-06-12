@@ -7,6 +7,11 @@ class common::rubygems {
       package { "rubygems1.8":
         ensure => latest,
       }
+      if $lsbmajdistrelease == "7" {
+        package { "ruby1.9.1-dev":
+          ensure => "installed",
+        }
+      }
     }
     default: {
       # do not use 1.1.1
