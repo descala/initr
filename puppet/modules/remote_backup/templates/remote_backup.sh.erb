@@ -1,0 +1,62 @@
+#!/bin/bash
+
+LOCKFILE="/var/lock/duplicity"
+
+# $1 = nagios code (0 ok | 1 warning | 2 critical | 3 unknown)
+# $2 = nagios message
+function send_nagios {
+  if [ -x /usr/local/bin/nsca_send ]; then
+    /usr/local/bin/nsca_send "<%=remotebackup%>_is_ok\t$1\t$2"
+  fi
+}
+
+function log {
+  echo "`date +"%b %d %R:%S"` $1"
+}
+
+log "Launching remote backup against <%=remote_backup_server_address%>"
+
+if [ -e "$LOCKFILE" ]; then
+  log "Seems Duplicity is already running, if not, please remove $LOCKFILE"
+  send_nagios 3 "$LOCKFILE already exists (is duplicity still running?)"
+  exit
+fi
+
+touch $LOCKFILE
+if [ ! -e "$LOCKFILE" ]; then
+  log "Can't create $LOCKFILE, please fix it"
+  send_nagios 2 "Can't create $LOCKFILE already exists (is duplicity still running?)"
+  exit
+fi
+
+#TODO: https://bugs.launchpad.net/duplicity/+bug/822697
+
+PASSPHRASE=<%=keypassword%> SIGN_PASSPHRASE=<%=keypassword%> duplicity inc \
+    --verbosity info \
+    --num-retries <%=num_retries%> \
+    --encrypt-key <%=encryptkey%> --sign-key <%=signkey%> \
+<% excludefiles.split.each do |exclude| -%>
+    --exclude '<%=exclude%>' \
+<% end -%>
+    --name remotebackup \
+    --archive-dir <%=archive_dir%> \
+    --ssh-options="-oIdentityFile /etc/ssh/ssh_host_dsa_key" \
+    <%=includefiles%> rsync://<%=remotebackup%>@<%=remote_backup_server_address%>/.
+
+duplicity_return_code=$?
+
+
+rm $LOCKFILE
+if [ -e "$LOCKFILE" ]; then
+  send_nagios 3 "Can't remove $LOCKFILE after duplicity run, please fix it"
+  log "Can't remove $LOCKFILE, please fix it"
+  exit
+fi
+
+if [ $duplicity_return_code -eq 0 ]; then
+  log "Remote backup finished successfully"
+  send_nagios 0 "Duplicity OK"
+else
+  log "Remote backup finished with errors (duplicity exit: $duplicity_return_code)"
+  send_nagios 2 "Duplicity exited with $duplicity_return_code"
+fi

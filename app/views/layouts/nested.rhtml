@@ -15,6 +15,7 @@
         <ul>
         <% begin -%>
         <% @node.klasses.sort.each do |k| -%>
+          <% next unless k.active? -%>
           <li>
           <%=link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k)%>
           <% begin

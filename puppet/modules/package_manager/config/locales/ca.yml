@@ -2,3 +2,4 @@ ca:
   field_security_updates: "Actualitzacions de seguretat automàtiques"
   field_packages_from_squeeze: "Paquets del repositori de Squeeze (separats per comes)"
   field_packages_from_wheezy: "Paquets del repositori de Wheezy (separats per comes)"
+  field_packages_from_jessie: "Paquets del repositori de Jessie (separats per comes)"

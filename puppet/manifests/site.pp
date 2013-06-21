@@ -141,6 +141,10 @@ $samba_tdb_dir = $operatingsystem ? {
   /Debian|Ubuntu/ => "/var/lib/samba",
   default => "/var/cache/samba"
 }
+$smbclient = $operatingsystem ? {
+  "CentOS" => "samba-client",
+  default => "smbclient"
+}
 $yum_priorities_plugin = $lsbdistid ? {
   "CentOS" => $lsbmajdistrelease ? {
     "5"     => "yum-priorities",

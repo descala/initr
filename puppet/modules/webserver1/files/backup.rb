@@ -31,8 +31,7 @@ class Backup
   end
 
   def local_backup_conf_and_cgi
-    command = "nice -n 19 rsync -a /var/www/#{@domain}/conf /var/www/#{@domain}/cgi-bin /var/www/#{@domain}/backups/ &> /dev/null"
-    system command
+    `nice -n 19 rsync -a /var/www/#{@domain}/conf /var/www/#{@domain}/cgi-bin /var/www/#{@domain}/backups/`
     retval = $?.exitstatus
     add_info("conf_cgi",rsync_code(retval))
     return retval
@@ -40,11 +39,10 @@ class Backup
 
   def local_backup_awstats
     if @awstats_www == "true"
-      command = "nice -n 19 rsync -a /var/lib/awstats/awstats??????.www.#{@domain}.??? /var/www/#{@domain}/backups/awstats/ &> /dev/null"
+      `nice -n 19 rsync -a /var/lib/awstats/awstats??????.www.#{@domain}.??? /var/www/#{@domain}/backups/awstats/`
     else
-      command = "nice -n 19 rsync -a /var/lib/awstats/awstats??????.#{@domain}.??? /var/www/#{@domain}/backups/awstats/ &> /dev/null"
+      `nice -n 19 rsync -a /var/lib/awstats/awstats??????.#{@domain}.??? /var/www/#{@domain}/backups/awstats/`
     end
-    system command
     retval = $?.exitstatus
     add_info("awstats",rsync_code(retval))
     return retval
@@ -54,10 +52,13 @@ class Backup
     retval = 0
     if @database.size > 0
       sqlbak="/var/www/#{@domain}/backups/#{@domain}.sql"
-      command = "(/usr/bin/mysqldump -u #{@db_user} -p#{@db_passwd} #{@database} > #{sqlbak} && gzip -f #{sqlbak} && chmod 600 #{sqlbak}.gz) &> /dev/null"
-      system command
+      `/usr/bin/mysqldump -u #{@db_user} -p#{@db_passwd} #{@database} > #{sqlbak} && gzip -f #{sqlbak} && chmod 600 #{sqlbak}.gz`
       retval = $?.exitstatus
-      add_info("mysqldump","Error with database backup") if retval != 0
+      if retval == 0
+        add_info("mysqldump","#{retval} Database backup")
+      else
+        add_info("mysqldump","#{retval} Error with database backup")
+      end
     end
     return retval
   end
@@ -70,7 +71,7 @@ class Backup
     command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origin
     command += " #{@remote_user}@#{@server}:incremental"                 # destination
-    system command
+    `#{command}`
     retval = $?.exitstatus
     add_info("remote",rsync_code(retval))
     return retval
@@ -120,7 +121,6 @@ class Backup
   end
 
 end
-
 
 if __FILE__ == $0
 

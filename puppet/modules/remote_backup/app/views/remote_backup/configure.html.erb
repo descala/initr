@@ -4,31 +4,21 @@
 
   <%= error_messages_for 'klass' %>
 
-  <p><%= f.select(:klass_id, @remote_backup_servers, :include_blank=>true, :label=>l(:field_remote_backup_server) ) %> <%= help :help_remote_backup_server_id %></p>
-
-  <p><%= f.text_field :mailto %></p>
-
-  <p><%= f.check_box :reportsuccess %></p>
-
-  <p><%= f.text_field :signkey %></p>
-
-  <p><%= f.text_field :encryptkey %></p>
-
-  <p><%= f.text_field :keypassword%></p>
-
-  <p><label for="user"><%=l(:reportsuser)%></label><input type="text" name="" value="<%=@klass.node.name[0...8]%>" readonly="readonly" /></p>
-
-  <p><%= f.text_field :reportspassword%></p>
-
-  <p><%= f.text_area :includefiles, :rows => 5, :cols => 50 %></p>
-
-  <p><%= f.text_area :excludefiles, :rows => 5, :cols => 50 %></p>
-
-  <p><%= f.text_field :bandwidthlimit %></p>
-
-  <p><%= f.text_field :used_space_alert %></p>
-
-  <p><%= f.text_field :num_retries %></p>
+  <fieldset>
+    <legend>Duplicity</legend>
+    <p><%= f.select(:klass_id, @remote_backup_servers, :include_blank=>true, :label=>l(:field_remote_backup_server) ) %> <%= help :help_remote_backup_server_id %></p>
+    <p><%= f.text_field :signkey %></p>
+    <p><%= f.text_field :encryptkey %></p>
+    <p><%= f.text_field :keypassword%></p>
+    <p><label for="user"><%=l(:field_reportsuser)%></label><input type="text" name="" value="<%=@klass.node.name[0...8]%>" readonly="readonly" /></p>
+    <p><%= f.text_field :reportspassword%></p>
+    <p><%= f.text_field :includefiles %></p>
+    <p><%= f.text_area :excludefiles, :rows => 5, :cols => 50 %></p>
+    <p><%= f.text_field :bandwidthlimit %></p>
+    <p><%= f.text_field :used_space_alert %></p>
+    <p><%= f.text_field :num_retries %></p>
+    <p><%= f.text_field :archive_dir %></p>
+  </fieldset>
 
   <p><%= submit_tag("Save")%></p>
 

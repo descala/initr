@@ -1,1 +1,5 @@
-<p>No configuration options yet</p>
+<p><%=f.check_box(:security_updates)%></p>
+<p><%=f.text_area(:packages_from_jessie)%></p>
+<% unless @klass.packages_from_wheezy.blank? -%>
+  <p>packages_from_wheezy: <%= @klass.packages_from_wheezy %></p>
+<% end -%>
