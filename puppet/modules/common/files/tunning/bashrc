@@ -42,6 +42,8 @@ fi
 
 export FACTERLIB=/var/lib/puppet/lib/facter
 
+alias myip="wget -qO - curlmyip.com"
+
 # local stuff
 if [ -f ~/.bashrc_local ]; then
     . ~/.bashrc_local
