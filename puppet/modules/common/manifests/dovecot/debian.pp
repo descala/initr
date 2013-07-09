@@ -1,16 +1,19 @@
 # Squeeze's dovecot expected
 class common::dovecot::debian inherits common::dovecot::common {
+
   package { ["dovecot-imapd","dovecot-pop3d"]:
     ensure => installed,
   }
+
   Service[dovecot] { require => [Package["dovecot-imapd"],Package["dovecot-pop3d"]] }
+
   file {
     "/etc/pam.d/dovecot":
       ensure => absent;
     "/etc/dovecot/dovecot.conf":
       mode => 644,
       group => dovecot,
-      content => template("common/dovecot/dovecot.conf.erb"),
+      source => "puppet:///modules/common/dovecot/dovecot_debian$lsbmajdistrelease.conf",
       notify => Service["dovecot"],
       require => [Package["dovecot-imapd"],Package["dovecot-pop3d"]];
     "/etc/dovecot/dovecot-sql.conf":
