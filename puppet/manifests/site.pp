@@ -349,3 +349,10 @@ $openvpn_easyrsa = $operatingsystem ? {
   Centos => "/usr/share/openvpn/easy-rsa/2.0",
   default => "/usr/share/doc/openvpn/examples/easy-rsa/2.0"
 }
+$lha = $operatingsystem ? {
+  Debian => $lsbmajdistrelease ? {
+    6 => "lha",
+    default => "lhasa"
+  },
+  default => "lhasa"
+}
