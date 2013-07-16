@@ -67,14 +67,18 @@ class Initr::NagiosServer < Initr::Klass
   end
 
   # nagios_users:
-  #   username: password
+  #   username1: password1
+  #   username2: password2
+  #   ...
   def nagios_users
+    nagios_users = {}
     nagios_contacts.keys.collect do |username|
       # WARNING
       # TODO passwords are usernames TODO
       # WARNING
-      { username => username.crypt(random_string(2)) }
+      nagios_users[username] = username.crypt(random_string(2))
     end
+    nagios_users
   end
 
   # nagios_contactgroups:
