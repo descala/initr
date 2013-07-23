@@ -8,4 +8,15 @@ class webserver1::awstats::debian::wheezy inherits webserver1::awstats::debian {
     content => template("webserver1/awstats_cron_wheezy.erb"),
   }
 
+  File["/etc/awstats/awstats.model.conf"] {
+    ensure => absent,
+  }
+
+  File["/etc/awstats/awstats.conf"] {
+    ensure  => present,
+    mode    => 644,
+    require => Package["awstats"],
+    source  => "puppet:///modules/webserver1/awstats.model.conf";
+  }
+
 }
