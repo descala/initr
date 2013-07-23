@@ -15,7 +15,11 @@ class webserver1 {
   }
 
   case $operatingsystem {
-    "Debian": { include webserver1::awstats::debian }
+    "Debian": {
+      case $lsbmajdistrelease {
+        "7": { include webserver1::awstats::debian::wheezy }
+        default: { include webserver1::awstats::debian }
+      }
     "CentOS": {
       case $operatingsystemrelease {
         "5.3": { include webserver1::awstats::centos53 }
