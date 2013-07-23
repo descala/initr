@@ -35,6 +35,7 @@ class Initr::NagiosServer < Initr::Klass
       "nagios_serviceescalations" => nagios_serviceescalations,
       "nagios_address" => address,
       "nagiosadmin_password" => nagiosadmin_password,
+      "nagios_users" => nagios_users,
       "nsca_decryption_password" => nsca_decryption_password,
       "admin_contactgroup" => admin_contactgroup }
   end
@@ -49,13 +50,35 @@ class Initr::NagiosServer < Initr::Klass
   #      nagiosalias: Name Surname
   #   lluis: ...
   def nagios_contacts
-    r = {}
-    User.all.each do |u|
-      if !u.is_a?(AnonymousUser) and u.active? and u.projects.any?
-         r[u.login] = { 'email' => u.mail, 'nagiosalias' => u.name }
+    contacts = {}
+    allowed_roles = Role.all.collect do |role|
+      role if role.has_permission?(:nagios_alerts)
+    end.compact
+    Project.all.each do |project|
+      next unless project.active?
+      next unless project.nodes.size > 0
+      allowed_roles.each do |role|
+        project.users.collect do |user|
+          contacts[user.login] = { 'email' => user.mail, 'nagiosalias' => user.name } if user.roles_for_project(project).include?(role) and user.active?
+        end
       end
     end
-    r
+    contacts
+  end
+
+  # nagios_users:
+  #   username1: password1
+  #   username2: password2
+  #   ...
+  def nagios_users
+    nagios_users = {}
+    nagios_contacts.keys.collect do |username|
+      # WARNING
+      # TODO passwords are usernames TODO
+      # WARNING
+      nagios_users[username] = username.crypt(random_string(2))
+    end
+    nagios_users
   end
 
   # nagios_contactgroups:
@@ -218,7 +241,6 @@ class Initr::NagiosServer < Initr::Klass
     members = []
     proj.nodes.collect do |n|
       next if n.puppet_host.nil?
-      nagios = n.klasses.find_by_type('Nagios')
       # check that node has a Nagios_host exported resource with server tag
       exported_resources = n.puppet_host.resources.find(:all, :conditions => "exported=true and restype='Nagios_host'")
       exported_resources.each do |r|
