@@ -15,7 +15,7 @@ class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
       notify => Exec["apache reload"];
   }
 
-  if $operatingsystem == "Debian" && $lsbdistrelease == "7" {
+  if $operatingsystem == "Debian" and $lsbdistrelease == "7" {
     file {
       "$phpmyadmindir/config.inc.php":
         mode    => 640,
