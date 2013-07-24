@@ -323,6 +323,10 @@ $monitrc = $operatingsystem ? {
   /Debian|Ubuntu/ => "/etc/monit/monitrc",
   default => ["/etc/monit.conf", "/etc/monitrc"]
 }
+$monit_d = $operatingsystem ? {
+  /Debian|Ubuntu/ => "/etc/monit/monitrc.d",
+  default         => "/etc/monit.d"
+}
 $dhcp_package = $operatingsystem ? {
   Debian => "isc-dhcp-server",
   Ubuntu => "dhcp3-server",
