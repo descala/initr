@@ -66,9 +66,13 @@ module InitrHelper
     tabs
   end
 
-  def help(topic)
+  def help(topic, translate=true)
     content_tag("span",:class=>'help') do
-      image_tag('help.png', :title => l(topic))
+      if translate
+        image_tag('help.png', :title => l(topic))
+      else
+        image_tag('help.png', :title => topic)
+      end
     end
   end
 

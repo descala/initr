@@ -15,28 +15,29 @@ class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
       notify => Exec["apache reload"];
   }
 
+  if $operatingsystem == "Debian" && $lsbdistrelease == "7" {
+    file {
+      "$phpmyadmindir/config.inc.php":
+        mode    => 640,
+        group   => $httpd_user,
+        require => [Package["phpmyadmin"],Package[$webserver1::httpd]],
+        source  => "puppet:///modules/common/phpmyadmin/config.inc.php";
+    }
+  } else {
+    file {
+      "$phpmyadmindir/config.inc.php":
+        mode    => 640,
+        group   => $httpd_user,
+        require => [Package["phpmyadmin"],Package[$webserver1::httpd]],
+        content => template("common/phpmyadmin/config.inc.php.erb");
+    }
+  }
+
   file {
-    "$phpmyadmindir/config.inc.php":
-      mode => 640,
-      group => $httpd_user,
-      require => [Package["phpmyadmin"],Package[$webserver1::httpd]],
-      content => template("common/phpmyadmin/config.inc.php.erb");
     "$httpd_confdir/phpmyadmin.conf":
       mode => 640,
       group => $httpd_user,
       require => Package["phpmyadmin"],
       content => template("common/phpmyadmin/apache_phpmyadmin.conf.erb");
   }
-
-  #TODO: remove this when all Debian have /usr/share/phpmyadmin/config.inc.php restaured
-  if $operatingsystem == "Debian" {
-    file {
-      "/usr/share/phpmyadmin/config.inc.php":
-        mode => 644,
-        owner => root,
-        group => root,
-        source => "puppet:///modules/common/phpmyadmin/debian_config.inc.php",
-    }
-  }
-
 }

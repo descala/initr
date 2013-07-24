@@ -58,7 +58,7 @@
 <fieldset>
   <legend>Phpmyadmin</legend>
   <p><%= f.check_box :accessible_phpmyadmin %></p>
-  <p><%= f.text_field :blowfish_secret %> (you must fill in this for cookie auth)</p>
+  <p><%= f.text_field :blowfish_secret %> (not needed since Debian Wheezy) <%= help("you must fill in this for cookie auth", false) %></p>
 </fieldset>
 
 <fieldset>
