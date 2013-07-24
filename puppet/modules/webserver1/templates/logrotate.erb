@@ -15,6 +15,9 @@
       if [ -f /usr/bin/awstats_updateall.pl -a -f /usr/lib/cgi-bin/awstats.pl -a -d /etc/awstats ] ; then
         /usr/bin/awstats_updateall.pl now -configdir="/etc/awstats" -awstatsprog="/usr/lib/cgi-bin/awstats.pl" >/dev/null
       fi
+      if [ -d /etc/logrotate.d/httpd-prerotate ]; then
+        run-parts /etc/logrotate.d/httpd-prerotate
+      fi
     endscript
     postrotate
       if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
