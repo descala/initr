@@ -1,14 +1,23 @@
 class base::puppet::lite inherits base::puppet {
-  Service["puppet"] {
-    enable => false,
-    # use a pattern to check if puppet is running daemonized or with "puppetd -o"
-    hasstatus => false,
-    pattern => $puppetversion ? {
-      /^0\./ => "puppetd$",
-      default => "puppet agent",
-    },
-    ensure => stopped,
+  if $operatingsystem == "Fedora" or $operatingsystem == "Mandriva" {
+    Service["puppet"] {
+      enable => false,
+      # use a pattern to check if puppet is running daemonized or with "puppetd -o"
+      hasstatus => false,
+      pattern => $puppetversion ? {
+        /^0\./ => "puppetd$",
+        default => "puppet agent",
+      },
+      ensure => stopped,
+    }
+  } else {
+    Service["puppet"] {
+      enable    => false,
+      hasstatus => true,
+      ensure    => stopped,
+    }
   }
+
   File["/usr/local/sbin/puppet-restart.sh"] {
     source => ["puppet:///specific/puppet-restart.sh","puppet:///modules/base/puppet/puppet-lite-restart.sh"],
     before => Service["puppet"],
