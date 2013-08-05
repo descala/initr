@@ -23,6 +23,10 @@ class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
         require => [Package["phpmyadmin"],Package[$webserver1::httpd]],
         source  => "puppet:///modules/common/phpmyadmin/config.inc.php";
     }
+    file {
+      "$httpd_confdir/phpmyadmin.conf":
+        ensure  => "$phpmyadmindir/apache.conf";
+    }
   } else {
     file {
       "$phpmyadmindir/config.inc.php":
@@ -31,13 +35,12 @@ class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
         require => [Package["phpmyadmin"],Package[$webserver1::httpd]],
         content => template("common/phpmyadmin/config.inc.php.erb");
     }
-  }
-
-  file {
-    "$httpd_confdir/phpmyadmin.conf":
-      mode => 640,
-      group => $httpd_user,
-      require => Package["phpmyadmin"],
-      content => template("common/phpmyadmin/apache_phpmyadmin.conf.erb");
+    file {
+      "$httpd_confdir/phpmyadmin.conf":
+        mode => 640,
+        group => $httpd_user,
+        require => Package["phpmyadmin"],
+        content => template("common/phpmyadmin/apache_phpmyadmin.conf.erb");
+    }
   }
 }
