@@ -1,4 +1,4 @@
-Include "<%= operatingsystem == "Debian" and lsbmajdistrelease == "7" ? "awstats.conf" : "awstats.model.conf" %>"
+Include "<%= operatingsystem == "Debian" and lsbmajdistrelease == "7" ? "awstats_model.conf" : "awstats.model.conf" %>"
 LogFile="/var/www/<%=name%>/logs/access_log"
 SiteDomain="<%=awstats_www == "true" ? "www.#{name}" : name%>"
 AllowAccessFromWebToFollowingAuthenticatedUsers="admin <%=name%> <%=user%>"

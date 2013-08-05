@@ -12,7 +12,10 @@ class webserver1::awstats::debian::wheezy inherits webserver1::awstats::debian {
     ensure => absent,
   }
 
-  File["/etc/awstats/awstats.conf"] {
+  # awstats.*.conf and awstats.conf are parsed by update.sh,
+  # rename to awstats_model.conf to avoid errors on every run
+  # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=580699
+  file { "/etc/awstats/awstats_model.conf":
     ensure  => present,
     mode    => 644,
     require => Package["awstats"],
