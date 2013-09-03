@@ -4,41 +4,41 @@
 
 <% if lsbdistcodename == "lenny" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "5") -%>
 # debian leeny
-deb http://cdn.debian.net/debian lenny main contrib non-free
+deb http://archive.debian.org/debian-archive lenny main contrib non-free
 
 <% pfs = scope.lookupvar('::packages_from_squeeze')
    pfs = [] unless pfs.is_a?(Array)
    if pfs.any? -%>
 # debian squeeze
-deb http://cdn.debian.net/debian squeeze main contrib non-free
+deb http://http.debian.net/debian squeeze main contrib non-free
 <% end -%>
 
 <% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "6") -%>
 # debian squeeze
-deb http://cdn.debian.net/debian squeeze main contrib non-free
+deb http://http.debian.net/debian squeeze main contrib non-free
 
 # squeeze-updates, previously known as 'volatile'
-deb http://cdn.debian.net/debian squeeze-updates main
+deb http://http.debian.net/debian squeeze-updates main
 
 <% pfw = scope.lookupvar('::packages_from_wheezy')
    pfw = [] unless pfw.is_a?(Array)
    if pfw.any? -%>
 # debian wheezy
-deb http://cdn.debian.net/debian wheezy main contrib non-free
+deb http://http.debian.net/debian wheezy main contrib non-free
 <% end -%>
 
 <% elsif lsbdistcodename == "wheezy" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "7") -%>
 # debian wheezy
-deb http://cdn.debian.net/debian wheezy main contrib non-free
+deb http://http.debian.net/debian wheezy main contrib non-free
 
 # wheezy-updates, previously known as 'volatile'
-deb http://cdn.debian.net/debian wheezy-updates main
+deb http://http.debian.net/debian wheezy-updates main
 
 <% pfw = scope.lookupvar('::packages_from_jessie')
    pfw = [] unless pfw.is_a?(Array)
    if pfw.any? -%>
 # debian jessie
-deb http://cdn.debian.net/debian jessie main contrib non-free
+deb http://http.debian.net/debian jessie main contrib non-free
 <% end -%>
 
 <% end -%>
