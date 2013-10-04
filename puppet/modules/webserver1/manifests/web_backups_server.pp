@@ -36,7 +36,7 @@ class webserver1::web_backups_server {
   #    }
   #  }
   include common::rssh
-  User <<| tag == "${address}_web_backups_client" |>> {
+  User <<| tag == "${address}_web_backups_client" |>>
 
 }
 
