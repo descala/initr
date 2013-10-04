@@ -18,20 +18,25 @@ class webserver1::web_backups_server {
     minute => 30,
   }
 
-# there is also rssh, but unfortunately it only works on debian backup servers
-# only debian applies a patch which allows rsync's -e option
+  # there is also rssh, but unfortunately it only works on debian backup servers
+  # only debian applies a patch which allows rsync's -e option
 
-  case $operatingsystem {
-    "Debian": {
-      include common::rssh
-       User <<| tag == "${address}_web_backups_client" |>> {
-         shell => "/usr/bin/rssh"
-       }
-    }
-    default: {
-       User <<| tag == "${address}_web_backups_client" |>>
-    }
-  }
+  # TODO: this does not work on ruby 1.9 so we have set rssh shellfor all users:
+  # http://projects.puppetlabs.com/issues/15575
+
+  #case $operatingsystem {
+  #    "Debian": {
+  #      include common::rssh
+  #       User <<| tag == "${address}_web_backups_client" |>> {
+  #         shell => "/usr/bin/rssh"
+  #       }
+  #    }
+  #    default: {
+  #       User <<| tag == "${address}_web_backups_client" |>>
+  #    }
+  #  }
+  include common::rssh
+  User <<| tag == "${address}_web_backups_client" |>> {
 
 }
 

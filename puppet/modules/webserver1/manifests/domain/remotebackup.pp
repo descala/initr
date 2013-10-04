@@ -47,7 +47,7 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $use
     ensure => $ensure,
     comment => "puppet managed, backups for $name",
     home => "$backups_path/webservers/$name",
-    shell => "/bin/bash",
+    shell => "/usr/bin/rssh", # see ../web_backups_server.pp comments
     tag => "${web_backups_server}_web_backups_client",
   }
 
