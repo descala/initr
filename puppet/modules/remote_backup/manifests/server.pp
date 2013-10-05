@@ -10,19 +10,8 @@ class remote_backup::server {
       ensure => "directory";
   }
 
-  # there is also rssh, but unfortunately it only works on debian backup servers
-  # only debian applies a patch which allows rsync's -e option
-  case $operatingsystem {
-    "Debian": {
-       include common::rssh
-       User <<| tag == "${node_hash}_remote_backup_client" |>> {
-         shell => "/usr/bin/rssh"
-       }
-    }
-    default: {
-       User <<| tag == "${node_hash}_remote_backup_client" |>>
-    }
-  }
+  include common::rssh
+  User <<| tag == "${node_hash}_remote_backup_client" |>>
 
   if array_includes($classes,"nagios::nsca_node") {
     include remote_backup::server::nagios
