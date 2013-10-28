@@ -63,12 +63,10 @@ class nagios::server::common {
   resources { nagios_hostescalation: purge => true }
   resources { nagios_serviceescalation: purge => true }
 
-  Nagios_host <<| tag == $nagios_address |>> {
-    schedule => daily,
-  }
-  Nagios_service <<| tag == $nagios_address |>> {
-    schedule => daily,
-  }
+  Nagios_host <<| tag == $nagios_address |>>
+
+  Nagios_service <<| tag == $nagios_address |>>
+
   create_resources(nagios::server::common::contact, $nagios_contacts)
   define contact($nagiosalias,$email) {
     nagios_contact { $name:

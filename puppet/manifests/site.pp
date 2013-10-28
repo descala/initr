@@ -24,6 +24,14 @@ Cron {
   weekday => absent,
 }
 
+# Do not change Nagios definitions too often
+Nagios_host {
+  schedule => daily,
+  }
+Nagios_service {
+  schedule => daily,
+}
+
 schedule {
   "daily":
     period => daily,

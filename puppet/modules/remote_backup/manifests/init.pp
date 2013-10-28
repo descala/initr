@@ -31,7 +31,7 @@ class remote_backup {
       ensure => $ensure,
       comment => "puppet managed, backups for $fqdn",
       home => "$remotebackups_path/$remotebackup",
-      shell => "/bin/bash",
+      shell => "/usr/bin/rssh",
       tag => "${remote_backup_server_hash}_remote_backup_client";
   }
 
