@@ -78,7 +78,7 @@ class Initr::Node < ActiveRecord::Base
   # puppet/revoke_cert.sh script
   def revoke_cert
     begin
-      revoke_requests_dir="#{RAILS_ROOT}/tmp/revoke_requests"
+      revoke_requests_dir="#{Rails.root}/tmp/revoke_requests"
       FileUtils.mkdir(revoke_requests_dir) unless File.directory? revoke_requests_dir
       FileUtils.touch "#{revoke_requests_dir}/revoke_#{name}"
     rescue Exception => e

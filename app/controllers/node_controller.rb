@@ -25,8 +25,9 @@ class NodeController < InitrController
 
   protect_from_forgery :except=>[:store_report]
 
-  # avoids storing the report data in the log files
-  filter_parameter_logging :report
+  ## TODO redmine2
+  ## avoids storing the report data in the log files
+  ##filter_parameter_logging :report
   
   def new
     if Setting.plugin_initr["puppetmaster"].blank? or Setting.plugin_initr["puppetmaster_port"].blank?

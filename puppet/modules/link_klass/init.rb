@@ -1,13 +1,12 @@
 require 'redmine'
-require 'dispatcher'
 
 require File.join(File.dirname(__FILE__), 'rails_lib','klass_patch')
 
-Dispatcher.to_prepare do
+Rails.configuration.to_prepare do
   Initr::Klass.send(:include,KlassPatch)
 end
 
-RAILS_DEFAULT_LOGGER.info 'Starting link_klass plugin for Initr'
+Rails.logger.info 'Starting link_klass plugin for Initr'
 
 Initr::Plugin.register :link_klass do
   redmine do

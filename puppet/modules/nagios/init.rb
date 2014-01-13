@@ -1,7 +1,7 @@
 # Redmine initr plugin
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting nagios plugin for Initr'
+Rails.logger.info 'Starting nagios plugin for Initr'
 
 Initr::Plugin.register :nagios do
   redmine do

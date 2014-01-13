@@ -1,6 +1,6 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting wpkg'
+Rails.logger.info 'Starting wpkg'
 
 Initr::Plugin.register :wpkg do
   redmine do

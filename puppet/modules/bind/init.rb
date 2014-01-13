@@ -1,7 +1,7 @@
 # Redmine initr plugin
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting bind plugin for Initr'
+Rails.logger.info 'Starting bind plugin for Initr'
 
 Initr::Plugin.register :bind do
   redmine do

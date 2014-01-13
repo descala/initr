@@ -1,6 +1,6 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting remote_backup plugin for Initr'
+Rails.logger.info 'Starting remote_backup plugin for Initr'
 
 Initr::Plugin.register :remote_backup do
   redmine do

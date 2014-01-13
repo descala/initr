@@ -1,6 +1,6 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting webserver1'
+Rails.logger.info 'Starting webserver1'
 
 Initr::Plugin.register :webserver1 do
   redmine do

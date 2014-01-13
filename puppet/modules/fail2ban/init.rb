@@ -1,7 +1,7 @@
 # Redmine initr plugin
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting fail2ban plugin for Initr'
+Rails.logger.info 'Starting fail2ban plugin for Initr'
 
 Initr::Plugin.register :fail2ban do
   redmine do

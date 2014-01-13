@@ -1,7 +1,7 @@
 require "fileutils"
 
 # Load initr plugins rake tasks
-Dir["#{RAILS_ROOT}/vendor/plugins/initr/puppet/modules/*/rails_lib/tasks/**/*.rake"].sort.each { |ext| load ext }
+Dir["#{Rails.root}/vendor/plugins/initr/puppet/modules/*/rails_lib/tasks/**/*.rake"].sort.each { |ext| load ext }
 
 namespace :initr do
   namespace :module do
@@ -76,7 +76,7 @@ namespace :initr do
       open("#{plugindir}/init.rb", 'w') do |f|
         f << "require 'redmine'\n"
         f << "\n"
-        f << "RAILS_DEFAULT_LOGGER.info 'Starting #{name} plugin for Initr'\n"
+        f << "Rails.logger.info 'Starting #{name} plugin for Initr'\n"
         f << "\n"
         f << "Initr::Plugin.register :#{name} do\n"
         f << "  redmine do\n"

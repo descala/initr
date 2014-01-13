@@ -1,6 +1,6 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting package_manager plugin for Initr'
+Rails.logger.info 'Starting package_manager plugin for Initr'
 
 Initr::Plugin.register :package_manager do
   redmine do
