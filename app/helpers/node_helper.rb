@@ -1,6 +1,6 @@
 module NodeHelper
   
-  def project_path(project)
+  def initr_project_path(project)
     b = []
     ancestors = (project.root? ? [] : project.ancestors.visible)
     ancestors.shift
