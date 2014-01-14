@@ -1,4 +1,5 @@
-require 'puppet/rails/host'
+# TODO redmine2 - this interferes with rails somehow ...
+#require 'puppet/rails/host'
 
 class NodeController < InitrController
   unloadable

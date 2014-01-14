@@ -1,35 +1,36 @@
-# Redmine initr plugin
-
 require 'redmine'
 
 Rails.logger.info 'Starting initr plugin for Redmine'
 
 require 'initr/plugin'
 require 'initr/klass_definition'
+require 'puppet_report_patch'
+require 'access_control_patch'
+
+# TODO redmine2 - this interferes with rails somehow ...
+# require 'puppet_patch'
+
+require 'issue_status_patch'
 require 'project_patch'
 require 'tracker_patch'
-require 'issue_status_patch'
-require 'puppet_report_patch'
-require 'puppet_patch'
 require 'user_patch'
-require 'access_control_patch'
 
 Rails.configuration.to_prepare do
   Project.send(:include, ProjectInitrPatch)
   User.send(:include, UserInitrPatch)
-  [
-    Puppet::Rails::Host,
-    Puppet::Rails::FactName,
-    Puppet::Rails::FactValue,
-    Puppet::Rails::Resource,
-    Puppet::Rails::ParamValue,
-    Puppet::Rails::ParamName,
-    Puppet::Rails::ResourceTag,
-    Puppet::Rails::PuppetTag,
-    Puppet::Rails::SourceFile
-  ].each do |c|
-    c.send(:include, PuppetPatch)
-  end
+#  [
+#    Puppet::Rails::Host,
+#    Puppet::Rails::FactName,
+#    Puppet::Rails::FactValue,
+#    Puppet::Rails::Resource,
+#    Puppet::Rails::ParamValue,
+#    Puppet::Rails::ParamName,
+#    Puppet::Rails::ResourceTag,
+#    Puppet::Rails::PuppetTag,
+#    Puppet::Rails::SourceFile
+#  ].each do |c|
+#    c.send(:include, PuppetPatch)
+#  end
   Puppet::Transaction::Report.send(:include, PuppetReportPatch)
   Tracker.send(:include, TrackerPatch)
 end
@@ -91,12 +92,11 @@ Redmine::Plugin.register :initr do
 
 end
 
-
 # # Load initr plugins when all is initialized
-RedmineApp::Application.config.after_initialize do
+#RedmineApp::Application.config.after_initialize do
 
   Initr::Plugin.load
-  puts ActiveSupport::Dependencies.autoload_paths
+#  puts ActiveSupport::Dependencies.autoload_paths
 
   # dump to a file some server info need by scripts (see initr_login)
   # must be done after_initialize to avoid accessing Setting[] before all
@@ -113,5 +113,5 @@ RedmineApp::Application.config.after_initialize do
       f.puts "DOMAIN: http://localhost:3000"
     end
   end
-end
+#end
 
