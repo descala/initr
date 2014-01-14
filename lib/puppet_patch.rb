@@ -61,6 +61,3 @@ module PuppetPatch
   end
 
 end
- 
-# Add module to Puppet
-Puppet::Rails::Host.send(:include, PuppetPatch)

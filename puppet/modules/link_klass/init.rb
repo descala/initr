@@ -9,14 +9,12 @@ end
 Rails.logger.info 'Starting link_klass plugin for Initr'
 
 Initr::Plugin.register :link_klass do
-  redmine do
-    name 'link_klass'
-    author 'Ingent'
-    description 'LinkKlass plugin for initr'
-    version '0.0.1'
-    project_module :initr do
-      add_permission :edit_klasses, { :link_klass => [:new,:create,:configure] }
-    end
+  name 'link_klass'
+  author 'Ingent'
+  description 'LinkKlass plugin for initr'
+  version '0.0.1'
+  project_module :initr do
+    add_permission :edit_klasses, { :link_klass => [:new,:create,:configure] }
   end
   klasses 'link_klass' => {:description => 'use a class from other node, link it', :unique => false}
 end

@@ -3,7 +3,7 @@ require_dependency 'project'
 # Taken from http://github.com/edavis10/redmine-budget-plugin/tree/master
 # Patches Redmine's Projects dynamically. Adds a relationship
 # Project +has_many+ Nodes
-module ProjectPatch
+module ProjectInitrPatch
   def self.included(base) # :nodoc:
     base.extend(ClassMethods)
  
@@ -30,6 +30,3 @@ module ProjectPatch
   end
 
 end
- 
-# Add module to Project
-Project.send(:include, ProjectPatch)

@@ -19,7 +19,3 @@ module TrackerPatch
   end
 
 end
- 
-# Add module to Tracker
-Tracker.send(:include, TrackerPatch)
- 

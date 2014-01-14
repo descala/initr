@@ -1,1 +1,2 @@
-gem "facter"
+gem 'facter'
+gem 'puppet'

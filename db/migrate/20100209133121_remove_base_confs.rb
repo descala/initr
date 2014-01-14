@@ -1,3 +1,5 @@
+require_dependency 'initr/base'
+
 class RemoveBaseConfs < ActiveRecord::Migration
 
   def self.up

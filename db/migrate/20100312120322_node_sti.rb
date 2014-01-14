@@ -1,3 +1,5 @@
+require_dependency 'initr/node'
+
 class NodeSti < ActiveRecord::Migration
 
   def self.up

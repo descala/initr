@@ -1,24 +1,22 @@
 # Redmine initr plugin
 
 require 'redmine'
-require File.join(File.dirname(__FILE__), 'lib','access_control_patch')
-require File.join(File.dirname(__FILE__), 'lib','project_patch')
-require File.join(File.dirname(__FILE__), 'lib','puppet_patch')
-require File.join(File.dirname(__FILE__), 'lib','issue_status_patch')
-require File.join(File.dirname(__FILE__), 'lib','tracker_patch')
 
 Rails.logger.info 'Starting initr plugin for Redmine'
 
-# Patches to the Redmine core.
+require 'initr/plugin'
+require 'initr/klass_definition'
 require 'project_patch'
 require 'tracker_patch'
 require 'issue_status_patch'
 require 'puppet_report_patch'
 require 'puppet_patch'
+require 'user_patch'
+require 'access_control_patch'
 
 Rails.configuration.to_prepare do
-  Project.send(:include, ProjectPatch)
-  User.send(:include, UserPatch)
+  Project.send(:include, ProjectInitrPatch)
+  User.send(:include, UserInitrPatch)
   [
     Puppet::Rails::Host,
     Puppet::Rails::FactName,
@@ -32,6 +30,8 @@ Rails.configuration.to_prepare do
   ].each do |c|
     c.send(:include, PuppetPatch)
   end
+  Puppet::Transaction::Report.send(:include, PuppetReportPatch)
+  Tracker.send(:include, TrackerPatch)
 end
 
 Redmine::Plugin.register :initr do
@@ -92,17 +92,11 @@ Redmine::Plugin.register :initr do
 end
 
 
-
-# Load initr plugins when all is initialized
+# # Load initr plugins when all is initialized
 RedmineApp::Application.config.after_initialize do
-  # require an override of Rails::Plugin to set lib_path to rails_lib
-  require File.join(File.dirname(__FILE__), 'lib','rails','plugin')
 
-  class InitrPlugin < Redmine::Plugin
-    self.directory = File.join(Rails.root, 'plugins/initr/puppet/modules')
-  end
-
-  InitrPlugin.load
+  Initr::Plugin.load
+  puts ActiveSupport::Dependencies.autoload_paths
 
   # dump to a file some server info need by scripts (see initr_login)
   # must be done after_initialize to avoid accessing Setting[] before all
@@ -121,5 +115,3 @@ RedmineApp::Application.config.after_initialize do
   end
 end
 
-# Needed to call node/store_report?format=yml
-Mime::Type.register_alias "text/plain", :yml
