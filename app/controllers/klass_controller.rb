@@ -44,7 +44,7 @@ class KlassController < InitrController
         else
           k.active = false
         end
-        k.save(false)
+        k.save(:validate => false)
       end
       new_klasses = params[:new_klasses].keys if params[:new_klasses]
       new_klasses ||= []
@@ -56,7 +56,7 @@ class KlassController < InitrController
         rescue NameError
           klass = Kernel.eval("Initr::#{klass_name}").new({:node_id=>@node.id,:active=>true})
         end
-        klass.save(false)
+        klass.save(:validate => false)
       end
       flash[:info] = "Configuration saved"
     end

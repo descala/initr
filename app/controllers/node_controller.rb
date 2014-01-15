@@ -185,7 +185,7 @@ class NodeController < InitrController
         @hosts_new << host.name
         node = Initr::NodeInstance.new
         node.name = host.name
-        node.save(false)
+        node.save(:validate => false)
       end
     end
   end

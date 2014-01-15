@@ -16,11 +16,11 @@
     <ul class="klasses">
       <% @klass_definitions.each do |kd| -%>
         <%
-          klass = @node.klasses.find_by_type kd.name.camelize
+          klass = @node.klasses.find_by_type "Initr::#{kd.name.camelize}"
           klass ||= @node.klasses.find_by_type "Initr#{kd.name.camelize}"
         -%>
         <% if klass -%>
-          <li class="klass<%=klass.active? ? " active" : "" %>">
+          <li class="klass<%=klass.active? ? " active" : "active" %>">
             <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?, :onclick=>"toogle_class($(this));"%>
             <%=image_tag("changeset.png",:title=>"Class has stored configuration") unless klass.active? %>
             <%=image_tag("link.png",:title=>"Linked on #{klass.linked_klasses.collect {|lk| lk.node.fqdn}.join(", ") }") if klass.linked_klasses.any? %>
@@ -86,7 +86,7 @@
         begin
           templ.klasses.sort.collect { |k|
             link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
-          }.join(", ")
+          }.join(", ").html_safe
         rescue ActiveRecord::SubclassNotFound => e
           link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
         end

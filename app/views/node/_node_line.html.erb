@@ -16,10 +16,6 @@
     end
   -%>
 </td>
-<td><%= link_to_report(node.report) %></td>
-<td>
-  <%= render :partial => node.provider_partial, :locals => {:node=>node} if node.provider_is_configured? %>
-</td>
 <td>
   <%
   begin

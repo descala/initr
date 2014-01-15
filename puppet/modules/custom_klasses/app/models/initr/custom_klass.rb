@@ -67,7 +67,7 @@ class Initr::CustomKlass < Initr::Klass
 
   def save_custom_klass_confs
     custom_klass_confs.each do |ckc|
-      ckc.save(false)
+      ckc.save(:validate => false)
     end
   end
 

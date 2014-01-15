@@ -49,7 +49,7 @@ class NagiosController < InitrController
   def before_destroy_check
     if request.post?
       @nagios_check.ensure = "absent"
-      @nagios_check.save(false)
+      @nagios_check.save(:validate => false)
     end
     redirect_to :action => 'configure', :id => @klass
   end

@@ -11,7 +11,7 @@
     <% if @node -%>
     <h3><%= link_to(@node.fqdn, :controller => 'klass', :action => 'list', :id => @node) %></h3>
     <ul>
-      <li><%= link_to("Klasses", :controller => 'klass', :action => 'list', :id => @node) %>
+      <li><%= link_to("Klasses", :controller => 'klass', :action => 'list', :id => @node, :tab => 'klasses') %>
         <ul>
         <% begin -%>
         <% @node.klasses.sort.each do |k| -%>

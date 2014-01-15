@@ -22,10 +22,10 @@ module ProjectInitrPatch
   
   module InstanceMethods
     def node_instances
-      self.nodes.find :all, :conditions => "type='NodeInstance'"
+      self.nodes.find :all, :conditions => "type='Initr::NodeInstance'"
     end
     def node_templates
-      self.nodes.find :all, :conditions => "type='NodeTemplate'"
+      self.nodes.find :all, :conditions => "type='Initr::NodeTemplate'"
     end
   end
 

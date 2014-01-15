@@ -7,7 +7,7 @@ class AddUserColumnsToDomain < ActiveRecord::Migration
     Initr::Webserver1Domain.all.each do |d|
       d.user_awstats = d.user_ftp
       d.user_mysql   = d.user_ftp
-      d.save(false)
+      d.save(:validate => false)
     end
   end
 

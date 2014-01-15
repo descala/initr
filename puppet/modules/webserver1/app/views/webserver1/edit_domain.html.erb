@@ -5,7 +5,7 @@
 <table>
     <td valign="top">
       <h4>Domain config</h4>
-      <%= labelled_form_for('webserver1_domain', @domain, :url=>{:action=>'edit_domain'}, :html=>{:class=>'tabular'}) do |f| -%>
+      <%= labelled_form_for(:webserver1_domain, @domain, :url=>{:action=>'edit_domain'}, :html=>{:class=>'tabular'}) do |f| -%>
         <p><%= error_messages_for 'domain' %></p>
         <%= render :partial => 'webserver1_domain', :locals => {:form => f} %>
         <p>

@@ -10,13 +10,13 @@
       <tr class="<%= cycle('odd', 'even') %>">
         <td><%= @node.fqdn %></td>
         <td align="right">
-	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
+	  <%= form_tag( {:action => 'assign_node', :id=> @node}) do %>
           <%= collection_select(:node, :project_id, @projects, :id,
                 :name, {:prompt => true}, :onchange => "confirm('Change #{@node.fqdn} project?') && submit()" ) -%>
 	  <% end %>
         </td>
         <td align="right">
-	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
+	  <%= form_tag( {:action => 'assign_node', :id=> @node}) do %>
           <%= collection_select(:node, :user_id, @users, :id,
                 :name, {:prompt => true}, :onchange => "confirm('Change #{@node.fqdn} owner?') && submit()" ) -%>
 	  <% end %>
@@ -41,13 +41,13 @@
       <tr class="<%= cycle('odd', 'even') %>">
         <td><%= @node.fqdn %></td>
         <td align="right">
-	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
+	  <%= form_tag( {:action => 'assign_node', :id=> @node}) do %>
           <%= collection_select(:node, :project_id, @projects + [Initr::FakeProject.new], :id,
                 :name, {:prompt => true}, :onchange => "confirm('Change #{@node.fqdn} project?') && submit()" ) -%>
 	  <% end %>
         </td>
         <td align="right">
-	  <% form_tag( {:action => 'assign_node', :id=> @node}) do %>
+	  <%= form_tag( {:action => 'assign_node', :id=> @node}) do %>
           <%= collection_select(:node, :user_id, @users, :id,
                 :name, {:prompt => true}, :onchange => "confirm('Change #{@node.fqdn} owner?') && submit()" ) -%>
 	  <% end %>
