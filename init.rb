@@ -7,13 +7,12 @@ require 'initr/klass_definition'
 require 'puppet_report_patch'
 require 'access_control_patch'
 
-# TODO redmine2 - this interferes with rails somehow ...
 require 'puppet_patch'
-
 require 'issue_status_patch'
 require 'project_patch'
 require 'tracker_patch'
 require 'user_patch'
+require 'redmine_plugin_patch'
 
 Rails.configuration.to_prepare do
   Project.send(:include, ProjectInitrPatch)
@@ -33,6 +32,7 @@ Rails.configuration.to_prepare do
   end
   Puppet::Transaction::Report.send(:include, PuppetReportPatch)
   Tracker.send(:include, TrackerPatch)
+  Redmine::Plugin.send(:include,RedminePluginPatch)
 end
 
 Redmine::Plugin.register :initr do
