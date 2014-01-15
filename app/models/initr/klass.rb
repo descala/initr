@@ -56,12 +56,12 @@ class Initr::Klass < ActiveRecord::Base
 
   def controller
     class_name = self.class.to_s.split('::').last
-    if "#{class_name}Controller".constantize.instance_methods.include? 'configure'
+    if "#{class_name}Controller".constantize.respond_to? 'configure'
       class_name.underscore
     else
       'klass'
     end
-  rescue NameError => e
+  rescue NameError
     'klass'
   end
 

@@ -10,7 +10,7 @@
       node.klasses.sort.collect { |k|
         next unless k.active?
         link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
-      }.compact.join(", ")
+      }.compact.join(", ").html_safe
     rescue ActiveRecord::SubclassNotFound => e
       link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
     end

@@ -8,7 +8,7 @@
     }
 </script>
 
-<% form_for :node, :url=>{:controller=>'klass', :action=>'activate', :id=>@node} do |f| -%>
+<%= form_for :node, :url=>{:controller=>'klass', :action=>'activate', :id=>@node} do |f| -%>
 
   <% if @klass_definitions.any? -%>
     <div>

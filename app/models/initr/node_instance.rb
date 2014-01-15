@@ -1,5 +1,4 @@
-# TODO redmine2 - this interferes with rails somehow ...
-#require 'puppet/rails/host'
+require 'puppet/rails/host'
 
 class Initr::NodeInstance < Initr::Node
   unloadable
@@ -153,8 +152,8 @@ class Initr::NodeInstance < Initr::Node
     begin
       a = puppet_fact('kernelrelease').split(/\.|-|mdk/)
         "#{a[0]}.#{a[1]}.#{a[2]}-#{a[3]}"
-    rescue Exception => e
-        ''
+    rescue Exception
+      ''
     end
   end
 
@@ -167,7 +166,8 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def report
-    self.reports.sort.last
+    # TODO redmine2 - reports fail
+    # self.reports.sort.last
   end
 
   # shamelessly taken from Foreman project (http://theforeman.org)

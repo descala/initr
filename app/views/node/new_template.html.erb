@@ -5,7 +5,7 @@
   <%= error_messages_for 'node_template' %>
 
   <fieldset>
-    <% form_for :node_template, :url => { :action => 'new_template' }  do |form| %>
+    <%= form_for :node_template, :url => { :action => 'new_template' }  do |form| %>
       <p>
       <label for="name"><%="Name"%>:</label>
       <%= form.text_field(:name, :size => 40) %>
