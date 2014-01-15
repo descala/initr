@@ -1,4 +1,4 @@
-match '/node/:action/:id' => 'node'
+match '/node/:action(/:id)' => 'node'
 match '/nodes' => 'node#list'
 match '/reports' => 'node#store_report',  :via => 'post'
 match '/klass/:action/:id' => 'klass'
