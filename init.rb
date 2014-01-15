@@ -8,7 +8,7 @@ require 'puppet_report_patch'
 require 'access_control_patch'
 
 # TODO redmine2 - this interferes with rails somehow ...
-# require 'puppet_patch'
+require 'puppet_patch'
 
 require 'issue_status_patch'
 require 'project_patch'
@@ -18,19 +18,19 @@ require 'user_patch'
 Rails.configuration.to_prepare do
   Project.send(:include, ProjectInitrPatch)
   User.send(:include, UserInitrPatch)
-#  [
-#    Puppet::Rails::Host,
-#    Puppet::Rails::FactName,
-#    Puppet::Rails::FactValue,
-#    Puppet::Rails::Resource,
-#    Puppet::Rails::ParamValue,
-#    Puppet::Rails::ParamName,
-#    Puppet::Rails::ResourceTag,
-#    Puppet::Rails::PuppetTag,
-#    Puppet::Rails::SourceFile
-#  ].each do |c|
-#    c.send(:include, PuppetPatch)
-#  end
+  [
+    Puppet::Rails::Host,
+    Puppet::Rails::FactName,
+    Puppet::Rails::FactValue,
+    Puppet::Rails::Resource,
+    Puppet::Rails::ParamValue,
+    Puppet::Rails::ParamName,
+    Puppet::Rails::ResourceTag,
+    Puppet::Rails::PuppetTag,
+    Puppet::Rails::SourceFile
+  ].each do |c|
+    c.send(:include, PuppetPatch)
+  end
   Puppet::Transaction::Report.send(:include, PuppetReportPatch)
   Tracker.send(:include, TrackerPatch)
 end
