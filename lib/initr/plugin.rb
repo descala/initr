@@ -6,7 +6,6 @@ module Initr #:nodoc:
   class Plugin < Redmine::Plugin
 
     def_field :klasses
-
     # a pointer to parent class variable
     @registered_plugins = Redmine::Plugin.registered_plugins
 
