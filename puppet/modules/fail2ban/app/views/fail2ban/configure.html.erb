@@ -1,6 +1,6 @@
 <%= klass_menu "Fail2ban jails" %>
 
-<% form_for(:fail2ban, @klass, :url => {:action => 'configure'} ) do |f| -%>
+<%= form_for(:fail2ban, @klass, :url => {:action => 'configure'} ) do |f| -%>
 
   <%= error_messages_for 'klass' %>
 

@@ -19,7 +19,7 @@
 
 <h3>Global config</h3>
 
-<% labelled_tabular_form_for :bind, @klass, :url=>{:action=>'configure'} do |f| -%>
+<%= labelled_form_for :bind, @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'} do |f| -%>
 
   <p><%= error_messages_for 'klass' %></p>
 

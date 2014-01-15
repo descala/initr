@@ -2,7 +2,7 @@
 
 <h3>Configure new nagios check</h3>
 
-<% labelled_tabular_form_for(:nagios_check, @nagios_check, :url => {:action => 'create_check', :id => @klass}) do |f| -%>
+<%= labelled_form_for(:nagios_check, @nagios_check, :url => {:action => 'create_check', :id => @klass}, :html=>{:class=>'tabular'}) do |f| -%>
   <p><%= error_messages_for 'nagios_check' %></p>
 
   <%= render(:partial => 'nagios_check', :locals => {:form => f}) %>

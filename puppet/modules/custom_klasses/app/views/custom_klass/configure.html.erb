@@ -2,7 +2,7 @@
 
 <p><%= "Needed attributes for this class:" %></p>
 
-<% labelled_tabular_form_for :custom_klass, @klass, :url => ({ :action=>'configure', :id=>@klass }) do |f| %>
+<%= labelled_form_for :custom_klass, @klass, :url=>{:action=>'configure',:id=>@klass }, :html=>{:class=>'tabular'} do |f| %>
 
   <%= render :partial => "form", :locals => {:f=>f} %>
 

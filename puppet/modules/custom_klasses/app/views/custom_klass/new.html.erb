@@ -1,6 +1,6 @@
 <%= klass_menu "New custom klass"%>
 
-<% labelled_tabular_form_for :custom_klass, @klass, :url => {:action => 'create', :id => @node} do |f| %>
+<%= labelled_form_for :custom_klass, @klass, :url => {:action => 'create', :id => @node}, :html=>{:class=>'tabular'} do |f| %>
 
   <%= render :partial => "form", :locals => {:f=>f} %>
   <%= submit_tag "Create" %>

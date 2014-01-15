@@ -1,6 +1,6 @@
 <%= klass_menu("Edit DNS zone") %>
 
-<% labelled_tabular_form_for :bind_zone, @bind_zone, :url => {:action=>'edit_zone'} do |f| -%>
+<%= labelled_form_for :bind_zone, @bind_zone, :url => {:action=>'edit_zone'}, :html=>{:class=>'tabular'} do |f| -%>
 
   <p><%= error_messages_for 'bind_zone' %></p>
 

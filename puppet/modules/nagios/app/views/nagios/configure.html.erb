@@ -1,5 +1,5 @@
 <%= klass_menu %>
-<% labelled_tabular_form_for(:nagios, @klass, :url => {:action => 'configure'}, :html => { :method => 'post'}) do |f|%>
+<%= labelled_form_for(:nagios, @klass, :url => {:action => 'configure'}, :html => { :method => 'post', :class=>'tabular'}) do |f|%>
   <p><%= error_messages_for 'klass' %></p>
   <p><%= f.select(:klass_id, @nagios_servers.collect {|ns| [ns.node.fqdn, ns.id]}, {:disabled => @nagios_servers.collect {|ns| ns.id unless ns.address}.compact, :include_blank=>true, :label => l(:field_nagios_server)}) %></p>
   <p><%= submit_tag "Save" %></p>

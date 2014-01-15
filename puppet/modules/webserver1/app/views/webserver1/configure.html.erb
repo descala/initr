@@ -34,7 +34,7 @@
 </fieldset>
 
 <br />
-<% labelled_tabular_form_for(:webserver1, @klass, :url=>{:action=>'configure'}) do |f| %>
+<%= labelled_form_for(:webserver1, @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| %>
 
 <%= error_messages_for 'klass' %>
 
