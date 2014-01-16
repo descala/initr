@@ -18,7 +18,7 @@ class Initr::BindZone < ActiveRecord::Base
     {"zone"=>zone,"ttl"=>ttl,"serial"=>serial}
   end
 
-  def save(perform_validation=true)
+  def save(&args)
     if valid?
       # auto-update serial date (YYYYMMDD) + id 01
       if domain_changed? or ttl_changed? or zone_changed?
@@ -30,7 +30,7 @@ class Initr::BindZone < ActiveRecord::Base
         end
       end
     end
-    super(perform_validation)
+    super
   end
 
   def <=>(oth)

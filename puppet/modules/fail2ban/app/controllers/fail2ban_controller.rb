@@ -8,7 +8,7 @@ class Fail2banController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post?
+    if request.post? or request.put?
       params["fail2ban"] ||= {}
       params["fail2ban"]["jails"] ||= {}
       if @klass.update_attributes(params["fail2ban"])

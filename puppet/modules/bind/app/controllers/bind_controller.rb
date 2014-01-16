@@ -8,7 +8,7 @@ class BindController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post?
+    if request.post? or request.put?
       params["bind"] ||= {}
       if @klass.update_attributes(params["bind"])
         flash[:notice]='Configuration saved'
@@ -23,7 +23,7 @@ class BindController < InitrController
     @bind_zone = Initr::BindZone.new(params[:bind_zone])
     @bind_zone.bind = @klass
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
-    if request.post?
+    if request.post? or request.put?
       if @bind_zone.save
         flash[:notice]="Bind zone saved"
         redirect_to :action=>'configure', :id=>@klass
