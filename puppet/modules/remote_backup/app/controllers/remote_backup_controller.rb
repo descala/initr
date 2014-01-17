@@ -11,7 +11,7 @@ class RemoteBackupController < InitrController
     @remote_backup_servers = Initr::RemoteBackup.remote_backup_servers_for_current_user.collect { |rbs|
       [rbs.node.fqdn, rbs.id]
     }
-    if request.post?
+    if request.post? or request.put?
       if @klass.update_attributes params[:remote_backup]
         flash[:notice] = 'Configuration saved'
         redirect_to :controller => 'klass', :action => 'list', :id => @node

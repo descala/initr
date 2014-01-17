@@ -7,11 +7,12 @@ class Initr::NagiosServer < Initr::Klass
   validates_presence_of :nagiosadmin_password, :on => :update
   validates_confirmation_of :password, :allow_nil => true
   validate :admin_contactgroup_belongs_to_user
+  before_validation :set_password
   attr_accessor :password, :password_confirmation
 
   self.accessors_for(["address","nagiosadmin_password","nsca_decryption_password","admin_contactgroup"])
 
-  def before_validation
+  def set_password
     self.nagiosadmin_password = password.crypt(random_string(2)) unless password.blank?
   end
 

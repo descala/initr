@@ -8,7 +8,7 @@ class Webserver1Controller < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post?
+    if request.post? or request.put?
       if @klass.update_attributes params[:webserver1]
           flash[:notice] = 'Configuration saved'
           redirect_to :action => 'configure'
