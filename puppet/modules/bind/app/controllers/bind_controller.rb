@@ -35,7 +35,7 @@ class BindController < InitrController
 
   def edit_zone
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
-    if request.post?
+    if request.post? or request.put?
       if @bind_zone.update_attributes(params[:bind_zone])
         flash[:notice]="Bind zone saved"
         redirect_to :action => 'configure', :id => @klass

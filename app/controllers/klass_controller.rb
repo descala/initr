@@ -34,7 +34,7 @@ class KlassController < InitrController
   end
 
   def activate
-    if request.post?
+    if request.post? or request.put?
       (render_403; return) unless @node.editable_by?(User.current)
       active_klasses = params[:klasses].keys if params[:klasses]
       active_klasses ||= []
@@ -94,7 +94,7 @@ class KlassController < InitrController
   end
 
   def apply_template
-    if request.post?
+    if request.post? or request.put?
       templ = Initr::NodeTemplate.find(params[:templ_id])
       actual_klasses = {}
       @node.klasses.each do |k|
@@ -116,7 +116,7 @@ class KlassController < InitrController
       return
     end
     @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
-    if request.post?
+    if equest.post?
       unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
         flash[:error] = "Invalid destination node"
         render :action => 'move'
@@ -139,7 +139,7 @@ class KlassController < InitrController
       return
     end
     @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
-    if request.post?
+    if request.post? or request.put?
       unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
         flash[:error] = "Invalid node to copy to"
         render :action => 'copy'
