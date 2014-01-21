@@ -50,7 +50,7 @@
         <li class="klass<%=klass.active? ? " active" : "" %>">
         <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%>
         <% if kd.name == "link_klass" -%>
-          <%=image_tag("link.png",:title=>"Linked to #{klass.copied_klass.node.fqdn}")%>
+          <%=image_tag("link.png",:title=>"Linked to #{klass.copied_klass.node.fqdn}") rescue nil%>
         <% else -%>
           <%=image_tag("link.png",:title=>"Linked on #{klass.linked_klasses.collect {|lk| lk.node.fqdn}.join(", ") }") if klass.linked_klasses.any? %>
         <% end -%>

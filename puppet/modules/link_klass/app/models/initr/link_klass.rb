@@ -21,7 +21,7 @@ class Initr::LinkKlass < Initr::Klass
   end
 
   def pretty_name
-    copied_klass.pretty_name
+    copied_klass.pretty_name rescue "Unknown"
   end
 
   def print_parameters
