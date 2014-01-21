@@ -8,9 +8,7 @@ require 'puppet_report_patch'
 require 'access_control_patch'
 
 require 'puppet_patch'
-require 'issue_status_patch'
 require 'project_patch'
-require 'tracker_patch'
 require 'user_patch'
 require 'redmine_plugin_patch'
 
@@ -31,7 +29,6 @@ Rails.configuration.to_prepare do
     c.send(:include, PuppetPatch)
   end
   Puppet::Transaction::Report.send(:include, PuppetReportPatch)
-  Tracker.send(:include, TrackerPatch)
   Redmine::Plugin.send(:include,RedminePluginPatch)
 end
 
