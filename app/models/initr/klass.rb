@@ -42,7 +42,13 @@ class Initr::Klass < ActiveRecord::Base
     self.name
   end
 
+  # this is the name of the puppet class
   def name
+    self.params_name
+  end
+
+  # this is the name used in the params of forms
+  def params_name
     self.class.to_s.split('::').last.underscore
   end
 
