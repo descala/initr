@@ -50,7 +50,7 @@ class Initr::Klass < ActiveRecord::Base
 
   # this is the name used in the params of forms
   def params_name
-    self.class.to_s.split('::').join('_').downcase
+    self.class.to_s.split('::').join('_').underscore
   end
 
   def pretty_name
