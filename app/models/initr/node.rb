@@ -65,7 +65,7 @@ class Initr::Node < ActiveRecord::Base
       classes["common::configuration_errors"]["errors"] << e.message unless classes["common::configuration_errors"]["errors"].include? e.message
     end
     result = { }
-    result["parameters"] = parameters
+    result["parameters"] = parameters.except('updated_at','created_at')
     result["parameters"]["classes"] = classes.keys.sort
     result["classes"] = classes
     @parameters = result
