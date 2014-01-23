@@ -26,7 +26,7 @@ class InitrWpkg < Initr::Klass
 
   def parameters
     {
-      'wpkg_profiles' => { 'default' => config.keys },
+      'wpkg_profiles' => { 'default' => config.keys.sort },
       'wpkg_base' => '/var/arxiver/deploy'
     } 
   end
