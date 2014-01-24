@@ -19,8 +19,8 @@ class Initr::Webserver1 < Initr::Klass
     config["manage_default_domain"] ||= "1"
   end
 
-  def before_validation
-    self.admin_password = password unless password.blank? or password != password_confirmation
+  before_validation do |ws|
+    ws.admin_password = password unless password.blank? or password != password_confirmation
   end
 
   def name

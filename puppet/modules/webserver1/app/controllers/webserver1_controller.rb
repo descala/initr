@@ -6,18 +6,6 @@ class Webserver1Controller < InitrController
   before_filter :find_domain, :only => [:edit_domain,:rm_domain]
   before_filter :authorize
 
-  def configure
-    @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
-      if @klass.update_attributes params[:webserver1]
-          flash[:notice] = 'Configuration saved'
-          redirect_to :action => 'configure'
-      else
-        render :action => 'configure'
-      end
-    end
-  end
-
   def add_domain
     @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user.collect {|wbs| [wbs.node.fqdn, wbs.id] }
     @domain=Initr::Webserver1Domain.new(params[:webserver1_domain])
