@@ -59,9 +59,9 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     webserver1
   end
 
-  def before_validation
+  before_validation do |domain|
     if password_ftp_changed? or crypted_password.nil? or crypted_password.blank?
-      self.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
+      domain.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
     end
   end
 
