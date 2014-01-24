@@ -2,7 +2,7 @@ match '/node/:action(/:id)' => 'node'
 match '/nodes' => 'node#list'
 match '/reports' => 'node#store_report',  :via => 'post'
 match '/klass/:action/:id' => 'klass'
-match '/install/:action/:id' => 'klass'
+match '/install/:action/:id' => 'install'
 
 Dir.glob File.expand_path("plugins/initr/puppet/modules/*", Rails.root) do |plugin_dir|
   file = File.join(plugin_dir, "config/routes.rb")
