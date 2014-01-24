@@ -4,13 +4,16 @@ require_dependency 'initr/klass'
 module KlassPatch
   def self.included(base) # :nodoc:
     base.send(:include, InstanceMethods)
+    base.class_eval do
+      before_destroy :check_if_linked
+    end
   end
 
   module InstanceMethods
-    def before_destroy
+    def check_if_linked
       Initr::LinkKlass.all.each do |ck|
         if ck.copied_klass_id == self.id.to_s
-          errors.add_to_base "Cannot delete klass, linked on node #{ck.node.fqdn}"
+          errors.add :base, "Cannot delete klass, linked on node #{ck.node.fqdn}"
           return false
         end
       end
