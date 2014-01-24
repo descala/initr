@@ -4,6 +4,7 @@ class Initr::NagiosCheck < ActiveRecord::Base
 
   belongs_to :nagios, :class_name => "Initr::Nagios"
   validates_presence_of :name, :command
+  after_initialize :set_default_values
 
   def validate
     # name can't contain single quotes
@@ -41,7 +42,7 @@ class Initr::NagiosCheck < ActiveRecord::Base
     return check
   end
 
-  def after_initialize
+  def set_default_values
     if new_record?
       # set default values for new records only
       self.ensure                ||= "present"
