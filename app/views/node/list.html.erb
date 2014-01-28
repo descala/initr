@@ -15,9 +15,11 @@
 
     <% @nodes.keys.sort.each do |proj| -%>
       <% unless @project or @nodes[proj].nil? or @nodes[proj].empty? or proj.nil? -%>
-        <% content_tag :tr do -%>
-          <%= content_tag :th, initr_project_path(proj), :colspan=>6, :align=>"left" %>
-        <% end -%>
+        <%=
+          content_tag :tr do
+            content_tag :th, initr_project_path(proj), :colspan=>6, :align=>"left"
+          end
+        %>
       <% end -%>
       <% @nodes[proj].sort.each do |node| -%>
         <%= render :partial => 'node_line', :locals => {:node=>node} %>
