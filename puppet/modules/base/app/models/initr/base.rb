@@ -18,11 +18,12 @@ class Initr::Base < Initr::Klass
   end
 
   def parameters
-    conf = self.config.dup
-    conf.delete("puppet") # see more_classes
     begin
+      conf = self.config.dup
+      conf.delete("puppet") # see more_classes
       conf["initr_url"]="#{Setting[:protocol]}://#{Setting[:host_name]}"
     rescue
+      conf = {}
     end
     return conf
   end

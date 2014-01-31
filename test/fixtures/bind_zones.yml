@@ -1,0 +1,8 @@
+---
+bind_zone_001:
+  id: 1
+  domain: bindzone001.com
+  bind_id: 2
+  zone: IN A 8.8.8.8
+  serial: 1234
+  ttl: 300

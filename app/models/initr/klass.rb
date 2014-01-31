@@ -157,7 +157,7 @@ class Initr::Klass < ActiveRecord::Base
     attributes.each do |c|
       src = <<-END_SRC
       def #{c}
-        config["#{c}"]
+        config["#{c}"] rescue nil
       end
 
       def #{c}=(v)

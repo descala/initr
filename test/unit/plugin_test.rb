@@ -1,37 +1,35 @@
-require File.dirname(__FILE__) + '/../../../test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
-class Initr::PluginTest < Test::Unit::TestCase
+class Initr::PluginTest <  ActiveSupport::TestCase
 
   def setup
-    @klass = Initr::Plugin
+    @plugin = Initr::Plugin
     # In case some real plugins are installed
-    @klass.clear
+    @plugin.clear
   end
   
   def teardown
-    @klass.clear
+    @plugin.clear
   end
   
   def test_register
-    @klass.register :foo do
+    @plugin.register :foo do
       klasses :apache2 => 'Manages apache 2', :apache1 => 'Manages apache 1'
-      redmine do
-        name 'Foo plugin'
-        url 'http://example.net/plugins/foo'
-        author 'John Smith'
-        author_url 'http://example.net/jsmith'
-        description 'This is a test plugin'
-        version '0.0.1'
-      end
+      name 'Foo plugin'
+      url 'http://example.net/plugins/foo'
+      author 'John Smith'
+      author_url 'http://example.net/jsmith'
+      description 'This is a test plugin'
+      version '0.0.1'
     end
     
-    assert_equal 1, @klass.all.size
+    assert_equal 1, @plugin.all.size
     
-    plugin = @klass.find('foo')
+    plugin = @plugin.find('foo')
     assert plugin.is_a?(Initr::Plugin)
     assert_equal({:apache2 => 'Manages apache 2', :apache1 => 'Manages apache 1'}, plugin.klasses)
 
-    plugin = Redmine::Plugin.find('foo')
+    plugin = Initr::Plugin.find('foo')
     assert plugin.is_a?(Redmine::Plugin)
     assert_equal :foo, plugin.id
     assert_equal 'Foo plugin', plugin.name
@@ -40,15 +38,15 @@ class Initr::PluginTest < Test::Unit::TestCase
   end
 
   def test_klass_names
-    @klass.register :foo do
+    @plugin.register :foo do
       klasses :apache2 => 'Manages apache 2', :apache1 => 'Manages apache 1'
     end
-    @klass.register :bar do
+    @plugin.register :bar do
       klasses :bar => 'Bar class'
     end
     
-    assert_equal 3, @klass.klass_names.size
-    assert @klass.klass_names.first.is_a?(Initr::KlassDefinition)
+    assert_equal 3, @plugin.klass_names.size
+    assert @plugin.klass_names.first.is_a?(Initr::KlassDefinition)
   end
   
 

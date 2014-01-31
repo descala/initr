@@ -1,4 +1,6 @@
 ---
 node_001:
   id: 1
-  name: node_001.domain.tld
+  type: Initr::NodeInstance
+  name: hashasdfasdf
+  project_id: 2

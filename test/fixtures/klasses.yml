@@ -1,0 +1,15 @@
+---
+klass_001:
+  id: 1
+  type: Initr::Base
+  node_id: 1
+  config: | 
+    ---
+      puppet: none
+klass_002:
+  id: 2
+  type: Initr::Bind
+  node_id: 1
+  config: | 
+    ---
+      nameservers: "ns1.tld.com\nns2.tld.com"
