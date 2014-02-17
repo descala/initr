@@ -27,6 +27,8 @@
 
   <p><%= f.text_field("ipaddress") %> (<%= l(:used_by_slave_servers) %>)</p>
 
+  <p><%= f.text_field("allowed_ips") %> (<%= l(:allowed_ips) %>)</p>
+
   <p><%= submit_tag("Save") %></p>
 
 <% end -%>

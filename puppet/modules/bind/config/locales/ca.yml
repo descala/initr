@@ -10,3 +10,5 @@ ca:
   used_by_slave_servers: Usat pels servidors esclaus
   act_as_slave_server_of: Fes d'esclau de totes les zones de...
   acts_as_master_server_of: Servidors esclaus
+  field_allowed_ips: IPs extra a autoritzar
+  allowed_ips: es permetra axfr a aquestes IP, separades per ;

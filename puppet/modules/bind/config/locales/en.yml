@@ -10,3 +10,5 @@ en:
   used_by_slave_servers: Used by slave servers
   act_as_slave_server_of: Act as slave server for all zones of...
   acts_as_master_server_of: Slave servers
+  field_allowed_ips: extra IPs to authorize
+  allowed_ips: those IP will be allowed to use axfr, separated with ;

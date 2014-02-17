@@ -22,7 +22,7 @@ class Initr::Bind < Initr::Klass
 
   delegate :fqdn, :to => :node, :prefix => true # allows to use @bind.node_fqdn
 
-  self.accessors_for(%w(ipaddress))
+  self.accessors_for(%w(nameservers ipaddress allowed_ips))
 
   def name
     "bind"
@@ -48,14 +48,6 @@ class Initr::Bind < Initr::Klass
       "bind_slave_zones"   => slave_zones,
       "bind_slave_servers" => slave_servers
     }
-  end
-
-  def nameservers
-    config["nameservers"]
-  end
-
-  def nameservers=(ns)
-    config["nameservers"]=ns
   end
 
   def print_parameters
@@ -95,6 +87,10 @@ class Initr::Bind < Initr::Klass
       else
         ss << slave.ipaddress
       end
+    end
+    # add extra allowed ips to slave_servers
+    allowed_ips.split(";").each do |ip|
+      ss << ip
     end
     ss
   end

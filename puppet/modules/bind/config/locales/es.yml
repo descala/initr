@@ -10,3 +10,5 @@ es:
   used_by_slave_servers: Usada por los servidores esclavos
   act_as_slave_server_of: Actua como esclavo de todas las zonas de...
   acts_as_master_server_of: Servidores esclavos
+  field_allowed_ips: IPs extra a autorizar
+  allowed_ips: se permitira axfr a estas IP, separadas por ;
