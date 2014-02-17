@@ -1,0 +1,15 @@
+;##################
+;# Puppet Managed #
+;##################
+; slave zones
+
+<% bind_slave_zones.each do |master_ip,domains| -%>
+<% domains.each do |domain| -%>
+zone "<%= domain %>" {
+  type slave;
+  file "/etc/bind/puppet_slave_zones/<%= domain %>.zone";
+  masters { <%= master_ip %>; };
+};
+
+<% end -%>
+<% end -%>

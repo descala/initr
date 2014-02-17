@@ -8,6 +8,7 @@ class BindController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
+    @eligible_masters = eligible_masters
     if request.post? or request.put?
       params["bind"] ||= {}
       if @klass.update_attributes(params["bind"])
@@ -50,7 +51,36 @@ class BindController < InitrController
     redirect_to :action => 'configure', :id => @klass
   end
 
+  def add_master
+    if request.post?
+      @klass.masters << Initr::Bind.find(params[:master_id])
+      @klass.save
+    end
+  ensure
+    @eligible_masters = eligible_masters
+    render :partial => 'masters'
+  end
+
+  def remove_master
+    if request.post?
+      @klass.masters.delete(Initr::Bind.find(params[:master_id]))
+      @klass.save
+    end
+  ensure
+    @eligible_masters = eligible_masters
+    render :partial => 'masters'
+  end
+
   private
+
+  def eligible_masters
+    user_projects = User.current.projects
+    user_projects = Project.all if User.current.login == "admin"
+    Initr::Bind.all.collect { |bind|
+      next if @klass.masters.include?(bind) or bind == @klass
+      bind if user_projects.include? bind.node.project
+    }.compact
+  end
 
   def find_bind
     @klass = Initr::Bind.find params[:id]
