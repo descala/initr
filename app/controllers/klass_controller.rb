@@ -116,7 +116,7 @@ class KlassController < InitrController
       return
     end
     @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
-    if request.post?
+    if request.post? or request.put?
       unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
         flash[:error] = "Invalid destination node"
         render :action => 'move'
