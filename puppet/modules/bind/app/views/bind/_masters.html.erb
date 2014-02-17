@@ -11,7 +11,7 @@
 
 <% if @eligible_masters.any? -%>
   <%= select_tag :new_master,
-    options_from_collection_for_select(@eligible_masters, :id, :node_name, {:disabled=>@eligible_masters.collect {|m| m.id if m.ipaddress.blank?}.compact}),
+    options_from_collection_for_select(@eligible_masters, :id, :node_fqdn, {:disabled=>@eligible_masters.collect {|m| m.id if m.ipaddress.blank?}.compact}),
     { :include_blank => true,
       'data-url'     => url_for(:controller=>'bind',:action=>'add_master',:id=>@klass) } %> (servers with missing ip address are disabled)
 <% end -%>

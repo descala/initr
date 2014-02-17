@@ -20,7 +20,7 @@ class Initr::Bind < Initr::Klass
     join_table:              'bind_masters_slaves',
     association_foreign_key: 'master_id'
 
-  delegate :name, :to => :node, :prefix => true # allows to use @bind.node_name
+  delegate :fqdn, :to => :node, :prefix => true # allows to use @bind.node_fqdn
 
   self.accessors_for(%w(ipaddress))
 
