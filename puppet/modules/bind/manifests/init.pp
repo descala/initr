@@ -50,7 +50,7 @@ class bind($bind_masterzones={},$nameservers=[],
   }
 
   file {
-    ["$var_dir/puppet_zones","$var_dir/puppet_slave_zones"]:
+    "$var_dir/puppet_zones":
       owner   => $binduser,
       group   => $binduser,
       require => [File[$var_dir],Package[$bind]],
@@ -59,6 +59,12 @@ class bind($bind_masterzones={},$nameservers=[],
       recurse => true,
       ignore  => '.gitignore',
       source  => 'puppet:///modules/bind/empty',
+      mode    => '0770';
+    "$var_dir/puppet_slave_zones":
+      ensure  => directory,
+      owner   => $binduser,
+      group   => $binduser,
+      require => [File[$var_dir],Package[$bind]],
       mode    => '0770';
     "$var_dir/puppet_zones.conf":
       owner   => root,
