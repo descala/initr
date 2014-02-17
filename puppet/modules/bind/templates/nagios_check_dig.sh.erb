@@ -6,6 +6,6 @@
 <% scope.lookupvar('bind::bind_masterzones').each_key do |domain| -%>
 /usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_<%=domain%>' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
 <% end -%>
-<% scope.lookupvar('bind::bind_slave_zones').each_key do |domain| -%>
+<% scope.lookupvar('bind::bind_slave_zones').each_value do |domain| -%>
 /usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_<%=domain%>' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
 <% end -%>
