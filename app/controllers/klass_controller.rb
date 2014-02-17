@@ -116,7 +116,7 @@ class KlassController < InitrController
       return
     end
     @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
-    if equest.post?
+    if request.post?
       unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
         flash[:error] = "Invalid destination node"
         render :action => 'move'
@@ -162,7 +162,7 @@ class KlassController < InitrController
       flash[:notice] = "Klass deleted"
       redirect_to :action => 'list', :id => @node
     else
-      render "#{@klass.controller}/configure"
+      redirect_to :controller => @klass.controller, :action => 'configure', :id => @klass.id
     end
   end
     
