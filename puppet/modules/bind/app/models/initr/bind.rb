@@ -33,16 +33,17 @@ class Initr::Bind < Initr::Klass
   end
 
   def class_parameters
-    return { "nameservers"=>[], "bind_masterzones"=>{}} if bind_zones.size == 0
-    if nameservers.nil? or nameservers.blank?
-      raise Initr::Klass::ConfigurationError.new("Bind nameservers not configured")
+    unless bind_zones.size == 0
+      if nameservers.nil? or nameservers.blank?
+        raise Initr::Klass::ConfigurationError.new("Bind nameservers not configured")
+      end
     end
     bind_masterzones = {}
     self.bind_zones.each do |z|
       bind_masterzones[z.domain]=z.parameters
     end
     {
-      "nameservers"        => nameservers.split,
+      "nameservers"        => (nameservers.split rescue []),
       "bind_masterzones"   => bind_masterzones,
       "bind_slave_zones"   => slave_zones,
       "bind_slave_servers" => slave_servers
