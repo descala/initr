@@ -89,8 +89,10 @@ class Initr::Bind < Initr::Klass
       end
     end
     # add extra allowed ips to slave_servers
-    allowed_ips.split(";").each do |ip|
-      ss << ip
+    if allowed_ips
+      allowed_ips.split(";").each do |ip|
+        ss << ip
+      end
     end
     ss
   end
