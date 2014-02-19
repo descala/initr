@@ -33,6 +33,9 @@ puppetca=`which puppetca`
 if [ -z "$puppetca" ] ; then
   puppetca=`gem contents --prefix  puppet | grep "puppetca$"`
 fi
+if [ -z "$puppetca" ]; then
+  puppetca="`which puppet` cert"
+fi
 
 if [ -z "$puppetca" ]; then
   log "Can't find puppetca executable"
