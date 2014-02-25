@@ -3,7 +3,7 @@
 <package
     id="sketchup8"
     name="Google SketchUp 8"
-    revision="83"
+    revision="84"
     reboot="false"
     priority="10">
     <check type="uninstall" condition="exists" path="Google SketchUp 8" />
@@ -15,7 +15,7 @@
     id="sketchup8_pro"
     name="Google SketchUp Pro 8"
     help="See Google SketchUp 8. This version requires a license."
-    revision="83"
+    revision="84"
     reboot="false"
     priority="10">
     <check type="uninstall" condition="exists" path="Google SketchUp 8" />
