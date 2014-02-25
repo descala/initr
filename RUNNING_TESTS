@@ -27,7 +27,7 @@ rm -rf test/fixtures/configuration/
 
 # running all tests on guard crashes due to this bug: https://github.com/burke/zeus/issues/352
 # hopefully fixed in next zeus release, but you can still run all tests with:
-zeus test plugins/intr/test
+zeus test plugins/initr/test
 
 # changing some models fully reloads zeus, making it so slow: https://github.com/burke/zeus/issues/433#issuecomment-31518132
 
