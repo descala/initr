@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packages>
+  <package
+    id="dotnetfx4"
+    name="Microsoft .NET Framework 4"
+    revision="1"
+    priority="11">
+    <check type='file' condition='exists' path='%SYSTEMROOT%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe' />
+    <install cmd='xcopy "%SOFTWARE%\dotnetfx4\dotNetFx40_Full_x86_x64.exe" c:\dotNetInstallers\ /c /r /y /q' />
+    <install cmd='c:\dotNetInstallers\dotNetFx40_Full_x86_x64.exe /norestart /passive' >
+      <exit code="0" />
+      <exit code="194" reboot="true" />
+      <exit code="1603" />
+      <exit code="3010" reboot="true" />
+    </install>
+    <install cmd='rmdir c:\dotNetInstallers /S /Q' />
+    <upgrade include="install" />
+  </package>
+</packages>
