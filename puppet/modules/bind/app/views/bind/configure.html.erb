@@ -27,7 +27,7 @@
 
   <p><%= f.text_field("ipaddress") %> (<%= l(:used_by_slave_servers) %>)</p>
 
-  <p><%= f.text_field("allowed_ips") %> (<%= l(:allowed_ips) %>)</p>
+  <p><%= f.text_area("allowed_ips", :cols=>40, :rows=>3) %> (<%= l(:allowed_ips) %>)</p>
 
   <p><%= submit_tag("Save") %></p>
 
@@ -45,7 +45,7 @@
   <br />
   <h4><%= l(:acts_as_master_server_of) %></h4>
   <% @klass.slaves.each do |slave| -%>
-    <%= link_to slave.node_fqdn, :controller => 'bind', :action => 'configure', :id => slave %>
+    <%= link_to slave.node_fqdn, :controller => 'bind', :action => 'configure', :id => slave %><br />
   <% end -%>
 <% end -%>
 
