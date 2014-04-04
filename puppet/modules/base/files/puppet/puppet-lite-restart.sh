@@ -27,6 +27,6 @@ fi
 # if we want to run puppet only once,
 # it may be a node with scarce resources
 # and puppet should run with low priority
-nice -n 19 /usr/sbin/puppetd -o
+nice -n 19 /usr/sbin/puppetd --test
 
 exit 0
