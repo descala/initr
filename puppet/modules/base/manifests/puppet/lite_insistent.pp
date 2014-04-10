@@ -1,4 +1,8 @@
 class base::puppet::lite_insistent inherits base::puppet::lite {
+  package {
+    'curl':
+      ensure => installed;
+  }
   file {
     "/usr/local/sbin/puppet-run-if-needed.sh":
       before => Service["puppet"],
