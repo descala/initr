@@ -1,8 +1,4 @@
 class base::puppet::insistent inherits base::puppet {
-  package {
-    'curl':
-      ensure => installed;
-  }
   file {
     "/usr/local/sbin/puppet-run-if-needed.sh":
       owner => root,
