@@ -37,7 +37,7 @@ schedule {
     period => daily,
     repeat => 1;
   "nightly":
-    range => "2 - 4",
+    range => "2 - 6",
     period => daily,
     repeat => 1;
 }
