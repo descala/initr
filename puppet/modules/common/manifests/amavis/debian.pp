@@ -23,6 +23,10 @@ class common::amavis::debian inherits common::amavis::common {
       mode    => '0644',
       require => Package['amavisd-new'],
       notify  => Service['amavis'];
+    # now it's on /etc/cron.d/amavisd-new
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=671450
+    '/etc/cron.daily/amavisd-new':
+      ensure => absent;
   }
 
 }
