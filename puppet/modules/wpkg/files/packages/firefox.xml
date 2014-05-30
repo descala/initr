@@ -21,13 +21,7 @@
 
     <install cmd='"%SOFTWARE%\firefox\Firefox Setup %version%.exe" -ms' />
 
-    <upgrade cmd="taskkill /F /IM Firefox.exe">
-      <exit code="0" />
-      <exit code="128" />
-      <exit code="-1073741515" />
-    </upgrade>
-
-    <upgrade cmd='"%SOFTWARE%\firefox\Firefox Setup %version%.exe" -ms' />
+    <upgrade include="install" />
 
     <remove cmd="taskkill /F /IM Firefox.exe">
       <exit code="0" />
@@ -35,6 +29,9 @@
       <exit code="-1073741515" />
     </remove>
 
-    <remove cmd='"%PROGRAMFILES%\Mozilla Firefox\uninstall\helper.exe" -ms' />
+    <!-- for 32bit and 64bit System -->
+    <remove cmd='%COMSPEC% /C if exist "%PROGRAMFILES%\Mozilla Firefox\uninstall\helper.exe" "%PROGRAMFILES%\Mozilla Firefox\uninstall\helper.exe" -ms' />
+    <remove cmd='%COMSPEC% /C if exist "%PROGRAMFILES(x86)%\Mozilla Firefox\uninstall\helper.exe" "%PROGRAMFILES(x86)%\Mozilla Firefox\uninstall\helper.exe" -ms' />
+
   </package>
 </packages>
