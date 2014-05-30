@@ -6,10 +6,10 @@ class wpkg::firefox {
   }
 
   wpkg::download {
-    "firefox":
-      to => "firefox",
-      url => "http://download.mozilla.org/?product=firefox-13.0.1&os=win&lang=ca",
-      creates => "Firefox Setup 13.0.1.exe";
+    'firefox':
+      to      => 'firefox',
+      url     => 'ftp://ftp.mozilla.org/pub/firefox/releases/latest/win32/ca/Firefox%20Setup%2029.0.1.exe',
+      creates => 'Firefox Setup 29.0.1.exe';
   }
 
 }
