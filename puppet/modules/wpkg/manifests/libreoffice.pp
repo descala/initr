@@ -8,7 +8,7 @@ class wpkg::libreoffice {
   wpkg::download {
     'libreoffice':
       to      => 'libreoffice',
-      url     => 'http://donate.libreoffice.org/home/dl/win-x86/4.2.4/ca/LibreOffice_4.2.4_Win_x86.msi',
+      url     => 'http://ftp.rediris.es/mirror/TDF/libreoffice/stable/4.2.4/win/x86/LibreOffice_4.2.4_Win_x86.msi',
       creates => 'LibreOffice_4.2.4_Win_x86.msi';
   }
 }
