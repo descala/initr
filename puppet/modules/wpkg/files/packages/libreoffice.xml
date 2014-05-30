@@ -12,7 +12,7 @@
 
     <check type="uninstall" condition="versiongreaterorequal" path="LibreOffice %version%" value="%version%" />
 
-    <install cmd='msiexec /qb! /i "%SOFTWARE%\LibreOffice_4.2.4_Win_x86.msi" ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 %LANG%' />
+    <install cmd='msiexec /qb! /i "%SOFTWARE%\libreoffice\LibreOffice_4.2.4_Win_x86.msi" ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=1 ISCHECKFORPRODUCTUPDATES=0 %LANG%' />
 
     <upgrade include="install" />
 
