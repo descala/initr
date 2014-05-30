@@ -9,7 +9,7 @@
 
     <variable name="version" value="29.0.1" />
     <variable name="architecture" value="x86" />
-    <variable name="locale" value="ca-ES" />
+    <variable name="locale" value="ca" />
 
     <check type="uninstall" condition="exists" path="Mozilla Firefox %version% (%architecture% %locale%)" />
 
