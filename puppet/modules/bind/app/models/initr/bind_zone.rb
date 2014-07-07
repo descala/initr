@@ -10,10 +10,9 @@ class Initr::BindZone < ActiveRecord::Base
   after_destroy :trigger_puppetrun
   before_save :increment_zone_serial
 
-  def initialize(attributes=nil)
-    super
+  after_initialize {
     self.ttl ||= "300"
-  end
+  }
 
   def parameters
     {"zone"=>zone,"ttl"=>ttl,"serial"=>serial}

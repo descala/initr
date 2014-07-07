@@ -5,12 +5,11 @@ class Initr::Fail2ban < Initr::Klass
   self.accessors_for(%w(mailto custom_jails))
 
   # set some defaults
-  def initialize(attributes=nil)
-    super
-    self.mailto ||= ""
-    self.jails ||= {}
+  after_initialize {
+    self.mailto       ||= ""
+    self.jails        ||= {}
     self.custom_jails ||=""
-  end
+  }
 
   # puppet class is named fail2ban
   def name

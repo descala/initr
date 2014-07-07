@@ -19,12 +19,11 @@ class Initr::Klass < ActiveRecord::Base
   # example: @@adds_klasses = [ Initr::PackageManager ]
   @@adds_klasses = false
 
-  def initialize(attributes = nil)
-    super
+  after_initialize {
     self.config ||= {}
     self.active = self.valid? if self.active.nil?
     self.errors.clear
-  end
+  }
 
   # Default to only one klass type per node
   # see validates_uniqueness_of

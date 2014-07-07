@@ -3,13 +3,12 @@ class Initr::PackageManager < Initr::Klass
 
   self.accessors_for(["security_updates"])
 
-  def initialize(attributes=nil)
-    super
+  after_initialize {
     config["packages_from_squeeze"] ||= ["puppet","rubygems","rubygems1.8"]
     config["packages_from_wheezy"]  ||= []
     config["packages_from_jessie"]  ||= []
-    config["security_updates"] ||= "0"
-  end
+    config["security_updates"]      ||= "0"
+  }
 
   def parameters
     { "packages_from_squeeze" => config["packages_from_squeeze"],

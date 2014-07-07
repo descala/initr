@@ -20,12 +20,11 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
 
-  def initialize(attributes=nil)
-    super
-    self.add_www = true if self.add_www.nil?
-    self.force_www = true if self.force_www.nil?
+  after_initialize {
+    self.add_www     = true  if self.add_www.nil?
+    self.force_www   = true  if self.force_www.nil?
     self.awstats_www = false if self.awstats_www.nil?
-  end
+  }
 
   def parameters
     parameters = { "name" => name,

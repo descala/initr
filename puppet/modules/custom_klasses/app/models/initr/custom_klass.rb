@@ -8,10 +8,6 @@ class Initr::CustomKlass < Initr::Klass
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :node_id
   validates_associated :custom_klass_confs
-
-  def initialize(attributes=nil)
-    super
-  end
   
   # Allow more than one CutomKlass per node
   # see validates_uniqueness_of on Klass
