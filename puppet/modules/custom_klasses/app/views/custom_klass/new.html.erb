@@ -8,3 +8,9 @@
 <% end %>
 
 <%= link_to 'Back', :back %>
+
+<%=
+  content_for :header_tags do
+    javascript_include_tag('custom_klasses.js', :plugin => 'custom_klasses')
+  end
+%>
