@@ -6,8 +6,10 @@
 <p><%= f.text_field 'description'  %></p>
 
 <div id="custom_klass_confs">
-  <%= render :partial => 'custom_klass_conf', :collection => @klass.custom_klass_confs -%>
+  <%= f.fields_for :custom_klass_confs do |ckc_form| -%>
+    <%= render :partial => 'custom_klass_conf', :locals => {:f => ckc_form} -%>
+  <% end -%>
 </div>
-<p><%= add_ckc_link("Add configuration value") %></p>
+<p><%= add_ckc_link("Add configuration value", f) %></p>
 
 <!--[eoform:custom_klass]-->

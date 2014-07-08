@@ -8,16 +8,15 @@ class Initr::RemoteBackup < Initr::Klass
   self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword
                         bandwidthlimit used_space_alert reportspassword num_retries archive_dir))
 
-  def initialize(attributes=nil)
-    super
-    self.mailto ||= "root"
-    self.reportsuccess ||= false
-    self.includefiles ||= "/srv/samba"
-    self.excludefiles ||= DEFAULT_EXCLUDE_FILES
+  after_initialize {
+    self.mailto         ||= "root"
+    self.reportsuccess  ||= false
+    self.includefiles   ||= "/srv/samba"
+    self.excludefiles   ||= DEFAULT_EXCLUDE_FILES
     self.bandwidthlimit ||= "0"
-    self.num_retries ||= "5"
-    self.archive_dir ||= "/srv/duplicity"
-  end
+    self.num_retries    ||= "5"
+    self.archive_dir    ||= "/srv/duplicity"
+  }
 
   def parameters
     unless remote_backup_server

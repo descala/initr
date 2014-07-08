@@ -4,10 +4,9 @@ class Initr::Base < Initr::Klass
 
   self.accessors_for(%w(puppet))
 
-  def initialize(attributes=nil)
-    super
+  after_initialize {
     self.puppet ||= "none"
-  end
+  }
 
   def name
     "base"
