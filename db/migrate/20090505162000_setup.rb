@@ -56,8 +56,6 @@ class Setup < ActiveRecord::Migration
     drop_table :conf_names
     drop_table :conf_names_klass_names
     drop_table :base_confs
-    # Delayed_job tables
-    drop_table :delayed_jobs
   end
 
 end
