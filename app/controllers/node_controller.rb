@@ -191,7 +191,7 @@ class NodeController < InitrController
   end
 
   def unassigned_nodes
-    @projects = Project.active.sort
+    @projects = Project.all.sort
     @users = User.where(:status=>User::STATUS_ACTIVE).sort
     @node_instances = Initr::NodeInstance.find :all, :order => "project_id, name"
     @node_templates = Initr::NodeTemplate.find :all, :order => "project_id, name"
