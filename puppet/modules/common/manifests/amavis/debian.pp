@@ -38,10 +38,15 @@ class common::amavis::debian inherits common::amavis::common {
     '/etc/amavis/local_domains':
       ensure  => present,
       require => Package['amavisd-new'];
+    '/etc/amavis/conf.d/40-local_domains':
+      source  => 'puppet:///modules/common/amavis/40-local_domains',
+      mode    => 0644,
+      require => Package['amavisd-new'],
+      notify  => Service['amavis'];
   }
 
   # see https://git.dotlan.net/dhoffend/kolab/blob/master/debian-install/4.8_amavis-spamassassin.sh
-  append_if_no_such_line { amavis_local_domains:
+  delete_if_such_lines { amavis_local_domains:
     file    => '/etc/amavis/conf.d/50-user',
     line    => '@local_domains_acl = ( read_hash(\%local_domains, "/etc/amavis/local_domains") );',
     require => Package['amavisd-new'],
