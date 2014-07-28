@@ -46,6 +46,7 @@ class common::amavis::debian inherits common::amavis::common {
     line    => '@local_domains_acl = ( read_hash(\%local_domains, "/etc/amavis/local_domains") );',
     require => Package['amavisd-new'],
     notify  => Service['amavis'];
+  }
 
 }
 
