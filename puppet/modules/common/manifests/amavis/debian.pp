@@ -48,7 +48,7 @@ class common::amavis::debian inherits common::amavis::common {
   # see https://git.dotlan.net/dhoffend/kolab/blob/master/debian-install/4.8_amavis-spamassassin.sh
   delete_if_such_lines { amavis_local_domains:
     file    => '/etc/amavis/conf.d/50-user',
-    line    => '@local_domains_acl = ( read_hash(\%local_domains, "/etc/amavis/local_domains") );',
+    line    => '@local_domains_acl = ( read_hash(\%local_domains, \"/etc/amavis/local_domains\") );',
     require => Package['amavisd-new'],
     notify  => Service['amavis'];
   }
