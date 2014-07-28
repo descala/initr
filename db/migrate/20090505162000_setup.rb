@@ -45,19 +45,6 @@ class Setup < ActiveRecord::Migration
       t.timestamps
     end
 
-    # Delayed_job tables
-    create_table :delayed_jobs do |table|
-      table.integer  :priority, :default => 0
-      table.integer  :attempts, :default => 0
-      table.text     :handler
-      table.string   :last_error
-      table.datetime :run_at
-      table.datetime :locked_at
-      table.string   :locked_by
-      table.datetime :failed_at
-      table.timestamps
-    end
-
   end
 
   def self.down
@@ -69,8 +56,6 @@ class Setup < ActiveRecord::Migration
     drop_table :conf_names
     drop_table :conf_names_klass_names
     drop_table :base_confs
-    # Delayed_job tables
-    drop_table :delayed_jobs
   end
 
 end
