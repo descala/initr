@@ -91,7 +91,7 @@ class bind($bind_masterzones={},$nameservers=[],
     cron {
       'check dig all domains':
         ensure  => present,
-        command => '/usr/local/bin/nagios_check_dig.sh &> /dev/null',
+        command => '/usr/local/bin/nagios_check_dig.sh > /dev/null 2>&1',
         user    => root,
         minute  => '*/15';
     }

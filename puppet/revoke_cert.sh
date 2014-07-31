@@ -18,7 +18,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-echo `basename $1` | egrep "^revoke_.+$" &> /dev/null
+echo `basename $1` | egrep "^revoke_.+$" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   log "$0 expects revoke_xxx file (called for `basename $1`)"
   exit 1

@@ -7,7 +7,7 @@ define nagios::nsca_node::wrapper_check($command, $checkfreshness="1", $freshnes
     notifications_enabled => $notifications_enabled,
   }
 
-  $nsca_command = "/usr/local/bin/nsca_wrapper -H $fqdn -S '$name' -C '$command' $sleep -b $send_nsca -c $send_nsca_cfg &> /dev/null"
+  $nsca_command = "/usr/local/bin/nsca_wrapper -H $fqdn -S '$name' -C '$command' -b $send_nsca -c $send_nsca_cfg $sleep > /dev/null 2>&1"
 
   # bug: http://projects.reductivelabs.com/issues/1728
   case $hour {
