@@ -27,7 +27,7 @@ class base::puppet {
   }
   cron {
     puppet_restart:
-      command => "/usr/local/sbin/puppet-restart.sh > /dev/null 2>&1",
+      command => "/usr/local/sbin/puppet-restart.sh > /dev/null",
       before => Service["puppet"],
       user => root,
       hour => 5,
