@@ -98,5 +98,6 @@ class bind($bind_masterzones={},$nameservers=[],
   }
 
   create_resources(bind::zone, $bind_masterzones)
+  bind::slave_zone { hash_values($bind_slave_zones): }
 }
 
