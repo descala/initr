@@ -47,7 +47,7 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
   file {
     "/var/www/$name":
       owner => root,
-      group => $httpd_user,
+      group => root,
       mode => 755,
       ensure => directory,
       require => Package[$httpd];
