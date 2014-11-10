@@ -45,12 +45,12 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
   }
 
   file {
-    "/var/www/$name":
-      owner => root,
-      group => root,
-      mode => 755,
-      ensure => directory,
-      require => Package[$httpd];
+    "/var/www/${name}":
+      ensure  => directory,
+      owner   => $user_ftp,
+      group   => $::httpd_user,
+      mode    => '0550',
+      require => Package[$::httpd];
     "/var/www/$name/readme.txt":
       group => $user_ftp,
       mode => 750,
