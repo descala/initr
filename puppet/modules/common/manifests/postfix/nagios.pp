@@ -1,6 +1,6 @@
 class common::postfix::nagios {
   nagios::check { "smtp":
-    command => "check_smtp -H localhost -w 10 -c 20 -t 30 -S -D 30,15",
+    command => "check_smtp -H localhost -w 10 -c 20 -t 30",
   }
   # Usage: check_mailq -w <warn> -c <crit> [-W <warn>] [-C <crit>] [-M <MTA>] [-t <timeout>] [-v verbose]
   # Checks the number of messages in the mail queue
