@@ -20,4 +20,11 @@ class common::postfixadmin::centos inherits common::postfixadmin {
       unless => "test -d /var/www/html/postfixadmin";
   }
 
+  file {
+    # creates empty database and grants access to postfixadmin user
+    "/usr/local/src/postfixadmin_db.sql":
+      mode => 600,
+      content => template("common/postfixadmin/db.sql.erb");
+  }
+
 }
