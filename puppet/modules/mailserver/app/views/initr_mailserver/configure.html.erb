@@ -14,7 +14,6 @@
   <p><%= f.text_field :db_name %></p>
   <p><%= f.text_field :db_user %></p>
   <p><%= f.text_field :db_passwd %></p>
-  <p><%= f.text_field :imap_passwd %></p>
   <p><%= f.select :db_passwd_encrypt, %w(cleartext md5crypt md5) %></p>
   <p><%= f.select :db_passwd_encrypt_httpd, %w(none crypt scrambled md5 aes sha1) %></p>
   <p><%= f.text_field :bak_host %></p>

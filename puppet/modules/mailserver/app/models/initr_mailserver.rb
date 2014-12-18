@@ -4,7 +4,7 @@ class InitrMailserver < Initr::Klass
 
   REQUIRED_ATTRS = %w(admin_email domain_path domain_in_mailbox mail_location
   webserver db_backend db_name db_user db_passwd db_passwd_encrypt
-  db_passwd_encrypt_httpd imap_passwd clamav amavis webmail)
+  db_passwd_encrypt_httpd clamav amavis webmail)
   OPTIONAL_ATTRS = %w(bak_host)
 
 
