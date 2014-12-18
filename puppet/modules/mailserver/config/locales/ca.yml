@@ -17,7 +17,6 @@ ca:
   field_db_user: "Usuari bbdd"
   field_db_passwd: "Password bbdd"
   field_db_passwd_encrypt: "Encriptació passwords"
-  field_db_passwd_encrypt_httpd: "Encriptació passwords http"
   field_bak_host: "Servidor backups"
   field_amavis: "Amavis"
   field_clamav: "Clamav"
