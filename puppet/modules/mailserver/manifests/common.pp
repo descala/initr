@@ -50,7 +50,7 @@ class mailserver::common {
   }
 
   package {
-    ['pfqueue','postfix','postgrey']:
+    ['pfqueue','postfix','postfix-pcre','postgrey']:
       ensure => installed;
     ['sendmail','exim']:
       ensure => absent;
