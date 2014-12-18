@@ -10,6 +10,3 @@ module PuppetReportPatch
   end
 
 end
-
-# Add module to Puppet
-Puppet::Transaction::Report.send(:include, PuppetReportPatch)

@@ -8,17 +8,17 @@ class Initr::BindZone < ActiveRecord::Base
   validates_format_of :domain, :with => /^[^_]+$/i
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
+  before_save :increment_zone_serial
 
-  def initialize(attributes=nil)
-    super
+  after_initialize {
     self.ttl ||= "300"
-  end
+  }
 
   def parameters
     {"zone"=>zone,"ttl"=>ttl,"serial"=>serial}
   end
 
-  def save(perform_validation=true)
+  def increment_zone_serial
     if valid?
       # auto-update serial date (YYYYMMDD) + id 01
       if domain_changed? or ttl_changed? or zone_changed?
@@ -30,7 +30,6 @@ class Initr::BindZone < ActiveRecord::Base
         end
       end
     end
-    super(perform_validation)
   end
 
   def <=>(oth)

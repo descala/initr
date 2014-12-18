@@ -4,14 +4,12 @@ class Initr::CustomKlass < Initr::Klass
   has_many :custom_klass_confs,
     :class_name => "Initr::CustomKlassConf",
     :dependent => :destroy
-  after_update :save_custom_klass_confs
+  accepts_nested_attributes_for :custom_klass_confs,
+    :allow_destroy => true,
+    :reject_if => proc {|attributes| attributes['name'].blank? or attributes['value'].blank?}
+
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :node_id
-  validates_associated :custom_klass_confs
-
-  def initialize(attributes=nil)
-    super
-  end
   
   # Allow more than one CutomKlass per node
   # see validates_uniqueness_of on Klass
@@ -45,30 +43,6 @@ class Initr::CustomKlass < Initr::Klass
       str += "#{ckc.name} = #{ckc.value}<br />"
     }
     str
-  end
-
-  def new_custom_klass_conf_attributes=(ckc_attributes)
-    ckc_attributes.each do |attributes|
-      custom_klass_confs.build(attributes)
-    end
-  end
-
-  def existing_custom_klass_conf_attributes=(ckc_attributes)
-    custom_klass_confs.reject(&:new_record?).each do |ckc|
-      attributes = ckc_attributes[ckc.id.to_s]
-      if attributes
-        ckc.attributes = attributes
-        ckc.save
-      else
-        custom_klass_confs.delete(ckc)
-      end
-    end
-  end
-
-  def save_custom_klass_confs
-    custom_klass_confs.each do |ckc|
-      ckc.save(false)
-    end
   end
 
 end

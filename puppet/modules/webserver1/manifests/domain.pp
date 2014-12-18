@@ -45,12 +45,12 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
   }
 
   file {
-    "/var/www/$name":
-      owner => $user_ftp,
-      group => $httpd_user,
-      mode => 550,
-      ensure => directory,
-      require => Package[$httpd];
+    "/var/www/${name}":
+      ensure  => directory,
+      owner   => $user_ftp,
+      group   => $::httpd_user,
+      mode    => '0550',
+      require => Package[$::httpd];
     "/var/www/$name/readme.txt":
       group => $user_ftp,
       mode => 750,
@@ -58,26 +58,30 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
       require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/htdocs":
       owner => $user_ftp,
-      group => $user_ftp,
-      mode => 755,
+      group => $httpd_user,
+      mode => 750,
       ensure => directory,
       require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/logs":
-      mode => 755,
+      owner => $httpd_user,
+      group => $user_ftp,
+      mode => 750,
       ensure => directory,
       require => [File["/var/www/$name"],User[$user_ftp]];
     ["/var/www/$name/logs/access_log","/var/www/$name/logs/error_log"]:
-      mode => 644, #TODO: 644 is too open, but with 640 ftp_user can't read logs
+      mode => 644,
       owner => root,
       group => $httpd_user;
     "/var/www/$name/conf":
+      owner => $httpd_user,
+      group => $user_ftp,
       mode => 755,
       ensure => directory,
       require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/cgi-bin":
-      owner => $user_ftp,
+      owner => $httpd_user,
       group => $user_ftp,
-      mode => 755,
+      mode => 770,
       ensure => directory,
       require => [File["/var/www/$name"],User[$user_ftp]];
     "/var/www/$name/backups":
@@ -85,7 +89,9 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
       ensure => directory,
       require => File["/var/www/$name"];
     "/var/www/$name/conf/httpd_include.conf":
-      mode => 644,
+      owner => $httpd_user,
+      group => $user_ftp,
+      mode => 640,
       notify => Exec["apache reload"],
       require => File["/var/www/$name/conf"],
       content => template("webserver1/httpd_include.conf.erb");
@@ -93,8 +99,8 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
       notify => Exec["apache reload"],
       ensure => "/var/www/$name/conf/httpd_include.conf";
     "/var/www/$name/conf/vhost.conf":
-      mode => 644,
-      owner => $user_ftp,
+      mode => 660,
+      owner => $httpd_user,
       group => $user_ftp,
       require => File["/var/www/$name/conf"],
       notify => Exec["apache reload"],

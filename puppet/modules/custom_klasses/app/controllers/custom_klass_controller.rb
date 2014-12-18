@@ -27,8 +27,7 @@ class CustomKlassController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post?
-      params[:custom_klass][:existing_custom_klass_conf_attributes] ||= {}
+    if request.post? or request.put?
       if @klass.update_attributes(params[:custom_klass])
         flash[:notice]='Configuration saved'
         redirect_to :controller => 'klass', :action => 'list', :id => @node.id, :tab => 'klasses'

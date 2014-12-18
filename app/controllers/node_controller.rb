@@ -25,8 +25,9 @@ class NodeController < InitrController
 
   protect_from_forgery :except=>[:store_report]
 
-  # avoids storing the report data in the log files
-  filter_parameter_logging :report
+  ## TODO redmine2
+  ## avoids storing the report data in the log files
+  ##filter_parameter_logging :report
   
   def new
     if Setting.plugin_initr["puppetmaster"].blank? or Setting.plugin_initr["puppetmaster_port"].blank?
@@ -41,7 +42,7 @@ class NodeController < InitrController
     @node = Initr::NodeInstance.new
     @node.user = User.current
     @node.project = @project
-    @node.name = ActiveSupport::SecureRandom.hex(20)
+    @node.name = SecureRandom.hex(20)
     @node.save!
     redirect_to :controller => 'klass', :action => 'list', :id => @node
   end
@@ -184,14 +185,14 @@ class NodeController < InitrController
         @hosts_new << host.name
         node = Initr::NodeInstance.new
         node.name = host.name
-        node.save(false)
+        node.save(:validate => false)
       end
     end
   end
 
   def unassigned_nodes
     @projects = Project.all.sort
-    @users = User.all.sort
+    @users = User.where(:status=>User::STATUS_ACTIVE).sort
     @node_instances = Initr::NodeInstance.find :all, :order => "project_id, name"
     @node_templates = Initr::NodeTemplate.find :all, :order => "project_id, name"
   end
@@ -248,7 +249,6 @@ class NodeController < InitrController
   def find_optional_project
     return true unless params[:id]
     @project = Project.find(params[:id])
-    authorize
   rescue ActiveRecord::RecordNotFound
     render_404
   end

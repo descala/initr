@@ -1,0 +1,19 @@
+////////////////////
+// Puppet Managed //
+////////////////////
+options {
+  directory "/var/cache/bind";
+
+  auth-nxdomain no;    # conform to RFC1035
+  listen-on-v6 { none; };
+
+  // do not allow axfr requests
+<% if scope.lookupvar('bind::bind_slave_servers').any? -%>
+  allow-transfer { <%=scope.lookupvar('bind::bind_slave_servers').join(';')%>; };
+<% else -%>
+  allow-transfer { none; };
+<% end -%>
+
+  include "/etc/bind/named.conf.options.local";
+  version none;
+};

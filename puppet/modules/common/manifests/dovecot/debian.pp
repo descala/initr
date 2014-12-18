@@ -7,12 +7,10 @@ class common::dovecot::debian inherits common::dovecot::common {
   Service[dovecot] { require => [Package["dovecot-imapd"],Package["dovecot-pop3d"]] }
 
   file {
-    "/etc/pam.d/dovecot":
-      ensure => absent;
     "/etc/dovecot/dovecot.conf":
       mode => 644,
       group => dovecot,
-      source => "puppet:///modules/common/dovecot/dovecot_debian.conf",
+      source => [ 'puppet:///specific/dovecot.conf', 'puppet:///modules/common/dovecot/dovecot_debian.conf' ],
       notify => Service["dovecot"],
       require => [Package["dovecot-imapd"],Package["dovecot-pop3d"]];
     "/etc/dovecot/dovecot-sql.conf":

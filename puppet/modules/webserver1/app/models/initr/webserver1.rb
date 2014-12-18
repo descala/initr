@@ -9,18 +9,17 @@ class Initr::Webserver1 < Initr::Klass
   attr_accessor :password, :password_confirmation
   self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php allow_anonymous_ftp manage_default_domain))
 
-  def initialize(attributes=nil)
-    super
-    config["admin_password"] ||= ""
+  after_initialize {
+    config["admin_password"]        ||= ""
     config["accessible_phpmyadmin"] ||= "0"
-    config["blowfish_secret"] ||= ""
-    config["manage_php"] ||= "1"
-    config["allow_anonymous_ftp"] ||= "0"
+    config["blowfish_secret"]       ||= ""
+    config["manage_php"]            ||= "1"
+    config["allow_anonymous_ftp"]   ||= "0"
     config["manage_default_domain"] ||= "1"
-  end
+  }
 
-  def before_validation
-    self.admin_password = password unless password.blank? or password != password_confirmation
+  before_validation do |ws|
+    ws.admin_password = password unless password.blank? or password != password_confirmation
   end
 
   def name

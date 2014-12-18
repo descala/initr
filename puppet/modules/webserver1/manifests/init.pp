@@ -64,6 +64,11 @@ class webserver1 {
     "/usr/local/sbin/webserver_restore_all":
       mode => 700,
       content => template("webserver1/restore_all.sh.erb");
+    '/var/www':
+      ensure => directory,
+      mode   => '0751',
+      owner  => root,
+      group  => root;
   }
 
   if $operatingsystem != "Debian" and $manage_php == "1" {

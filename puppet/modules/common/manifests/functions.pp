@@ -33,9 +33,9 @@ define delete_lines($file, $pattern) {
 #
 # Ensures, that the line(s) "line" doesn't exists in "file".
 define delete_if_such_lines($file, $line) {
-        exec { "/bin/grep -v -Fx \"$line\" $file > /tmp/puppettmpfile; /bin/cat /tmp/puppettmpfile > $file ; rm /tmp/puppettmpfile":
+        exec { "/bin/grep -v -Fx '$line' $file > /tmp/puppettmpfile; /bin/cat /tmp/puppettmpfile > $file ; rm /tmp/puppettmpfile":
                 path => "/bin:/usr/bin:/usr/sbin",
-                onlyif => "/bin/grep -Fx \"$line\" '$file'",
+                onlyif => "/bin/grep -Fx '$line' '$file'",
         }
 }
 

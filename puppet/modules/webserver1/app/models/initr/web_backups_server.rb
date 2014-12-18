@@ -12,12 +12,11 @@ module Initr
       end
     end
 
-    def initialize(attributes=nil)
-      super
-      port ||= "22"
-      address ||= ""
+    after_initialize {
+      port         ||= "22"
+      address      ||= ""
       backups_path ||= "/var/backups"
-    end
+    }
 
     def name
       "webserver1::web_backups_server"

@@ -1,0 +1,43 @@
+= Initr
+
+Adds a user interface to configure Puppet  modules and acts as an external node classifier to puppet server.
+
+Initr is a Redmine plugin.
+
+== Install
+
+You will need Redmine 2.x
+
+Copy plugin to plugins/initr inside Redmine
+
+Migrate initr and all Initr plugins:
+
+  rake redmine:plugins:migrate NAME=initr
+  rake redmine:plugins:migrate
+
+Restart Redmine
+
+== Configuration
+
+It is recomended to run a Puppetmaster configured with storeconfigs.
+
+You'll need to configure puppetmaster "external nodes" to call the script provided in bin/external_node.sh which gets node classes and parameters from an initr url.
+
+== Known issues
+
+To avoid this bug in Redmine http://www.redmine.org/issues/15881 apply patch
+
+== Uninstall
+
+Uninstall initr and all the initr plugins
+
+  bundle exec rake redmine:plugins:migrate NAME=bind  VERSION=0
+  bundle exec rake redmine:plugins:migrate NAME=custom_klasses VERSION=0
+  bundle exec rake redmine:plugins:migrate NAME=link_klass VERSION=0
+  bundle exec rake redmine:plugins:migrate NAME=nagios VERSION=0
+  bundle exec rake redmine:plugins:migrate NAME=webserver1 VERSION=0
+  bundle exec rake redmine:plugins:migrate NAME=initr VERSION=0
+
+Remove plugins/initr
+
+// vim: set syntax=asciidoc:

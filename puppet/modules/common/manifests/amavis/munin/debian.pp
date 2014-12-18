@@ -3,8 +3,8 @@ class common::amavis::munin::debian inherits common::amavis::munin::common {
     mode => 644,
     notify => Service[munin-node],
     content => "[amavis*]
-us root
-enlogfile /var/log/maillog"
+user root
+env.enlogfile /var/log/maillog"
   }
 }
 

@@ -1,0 +1,16 @@
+<%= klass_menu "New custom klass"%>
+
+<%= labelled_form_for :custom_klass, @klass, :url => {:action => 'create', :id => @node}, :html=>{:class=>'tabular'} do |f| %>
+
+  <%= render :partial => "form", :locals => {:f=>f} %>
+  <%= submit_tag "Create" %>
+
+<% end %>
+
+<%= link_to 'Back', :back %>
+
+<%=
+  content_for :header_tags do
+    javascript_include_tag('custom_klasses.js', :plugin => 'custom_klasses')
+  end
+%>

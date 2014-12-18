@@ -19,12 +19,11 @@ class Initr::Klass < ActiveRecord::Base
   # example: @@adds_klasses = [ Initr::PackageManager ]
   @@adds_klasses = false
 
-  def initialize(attributes = nil)
-    super
+  after_initialize {
     self.config ||= {}
     self.active = self.valid? if self.active.nil?
     self.errors.clear
-  end
+  }
 
   # Default to only one klass type per node
   # see validates_uniqueness_of
@@ -42,8 +41,15 @@ class Initr::Klass < ActiveRecord::Base
     self.name
   end
 
+  # this is the name of the puppet class
+  # klasses override it
   def name
     self.class.to_s.split('::').last.underscore
+  end
+
+  # this is the name used in the params of forms
+  def params_name
+    self.class.to_s.split('::').join('_').underscore
   end
 
   def pretty_name
@@ -56,12 +62,12 @@ class Initr::Klass < ActiveRecord::Base
 
   def controller
     class_name = self.class.to_s.split('::').last
-    if "#{class_name}Controller".constantize.instance_methods.include? 'configure'
+    if "#{class_name}Controller".constantize.respond_to? 'configure'
       class_name.underscore
     else
       'klass'
     end
-  rescue NameError => e
+  rescue NameError
     'klass'
   end
 
@@ -150,7 +156,7 @@ class Initr::Klass < ActiveRecord::Base
     attributes.each do |c|
       src = <<-END_SRC
       def #{c}
-        config["#{c}"]
+        config["#{c}"] rescue nil
       end
 
       def #{c}=(v)

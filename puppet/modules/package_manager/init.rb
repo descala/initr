@@ -1,18 +1,16 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting package_manager plugin for Initr'
+Rails.logger.info 'Starting package_manager plugin for Initr'
 
 Initr::Plugin.register :package_manager do
-  redmine do
-    name 'package_manager'
-    author 'Ingent'
-    description 'PackageManager plugin for initr'
-    version '0.0.1'
-    project_module :initr do
-      permission :configure_package_manager,
-        { :package_manager => [:configure] },
-        :require => :member
-    end
+  name 'package_manager'
+  author 'Ingent'
+  description 'PackageManager plugin for initr'
+  version '0.0.1'
+  project_module :initr do
+    permission :configure_package_manager,
+      { :package_manager => [:configure] },
+      :require => :member
   end
   klasses 'package_manager' => 'Manage updates on this node'
 end

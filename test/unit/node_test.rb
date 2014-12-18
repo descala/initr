@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
-class NodeTest < Test::Unit::TestCase
+class NodeTest < ActiveSupport::TestCase
 
   fixtures :nodes
 
@@ -8,7 +8,7 @@ class NodeTest < Test::Unit::TestCase
     begin
       nodes(:node_001).name
       assert false
-    rescue StandardError => e
+    rescue StandardError
       assert true
     end
   end

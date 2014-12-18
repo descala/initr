@@ -1,12 +1,14 @@
 <%= klass_menu("DNS zones") %>
 
+<h3>MASTER zones</h3>
+
 <table>
-<% @klass.bind_zones.sort.each do |z| -%>
-  <tr>
-    <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
-    <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
-  </tr>
-<% end -%>
+  <% @klass.bind_zones.sort.each do |z| -%>
+    <tr>
+      <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
+      <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
+    </tr>
+  <% end -%>
 </table><br />
 
 <% if @klass.nameservers.nil? or @klass.nameservers.blank? -%>
@@ -17,18 +19,44 @@
 <br />
 <br />
 
-<h3>Global config</h3>
-
-<% labelled_tabular_form_for :bind, @klass, :url=>{:action=>'configure'} do |f| -%>
+<%= labelled_form_for :bind, @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'} do |f| -%>
 
   <p><%= error_messages_for 'klass' %></p>
 
   <p><%= f.text_area("nameservers", :cols=>40, :rows=>3) %><br />(<%= l "one nameserver per line" %>)</p>
 
+  <p><%= f.text_field("ipaddress") %> (<%= l(:used_by_slave_servers) %>)</p>
+
+  <p><%= f.text_area("allowed_ips", :cols=>40, :rows=>3) %> (<%= l(:allowed_ips) %>)</p>
+
   <p><%= submit_tag("Save") %></p>
 
 <% end -%>
 
+
+<h3>SLAVE zones</h3>
+
+<h4><%= l(:act_as_slave_server_of) %></h4>
+<div id="master_servers">
+  <%= render :partial => 'masters' %>
+</div>
+
+<% if @klass.slaves.any? -%>
+  <br />
+  <h4><%= l(:acts_as_master_server_of) %></h4>
+  <% @klass.slaves.each do |slave| -%>
+    <%= link_to slave.node_fqdn, :controller => 'bind', :action => 'configure', :id => slave %><br />
+  <% end -%>
+<% end -%>
+
+
+<br />
 <hr />
 
 <p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+
+<%=
+  content_for :header_tags do
+    javascript_include_tag('bind.js', :plugin => 'bind')
+  end
+%>

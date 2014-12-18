@@ -10,7 +10,7 @@ module PuppetPatch
     base.class_eval do
       #unloadable # Send unloadable so it will not be unloaded in development
       begin
-        establish_connection("puppet_#{RAILS_ENV}")
+        establish_connection("puppet_#{Rails.env}")
       rescue ActiveRecord::AdapterNotSpecified => e
         logger.info "store_configs not configured (#{e.message})"
       end
@@ -51,7 +51,7 @@ module PuppetPatch
           # If we don't (e.g. we never install the server via Foreman, we populate the fields from facts
           # TODO: if it was installed by Foreman and there is a mismatch,
           # we should probably send out an alert.
-          self.save_with_validation(perform_validation = false)
+          self.save_with_validation(false)
         rescue
           logger.warn "Failed to save #{name}: #{errors.full_messages.join(", ")}"
           $stderr.puts $!
@@ -61,6 +61,3 @@ module PuppetPatch
   end
 
 end
- 
-# Add module to Puppet
-Puppet::Rails::Host.send(:include, PuppetPatch)

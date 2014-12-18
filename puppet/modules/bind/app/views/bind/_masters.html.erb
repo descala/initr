@@ -1,0 +1,17 @@
+<table>
+  <tbody>
+    <% @klass.masters.each do |master| -%>
+      <tr>
+        <td><%= link_to master.node.fqdn, :controller => 'bind', :action => 'configure', :id => master %></td>
+        <td><%= link_to "delete", '#', :class=>:removemaster, 'data-url'=>url_for(:controller=>:bind,:action=>:remove_master,:id=>@klass,:master_id=>master) %></td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+
+<% if @eligible_masters.any? -%>
+  <%= select_tag :new_master,
+    options_from_collection_for_select(@eligible_masters, :id, :node_fqdn, {:disabled=>@eligible_masters.collect {|m| m.id if m.ipaddress.blank?}.compact}),
+    { :include_blank => true,
+      'data-url'     => url_for(:controller=>'bind',:action=>'add_master',:id=>@klass) } %> (servers with missing ip address are disabled)
+<% end -%>

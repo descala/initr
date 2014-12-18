@@ -1,0 +1,9 @@
+use strict;
+
+# auto-updated local_domains list
+# http://git.dotlan.net/dhoffend/kolab/blob/master/debian-install/4.8_amavis-spamassassin.sh 
+
+@local_domains_acl = ( read_hash(\%local_domains, "/etc/amavis/local_domains") );
+
+#------------ Do not modify anything below this line -------------
+1;  # ensure a defined return

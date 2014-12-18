@@ -1,6 +1,6 @@
 <h3>Move class from <%=@node.fqdn%></h2>
 
-<% labelled_tabular_form_for :klass, @klass, :url=>{:action=>'move'} do |f| -%>
+<%= labelled_form_for :klass, @klass, :url=>{:action=>'move'}, :html=>{:class=>'tabular'} do |f| -%>
   <p><%= error_messages_for 'klass' %></p>
   <p><%= f.select('node_id',@nodes.collect {|n| [n.fqdn,n.id]}) %></p>
   <p><%= submit_tag("Move") %></p>

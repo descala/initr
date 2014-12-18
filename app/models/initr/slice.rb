@@ -25,7 +25,7 @@ class Initr::Slice < Initr::Node
   def provider_get(attr)
     return if @slice==""
     @slice = Initr::Slicehost::Slice.find(provider_id) unless @slice
-    RAILS_DEFAULT_LOGGER.info "slicehost slice ##{provider_id} = '#{@slice.name}'"
+    Rails.logger.info "slicehost slice ##{provider_id} = '#{@slice.name}'"
     if @slice.respond_to?(attr)
       return @slice.send(attr)
     else

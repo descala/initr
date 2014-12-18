@@ -1,29 +1,30 @@
-class bind($bind_masterzones={},$nameservers=[]) {
+class bind($bind_masterzones={},$nameservers=[],
+  $bind_slave_zones={},$bind_slave_servers=[]) {
 
   $bind = $operatingsystem ? {
     /Debian|Ubuntu/ => bind9,
-    default => bind
+    default         => bind
   }
   $binduser = $operatingsystem ? {
     /Debian|Ubuntu/ => bind,
-    default => named
+    default         => named
   }
   $bindservice = $operatingsystem ? {
     /Debian|Ubuntu/ => bind9,
-    default => named
+    default         => named
   }
 
   $osavn = "$lsbdistid$lsbdistrelease"
   case $operatingsystem {
     Debian,Ubuntu: {
-      $etc_dir = "/etc/bind"
+      $etc_dir = '/etc/bind'
       $var_dir = $etc_dir
       include bind::debian
     }
     default: {
       $bind_base_dir = $osavn ? {
-        "MandrivaLinux2006.0" => "/var/lib/named",
-        default => ""
+        'MandrivaLinux2006.0' => '/var/lib/named',
+        default               => ''
       }
       $etc_dir = "$bind_base_dir/etc"
       $var_dir = "$bind_base_dir/var/named"
@@ -32,7 +33,7 @@ class bind($bind_masterzones={},$nameservers=[]) {
   }
 
   # common definitions
-  
+
   package {
     $bind:
       ensure => installed;
@@ -40,50 +41,64 @@ class bind($bind_masterzones={},$nameservers=[]) {
 
   service {
     $bindservice:
-      ensure => running,
-      enable => true,
+      ensure     => running,
+      enable     => true,
       hasrestart => true,
-      hasstatus => true,
-      require => Package[$bind],
-      alias => bind;
+      hasstatus  => true,
+      require    => Package[$bind],
+      alias      => bind;
   }
 
   file {
     "$var_dir/puppet_zones":
-      owner => $binduser,
-      group => $binduser,
-      require => [File["$var_dir"],Package[$bind]],
-      purge => true,
-      force => true,
+      owner   => $binduser,
+      group   => $binduser,
+      require => [File[$var_dir],Package[$bind]],
+      purge   => true,
+      force   => true,
       recurse => true,
-      ignore => ".gitignore",
-      source => "puppet:///modules/bind/empty",
-      mode => 770;
+      ignore  => '.gitignore',
+      source  => 'puppet:///modules/bind/empty',
+      mode    => '0770';
+    "$var_dir/puppet_slave_zones":
+      ensure  => directory,
+      owner   => $binduser,
+      group   => $binduser,
+      require => [File[$var_dir],Package[$bind]],
+      mode    => '0770';
     "$var_dir/puppet_zones.conf":
-      owner => root,
-      group => $binduser,
-      mode => 644,
-      notify => Service["bind"],
+      owner   => root,
+      group   => $binduser,
+      mode    => '0644',
+      notify  => Service['bind'],
       require => Package[$bind],
-      content => template("bind/puppet_zones.conf.erb");
+      content => template('bind/puppet_zones.conf.erb');
+    "$var_dir/puppet_slave_zones.conf":
+      owner   => root,
+      group   => $binduser,
+      mode    => '0644',
+      notify  => Service['bind'],
+      require => Package[$bind],
+      content => template('bind/puppet_slave_zones.conf.erb');
   }
 
-  if array_includes($classes,"nagios::nsca_node") {
+  if array_includes($classes,'nagios::nsca_node') {
     file {
-      "/usr/local/bin/nagios_check_dig.sh":
-        owner => root, group => root, mode => 700,
-        content => template("bind/nagios_check_dig.sh.erb");
+      '/usr/local/bin/nagios_check_dig.sh':
+        owner   => root, group => root, mode => '0700',
+        content => template('bind/nagios_check_dig.sh.erb');
     }
     cron {
-      "check dig all domains":
-        command => "/usr/local/bin/nagios_check_dig.sh &> /dev/null",
-        user => root,
-        minute => "*/15",
-        ensure => present;
+      'check dig all domains':
+        ensure  => present,
+        command => '/usr/local/bin/nagios_check_dig.sh > /dev/null 2>&1',
+        user    => root,
+        minute  => '*/15';
     }
   }
 
   create_resources(bind::zone, $bind_masterzones)
-
+  $slave_zones_array = hash_values($bind_slave_zones)
+  bind::slave_zone { $slave_zones_array : }
 }
 

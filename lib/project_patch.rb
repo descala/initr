@@ -3,7 +3,7 @@ require_dependency 'project'
 # Taken from http://github.com/edavis10/redmine-budget-plugin/tree/master
 # Patches Redmine's Projects dynamically. Adds a relationship
 # Project +has_many+ Nodes
-module ProjectPatch
+module ProjectInitrPatch
   def self.included(base) # :nodoc:
     base.extend(ClassMethods)
  
@@ -22,14 +22,11 @@ module ProjectPatch
   
   module InstanceMethods
     def node_instances
-      self.nodes.find :all, :conditions => "type='NodeInstance'"
+      self.nodes.find :all, :conditions => "type='Initr::NodeInstance'"
     end
     def node_templates
-      self.nodes.find :all, :conditions => "type='NodeTemplate'"
+      self.nodes.find :all, :conditions => "type='Initr::NodeTemplate'"
     end
   end
 
 end
- 
-# Add module to Project
-Project.send(:include, ProjectPatch)

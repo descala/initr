@@ -1,23 +1,18 @@
-ActionController::Routing::Routes.draw do |map|
+match '/node/:action(/:id)' => 'node'
+match '/nodes' => 'node#list'
+match '/reports' => 'node#store_report',  :via => 'post'
+match '/klass/:action/:id' => 'klass'
+# http://stackoverflow.com/questions/5369654/why-do-routes-with-a-dot-in-a-parameter-fail-to-match
+match '/:id/install/:action' => 'install', :constraints => { :id => /[^\/]+/ }, :as => 'install'
 
-  map.with_options :controller => 'node' do |node_routes|
-    node_routes.with_options :conditions => { :method => [:get,:post] } do |node_views|
-      node_views.connect 'node/:action/:id'
-      node_views.connect '/nodes', :action => 'list'
-      node_views.connect '/reports', :action => 'store_report', :format => 'yml'
+Dir.glob File.expand_path("plugins/initr/puppet/modules/*", Rails.root) do |plugin_dir|
+  file = File.join(plugin_dir, "config/routes.rb")
+  if File.exists?(file)
+    begin
+      instance_eval File.read(file)
+    rescue Exception => e
+      puts "Intr plugin: An error occurred while loading the routes definition of #{File.basename(plugin_dir)} plugin (#{file}): #{e.message}."
+      exit 1
     end
   end
-
-  map.with_options :controller => 'klass' do |klass_routes|
-    klass_routes.with_options :conditions => { :method => [:get,:post] } do |klass_views|
-      klass_views.connect 'klass/:action/:id'
-    end
-  end
-
-  map.with_options :controller => 'install' do |install_routes|
-    install_routes.with_options :conditions => { :method => [:get,:post] } do |install_views|
-      install_views.connect 'install/:action/:id'
-    end
-  end
-
 end

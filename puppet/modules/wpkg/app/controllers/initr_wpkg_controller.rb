@@ -8,7 +8,7 @@ class InitrWpkgController < InitrController
   def configure
     @html_title=[@node.fqdn, @klass.name]
     @packages = InitrWpkg.packages_available_from_xml
-    if request.post?
+    if request.post? or request.put?
       @klass.config = params[:config] || {}
       if @klass.save
         flash[:notice] = 'Configuration saved'

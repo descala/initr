@@ -1,6 +1,6 @@
 <%= klass_menu %>
 
-<% labelled_tabular_form_for(:base, @klass, :url=>{:action=>'configure'}) do |f| -%>
+<%= labelled_form_for(:base, @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
 
   <p><%= error_messages_for 'klass' %></p>
   <p><%= f.radio_button :puppet, :none %> Don't manage puppet</p>

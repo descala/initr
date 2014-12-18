@@ -5,7 +5,8 @@ class Initr::Node < ActiveRecord::Base
 
   unloadable
 
-  has_many :reports, :dependent => :destroy, :class_name => "Initr::Report"
+  # TODO redimine2
+  #has_many :reports, :dependent => :destroy, :class_name => "Initr::Report"
   has_many :klasses, :dependent => :destroy, :class_name => "Initr::Klass"
   belongs_to :project
   belongs_to :user
@@ -64,7 +65,7 @@ class Initr::Node < ActiveRecord::Base
       classes["common::configuration_errors"]["errors"] << e.message unless classes["common::configuration_errors"]["errors"].include? e.message
     end
     result = { }
-    result["parameters"] = parameters
+    result["parameters"] = parameters.except('updated_at','created_at')
     result["parameters"]["classes"] = classes.keys.sort
     result["classes"] = classes
     @parameters = result
@@ -78,7 +79,7 @@ class Initr::Node < ActiveRecord::Base
   # puppet/revoke_cert.sh script
   def revoke_cert
     begin
-      revoke_requests_dir="#{RAILS_ROOT}/tmp/revoke_requests"
+      revoke_requests_dir="#{Rails.root}/tmp/revoke_requests"
       FileUtils.mkdir(revoke_requests_dir) unless File.directory? revoke_requests_dir
       FileUtils.touch "#{revoke_requests_dir}/revoke_#{name}"
     rescue Exception => e

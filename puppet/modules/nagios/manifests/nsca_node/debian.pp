@@ -2,7 +2,7 @@ class nagios::nsca_node::debian  inherits nagios::nsca_node::common {
 
   cron {
     "heartbeat":
-      command => "/usr/lib/nagios/plugins/heartbeat &> /dev/null",
+      command => "/usr/lib/nagios/plugins/heartbeat > /dev/null 2>&1",
       user => root,
       minute => "*/5",
       require => File["/usr/lib/nagios/plugins/heartbeat"];

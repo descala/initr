@@ -2,7 +2,7 @@ class nagios::nsca_node::redhat  inherits nagios::nsca_node::common {
 
   cron {
     "heartbeat":
-      command => "/usr/local/nsca/bin/heartbeat &> /dev/null",
+      command => "/usr/local/nsca/bin/heartbeat > /dev/null 2>&1",
       user => root,
       minute => "*/5",
       require => File["/usr/local/nsca/bin/heartbeat"];

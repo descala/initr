@@ -17,7 +17,7 @@ Facter.add("raidtype") do
     lspciexists = system "/bin/bash -c 'which lspci >&/dev//null'"
     if $?.exitstatus == 0
       output = %x{lspci}
-      output.each { |s|
+      output.each_line { |s|
         raidtype.push("#{swraid ? ' ' : ''}hardware") if s =~ /RAID/i
       }
     end
@@ -33,7 +33,7 @@ Facter.add("raidcontroller") do
     lspciexists = system "/bin/bash -c 'which lspci >&/dev//null'"
     if $?.exitstatus == 0
       output = %x{lspci}
-      output.each {|s|
+      output.each_line {|s|
         controllers.push($1) if s =~ /RAID bus controller: (.*)/
       }
     end

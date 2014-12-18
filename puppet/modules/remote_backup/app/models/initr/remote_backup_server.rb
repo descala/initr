@@ -5,12 +5,11 @@ class Initr::RemoteBackupServer < Initr::Klass
   validates_presence_of :remotebackups_path, :address, :webreports_url, :on => :update
   self.accessors_for(%w(remotebackups_path address webreports_url))
 
-  def initialize(attributes=nil)
-    super
+  after_initialize {
     self.remotebackups_path ||= "/var/backups"
-    self.address ||= node.fqdn
-    self.webreports_url ||= node.fqdn
-  end
+    self.address            ||= node.fqdn
+    self.webreports_url     ||= node.fqdn
+  }
 
   def parameters
     params = super

@@ -1,6 +1,6 @@
 <%= klass_menu "PackageManager" %>
 
-<% labelled_tabular_form_for :package_manager, @klass, :url=>{:action=>'configure'} do |f| -%>
+<%= labelled_form_for @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'} do |f| -%>
   <%= error_messages_for 'klass' %>
 
   <% begin -%>

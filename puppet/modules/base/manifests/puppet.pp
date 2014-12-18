@@ -27,13 +27,13 @@ class base::puppet {
   }
   cron {
     puppet_restart:
-      command => "/usr/local/sbin/puppet-restart.sh &> /dev/null",
+      command => "/usr/local/sbin/puppet-restart.sh > /dev/null",
       before => Service["puppet"],
       user => root,
       hour => 5,
       minute => 10;
     "check_configuration_changes":
-      command => "/usr/local/sbin/puppet-run-if-needed.sh &> /dev/null",
+      command => "/usr/local/sbin/puppet-run-if-needed.sh > /dev/null 2>&1",
       before => Service["puppet"],
       ensure => absent;
   }

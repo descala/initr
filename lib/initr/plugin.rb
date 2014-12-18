@@ -1,56 +1,22 @@
 module Initr #:nodoc:
 
   class PluginNotFound < StandardError; end
+  class PluginRequirementError < StandardError; end
 
-  class Plugin
-    @registered_plugins = {}
-    class << self
-      attr_reader :registered_plugins
-      private :new
+  class Plugin < Redmine::Plugin
 
-      def def_field(*names)
-        class_eval do 
-          names.each do |name|
-            define_method(name) do |*args| 
-              args.empty? ? instance_variable_get("@#{name}") : instance_variable_set("@#{name}", *args)
-            end
-          end
-        end
-      end
-    end
     def_field :klasses
-    attr_reader :id
-    
-    # Plugin constructor
-    def self.register(id, &block)
-      p = new(id)
-      p.instance_eval(&block)
-      registered_plugins[id] = p
-      update_klass_names
+    # a pointer to parent class variable
+    @registered_plugins = Redmine::Plugin.registered_plugins
+
+    def self.directory
+      File.join(Rails.root, 'plugins/initr/puppet/modules')
     end
-    
-    # Register upstream
-    def redmine(&block)
-      Redmine::Plugin.register id, &block
+
+    def directory
+      File.join(File.join(Rails.root, 'plugins/initr/puppet/modules'), id.to_s)
     end
-    
-    # Returns an array off all registered plugins
-    def self.all
-      registered_plugins.values.sort
-    end
-    
-    # Finds a plugin by its id
-    # Returns a PluginNotFound exception if the plugin doesn't exist
-    def self.find(id)
-      registered_plugins[id.to_sym] || raise(PluginNotFound)
-    end
-    
-    # Clears the registered plugins hash
-    # It doesn't unload installed plugins
-    def self.clear
-      @registered_plugins = {}
-    end
-    
+
     # Returns an array of available klass_names
     def self.klass_names
       klass_names = []
@@ -74,15 +40,30 @@ module Initr #:nodoc:
         updated.description = kn.description
       end
     end
-    
-    def initialize(id)
-      @id = id.to_sym
+
+    def add_permission(name, actions)
+      Redmine::AccessControl.permission(name).add_actions(actions) unless Redmine::AccessControl.permission(name).nil?
     end
-    
-    def <=>(plugin)
-      self.id.to_s <=> plugin.id.to_s
+
+    # override lib_path to rename lib to rails_lib,
+    # since lib is used by puppet on pluginsync
+    # http://docs.puppetlabs.com/guides/plugins_in_modules.html#module_structure_for_025x
+    def self.load
+      Dir.glob(File.join(self.directory, '*')).sort.each do |directory|
+        if File.directory?(directory)
+          lib = File.join(directory, "rails_lib")
+          if File.directory?(lib)
+            $:.unshift lib
+            ActiveSupport::Dependencies.autoload_paths += [lib]
+          end
+          initializer = File.join(directory, "init.rb")
+          if File.file?(initializer)
+            require initializer
+          end
+        end
+      end
     end
-    
+
 
   end
 end

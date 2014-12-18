@@ -1,0 +1,12 @@
+<div class="custom_klass_conf">
+  <p>
+  <%= f.text_field "name" %><br />
+  <%= f.text_area "value",
+    :class=> 'wiki-edit',
+    :accesskey => accesskey(:edit),
+    :cols=>60,
+    :rows=>(f.object.value.blank? ? 10 : [[10, f.object.value.length / 50].max, 100].min) %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to_function "remove" , "rm_field(this)" %>
+  </p>
+</div>

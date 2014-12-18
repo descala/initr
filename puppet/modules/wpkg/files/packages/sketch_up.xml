@@ -3,7 +3,7 @@
 <package
     id="sketchup8"
     name="Google SketchUp 8"
-    revision="83"
+    revision="84"
     reboot="false"
     priority="10">
     <check type="uninstall" condition="exists" path="Google SketchUp 8" />
@@ -15,12 +15,12 @@
     id="sketchup8_pro"
     name="Google SketchUp Pro 8"
     help="See Google SketchUp 8. This version requires a license."
-    revision="83"
+    revision="84"
     reboot="false"
     priority="10">
-    <check type="uninstall" condition="exists" path="Google SketchUp 8" />
-    <install cmd='msiexec /qn /i %SOFTWARE%\sketchup\GoogleSketchUp8.msi' />
-    <upgrade cmd='msiexec /qn /i %SOFTWARE%\sketchup\GoogleSketchUp8.msi' />
-    <remove  cmd='msiexec /qn /x %SOFTWARE%\sketchup\GoogleSketchUp8.msi' />
+    <check type="uninstall" condition="exists" path="SketchUp 2013" />
+    <install cmd='msiexec /qn /i %SOFTWARE%\sketchup\SketchUp2013.msi' />
+    <upgrade cmd='msiexec /qn /i %SOFTWARE%\sketchup\SketchUp2013.msi' />
+    <remove  cmd='msiexec /qn /x %SOFTWARE%\sketchup\SketchUp2013.msi' />
 </package>
 </packages>

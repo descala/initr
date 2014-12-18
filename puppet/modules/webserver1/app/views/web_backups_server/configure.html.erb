@@ -1,6 +1,6 @@
 <%= klass_menu "Web backups server" %>
 
-<% labelled_tabular_form_for(:web_backups_server, @klass, :url=>{:action=>'configure'}) do |f| %>
+<%= labelled_form_for(:web_backups_server, @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| %>
 
 <%= error_messages_for 'klass' %>
 

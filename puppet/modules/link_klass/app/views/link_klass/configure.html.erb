@@ -1,6 +1,6 @@
 <%=klass_menu "Choose a class to link"%>
 
-<% labelled_tabular_form_for :link_klass, @klass, :url=>{:action=>'configure'} do |f| -%>
+<%= labelled_form_for :link_klass, @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'} do |f| -%>
 
   <%= render :partial => 'tabular_form', :locals=>{:f=>f} %>
 

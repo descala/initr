@@ -25,6 +25,9 @@ if [ -z "$nosleep" ]; then
 fi
 
 /etc/init.d/puppet stop
+if [ -z "$nosleep" ]; then
+  sleep 5
+fi
 /etc/init.d/puppet start
 
 exit 0

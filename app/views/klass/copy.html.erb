@@ -1,6 +1,6 @@
 <h3>Copy class from <%=@node.fqdn%></h2>
 
-<% labelled_tabular_form_for :klass, @klass, :url=>{:action=>'copy'} do |f| -%>
+<%= labelled_form_for :klass, @klass, :url=>{:action=>'copy'}, :html=>{:class=>'tabular'} do |f| -%>
   <p><%= error_messages_for 'new_klass' %></p>
   <p><%= f.select('node_id',@nodes.collect {|n| [n.fqdn,n.id]}) %></p>
   <p><%= submit_tag("Copy") %></p>

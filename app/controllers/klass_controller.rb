@@ -34,7 +34,7 @@ class KlassController < InitrController
   end
 
   def activate
-    if request.post?
+    if request.post? or request.put?
       (render_403; return) unless @node.editable_by?(User.current)
       active_klasses = params[:klasses].keys if params[:klasses]
       active_klasses ||= []
@@ -44,7 +44,7 @@ class KlassController < InitrController
         else
           k.active = false
         end
-        k.save(false)
+        k.save(:validate => false)
       end
       new_klasses = params[:new_klasses].keys if params[:new_klasses]
       new_klasses ||= []
@@ -56,7 +56,7 @@ class KlassController < InitrController
         rescue NameError
           klass = Kernel.eval("Initr::#{klass_name}").new({:node_id=>@node.id,:active=>true})
         end
-        klass.save(false)
+        klass.save(:validate => false)
       end
       flash[:info] = "Configuration saved"
     end
@@ -94,7 +94,7 @@ class KlassController < InitrController
   end
 
   def apply_template
-    if request.post?
+    if request.post? or request.put?
       templ = Initr::NodeTemplate.find(params[:templ_id])
       actual_klasses = {}
       @node.klasses.each do |k|
@@ -116,7 +116,7 @@ class KlassController < InitrController
       return
     end
     @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
-    if request.post?
+    if request.post? or request.put?
       unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
         flash[:error] = "Invalid destination node"
         render :action => 'move'
@@ -139,7 +139,7 @@ class KlassController < InitrController
       return
     end
     @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
-    if request.post?
+    if request.post? or request.put?
       unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
         flash[:error] = "Invalid node to copy to"
         render :action => 'copy'
@@ -162,7 +162,7 @@ class KlassController < InitrController
       flash[:notice] = "Klass deleted"
       redirect_to :action => 'list', :id => @node
     else
-      render "#{@klass.controller}/configure"
+      redirect_to :controller => @klass.controller, :action => 'configure', :id => @klass.id
     end
   end
     

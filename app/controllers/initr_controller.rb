@@ -26,4 +26,13 @@ class InitrController < ApplicationController
     redirect_to :controller => 'node', :action => 'list'
   end
 
+  def configure
+    @html_title=[@node.fqdn, @klass.name]
+    if request.post? or request.put?
+      if @klass.update_attributes(params[@klass.params_name])
+        flash[:notice] = "#{@klass.name.capitalize} configuration successfully updated."
+      end
+    end
+  end
+
 end

@@ -1,0 +1,36 @@
+# use this to recreate test database
+
+rake db:drop db:create db:migrate RAILS_ENV=test REDMINE_LANG=en
+rake redmine:load_default_data RAILS_ENV=test REDMINE_LANG=en
+
+# preload Redmine fixtures
+
+rake db:fixtures:load redmine:plugins:migrate RAILS_ENV=test
+
+# to run test with Zeus + Guard
+#
+# https://github.com/burke/zeus
+# https://github.com/guard/guard
+
+# start zeus
+zeus start
+
+# start guard in another terminal
+guard -G plugins/initr/Guardfile
+
+##### ISSUES #####
+
+# In redmine-2.3 some fixtures do not load.
+# Remove them
+
+rm -rf test/fixtures/configuration/
+
+# running all tests on guard crashes due to this bug: https://github.com/burke/zeus/issues/352
+# hopefully fixed in next zeus release, but you can still run all tests with:
+zeus test plugins/initr/test
+
+# changing some models fully reloads zeus, making it so slow: https://github.com/burke/zeus/issues/433#issuecomment-31518132
+
+# https://github.com/guard/guard-minitest/pull/98
+# tests run twice after saving file on vim. To avoid this, use last guard-minitest from github (included in bundle):
+bundle exec guard -G plugins/initr/Guardfile

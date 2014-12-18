@@ -1,0 +1,19 @@
+<%= klass_menu("Editing #{@klass.name}") %>
+
+<p><%= "Needed attributes for this class:" %></p>
+
+<%= labelled_form_for :custom_klass, @klass, :url=>{:action=>'configure',:id=>@klass }, :html=>{:class=>'tabular'} do |f| %>
+
+  <%= render :partial => "form", :locals => {:f=>f} %>
+
+  <%=submit_tag 'Save'%>
+
+<% end %>
+
+<%= link_to 'Back', :back -%>
+
+<%=
+  content_for :header_tags do
+    javascript_include_tag('custom_klasses.js', :plugin => 'custom_klasses')
+  end
+%>

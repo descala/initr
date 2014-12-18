@@ -8,6 +8,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :webserver1_id
   validates_uniqueness_of :name, :scope => :web_backups_server_id, :unless => Proc.new {|domain| domain.web_backups_server_id.nil? }
   validates_format_of :name, :with => /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
+  validates_format_of :dbname, :with => /^[a-zA-Z0-9\$_]+$/, :allow_nil => true, :allow_blank => true
   validates_uniqueness_of :dbname, :scope => :webserver1_id, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_uniqueness_of :user_ftp,     :scope => :webserver1_id
   validates_uniqueness_of :user_awstats, :scope => :webserver1_id
@@ -19,12 +20,11 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
 
-  def initialize(attributes=nil)
-    super
-    self.add_www = true if self.add_www.nil?
-    self.force_www = true if self.force_www.nil?
+  after_initialize {
+    self.add_www     = true  if self.add_www.nil?
+    self.force_www   = true  if self.force_www.nil?
     self.awstats_www = false if self.awstats_www.nil?
-  end
+  }
 
   def parameters
     parameters = { "name" => name,
@@ -59,9 +59,9 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     webserver1
   end
 
-  def before_validation
+  before_validation do |domain|
     if password_ftp_changed? or crypted_password.nil? or crypted_password.blank?
-      self.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
+      domain.crypted_password = password_ftp.crypt("$1$#{random_salt}$")
     end
   end
 

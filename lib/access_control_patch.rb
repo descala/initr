@@ -1,7 +1,6 @@
 require 'redmine'
 
 module Redmine
-
   module AccessControl
     class Permission
       def add_actions(hash)
@@ -15,12 +14,4 @@ module Redmine
       end
     end
   end
-
-  class Plugin
-    def add_permission(name, actions)
-      AccessControl.permission(name).add_actions(actions) unless AccessControl.permission(name).nil?
-    end
-  end
-
-
 end

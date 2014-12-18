@@ -31,4 +31,14 @@ $CONF['show_custom_count']=2;
 if (file_exists(dirname(__FILE__) . '/config.specific.php')) {
       include(dirname(__FILE__) . '/config.specific.php');
 }
+// Optional:
+// Show used quotas from Dovecot dictionary backend in virtual
+// mailbox listing.
+// See: DOCUMENTATION/DOVECOT.txt
+//      http://wiki.dovecot.org/Quota/Dict
+//
+$CONF['used_quotas'] = 'YES';
+// if you use dovecot >= 1.2, set this to yes.
+// Note about dovecot config: table "quota" is for 1.0 & 1.1, table "quota2" is for dovecot 1.2 and newer
+$CONF['new_quota_table'] = 'YES';
 ?>

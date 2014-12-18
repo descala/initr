@@ -6,3 +6,9 @@ en:
   field_zone_header: Zone header
   Enter at least one nameserver to add zones: Enter at least one nameserver to add zones
   one nameserver per line: one nameserver per line
+  field_ipaddress: IP address
+  used_by_slave_servers: Used by slave servers
+  act_as_slave_server_of: Act as slave server for all zones of...
+  acts_as_master_server_of: Slave servers
+  field_allowed_ips: extra IPs to authorize
+  allowed_ips: those IP will be allowed to use axfr, separated with ;

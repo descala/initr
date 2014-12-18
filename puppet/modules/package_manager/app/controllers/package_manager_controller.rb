@@ -6,19 +6,6 @@ class PackageManagerController < InitrController
   before_filter :find_package_manager
   before_filter :authorize
 
-  def configure
-    @html_title=[@node.fqdn, @klass.name]
-    if request.post?
-      params["package_manager"] ||= {}
-      if @klass.update_attributes(params["package_manager"])
-        flash[:notice]='Configuration saved'
-        redirect_to :controller => 'klass', :action => 'list', :id => @node
-      else
-        render :action=>'configure'
-      end
-    end
-  end
-
   private
 
   def find_package_manager

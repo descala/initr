@@ -1,9 +1,0 @@
----
-mailserver1:
-  id: 1
-  name: mailserver1
-  description: The first mail server klass name
-simpleklass:
-  id: 2
-  name: simpleklass
-  description: Simple Class

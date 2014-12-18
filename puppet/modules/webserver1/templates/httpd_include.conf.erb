@@ -19,8 +19,6 @@
 <% if railsapp == "true" -%>
   DocumentRoot /var/www/<%=name%>/htdocs/<%=rails_root%>
   RailsSpawnMethod <%=rails_spawn_method.blank? ? "smart" : rails_spawn_method %>
-  RackAutoDetect On
-  RailsAutoDetect On
   <Directory /var/www/<%=name%>/htdocs/<%=rails_root%>>
      AllowOverride all
      Options -MultiViews

@@ -1,9 +1,11 @@
 module CustomKlassHelper
 
-  def add_ckc_link(name)
-    link_to_function name do |page|
-      page.insert_html :bottom, :custom_klass_confs, :partial => 'custom_klass_conf' , :object => Initr::CustomKlassConf.new
+  # TODO redmine2
+  def add_ckc_link(name,form)
+    fields = form.fields_for('custom_klass_confs', Initr::CustomKlassConf.new, :child_index => 'new_custom_klass_conf') do |builder|
+      render('custom_klass_conf', :f => builder)
     end
+    link_to_function(name, "add_fields(this, \"#{escape_javascript(fields)}\")")
   end
   
 end

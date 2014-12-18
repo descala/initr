@@ -6,6 +6,8 @@ class Initr::NodeInstance < Initr::Node
   validates_presence_of :project
 
   after_save :trigger_puppetrun
+  after_create :add_base_klass
+  after_destroy :puppet_host_destroy
 
   #TODO
 #  def validate
@@ -14,7 +16,7 @@ class Initr::NodeInstance < Initr::Node
 #    end
 #  end
 
-  def after_create
+  def add_base_klass
     b = Initr::Base.new
     self.klasses << b
   end
@@ -27,10 +29,6 @@ class Initr::NodeInstance < Initr::Node
     else
       super
     end
-  end
-
-  def after_destroy
-    puppet_host_destroy
   end
 
   def provider
@@ -142,8 +140,8 @@ class Initr::NodeInstance < Initr::Node
   def compile
     begin
       remaining(puppet_attribute('last_compile'))
-    rescue Exception => e
-        ''
+    rescue Exception
+      ''
     end
 
   end
@@ -152,8 +150,8 @@ class Initr::NodeInstance < Initr::Node
     begin
       a = puppet_fact('kernelrelease').split(/\.|-|mdk/)
         "#{a[0]}.#{a[1]}.#{a[2]}-#{a[3]}"
-    rescue Exception => e
-        ''
+    rescue Exception
+      ''
     end
   end
 
@@ -166,7 +164,8 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def report
-    self.reports.sort.last
+    # TODO redmine2 - reports fail
+    # self.reports.sort.last
   end
 
   # shamelessly taken from Foreman project (http://theforeman.org)

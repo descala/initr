@@ -1,17 +1,15 @@
 # Redmine initr plugin
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting bind plugin for Initr'
+Rails.logger.info 'Starting bind plugin for Initr'
 
 Initr::Plugin.register :bind do
-  redmine do
-    name 'bind'
-    author 'Ingent'
-    description 'DNS server plugin for initr'
-    version '0.0.1'
-    project_module :initr do
-      add_permission :edit_klasses, { :bind => [:configure, :add_zone, :edit_zone, :destroy_zone] }
-    end
+  name 'bind'
+  author 'Ingent'
+  description 'DNS server plugin for initr'
+  version '0.0.1'
+  project_module :initr do
+    add_permission :edit_klasses, { :bind => [:configure, :add_zone, :edit_zone, :destroy_zone] }
   end
   klasses 'bind' => 'DNS server'
 end

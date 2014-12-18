@@ -7,8 +7,6 @@
       <th title="Distribution">OS</th>
       <th style="text-align:left;">Hostname</th>
       <th title="What you want">Desired state</th>
-      <th title="What it actually is">Last report</th>
-      <th title="Where is the hardware">Provider</th>
       <th></th>
     </tr>
   </thead>
@@ -17,9 +15,11 @@
 
     <% @nodes.keys.sort.each do |proj| -%>
       <% unless @project or @nodes[proj].nil? or @nodes[proj].empty? or proj.nil? -%>
-        <% content_tag :tr do -%>
-          <%= content_tag :th, project_path(proj), :colspan=>6, :align=>"left" %>
-        <% end -%>
+        <%=
+          content_tag :tr do
+            content_tag :th, initr_project_path(proj), :colspan=>6, :align=>"left"
+          end
+        %>
       <% end -%>
       <% @nodes[proj].sort.each do |node| -%>
         <%= render :partial => 'node_line', :locals => {:node=>node} %>
@@ -44,7 +44,7 @@
   <tbody>
 
     <% @templates.keys.sort.each do |proj| -%>
-      <%= content_tag("th", project_path(proj), :colspan=>6, :align=>"left") unless @project %>
+      <%= content_tag("th", initr_project_path(proj), :colspan=>6, :align=>"left") unless @project %>
       <% @templates[proj].sort.each do |templ| -%>
         <%= render :partial => 'template_line', :locals => {:templ=>templ} %>
       <% end -%>

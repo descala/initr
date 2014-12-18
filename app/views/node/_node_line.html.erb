@@ -1,7 +1,7 @@
 <tr class="<%= cycle('odd', 'even') %> issue">
 <td><%= os_img(node) %></td>
 <td class="subject">
-  <%= image_tag("warning.png",:title=>"Node has configuration errors") if node.config_errors? %>
+  <%= image_tag("warning.png",:title=>"Node has configuration errors") if node.puppet_fact('puppet_classes') and node.puppet_fact('puppet_classes').include? 'common::configuration_errors' %>
   <%= link_to node.fqdn, :controller => 'klass', :action => 'list', :id => node %>
 </td>
 <td class="subject">
@@ -10,15 +10,11 @@
       node.klasses.sort.collect { |k|
         next unless k.active?
         link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
-      }.compact.join(", ")
+      }.compact.join(", ").html_safe
     rescue ActiveRecord::SubclassNotFound => e
       link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
     end
   -%>
-</td>
-<td><%= link_to_report(node.report) %></td>
-<td>
-  <%= render :partial => node.provider_partial, :locals => {:node=>node} if node.provider_is_configured? %>
 </td>
 <td>
   <%

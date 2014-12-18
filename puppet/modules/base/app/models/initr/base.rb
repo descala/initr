@@ -4,10 +4,9 @@ class Initr::Base < Initr::Klass
 
   self.accessors_for(%w(puppet))
 
-  def initialize(attributes=nil)
-    super
+  after_initialize {
     self.puppet ||= "none"
-  end
+  }
 
   def name
     "base"
@@ -18,11 +17,12 @@ class Initr::Base < Initr::Klass
   end
 
   def parameters
-    conf = self.config.dup
-    conf.delete("puppet") # see more_classes
     begin
+      conf = self.config.dup
+      conf.delete("puppet") # see more_classes
       conf["initr_url"]="#{Setting[:protocol]}://#{Setting[:host_name]}"
     rescue
+      conf = {}
     end
     return conf
   end
