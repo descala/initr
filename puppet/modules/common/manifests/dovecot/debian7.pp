@@ -1,11 +1,16 @@
 class common::dovecot::debian7 inherits common::dovecot::debian {
 
-  package { 'dovecot-mysql':
+  $dovecot_sql_package = $dovecot::db_backend ? {
+    'postgres' => 'dovecot-pgsql',
+    default    => 'dovecot-mysql'
+  }
+
+  package { $dovecot_sql_package:
     ensure => installed,
   }
 
   Service[dovecot] {
-    require => [Package['dovecot-imapd'],Package['dovecot-pop3d'],Package['dovecot-mysql']]
+    require => [Package['dovecot-imapd'],Package['dovecot-pop3d'],Package[$dovecot_sql_package]]
   }
 
   exec {
