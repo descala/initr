@@ -1,0 +1,7 @@
+# sender_bcc_maps
+#  Optional  BCC (blind carbon-copy) address lookup tables, indexed by sender address.  The BCC
+#  address (multiple results are not supported) is added when mail enters from outside of Post-
+#  fix.
+
+# user1@domain1.tld user2@domain2.tld
+

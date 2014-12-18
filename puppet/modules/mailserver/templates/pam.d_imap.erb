@@ -1,0 +1,5 @@
+##################
+# Puppet managed #
+##################
+auth    sufficient pam_mysql.so host=localhost user=<%= db_user %> passwd=<%= db_passwd %> db=<%= db_name %> table=mailbox usercolumn=username passwdcolumn=password crypt=<%= db_passwd_encrypt_pam %> sqlLog=1
+account required   pam_mysql.so host=localhost user=<%= db_user %> passwd=<%= db_passwd %> db=<%= db_name %> table=mailbox usercolumn=username passwdcolumn=password crypt=<%= db_passwd_encrypt_pam %> sqlLog=1

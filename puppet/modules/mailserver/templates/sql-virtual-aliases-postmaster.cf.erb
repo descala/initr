@@ -1,0 +1,14 @@
+##################
+# Puppet managed #
+##################
+# the user name and password to log into the mysql server
+hosts = localhost
+user = <%= db_user %>
+password = <%= db_passwd %>
+dbname = <%= db_name %>
+
+<% if db_backend == 'postgres' -%>
+query = SELECT '<%= admin_email %>' AS goto FROM domain WHERE domain='%d' AND active = '1' AND '%u' ~ '^(MAILER-DAEMON|postmaster|abuse|webmaster)$' LIMIT 1
+<% else -%>
+query = SELECT '<%= admin_email %>' AS goto FROM domain WHERE domain='%d' AND active = '1' AND '%u' REGEXP '^(MAILER-DAEMON|postmaster|abuse|webmaster)$' LIMIT 1
+<% end -%>

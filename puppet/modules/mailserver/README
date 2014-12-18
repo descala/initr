@@ -1,0 +1,13 @@
+Default admin user:
+
+ admin / adminpass
+
+Password changing and account administration:
+
+ http://<server>/cyrup
+
+Webmail:
+
+ http://<server>/webmail
+
+

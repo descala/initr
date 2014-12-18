@@ -1,0 +1,32 @@
+<%= klass_menu %>
+
+<%= labelled_form_for(:initr_mailserver, @klass, :url => {:action => 'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
+
+  <%= error_messages_for 'klass' %>
+
+  <p><%= f.text_field :admin_email %><%=help :help_admin_email%></p>
+  <p><%= f.text_field :mail_location %></p>
+  <p><%= f.check_box :domain_path %><%=help :help_domain_path%></p>
+  <p><%= f.check_box :domain_in_mailbox %><%=help :help_domain_in_mailbox%></p>
+  <p><%= f.select :webserver,  %w(apache2 nginx)%></p>
+  <p><%= f.select :db_backend, %w(mysql postgres)%></p>
+  <p><%= f.select :webmail, %w(roundcube squirrelmail)%></p>
+  <p><%= f.text_field :db_name %></p>
+  <p><%= f.text_field :db_user %></p>
+  <p><%= f.text_field :db_passwd %></p>
+  <p><%= f.text_field :imap_passwd %></p>
+  <p><%= f.select :db_passwd_encrypt, %w(cleartext md5crypt md5) %></p>
+  <p><%= f.select :db_passwd_encrypt_httpd, %w(none crypt scrambled md5 aes sha1) %></p>
+  <p><%= f.text_field :bak_host %></p>
+  <p><%= f.check_box :amavis %></p>
+  <p><%= f.check_box :clamav %></p>
+
+  <p><%= submit_tag("Send")%></p>
+
+<% end -%>
+
+
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+
+

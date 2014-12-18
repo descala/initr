@@ -1,0 +1,24 @@
+ca:
+  field_admin_email: "Admin email"
+  help_admin_email: "notificacions del sistema de correu"
+  field_domain_path: "Separar bústies per domini"
+  field_domain_in_mailbox: "Incloure domini al nom de les bústies"
+  help_domain_path: "Exemple:<br />
+   SI: /var/mail/virtual/domain.tld/username@domain.tld<br />
+   NO: /var/mail/virtual/username@domain.tld"
+  help_domain_in_mailbox: "Exemple: <br />
+   SI: /var/mail/virtual/domain.tld/username@domain.tld<br />
+   NO: /var/mail/virtual/domain.tld/username<br />
+   (obligatori si l'anterior no es marca)"
+  field_mail_location: "Directori de les bústies"
+  field_webserver: "Servidor web"
+  field_db_backend: "Servidor de bbdd"
+  field_db_name: "Nom de la bbdd"
+  field_db_user: "Usuari bbdd"
+  field_db_passwd: "Password bbdd"
+  field_imap_passwd: "Password IMAP"
+  field_db_passwd_encrypt: "Encriptació passwords"
+  field_db_passwd_encrypt_httpd: "Encriptació passwords http"
+  field_bak_host: "Servidor backups"
+  field_amavis: "Amavis"
+  field_clamav: "Clamav"
