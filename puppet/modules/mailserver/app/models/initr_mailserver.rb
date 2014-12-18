@@ -20,7 +20,7 @@ class InitrMailserver < Initr::Klass
     self.db_backend              ||= 'mysql'
     self.db_name                 ||= 'postfix'
     self.db_user                 ||= 'postfix'
-    self.db_passwd_encrypt       ||= 'cleartext'
+    self.db_passwd_encrypt       ||= 'md5crypt'
     self.db_passwd_encrypt_httpd ||= 'none'
     self.domain_in_mailbox       ||= '1'
     self.domain_path             ||= '0'
