@@ -26,4 +26,8 @@ class mailserver::amavis {
         onlyif  => 'test -z \'`groups clamav |grep amavis`\'';
     }
   }
+  package {
+    'spamassassin':
+      ensure => installed;
+  }
 }

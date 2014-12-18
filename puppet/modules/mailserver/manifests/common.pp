@@ -50,7 +50,7 @@ class mailserver::common {
   }
 
   package {
-    ['pfqueue','spamassassin','postfix','postgrey']:
+    ['pfqueue','postfix','postgrey']:
       ensure => installed;
     ['sendmail','exim']:
       ensure => absent;
