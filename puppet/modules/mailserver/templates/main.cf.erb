@@ -23,7 +23,9 @@ smtpd_recipient_restrictions =  reject_unauth_pipelining,
                                 reject_rbl_client zen.spamhaus.org,
                                 reject_rbl_client cbl.abuseat.org,
                                 check_recipient_access pcre:/etc/postfix/recipient_greylist,
+<% if amavis == '1' -%>
                                 check_recipient_access pcre:/etc/postfix/recipient_access,
+<% end -%>
 
 recipient_bcc_maps = hash:/etc/postfix/recipient_bcc
 sender_bcc_maps = hash:/etc/postfix/sender_bcc

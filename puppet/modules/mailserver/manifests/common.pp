@@ -111,11 +111,6 @@ class mailserver::common {
       content => template('mailserver/sql-virtual-mailbox.cf.erb'),
       notify  => Service['postfix'],
       require => Package['postfix'];
-    '/etc/postfix/recipient_access':
-      mode    => '0644',
-      source  => [ 'puppet:///specific/recipient_access', 'puppet:///modules/mailserver/recipient_access' ],
-      notify  => Exec['postmap_ra'],
-      require => Package['postfix'];
     '/etc/postfix/recipient_greylist':
       mode    => '0644',
       source  => [ 'puppet:///specific/recipient_st', 'puppet:///modules/mailserver/recipient_greylist' ],
@@ -137,7 +132,7 @@ class mailserver::common {
       notify => Exec['/usr/sbin/postalias /etc/aliases'];
     '/etc/postfix/master.cf':
       mode    => '0644',
-      source  => 'puppet:///modules/mailserver/master.cf',
+      content => template('mailserver/master.cf.erb'),
       notify  => Service['postfix'],
       require => Package['postfix'];
     '/etc/postfix/main.cf':

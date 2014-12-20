@@ -10,6 +10,11 @@ class mailserver::amavis {
       content => template('mailserver/sasl_authenticated.cf.erb'),
       require => Package['spamassassin'],
       notify  => Service['amavis'];
+    '/etc/postfix/recipient_access':
+      mode    => '0644',
+      source  => [ 'puppet:///specific/recipient_access', 'puppet:///modules/mailserver/recipient_access' ],
+      notify  => Exec['postmap_ra'],
+      require => Package['postfix'];
   }
   service {
     'spamassassin':
