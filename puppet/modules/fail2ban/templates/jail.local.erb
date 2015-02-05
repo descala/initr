@@ -16,7 +16,7 @@ action   = iptables[name=pop3, port=pop3, protocol=tcp]
 <% unless mailto.blank? -%>
            sendmail-whois[name=POP3, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
 <% end -%>
-logpath  = /var/log/maillog
+logpath  = <%= maillog %>
 maxretry = 5
 
 [ssh-iptables]
