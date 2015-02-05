@@ -11,7 +11,11 @@ backend = auto
 
 [pop3-iptables]
 enabled  = <%= jails.include? "pop3" %>
+<% if operatingsystem == "Debian" -%>
+filter   = dovecot
+<% else -%>
 filter   = mail
+<% end -%>
 action   = iptables[name=pop3, port=pop3, protocol=tcp]
 <% unless mailto.blank? -%>
            sendmail-whois[name=POP3, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
