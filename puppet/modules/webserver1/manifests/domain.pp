@@ -44,13 +44,29 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
     # removed common::mysql::database::backup, we are doing it in backup.sh.erb now
   }
 
-  file {
-    "/var/www/${name}":
+  # Do not manage owner and group if user is allowed to SSH
+  # this is to allow root owned home for a chroot
+  # use ACLs to manually grant "r-x" to user_ftp and httpd_user
+  if $shell != $nologin {
+    file {
+      "/var/www/${name}":
+      ensure  => directory,
+      mode    => '0550',
+      require => Package[$::httpd];
+    }
+  }
+  else {
+    file {
+      "/var/www/${name}":
       ensure  => directory,
       owner   => $user_ftp,
       group   => $::httpd_user,
       mode    => '0550',
       require => Package[$::httpd];
+   }
+  }
+
+  file {
     "/var/www/$name/readme.txt":
       group => $user_ftp,
       mode => 750,
