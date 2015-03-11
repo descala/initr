@@ -1,18 +1,16 @@
 require 'facter'
 require 'open-uri'
 
-Facter.add("ipaddress_internet") do
+Facter.add(:ipaddress_internet) do
   setcode do
-    i=0
     ip=''
     re=/([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/
-    while i<5 and ip.empty?
+    %w(http://checkip.amazonaws.com/ http://wtfismyip.com/text http://icanhazip.com).each do |url|
       begin
-        ip=open("http://curlmyip.com/").read.match(re).captures.first
+        ip=open(url).read.match(re).captures.first
+        break if ip
       rescue Exception => e
-        Facter.warnonce "Failed to get ip from curlmyip.com: #{e.message}"
-      ensure
-        i += 1
+        Facter.warnonce "Failed to get ip from #{url}: #{e.message}"
       end
     end
     ip
