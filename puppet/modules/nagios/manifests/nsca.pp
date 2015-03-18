@@ -6,6 +6,9 @@ class nagios::nsca {
         default: { include "nagios::nsca::debian" }
       }
     }
+    Ubuntu: {
+      include nagios::nsca::debian
+      }
     default: { include "nagios::nsca::redhat" }
   }
 }
