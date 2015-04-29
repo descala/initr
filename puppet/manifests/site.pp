@@ -368,3 +368,7 @@ $lha = $operatingsystem ? {
   },
   default => "lhasa"
 }
+$maillog = $operatingsystem ? {
+  Debian  => '/var/log/mail.info',
+  default => '/var/log/maillog'
+}

@@ -41,4 +41,11 @@ deb http://http.debian.net/debian wheezy-updates main
 deb http://http.debian.net/debian jessie main contrib non-free
 <% end -%>
 
+<% elsif lsbdistcodename == "jessie" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "8") -%>
+# debian jessie
+deb http://http.debian.net/debian jessie main contrib non-free
+
+# jessie-updates, previously known as 'volatile'
+deb http://http.debian.net/debian jessie-updates main
+
 <% end -%>
