@@ -13,7 +13,7 @@ show_bg_jobs() {
     echo -n " [$bg_jobs]"
   fi
 }
-if [ -f /etc/bash_completion.d/git ]; then
+if [ -f /etc/bash_completion.d/git -o -f /etc/bash_completion.d/git-prompt ]; then
   export PS1='[\u@\[\e[36;1m\]\h\[\e[0m\] \W$(__git_ps1 " (%s)")]`show_bg_jobs`\$ '
 else
   export PS1='[\u@\[\e[36;1m\]\h\[\e[0m\] \W]`show_bg_jobs`\$ '
