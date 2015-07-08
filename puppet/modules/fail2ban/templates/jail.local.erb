@@ -30,7 +30,7 @@ action   = iptables[name=SSH, port=ssh, protocol=tcp]
 <% unless mailto.blank? -%>
            sendmail-whois[name=SSH, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
 <% end -%>
-<% if operatingsystem == "Debian" -%>
+<% if operatingsystem == "Debian" or operatingsystem == "Ubuntu" -%>
 logpath  = /var/log/auth.log
 <% else -%>
 logpath  = /var/log/secure
