@@ -48,4 +48,11 @@ deb http://http.debian.net/debian jessie main contrib non-free
 # jessie-updates, previously known as 'volatile'
 deb http://http.debian.net/debian jessie-updates main
 
+<% pfw = scope.lookupvar('::packages_from_stretch')
+   pfw = [] unless pfw.is_a?(Array)
+   if pfw.any? -%>
+# debian stretch
+deb http://http.debian.net/debian stretch main contrib non-free
+<% end -%>
+
 <% end -%>
