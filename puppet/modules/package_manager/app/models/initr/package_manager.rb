@@ -7,13 +7,15 @@ class Initr::PackageManager < Initr::Klass
     config["packages_from_squeeze"] ||= ["puppet","rubygems","rubygems1.8"]
     config["packages_from_wheezy"]  ||= []
     config["packages_from_jessie"]  ||= []
+    config["packages_from_stretch"] ||= []
     config["security_updates"]      ||= "0"
   }
 
   def parameters
     { "packages_from_squeeze" => config["packages_from_squeeze"],
-      "packages_from_wheezy" => config["packages_from_wheezy"],
-      "packages_from_jessie" => config["packages_from_jessie"]
+      "packages_from_wheezy"  => config["packages_from_wheezy"],
+      "packages_from_jessie"  => config["packages_from_jessie"],
+      "packages_from_stretch" => config["packages_from_stretch"]
     }
   end
 
@@ -43,6 +45,14 @@ class Initr::PackageManager < Initr::Klass
 
   def packages_from_jessie
     config["packages_from_jessie"].join(', ') rescue ""
+  end
+
+  def packages_from_stretch=(packages)
+    config["packages_from_stretch"] = packages.is_a?(String) ? packages.gsub(/ */,'').split(',') : packages
+  end
+
+  def packages_from_stretch
+    config["packages_from_stretch"].join(', ') rescue ""
   end
 
 end
