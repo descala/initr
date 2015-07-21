@@ -32,6 +32,9 @@ set modeline
 " Resalta els resultats de la cerca
 set hlsearch
 
+" Canvia al directori del fitxer obert
+set autochdir
+
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
