@@ -13,7 +13,11 @@ class nagios::nsca_node {
     default: { include nagios::nsca_node::redhat }
   }
   case $raidtype {
-    "software","software hardware": { include nagios::swraid }
+    "software",
+    "software,hardware",
+    "software hardware": {
+      include nagios::swraid
+    }
   }
 }
 
