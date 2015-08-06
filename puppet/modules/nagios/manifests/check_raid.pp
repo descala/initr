@@ -10,5 +10,9 @@ class nagios::check_raid {
     "check_raid":
       command => "$nagios_plugins_dir/check_raid.pl";
   }
+  # Remove old-style cron
+  cron { 'nagios sw_raid':
+    ensure => absent
+  }
 }
 
