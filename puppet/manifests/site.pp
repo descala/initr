@@ -141,8 +141,12 @@ $dnsutils = $operatingsystem ? {
   default => bind-utils
 }
 $manpages = $operatingsystem ? {
-  /Debian|Ubuntu/ => manpages,
-  default => man
+  /Debian|Ubuntu/ => 'manpages',
+  /Fedora/        => $lsbmajdistrelease ? {
+    15      => 'man-pages',
+    default => 'man'
+  }
+  default         => 'man'
 }
 $samba_tdb_dir = $operatingsystem ? {
   Fedora => "/var/lib/samba",
