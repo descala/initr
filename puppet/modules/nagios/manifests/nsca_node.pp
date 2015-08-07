@@ -12,8 +12,7 @@ class nagios::nsca_node {
       }
     default: { include nagios::nsca_node::redhat }
   }
-  case $raidtype {
-    "software","software hardware": { include nagios::swraid }
-  }
+  # This check supports all RAID types
+  if $raidtype { include nagios::check_raid }
 }
 

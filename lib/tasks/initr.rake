@@ -1,7 +1,7 @@
 require "fileutils"
 
 # Load initr plugins rake tasks
-Dir["#{Rails.root}/vendor/plugins/initr/puppet/modules/*/rails_lib/tasks/**/*.rake"].sort.each { |ext| load ext }
+Dir["#{Rails.root}/plugins/initr/puppet/modules/*/rails_lib/tasks/**/*.rake"].sort.each { |ext| load ext }
 
 namespace :initr do
   namespace :module do

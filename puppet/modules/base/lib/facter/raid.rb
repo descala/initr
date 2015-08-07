@@ -6,22 +6,20 @@ Facter.add("raidtype") do
   confine :kernel => :linux
   ENV["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
   setcode do
-    swraid=false
     raidtype = []
     if FileTest.exists?("/proc/mdstat")
       txt = File.read("/proc/mdstat")
       raidtype.push("software") if txt =~ /^md/i
-      swraid = true if txt =~ /^md/i
     end
 
     lspciexists = system "/bin/bash -c 'which lspci >&/dev//null'"
     if $?.exitstatus == 0
       output = %x{lspci}
       output.each_line { |s|
-        raidtype.push("#{swraid ? ' ' : ''}hardware") if s =~ /RAID/i
+        raidtype.push("hardware") if s =~ /RAID/i
       }
     end
-    raidtype
+    raidtype.join(",")
   end
 end
 
@@ -37,7 +35,6 @@ Facter.add("raidcontroller") do
         controllers.push($1) if s =~ /RAID bus controller: (.*)/
       }
     end
-    controllers
+    controllers.join(",")
   end
 end
-

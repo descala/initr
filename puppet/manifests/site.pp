@@ -71,7 +71,7 @@ $ruby = $operatingsystem ? {
   default => ruby
 }
 $ruby_devel = $operatingsystem ? {
-  /Debian|Ubuntu/ => "ruby1.8-dev",
+  /Debian|Ubuntu/ => "ruby-dev",
   default => ruby-devel
 }
 $rdoc = $operatingsystem ? {
