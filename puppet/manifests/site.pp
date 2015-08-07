@@ -145,7 +145,7 @@ $manpages = $operatingsystem ? {
   /Fedora/        => $lsbmajdistrelease ? {
     15      => 'man-pages',
     default => 'man'
-  }
+  },
   default         => 'man'
 }
 $samba_tdb_dir = $operatingsystem ? {
