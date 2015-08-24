@@ -45,6 +45,7 @@ dovecot_destination_recipient_limit = 1
 
 ### vacation delivery agent
 vacation_destination_recipient_limit = 1
+transport_maps = hash:/etc/postfix/transport
 
 # would tell spamassassin, that the user is authenticated
 smtpd_sasl_authenticated_header = yes

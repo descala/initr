@@ -4,7 +4,7 @@ class InitrMailserver < Initr::Klass
 
   REQUIRED_ATTRS = %w(admin_email domain_path domain_in_mailbox mail_location
   webserver db_backend db_name db_user db_passwd db_passwd_encrypt clamav
-  amavis webmail)
+  amavis webmail vacation)
   OPTIONAL_ATTRS = %w(bak_host)
 
 
@@ -26,6 +26,7 @@ class InitrMailserver < Initr::Klass
     self.clamav                  ||= '1'
     self.amavis                  ||= '1'
     self.webmail                 ||= 'roundcube'
+    self.vacation                ||= '0'
   }
 
   def domain_is_present_on_mailbox_path

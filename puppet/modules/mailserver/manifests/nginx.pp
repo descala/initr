@@ -1,8 +1,21 @@
+# nginx server
 class mailserver::nginx {
 
+  if $::webserver == 'nginx' {
+    # prevent apache being installed by postfixadmin
+    package {
+      'nginx-light':
+        ensure => installed,
+        before => Package['postfixadmin'];
+    }
+  } else {
+    package {
+      'nginx-light':
+        ensure => installed;
+    }
+  }
+
   package {
-    'nginx-light':
-      ensure => installed;
     'php5-fpm':
       ensure => installed;
   }

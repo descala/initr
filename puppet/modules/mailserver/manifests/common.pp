@@ -1,3 +1,4 @@
+# mailserver common
 class mailserver::common {
 
   # sense PAM
@@ -43,6 +44,9 @@ class mailserver::common {
 
   if $::amavis == '1' {
     include mailserver::amavis
+  }
+  if $::vacation == '1' {
+    include mailserver::vacation
   }
 
   if array_includes($::classes,'nagios::nsca_node') {
@@ -140,6 +144,9 @@ class mailserver::common {
       content => template('mailserver/main.cf.erb'),
       notify  => Service['postfix'],
       require => Package['postfix'];
+    '/etc/postfix/transport':
+      ensure  => present,
+      require => Package['postfix'];
     }
 
   exec {
@@ -162,7 +169,11 @@ class mailserver::common {
       alias       => 'postmap_bcc',
       refreshonly => true,
       require     => Package['postfix'];
+    '/usr/sbin/postmap /etc/postfix/transport':
+      subscribe   => File['/etc/postfix/transport'],
+      refreshonly => true,
+      notify      => Service['postfix'],
+      require     => Package['postfix'];
   }
-
 
 }
