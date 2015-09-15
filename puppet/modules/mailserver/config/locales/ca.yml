@@ -21,3 +21,4 @@ ca:
   field_amavis: "Amavis"
   field_clamav: "Clamav"
   field_webmail: "Webmail"
+  field_vacation: "Vacation"
