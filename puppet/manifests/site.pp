@@ -214,13 +214,18 @@ $smartd_packagename = $operatingsystem ? {
     default => smartmontools,
     },
   CentOS => $lsbdistrelease_class ? {
-    "5"     => smartmontools,
+    "5"     => smartmontools,    "5_2"   => smartmontools,
     "5_2"   => smartmontools,
     "5_3"   => smartmontools,
     "5_4"   => smartmontools,
     default => kernel-utils,
     },
   default => smartmontools,
+}
+
+$smartd_service = $operatingsystem ? {
+  /Debian|Ubuntu/ => 'smartmontools',
+  default         => 'smartd',
 }
 
 $vim = $operatingsystem ? {
