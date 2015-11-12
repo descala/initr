@@ -2,6 +2,7 @@ require 'redmine'
 
 Rails.logger.info 'Starting initr plugin for Redmine'
 
+require 'initr'
 require 'initr/plugin'
 require 'initr/klass_definition'
 require 'puppet_report_patch'

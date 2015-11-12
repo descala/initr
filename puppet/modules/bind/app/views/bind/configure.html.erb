@@ -2,6 +2,10 @@
 
 <h3>MASTER zones</h3>
 
+<% if Initr.haltr? %>
+  <p>Haltr is available</p>
+<% end %>
+
 <table>
   <% @klass.bind_zones.sort.each do |z| -%>
     <tr>
