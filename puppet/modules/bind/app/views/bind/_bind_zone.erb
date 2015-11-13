@@ -1,9 +1,3 @@
-<% @bind_zone.template_lines.all.each do |line| %>
-<p>
-<%= link_to line, invoice_path(line.invoice) %>
-</p>
-<% end %>
-
 <p><%= f.text_field "domain" %></p>
 <p><%= f.text_field "ttl" %></p>
 <p><%= f.label_for_field(:zone_header) %><%= text_area_tag "zone_header", @zone_header, :cols=>90, :rows=>11, :readonly=>true %></p>

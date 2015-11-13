@@ -12,8 +12,8 @@
       <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
       <td><%= z.info.gsub(/[\n\r]/,' ') if z.info %></td>
       <% if Initr.haltr? %>
-        <td><%= link_to("Template", invoice_path(z.invoice)) if z.invoice %></td>
-        <td><%= link_to "Search Invoice", project_invoices_path(@project,:has_text => z.domain)  %></td>
+        <td><%= link_to(z.invoice.client.name, invoice_path(z.invoice)) if z.invoice %></td>
+        <td><%= link_to "Search Invoices", project_invoices_path(@project,:has_text => z.domain)  %></td>
       <% end %>
       <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
     </tr>
