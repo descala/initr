@@ -1,6 +1,6 @@
 <%= klass_menu("DNS zones") %>
 
-<% if Initr.haltr? %>
+<% if @project.module_enabled?(:haltr) %>
   <h3>Haltr utils</h3>
 <% end %>
 
@@ -11,7 +11,7 @@
     <tr>
       <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
       <td><%= z.info.gsub(/[\n\r]/,' ') if z.info %></td>
-      <% if Initr.haltr? %>
+      <% if @project.module_enabled?(:haltr) %>
         <td><%= link_to(z.invoice.client.name, invoice_path(z.invoice)) if z.invoice %></td>
         <td><%= link_to "Search Invoices", project_invoices_path(@project,:has_text => z.domain)  %></td>
       <% end %>
