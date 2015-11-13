@@ -1,15 +1,20 @@
 <%= klass_menu("DNS zones") %>
 
-<h3>MASTER zones</h3>
-
 <% if Initr.haltr? %>
-  <p>Haltr is available</p>
+  <h3>Haltr utils</h3>
 <% end %>
+
+<h3>MASTER zones</h3>
 
 <table>
   <% @klass.bind_zones.sort.each do |z| -%>
     <tr>
       <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
+      <td><%= z.info.gsub(/[\n\r]/,' ') if z.info %></td>
+      <% if Initr.haltr? %>
+        <td><%= link_to("Template", invoice_path(z.invoice)) if z.invoice %></td>
+        <td><%= link_to "Search Invoice", project_invoices_path(@project,:has_text => z.domain)  %></td>
+      <% end %>
       <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
     </tr>
   <% end -%>

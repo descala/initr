@@ -8,6 +8,7 @@ class Initr::Klass < ActiveRecord::Base
   unloadable
 
   belongs_to :node, :class_name => "Initr::Node"
+  has_one :project, :through => :node
 
   after_save :add_klasses, :trigger_puppetrun
   after_destroy :trigger_puppetrun

@@ -1,6 +1,7 @@
 class Initr::BindZone < ActiveRecord::Base
   unloadable
   belongs_to :bind, :class_name => "Initr::Bind"
+  has_one :project, :through => :bind
   validates_presence_of :domain, :ttl
   validates_uniqueness_of :domain, :scope => 'bind_id'
   validates_numericality_of :ttl
@@ -10,9 +11,25 @@ class Initr::BindZone < ActiveRecord::Base
   after_destroy :trigger_puppetrun
   before_save :increment_zone_serial
 
-  after_initialize {
+  if Initr.haltr?
+    belongs_to :invoice_line
+    has_one :invoice, :through => :invoice_line
+
+    def template_lines
+      like = "%#{domain}%"
+      project.invoice_lines.where("invoices.type = 'InvoiceTemplate' and invoice_lines.description like ? or invoice_lines.notes like ?",like,like)
+    end
+  end
+
+  after_initialize do
     self.ttl ||= "300"
-  }
+
+    # Search a matching invoice_line in haltr templates
+    # only if not already set
+    if Initr.haltr? and project and !invoice_line
+      self.invoice_line = template_lines.first
+    end
+  end
 
   def parameters
     {"zone"=>zone,"ttl"=>ttl,"serial"=>serial}
