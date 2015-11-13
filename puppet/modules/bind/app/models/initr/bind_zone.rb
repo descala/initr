@@ -53,6 +53,15 @@ class Initr::BindZone < ActiveRecord::Base
     self.domain <=> oth.domain
   end
 
+  def whois
+    return @whois if @whois
+    @whois = Whois.whois(domain)
+  end
+
+  def update_active_ns
+    self.active_ns = `dig ns #{domain} +short +time=1 +tries=1 2&>1`.split.sort.join(' ')
+  end
+
   private
 
   def trigger_puppetrun

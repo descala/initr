@@ -64,6 +64,13 @@ class Initr::Bind < Initr::Klass
     copy
   end
 
+  def update_active_ns
+    bind_zones.each do |z|
+      z.update_active_ns
+      z.save
+    end
+  end
+
   private
 
   def slave_zones

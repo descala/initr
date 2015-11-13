@@ -2,19 +2,32 @@
 
 <% if @project.module_enabled?(:haltr) %>
   <h3>Haltr utils</h3>
+  <p>
+  <%= link_to "Update Active NS", action: 'update_active_ns' %>
+  </p>
 <% end %>
 
 <h3>MASTER zones</h3>
 
 <table>
+  <tr>
+    <th>Name</th>
+    <th>Notes</th>
+    <% if @project.module_enabled?(:haltr) %>
+      <th>Template</th>
+      <th>Invoices</th>
+      <th>Active NS</th>
+    <% end %>
+  </tr>
   <% @klass.bind_zones.sort.each do |z| -%>
     <tr>
       <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
       <td><%= z.info.gsub(/[\n\r]/,' ') if z.info %></td>
       <% if @project.module_enabled?(:haltr) %>
         <td><%= link_to(z.invoice.client.name, invoice_path(z.invoice)) if z.invoice %></td>
-        <td><%= link_to "Search Invoices", project_invoices_path(@project,:has_text => z.domain)  %></td>
+        <td><%= link_to image_tag("report.png",:border=>0), project_invoices_path(@project,:has_text => z.domain)  %></td>
       <% end %>
+      <td><%= z.active_ns %></td>
       <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
     </tr>
   <% end -%>

@@ -71,6 +71,12 @@ class BindController < InitrController
     render :partial => 'masters'
   end
 
+  def update_active_ns
+    @klass.update_active_ns
+    flash[:notice]="Updated Active NS"
+    redirect_to :action => 'configure', :id => @klass
+  end
+
   private
 
   def eligible_masters
