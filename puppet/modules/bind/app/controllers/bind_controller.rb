@@ -77,6 +77,12 @@ class BindController < InitrController
     redirect_to :action => 'configure', :id => @klass
   end
 
+  def query_registry
+    @klass.query_registry
+    flash[:notice]="Registry information has been updated"
+    redirect_to :action => 'configure', :id => @klass
+  end
+
   private
 
   def eligible_masters

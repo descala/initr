@@ -71,6 +71,17 @@ class Initr::Bind < Initr::Klass
     end
   end
 
+  def query_registry
+    bind_zones.each do |z|
+      z.query_registry
+      z.save
+    end
+  end
+
+  def nicline_client
+    @nicline_client ||= Savon.client(wsdl: "https://webservice.nicline.com/WebServices/ws_apinl.php?wsdl", log: false)
+  end
+
   private
 
   def slave_zones

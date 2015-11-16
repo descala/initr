@@ -15,9 +15,14 @@ class Initr::BindZone < ActiveRecord::Base
     belongs_to :invoice_line
     has_one :invoice, :through => :invoice_line
 
-    def template_lines
+    def search_invoice_lines
       like = "%#{domain}%"
-      project.invoice_lines.where("invoices.type = 'InvoiceTemplate' and invoice_lines.description like ? or invoice_lines.notes like ?",like,like)
+      project.invoice_lines.where("invoice_lines.description like ? or invoice_lines.notes like ?",like,like)
+    end
+
+    def search_invoices
+      like = "%#{domain}%"
+      project.invoices.where("extra_info like ?",like)
     end
   end
 
@@ -27,7 +32,10 @@ class Initr::BindZone < ActiveRecord::Base
     # Search a matching invoice_line in haltr templates
     # only if not already set
     if Initr.haltr? and project and !invoice_line
-      self.invoice_line = template_lines.first
+      self.invoice_line = search_invoice_lines.first
+      unless invoice_line
+        self.invoice_line = search_invoices.first.invoice_lines.first rescue nil
+      end
     end
   end
 
@@ -60,6 +68,29 @@ class Initr::BindZone < ActiveRecord::Base
 
   def update_active_ns
     self.active_ns = `dig ns #{domain} +short +time=1 +tries=1 2&>1`.split.sort.join(' ')
+  end
+
+  def query_registry
+    begin
+      result = bind.nicline_client.call(
+        :info_domain_bbdd,
+        message: {
+          input: {
+            login: Redmine::Configuration['nicline_api_login'],
+            password: Redmine::Configuration['nicline_api_password'],
+            domain: domain,
+            ipOrigen: '0.0.0.0'
+          }
+        }
+      )
+      xml = result.hash[:envelope][:body][:info_domain_bbdd_response][:return]
+      doc = Nokogiri::Slop xml
+      self.expires_on = doc.response.resData.exDate.content
+      self.registrant = doc.response.resData.nameRegistrant.content
+      logger.info "nicline: #{expires_on} - #{domain} - #{registrant}"
+    rescue
+      nil
+    end
   end
 
   private
