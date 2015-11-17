@@ -20,12 +20,12 @@ class Initr::BindZone < ActiveRecord::Base
 
     def search_invoice_lines
       like = "%#{domain}%"
-      project.invoice_lines.where("invoice_lines.description like ? or invoice_lines.notes like ?",like,like)
+      project.invoice_lines.where("invoice_lines.description like ? or invoice_lines.notes like ?",like,like).order('date')
     end
 
     def search_invoices
       like = "%#{domain}%"
-      project.invoices.where("extra_info like ?",like)
+      project.invoices.where("extra_info like ?",like).order('date')
     end
   end
 
@@ -35,9 +35,9 @@ class Initr::BindZone < ActiveRecord::Base
     # Search a matching invoice_line in haltr templates
     # only if not already set
     if Initr.haltr? and project and !invoice_line
-      self.invoice_line = search_invoice_lines.first
+      self.invoice_line = search_invoice_lines.last
       unless invoice_line
-        self.invoice_line = search_invoices.first.invoice_lines.first rescue nil
+        self.invoice_line = search_invoices.last.invoice_lines.first rescue nil
       end
     end
   end
@@ -83,9 +83,12 @@ class Initr::BindZone < ActiveRecord::Base
       )
       xml = result.hash[:envelope][:body][:info_domain_bbdd_response][:return]
       doc = Nokogiri::Slop xml
-      self.expires_on = doc.response.resData.exDate.content
-      self.registrant = doc.response.resData.nameRegistrant.content
-      logger.info "nicline: #{expires_on} - #{domain} - #{registrant}"
+      expires_on = doc.response.resData.exDate.content.to_date
+      if expires_on > (Date.today - 15)
+        self.expires_on = expires_on
+        self.registrant = doc.response.resData.nameRegistrant.content
+        logger.info "nicline: #{expires_on} - #{domain} - #{registrant}"
+      end
     rescue
       nil
     end

@@ -18,6 +18,26 @@ class BindController < InitrController
         render :action=>'configure'
       end
     end
+    respond_to do |format|
+      format.html
+      format.csv do
+        export = FCSV.generate(:col_sep => l(:general_csv_separator)) do |csv|
+          csv << ["Name","Notes","Invoice Type","Client","Domain owner","Expire date","Active DNS"]
+          @klass.bind_zones.sort.each do |z|
+            csv << [
+              z.domain,
+              [z.info,(z.invoice.number rescue nil)].join(' '),
+              (z.invoice.class rescue nil),
+              (z.invoice.client.name rescue nil),
+              z.registrant,
+              z.expires_on,
+              z.active_ns
+            ]
+          end
+        end
+        send_data(export, :type => 'text/csv; header=present', :filename => 'domains.csv')
+      end
+    end
   end
 
   def add_zone
