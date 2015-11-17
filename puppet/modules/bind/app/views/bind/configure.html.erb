@@ -16,10 +16,10 @@
     <th>Notes</th>
     <% if @project.module_enabled?(:haltr) %>
       <th>Invoice</th>
-      <th>Registrant</th>
-      <th>Expires</th>
-      <th>Active NS</th>
     <% end %>
+    <th>Registrant</th>
+    <th>Expires</th>
+    <th>Active NS</th>
   </tr>
   <% @klass.bind_zones.sort.each do |z| -%>
     <tr>
