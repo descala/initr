@@ -11,6 +11,9 @@ class Initr::BindZone < ActiveRecord::Base
   after_destroy :trigger_puppetrun
   before_save :increment_zone_serial
 
+  # Uses package "apt-get install bind9utils"
+  validate :named_checkzone
+
   if Initr.haltr?
     belongs_to :invoice_line
     has_one :invoice, :through => :invoice_line
@@ -93,10 +96,37 @@ class Initr::BindZone < ActiveRecord::Base
     end
   end
 
+  def named_checkzone
+    checkzone = "/usr/sbin/named-checkzone"
+    if File.exist?(checkzone)
+      tmpfile = Tempfile.new([domain,'.conf'])
+      tmpfile.write(zone_for_check)
+      tmpfile.close
+      out = `#{checkzone} -T ignore #{domain} #{tmpfile.path}`
+      if $? != 0
+        errors.add(:base, "Zone check error: #{out}")
+      end
+    end
+  end
+
   private
 
   def trigger_puppetrun
     self.bind.trigger_puppetrun
+  end
+
+  def zone_for_check
+    <<ZONE
+$TTL #{ttl}
+@   IN  SOA #{bind.nameservers.split.first}.  webmaster.#{domain}. (
+            #{serial}
+            3600
+            600
+            604800
+            300 )
+    IN  NS  #{bind.nameservers.split.first}.
+#{zone}
+ZONE
   end
 
 end
