@@ -9,7 +9,7 @@ class Initr::BindZone < ActiveRecord::Base
   validates_format_of :domain, :with => /^[^_]+$/i
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
-  before_save :increment_zone_serial
+  before_validation :increment_zone_serial
 
   # Uses package "apt-get install bind9utils"
   validate :named_checkzone
@@ -47,14 +47,12 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def increment_zone_serial
-    if valid?
-      # auto-update serial date (YYYYMMDD) + id 01
-      if domain_changed? or ttl_changed? or zone_changed?
-        self.serial="#{Time.now.strftime('%Y%m%d')}01".to_i
-        unless serial_was.nil?
-          while serial <= serial_was.to_i
-            self.serial += 1
-          end
+    # auto-update serial date (YYYYMMDD) + id 01
+    if domain_changed? or ttl_changed? or zone_changed?
+      self.serial="#{Time.now.strftime('%Y%m%d')}01".to_i
+      unless serial_was.nil?
+        while serial <= serial_was.to_i
+          self.serial += 1
         end
       end
     end
