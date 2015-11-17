@@ -97,7 +97,7 @@ class Initr::BindZone < ActiveRecord::Base
       tmpfile = Tempfile.new([domain,'.conf'])
       tmpfile.write(zone_for_check)
       tmpfile.close
-      out = `#{checkzone} -T ignore #{domain} #{tmpfile.path}`
+      out = `#{checkzone} #{domain} #{tmpfile.path}`
       if $? != 0
         errors.add(:base, "Zone check error: #{out}")
       end
