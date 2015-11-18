@@ -32,9 +32,8 @@ class Initr::BindZone < ActiveRecord::Base
     end
 
     # Search a matching invoice_line in haltr templates
-    # only if not already set
     def link_to_invoice
-      if Initr.haltr? and project and !invoice_line
+      if Initr.haltr? and project
         self.invoice_line = search_invoice_lines('InvoiceTemplate').last
         unless invoice_line
           self.invoice_line = search_invoice_lines('IssuedInvoice').last
