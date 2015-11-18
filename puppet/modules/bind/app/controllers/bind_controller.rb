@@ -103,6 +103,12 @@ class BindController < InitrController
     redirect_to :action => 'configure', :id => @klass
   end
 
+  def link_to_invoices
+    num = @klass.link_to_invoices
+    flash[:notice]="#{num} invoice links have been updated"
+    redirect_to :action => 'configure', :id => @klass
+  end
+
   private
 
   def eligible_masters

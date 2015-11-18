@@ -10,6 +10,8 @@ class Initr::BindZone < ActiveRecord::Base
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
   before_validation :increment_zone_serial
+  before_save :update_active_ns
+  before_save :query_registry
 
   # Uses package "apt-get install bind9utils"
   validate :named_checkzone
@@ -17,29 +19,35 @@ class Initr::BindZone < ActiveRecord::Base
   if Initr.haltr?
     belongs_to :invoice_line
     has_one :invoice, :through => :invoice_line
+    before_save :link_to_invoice
 
-    def search_invoice_lines
+    def search_invoice_lines(invoice_class='InvoiceTemplate')
       like = "%#{domain}%"
-      project.invoice_lines.where("invoice_lines.description like ? or invoice_lines.notes like ?",like,like).order('date')
+      project.invoice_lines.where("invoices.type = ? and invoice_lines.description like ? or invoice_lines.notes like ?",invoice_class,like,like).order('date')
     end
 
     def search_invoices
       like = "%#{domain}%"
       project.invoices.where("extra_info like ?",like).order('date')
     end
+
+    # Search a matching invoice_line in haltr templates
+    # only if not already set
+    def link_to_invoice
+      if Initr.haltr? and project and !invoice_line
+        self.invoice_line = search_invoice_lines('InvoiceTemplate').last
+        unless invoice_line
+          self.invoice_line = search_invoice_lines('IssuedInvoice').last
+        end
+        unless invoice_line
+          self.invoice_line = search_invoices.last.invoice_lines.first rescue nil
+        end
+      end
+    end
   end
 
   after_initialize do
     self.ttl ||= "300"
-
-    # Search a matching invoice_line in haltr templates
-    # only if not already set
-    if Initr.haltr? and project and !invoice_line
-      self.invoice_line = search_invoice_lines.last
-      unless invoice_line
-        self.invoice_line = search_invoices.last.invoice_lines.first rescue nil
-      end
-    end
   end
 
   def parameters
