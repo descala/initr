@@ -47,7 +47,7 @@ class BindController < InitrController
     if request.post? or request.put?
       if @bind_zone.save
         flash[:notice]="Bind zone saved"
-        redirect_to :action=>'configure', :id=>@klass
+        redirect_to :action => 'configure', :id => @klass, :anchor => @bind_zone.domain
       else
         render :action=>"add_zone"
       end
@@ -59,7 +59,7 @@ class BindController < InitrController
     if request.post? or request.put?
       if @bind_zone.update_attributes(params[:bind_zone])
         flash[:notice]="Bind zone saved"
-        redirect_to :action => 'configure', :id => @klass
+        redirect_to :action => 'configure', :id => @klass, :anchor => @bind_zone.domain
       else
         render :action => 'edit_zone'
       end
@@ -68,7 +68,7 @@ class BindController < InitrController
 
   def destroy_zone
     @bind_zone.destroy if request.post?
-    redirect_to :action => 'configure', :id => @klass
+    redirect_to :action => 'configure', :id => @klass, :anchor => 'top'
   end
 
   def add_master
