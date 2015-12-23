@@ -74,6 +74,7 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def query_registry
+    return if expires_on and expires_on > (Date.today + 30)
     begin
       result = bind.nicline_client.call(
         :info_domain_bbdd,
