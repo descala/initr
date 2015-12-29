@@ -40,6 +40,7 @@ class Initr::Bind < Initr::Klass
     end
     bind_masterzones = {}
     self.bind_zones.each do |z|
+      next if z.zone.nil? or z.zone.empty?
       bind_masterzones[z.domain]=z.parameters
     end
     {

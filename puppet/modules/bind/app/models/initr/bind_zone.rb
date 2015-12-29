@@ -113,6 +113,10 @@ class Initr::BindZone < ActiveRecord::Base
     end
   end
 
+  def www?
+    zone =~ /^www\s/
+  end
+
   private
 
   def trigger_puppetrun
