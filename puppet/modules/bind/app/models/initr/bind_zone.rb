@@ -114,7 +114,7 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def www?
-    zone =~ /^www\s/
+    zone =~ /^www[\s\.]/
   end
 
   private
