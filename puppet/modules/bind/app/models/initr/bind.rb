@@ -103,7 +103,9 @@ class Initr::Bind < Initr::Klass
       if master.ipaddress.blank?
         raise Initr::Klass::ConfigurationError.new("bind: missing IP address on master")
       else
-        sz[master.ipaddress] = master.bind_zones.collect {|z| z.domain }
+        sz[master.ipaddress] = master.bind_zones.collect do |z|
+          z.domain if z.zone and !z.zone.empty?
+        end.compact
       end
     end
     sz
