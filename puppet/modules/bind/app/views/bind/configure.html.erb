@@ -26,7 +26,7 @@
     <tr id='<%= z.domain %>'>
       <td><%= link_to("www", "http://www.#{z.domain}/", :target => "_blank") if z.www?%></td>
       <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
-      <td><%= z.info.gsub(/[\n\r]/,' ') if z.info %></td>
+      <td><%= truncate(z.info.gsub(/[\n\r]/,' '), :length=>80) if z.info %></td>
       <% if @project.module_enabled?(:haltr) %>
         <td>
           <%= link_to(truncate(z.invoice.client.name), invoice_path(z.invoice), class: "icon icon-#{z.invoice.is_a?(InvoiceTemplate) ? 'checked' : 'warning'}" ) if z.invoice %>
