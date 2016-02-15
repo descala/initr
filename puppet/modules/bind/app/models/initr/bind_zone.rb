@@ -90,11 +90,9 @@ class Initr::BindZone < ActiveRecord::Base
       xml = result.hash[:envelope][:body][:info_domain_bbdd_response][:return]
       doc = Nokogiri::Slop xml
       expires_on = doc.response.resData.exDate.content.to_date
-      if expires_on > (Date.today - 15)
-        self.expires_on = expires_on
-        self.registrant = doc.response.resData.nameRegistrant.content
-        logger.info "nicline: #{expires_on} - #{domain} - #{registrant}"
-      end
+      self.expires_on = expires_on
+      self.registrant = doc.response.resData.nameRegistrant.content
+      logger.info "nicline: #{expires_on} - #{domain} - #{registrant}"
     rescue
       nil
     end
