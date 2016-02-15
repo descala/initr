@@ -23,7 +23,7 @@
     <th>Active NS</th>
   </tr>
   <% @klass.bind_zones.sort.each do |z| -%>
-    <tr id='<%= z.domain %>'>
+    <tr id='<%= z.domain %>' class="<%= cycle('odd', 'even') %>">
       <td><%= link_to("www", "http://www.#{z.domain}/", :target => "_blank") if z.www?%></td>
       <td><%= link_to z.domain, :action=>'edit_zone', :id=>z %></td>
       <td><%= truncate(z.info.gsub(/[\n\r]/,' '), :length=>80) if z.info %></td>
