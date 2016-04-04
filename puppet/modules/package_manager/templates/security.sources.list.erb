@@ -3,10 +3,12 @@
 ##################
 
 <% if lsbdistcodename == "lenny" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "5") -%>
-deb http://security.debian.org lenny/updates main contrib non-free
+# EOL
+# deb http://security.debian.org lenny/updates main contrib non-free
 <% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "6") -%>
-deb http://security.debian.org squeeze/updates main contrib non-free
-deb http://http.debian.net/debian squeeze-lts main contrib non-free
+# EOL
+# deb http://security.debian.org squeeze/updates main contrib non-free
+# deb http://http.debian.net/debian squeeze-lts main contrib non-free
 <% elsif lsbdistcodename == "wheezy" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "7") -%>
 deb http://security.debian.org wheezy/updates main contrib non-free
 <% elsif lsbdistcodename == "jessie" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "8") -%>
