@@ -1,5 +1,3 @@
-require 'puppet/rails/host'
-
 class NodeController < InitrController
   unloadable
 

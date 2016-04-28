@@ -1,5 +1,4 @@
 gem 'facter', :require => false
-gem "puppet", "~> 2.7.25", :require => false
 
 # Load initr plugins' Gemfiles
 Dir.glob File.expand_path("../puppet/modules/*/Gemfile", __FILE__) do |file|

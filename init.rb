@@ -5,10 +5,8 @@ Rails.logger.info 'Starting initr plugin for Redmine'
 require 'initr'
 require 'initr/plugin'
 require 'initr/klass_definition'
-require 'puppet_report_patch'
 require 'access_control_patch'
 
-require 'puppet_patch'
 require 'project_patch'
 require 'user_patch'
 require 'redmine_plugin_patch'
@@ -16,20 +14,6 @@ require 'redmine_plugin_patch'
 Rails.configuration.to_prepare do
   Project.send(:include, ProjectInitrPatch)
   User.send(:include, UserInitrPatch)
-  [
-    Puppet::Rails::Host,
-    Puppet::Rails::FactName,
-    Puppet::Rails::FactValue,
-    Puppet::Rails::Resource,
-    Puppet::Rails::ParamValue,
-    Puppet::Rails::ParamName,
-    Puppet::Rails::ResourceTag,
-    Puppet::Rails::PuppetTag,
-    Puppet::Rails::SourceFile
-  ].each do |c|
-    c.send(:include, PuppetPatch)
-  end
-  Puppet::Transaction::Report.send(:include, PuppetReportPatch)
   Redmine::Plugin.send(:include,RedminePluginPatch)
 end
 

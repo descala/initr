@@ -1,5 +1,3 @@
-require 'puppet/rails/host'
-
 class Initr::NodeInstance < Initr::Node
   unloadable
   validates_uniqueness_of :name
