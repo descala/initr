@@ -49,6 +49,10 @@ class Initr::BindZone < ActiveRecord::Base
     self.ttl ||= "300"
   end
 
+  def zone
+    self[:zone].gsub(/\r\n?/,"\n")
+  end
+
   def parameters
     {"zone"=>zone,"ttl"=>ttl,"serial"=>serial}
   end
