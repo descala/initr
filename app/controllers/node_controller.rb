@@ -151,7 +151,7 @@ class NodeController < InitrController
     if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       node = Initr::NodeInstance.find_by_name(params[:hostname])
       if node
-        render :text => YAML.dump(node.parameters).gsub(/\r\n?/, "\n")
+        render :text => YAML.dump(node.parameters)
       else
         render :text => "Unknown hostname '#{params[:hostname]}'\n", :status => 404
         logger.error "Unknown hostname '#{params[:hostname]}'."
