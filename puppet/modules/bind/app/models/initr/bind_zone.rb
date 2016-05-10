@@ -50,7 +50,7 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def zone
-    self[:zone].gsub(/\r\n?/,"\n")
+    self[:zone].to_s.gsub(/\r\n?/,"\n")
   end
 
   def parameters
