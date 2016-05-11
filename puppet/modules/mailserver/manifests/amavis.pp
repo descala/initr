@@ -15,6 +15,16 @@ class mailserver::amavis {
       source  => [ 'puppet:///specific/recipient_access', 'puppet:///modules/mailserver/recipient_access' ],
       notify  => Exec['postmap_ra'],
       require => Package['postfix'];
+    '/etc/mail/spamassassin/90_puppet_custom_rules.cf':
+      mode    => '0644',
+      source  => [ 'puppet:///modules/mailserver/90_puppet_custom_rules.cf' ],
+      require => Package['spamassassin'],
+      notify  => Service['amavis'];
+    '/etc/mail/spamassassin/90_clamav_scores.cf':
+      mode    => '0644',
+      source  => [ 'puppet:///modules/mailserver/90_clamav_scores.cf' ],
+      require => Package['spamassassin'],
+      notify  => Service['amavis'];
   }
   service {
     'spamassassin':
