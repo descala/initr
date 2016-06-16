@@ -3,7 +3,7 @@ class common::amavis::munin::debian inherits common::amavis::munin::common {
     mode => 644,
     notify => Service[munin-node],
     content => "[amavis*]
-user root
+group adm
 env.enlogfile /var/log/maillog
 env.logtail /usr/sbin/logtail"
   }
