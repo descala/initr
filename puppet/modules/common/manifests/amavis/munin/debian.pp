@@ -4,7 +4,8 @@ class common::amavis::munin::debian inherits common::amavis::munin::common {
     notify => Service[munin-node],
     content => "[amavis*]
 user root
-env.enlogfile /var/log/maillog"
+env.enlogfile /var/log/maillog
+env.logtail /usr/sbin/logtail"
   }
 }
 
