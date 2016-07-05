@@ -74,7 +74,7 @@ class Initr::Bind < Initr::Klass
 
   def query_registry
     bind_zones.each do |z|
-      next if z.expires_on and z.expires_on > (Date.today + 15)
+      next if z.expires_on and z.expires_on > (Date.today + 30)
       z.query_registry
       z.save
     end

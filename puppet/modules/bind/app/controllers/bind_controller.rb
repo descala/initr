@@ -58,6 +58,8 @@ class BindController < InitrController
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
     if request.post? or request.put?
       if @bind_zone.update_attributes(params[:bind_zone])
+        @bind_zone.query_registry
+        @bind_zone.update_active_ns
         flash[:notice]="Bind zone saved"
         redirect_to :action => 'configure', :id => @klass, :anchor => @bind_zone.domain
       else

@@ -10,8 +10,6 @@ class Initr::BindZone < ActiveRecord::Base
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
   before_validation :increment_zone_serial
-  before_save :update_active_ns
-  before_save :query_registry
 
   # Uses package "apt-get install bind9utils"
   validate :named_checkzone
@@ -74,11 +72,10 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def update_active_ns
-    self.active_ns = `dig ns #{domain} +short +time=1 +tries=1 2&>1`.split.sort.join(' ')
+    self.active_ns = `dig ns #{domain} +short +time=1 +tries=1 2&>1`.split.sort.join(' ').gsub('. ',' ').gsub(/\.$/,'')
   end
 
   def query_registry
-    return if expires_on and expires_on > (Date.today + 30)
     begin
       result = bind.nicline_client.call(
         :info_domain_bbdd,
@@ -96,9 +93,12 @@ class Initr::BindZone < ActiveRecord::Base
       expires_on = doc.response.resData.exDate.content.to_date
       self.expires_on = expires_on
       self.registrant = doc.response.resData.nameRegistrant.content
+      self.whois_ns   = doc.response.resData.nameServer.children.collect do |ns|
+        ns.children.to_s if ns.children.to_s != ''
+      end.compact.sort.join(' ')
       logger.info "nicline: #{expires_on} - #{domain} - #{registrant}"
-    rescue
-      nil
+    rescue => e
+      logger.error "error '#{domain}'.query_registry: #{e}"
     end
   end
 
@@ -117,6 +117,10 @@ class Initr::BindZone < ActiveRecord::Base
 
   def www?
     zone =~ /^www[\s\.]/
+  end
+
+  def correct_name_servers?
+    active_ns == whois_ns
   end
 
   private

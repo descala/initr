@@ -12,3 +12,7 @@ en:
   acts_as_master_server_of: Slave servers
   field_allowed_ips: extra IPs to authorize
   allowed_ips: those IP will be allowed to use axfr, separated with ;
+  field_active_ns: Active NS
+  field_whois_ns: Whois NS
+  field_registrant: Registrant name
+  field_expires_on: Expires on

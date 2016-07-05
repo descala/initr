@@ -20,7 +20,8 @@
     <% end %>
     <th>Registrant</th>
     <th>Expires</th>
-    <th>Active NS</th>
+    <th>Whois NS</th>
+    <th>Zone NS</th>
   </tr>
   <% @klass.bind_zones.sort.each do |z| -%>
     <tr id='<%= z.domain %>' class="<%= cycle('odd', 'even') %>">
@@ -34,7 +35,12 @@
       <% end %>
       <td><%= truncate(z.registrant) %></td>
       <td class="<%= "highlight" if z.expires_on and z.expires_on < (Date.today + 15) %>"><%= z.expires_on %></td>
-      <td><%= truncate(z.active_ns) %></td>
+      <td title="<%=z.whois_ns%>" class="<%= "highlight" unless z.correct_name_servers? or z.zone.empty? %>">
+        <%= truncate(z.whois_ns, length: 13) %>
+      </td>
+      <td title="<%=z.active_ns%>">
+        <%= truncate(z.active_ns, length: 13) %>
+      </td>
       <td><%= link_to image_tag("cross.gif",:plugin=>'initr',:border=>0), {:action=>'destroy_zone', :id=>z}, :confirm => "Delete #{z.domain}?", :method => :post %></td>
     </tr>
   <% end -%>

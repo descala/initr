@@ -1,10 +1,15 @@
 <p><%= f.text_field "domain" %></p>
 <p><%= f.text_field "ttl" %></p>
-<p><%= f.label_for_field(:zone_header) %><%= text_area_tag "zone_header", @zone_header, :cols=>90, :rows=>11, :readonly=>true %></p>
-<p><label>IP</label><%= list_facts_like(@node,"ipaddress_").html_safe %></p>
+<p><%= f.label_for_field(:zone_header) %><%= text_area_tag "zone_header", @zone_header, :cols=>90, :rows=>5, :readonly=>true %></p>
 <p>
 <%= f.text_area "zone", :cols=>90, :rows=>15 %>
 </p>
+<h3>Other information</h3>
 <p>
-<%= f.text_area "info", :cols=>90, :rows=>10 %>
+<%= f.text_area "info", :cols=>90, :rows=>5 %>
 </p>
+<p><label>IP</label><%= list_facts_like(@node,"ipaddress_").html_safe %></p>
+<p><%= f.text_field "registrant" %></p>
+<p><%= f.text_field "expires_on" %></p>
+<p><%= f.text_field "whois_ns" %></p>
+<p><%= f.text_field "active_ns" %></p>
