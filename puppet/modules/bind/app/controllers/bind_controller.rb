@@ -60,6 +60,7 @@ class BindController < InitrController
       if @bind_zone.update_attributes(params[:bind_zone])
         @bind_zone.query_registry
         @bind_zone.update_active_ns
+        @bind_zone.save
         flash[:notice]="Bind zone saved"
         redirect_to :action => 'configure', :id => @klass, :anchor => @bind_zone.domain
       else
