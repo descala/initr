@@ -18,7 +18,7 @@ header L_AV_MSRBL_Spam  X-Amavis-AV-Status =~ m{\bAV:MSRBL-SPAM\.}
 header L_AV_MBL         X-Amavis-AV-Status =~ m{\bAV:MBL_(?!NA\.UNOFFICIAL)}
 header L_AV_SecInf      X-Amavis-AV-Status =~ m{-SecuriteInfo\.com\b}
 
-score  L_AV_Phish       14
+score  L_AV_Phish       10
 score  L_AV_Spam        5
 score  L_AV_PhishHeur   5
 score  L_AV_SS_Phish    5
@@ -26,13 +26,13 @@ score  L_AV_SS_PhishBar 0.5
 score  L_AV_SS_TestSig  0.123
 score  L_AV_SS_Spear    4
 score  L_AV_SS_Scam     8
-score  L_AV_SS_Spam     8
+score  L_AV_SS_Spam     4
 score  L_AV_SS_Hdr      6
 score  L_AV_SS_Img      3.5
 score  L_AV_SS_Bounce   0.1
 score  L_AV_SS_other    1
-score  L_AV_SS_Malware  14
-score  L_AV_MBL         14
+score  L_AV_SS_Malware  10
+score  L_AV_MBL         10
 score  L_AV_MSRBL_Img   3.5
 score  L_AV_MSRBL_Spam  6
 score  L_AV_SecInf      8
