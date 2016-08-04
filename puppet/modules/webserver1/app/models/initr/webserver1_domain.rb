@@ -1,5 +1,4 @@
 class Initr::Webserver1Domain < ActiveRecord::Base
-  unloadable
 
   require "digest/md5"
 
@@ -77,7 +76,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
 
   def bind
     bind = Initr::Bind.for_node(webserver.node)
-    bind.bind_zones.find(:first, :conditions=>["domain=?",name.split('.')[-2..-1].join('.')]) if bind
+    bind.bind_zones.where("domain=?",name.split('.')[-2..-1].join('.')).first if bind
   end
 
   private

@@ -1,6 +1,5 @@
 class Initr::Nagios < Initr::Klass
 
-  unloadable
 
   has_many :nagios_checks, :dependent => :destroy, :class_name => "Initr::NagiosCheck"
   belongs_to :nagios_server, :class_name => "Initr::NagiosServer", :foreign_key => "klass_id"

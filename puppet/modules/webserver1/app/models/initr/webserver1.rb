@@ -1,6 +1,5 @@
 class Initr::Webserver1 < Initr::Klass
 
-  unloadable
 
   has_many :webserver1_domains, :dependent => :destroy, :class_name => "Initr::Webserver1Domain"
   belongs_to :node, :class_name => 'Initr::Node'

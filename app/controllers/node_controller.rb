@@ -1,5 +1,4 @@
 class NodeController < InitrController
-  unloadable
 
   menu_item :initr
   helper :projects, :initr
@@ -175,7 +174,7 @@ class NodeController < InitrController
   def scan_puppet_hosts
     @hosts_exist = Array.new
     @hosts_new = Array.new
-    hosts = Puppet::Rails::Host.find :all
+    hosts = Puppet::Rails::Host.all
     hosts.each do |host|
       if Initr::NodeInstance.find_by_name host.name
         @hosts_exist << host.name
@@ -191,8 +190,8 @@ class NodeController < InitrController
   def unassigned_nodes
     @projects = Project.all.sort
     @users = User.where(:status=>User::STATUS_ACTIVE).sort
-    @node_instances = Initr::NodeInstance.find :all, :order => "project_id, name"
-    @node_templates = Initr::NodeTemplate.find :all, :order => "project_id, name"
+    @node_instances = Initr::NodeInstance.all.order("project_id, name")
+    @node_templates = Initr::NodeTemplate.all.order("project_id, name")
   end
 
   def assign_node

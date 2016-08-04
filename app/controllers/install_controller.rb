@@ -1,5 +1,4 @@
 class InstallController < InitrController
-  unloadable
 
   before_filter :find_node
   before_filter :render_text, :except=>'can_sign'

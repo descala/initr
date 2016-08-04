@@ -5,7 +5,6 @@ class Initr::Klass < ActiveRecord::Base
   # (see parameters method in Initr::Node class)
   class ConfigurationError < StandardError ; end
 
-  unloadable
 
   belongs_to :node, :class_name => "Initr::Node"
   has_one :project, :through => :node

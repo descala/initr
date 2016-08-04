@@ -1,5 +1,4 @@
 class RemoteBackupController < InitrController
-  unloadable
 
   menu_item :initr
   before_filter :find_remote_backup

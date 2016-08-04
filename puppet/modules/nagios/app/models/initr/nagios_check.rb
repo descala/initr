@@ -1,6 +1,5 @@
 class Initr::NagiosCheck < ActiveRecord::Base
 
-  unloadable
 
   belongs_to :nagios, :class_name => "Initr::Nagios"
   validates_presence_of :name, :command
@@ -11,8 +10,10 @@ class Initr::NagiosCheck < ActiveRecord::Base
     errors.add(:name, "can't have single quotes") if name =~ /'/
     # name can't be repeated on the same node, but we must check for a recently
     # deleted check with the same name, that is not yet destroyed by delete_check_job
-    existing = Initr::NagiosCheck.find :all,
-      :conditions => ["nagios_id=? and (name=? or command=?)",self.nagios_id, self.name, self.command]
+    existing = Initr::NagiosCheck.where(
+      "nagios_id=? and (name=? or command=?)",
+      self.nagios_id, self.name, self.command
+    )
     existing.each do |e|
       if e.ensure == "absent"
         e.destroy

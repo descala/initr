@@ -1,12 +1,11 @@
 class Initr::LinkKlass < Initr::Klass
 
-  unloadable
   validates_presence_of :copied_klass_id
   validate :copied_klass_unique_for_node
 
   def copied_klass_unique_for_node
     if node
-      node.klasses.all(:conditions=>["type='LinkKlass'"]).each do |ck|
+      node.klasses.where("type='LinkKlass'").each do |ck|
         errors.add_to_base("Klass already copied on this node") if ck.copied_klass_id == copied_klass_id
       end
     end

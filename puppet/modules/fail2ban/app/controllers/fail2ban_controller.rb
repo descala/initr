@@ -1,5 +1,4 @@
 class Fail2banController < InitrController
-  unloadable
 
   menu_item :initr
   # authorize filter expects @project to be the current project

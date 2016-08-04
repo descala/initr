@@ -1,5 +1,4 @@
 class Initr::BindZone < ActiveRecord::Base
-  unloadable
   belongs_to :bind, :class_name => "Initr::Bind"
   has_one :project, :through => :bind
   validates_presence_of :domain, :ttl

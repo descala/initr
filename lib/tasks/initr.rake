@@ -43,7 +43,6 @@ namespace :initr do
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/app/models/initr/#{name}.rb"
       open("#{plugindir}/app/models/initr/#{name}.rb", 'w') do |f|
         f << "class Initr::#{name.camelize} < Initr::Klass\n"
-        f << "  unloadable\n"
         f << "\n"
         f << "end\n"
       end
@@ -55,7 +54,6 @@ namespace :initr do
       puts "      create  vendor/plugins/initr/puppet/modules/#{name}/app/controllers/#{name}_controller.rb"
       open("#{plugindir}/app/controllers/#{name}_controller.rb", 'w') do |f|
         f << "class #{name.camelize}Controller < InitrController\n"
-        f << "  unloadable\n"
         f << "\n"
         f << "  menu_item :initr\n"
         f << "\n"

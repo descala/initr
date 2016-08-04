@@ -1,6 +1,5 @@
 class InitrWpkg < Initr::Klass
 
-  unloadable
   
   XML_PATH = File.expand_path("#{File.dirname(__FILE__)}/../../files/packages")
   

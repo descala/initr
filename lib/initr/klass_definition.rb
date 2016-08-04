@@ -1,6 +1,5 @@
 class Initr::KlassDefinition
 
-  unloadable
 
   attr_accessor :name, :description
 

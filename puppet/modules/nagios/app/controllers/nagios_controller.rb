@@ -1,5 +1,4 @@
 class NagiosController < InitrController
-  unloadable
 
   menu_item :initr
   before_filter :find_nagios, :except => [:edit_check, :update_check, :destroy_check, :before_destroy_check]

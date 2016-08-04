@@ -1,6 +1,5 @@
 class Initr::CustomKlass < Initr::Klass
 
-  unloadable
   has_many :custom_klass_confs,
     :class_name => "Initr::CustomKlassConf",
     :dependent => :destroy

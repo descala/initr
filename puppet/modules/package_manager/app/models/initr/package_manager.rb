@@ -1,5 +1,4 @@
 class Initr::PackageManager < Initr::Klass
-  unloadable
 
   self.accessors_for(["security_updates"])
 

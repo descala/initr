@@ -1,6 +1,5 @@
 class Initr::Fail2ban < Initr::Klass
 
-  unloadable
   # simple getters and setters for serialized attributes
   self.accessors_for(%w(mailto custom_jails))
 

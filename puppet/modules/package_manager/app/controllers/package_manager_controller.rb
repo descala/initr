@@ -1,5 +1,4 @@
 class PackageManagerController < InitrController
-  unloadable
 
   menu_item :initr
 

@@ -3,7 +3,6 @@ require 'date'
 
 class Initr::Node < ActiveRecord::Base
 
-  unloadable
 
   # TODO redimine2
   #has_many :reports, :dependent => :destroy, :class_name => "Initr::Report"

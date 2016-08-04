@@ -13,7 +13,7 @@ class Puppet::Rails::Host < ActiveRecord::Base
   # Note that 'fact_values' is actually a list of the value instances, not
   # just actual values.
   def get_facts_hash
-    fact_values = self.fact_values.find(:all, :include => :fact_name)
+    fact_values = self.fact_values.includes(:fact_name)
     return fact_values.inject({}) do | hash, value |
       hash[value.fact_name.name] ||= []
       hash[value.fact_name.name] << value

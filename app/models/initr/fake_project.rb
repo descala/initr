@@ -1,5 +1,4 @@
 class Initr::FakeProject < Project
-  unloadable
 
   def id
     nil

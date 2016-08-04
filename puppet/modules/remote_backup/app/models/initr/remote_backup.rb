@@ -1,5 +1,4 @@
 class Initr::RemoteBackup < Initr::Klass
-  unloadable
 
   belongs_to :remote_backup_server, :class_name => "Initr::RemoteBackupServer", :foreign_key => "klass_id"
   validates_presence_of :klass_id, :encryptkey, :keypassword, :reportspassword, :on => :update

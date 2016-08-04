@@ -1,5 +1,4 @@
 class BaseController < InitrController
-  unloadable
 
   menu_item :initr
   before_filter :find_base, :authorize

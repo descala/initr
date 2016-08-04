@@ -1,5 +1,4 @@
 class KlassController < InitrController
-  unloadable
 
   menu_item :initr
   before_filter :find_node, :only => [:list,:create,:apply_template,:activate]

@@ -1,5 +1,4 @@
 class Initr::NodeTemplate < Initr::Node
-  unloadable
   validates_uniqueness_of :name, :scope => :user_id
 
   def project

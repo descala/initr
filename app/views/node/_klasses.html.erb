@@ -45,7 +45,7 @@
     <h3>Special classes</h3>
     <% @repeatable_klasses.each do |kd| -%>
       <ul class="klasses">
-      <% klasses = @node.klasses.find_all_by_type "Initr::#{kd.name.camelize}" -%>
+      <% klasses = @node.klasses.where(type: "Initr::#{kd.name.camelize}") -%>
       <% klasses.each do |klass| -%>
         <li class="klass<%=klass.active? ? " active" : "" %>">
         <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%>

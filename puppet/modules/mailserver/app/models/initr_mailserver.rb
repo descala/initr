@@ -1,6 +1,5 @@
 class InitrMailserver < Initr::Klass
 
-  unloadable
 
   REQUIRED_ATTRS = %w(admin_email domain_path domain_in_mailbox mail_location
   webserver db_backend db_name db_user db_passwd db_passwd_encrypt clamav

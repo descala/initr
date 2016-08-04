@@ -1,6 +1,5 @@
 class Initr::Bind < Initr::Klass
 
-  unloadable
   has_many :bind_zones,
     :class_name => "Initr::BindZone",
     :dependent => :destroy

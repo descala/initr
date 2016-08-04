@@ -1,6 +1,5 @@
 class Initr::Base < Initr::Klass
 
-  unloadable
 
   self.accessors_for(%w(puppet))
 

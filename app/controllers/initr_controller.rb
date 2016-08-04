@@ -1,5 +1,4 @@
 class InitrController < ApplicationController
-  unloadable
 
   # to make right menu appear
   layout "nested"

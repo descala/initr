@@ -1,6 +1,5 @@
 class Initr::NagiosServer < Initr::Klass
 
-  unloadable
 
   has_many :nagios, :class_name => "Initr::Nagios", :foreign_key => "klass_id"
   validates_presence_of :address, :on => :update
@@ -243,7 +242,7 @@ class Initr::NagiosServer < Initr::Klass
     proj.nodes.collect do |n|
       next if n.puppet_host.nil?
       # check that node has a Nagios_host exported resource with server tag
-      exported_resources = n.puppet_host.resources.find(:all, :conditions => "exported=true and restype='Nagios_host'")
+      exported_resources = n.puppet_host.resources.where("exported=true and restype='Nagios_host'")
       exported_resources.each do |r|
         if r.puppet_tags.collect {|pt| pt.name}.include? address
           members << n

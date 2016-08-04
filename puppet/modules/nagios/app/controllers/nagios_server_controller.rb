@@ -1,5 +1,4 @@
 class NagiosServerController < InitrController
-  unloadable
 
   menu_item :initr
   before_filter :find_nagios_server

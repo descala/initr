@@ -1,5 +1,4 @@
 class LinkKlassController < InitrController
-  unloadable
 
   menu_item :initr
   before_filter :find_node,       :except => [:configure]

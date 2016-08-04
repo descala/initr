@@ -1,13 +1,12 @@
 module Initr
   class WebBackupsServer < Initr::Klass
-    unloadable
 
     has_many :webserver1_domains, :class_name => "Initr::Webserver1Domain"
     validate :address_is_unique, :on => :update
     validates_presence_of :backups_path, :port, :address, :on => :update
 
     def address_is_unique
-      if WebBackupsServer.all(:conditions=>["id != ?",id]).collect {|wbs| wbs.address }.include? address
+      if WebBackupsServer.where("id != ?",id).collect {|wbs| wbs.address }.include? address
         errors.add_to_base("#{l "address"} has already been taken")
       end
     end

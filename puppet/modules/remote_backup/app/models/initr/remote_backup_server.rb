@@ -1,5 +1,4 @@
 class Initr::RemoteBackupServer < Initr::Klass
-  unloadable
 
   has_many :remote_backups, :class_name => "Initr::RemoteBackup", :foreign_key => "klass_id"
   validates_presence_of :remotebackups_path, :address, :webreports_url, :on => :update

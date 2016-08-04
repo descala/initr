@@ -1,7 +1,6 @@
 # shamelessly taken from Foreman project (http://theforeman.org)
 class Initr::Report < ActiveRecord::Base
   
-  unloadable
 
   belongs_to :node, :class_name => "Initr::NodeInstance"
   serialize :log, Puppet::Transaction::Report

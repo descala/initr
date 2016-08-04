@@ -1,5 +1,4 @@
 class Webserver1Controller < InitrController
-  unloadable
 
   menu_item :initr
   before_filter :find_webserver, :except => [:edit_domain,:rm_domain]
@@ -24,7 +23,7 @@ class Webserver1Controller < InitrController
     @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user.collect {|wbs| [wbs.node.fqdn, wbs.id] }
     # check if we have a name server
     @bind = Initr::Bind.for_node @node
-    @bind_zone = @bind.bind_zones.find(:first, :conditions=>["domain=?",@domain.name]) if @bind
+    @bind_zone = @bind.bind_zones.where("domain=?",@domain.name).first if @bind
     if request.post? or request.put?
       if @domain.update_attributes(params["webserver1_domain"])
         redirect_to :action => 'configure', :id => @klass

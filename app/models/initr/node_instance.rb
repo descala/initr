@@ -1,5 +1,4 @@
 class Initr::NodeInstance < Initr::Node
-  unloadable
   validates_uniqueness_of :name
   validates_presence_of :project
 
@@ -55,7 +54,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def exported_resources
-    puppet_host.resources.find :all,:conditions => ['exported',true], :order => "restype, title"
+    puppet_host.resources.where(exported: true).order("restype, title")
   end
 
   def destroy_exported_resources
@@ -66,9 +65,7 @@ class Initr::NodeInstance < Initr::Node
 
   def puppet_fact(factname, default=nil)
     begin
-      if fv = puppet_host.fact_values.find(
-        :all, :include => :fact_name,
-        :conditions => "fact_names.name = '#{factname}'")
+      if fv = puppet_host.fact_values.where("fact_names.name = '#{factname}'").includes(:fact_name)
         return fv.first.value
       else
         return nil
