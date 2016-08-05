@@ -6,6 +6,7 @@ class Initr::RemoteBackup < Initr::Klass
 
   self.accessors_for(%w(mailto reportsuccess includefiles excludefiles signkey encryptkey keypassword
                         bandwidthlimit used_space_alert reportspassword num_retries archive_dir))
+  attr_accessible :klass_id
 
   after_initialize {
     self.mailto         ||= "root"
