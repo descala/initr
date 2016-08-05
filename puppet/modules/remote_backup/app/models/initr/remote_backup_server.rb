@@ -6,8 +6,10 @@ class Initr::RemoteBackupServer < Initr::Klass
 
   after_initialize {
     self.remotebackups_path ||= "/var/backups"
-    self.address            ||= node.fqdn
-    self.webreports_url     ||= node.fqdn
+    if node
+      self.address            ||= node.fqdn
+      self.webreports_url     ||= node.fqdn
+    end
   }
 
   def parameters
