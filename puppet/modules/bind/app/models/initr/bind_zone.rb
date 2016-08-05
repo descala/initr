@@ -62,8 +62,8 @@ class Initr::BindZone < ActiveRecord::Base
     if domain_changed? or ttl_changed? or zone_changed?
       self.serial="#{Time.now.strftime('%Y%m%d')}01".to_i
       unless serial_was.nil?
-        while serial <= serial_was.to_i
-          self.serial += 1
+        while serial.to_i <= serial_was.to_i
+          self.serial = serial.to_i + 1
         end
       end
     end

@@ -1,9 +1,9 @@
-require File.dirname(__FILE__) + '../../test/test_helper'
+require File.expand_path('../../../../test/test_helper', __FILE__)
 
 module Initr
   module TestHelper
 
-    def self.setup
+    def self.initr_setup
 
       # Plugin config
       Setting.plugin_initr = {'puppetmaster'=>'puppet', 'puppetmaster_ip'=>'127.0.0.1','puppetmaster_port'=>'8140'}
@@ -29,7 +29,7 @@ module Initr
   end
 end
 
-Initr::TestHelper.setup
+Initr::TestHelper.initr_setup
 
 class ActiveSupport::TestCase
   self.fixture_path = File.dirname(__FILE__) + '/fixtures'
@@ -37,7 +37,7 @@ class ActiveSupport::TestCase
 #  self.use_instantiated_fixtures  = true
 end
 
-class ActionController::IntegrationTest
+class ActionDispatch::IntegrationTest
   self.fixture_path = File.dirname(__FILE__) + '/fixtures'
 #  self.use_transactional_fixtures = true
 #  self.use_instantiated_fixtures  = true

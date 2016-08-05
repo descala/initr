@@ -21,10 +21,12 @@ class InitrTest < ActiveSupport::TestCase
 
   test "increments zone serial" do
     bind_zone = bind_zones(:bind_zone_001)
-    serial_before = bind_zone.serial
-    bind_zone.zone += "\nasdf IN A 8.8.4.4"
+    bind_zone.zone += "\n;"
     bind_zone.save!
-    assert_operator bind_zone.serial.to_i, :>, serial_before.to_i
+    serial_before = bind_zone.serial
+    bind_zone.zone += "\n;"
+    bind_zone.save!
+    assert_equal (serial_before.to_i + 1).to_s, bind_zone.serial
   end
 
   test "does not increment zone serial" do
