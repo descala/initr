@@ -33,7 +33,7 @@ class KlassController < InitrController
   end
 
   def activate
-    if request.post? or request.put?
+    if request.post?
       (render_403; return) unless @node.editable_by?(User.current)
       active_klasses = params[:klasses].keys if params[:klasses]
       active_klasses ||= []
@@ -51,10 +51,12 @@ class KlassController < InitrController
         begin
           # try old naming of plugin models,
           # until we migrate all them to initr namespace
-          klass = Kernel.const_get("Initr#{klass_name}").new({:node_id=>@node.id,:active=>true})
+          klass = Kernel.const_get("Initr#{klass_name}").new
         rescue NameError
-          klass = Kernel.eval("Initr::#{klass_name}").new({:node_id=>@node.id,:active=>true})
+          klass = Kernel.eval("Initr::#{klass_name}").new
         end
+        klass.node = @node
+        klass.active = true
         klass.save(:validate => false)
       end
       flash[:info] = "Configuration saved"
@@ -66,10 +68,11 @@ class KlassController < InitrController
     begin
       # try old naming of plugin models,
       # until we migrate all them to initr namespace
-      klass = Kernel.const_get("Initr#{params[:klass_name].camelize}").new({:node_id=>@node.id})
+      klass = Kernel.const_get("Initr#{params[:klass_name].camelize}").new
     rescue NameError
-      klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new({:node_id=>@node.id})
+      klass = Kernel.eval("Initr::"+params[:klass_name].camelize).new
     end
+    klass.node = @node
 
     # if plugin controller implements "new" method, redirect_to it
     if (eval("#{klass.controller.camelize}Controller")).action_methods.include? "new"
@@ -115,7 +118,7 @@ class KlassController < InitrController
       return
     end
     @nodes = User.current.projects.collect {|p| p.nodes }.compact.flatten.sort
-    if request.post? or request.put?
+    if request.patch?
       unless @nodes.collect {|n| n.id.to_s }.include? params[:klass][:node_id]
         flash[:error] = "Invalid destination node"
         render :action => 'move'

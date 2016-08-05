@@ -196,10 +196,12 @@ class NodeController < InitrController
 
   def assign_node
     @node=Initr::Node.find params[:id]
-    if @node.update_attributes(params[:node])
+    @node.project_id = params[:node][:project_id] if params[:node][:project_id]
+    @node.user_id    = params[:node][:user_id]    if params[:node][:user_id]
+    if @node.save
       flash[:notice] = 'Update successfull'
     else
-      flash[:error] = 'Update error'
+      flash[:error] = "Update error: #{@node.errors.full_messages}"
     end
     redirect_to :action => 'unassigned_nodes'
   end
