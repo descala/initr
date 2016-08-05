@@ -5,6 +5,8 @@ module Initr
     validate :address_is_unique, :on => :update
     validates_presence_of :backups_path, :port, :address, :on => :update
 
+    attr_accessible :address, :port, :backups_path
+
     def address_is_unique
       if WebBackupsServer.where("id != ?",id).collect {|wbs| wbs.address }.include? address
         errors.add_to_base("#{l "address"} has already been taken")
