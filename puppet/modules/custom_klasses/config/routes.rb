@@ -1,1 +1,1 @@
-match '/custom_klass/:action/:id' => 'custom_klass', :via => [:get, :post]
+match '/custom_klass/:action/:id' => 'custom_klass', :via => [:get, :post, :patch]
