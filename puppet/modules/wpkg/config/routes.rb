@@ -1,1 +1,1 @@
-match '/initr_wpkg/:action/:id' => 'initr_wpkg', :via => [:get, :post]
+match '/initr_wpkg/:action/:id' => 'initr_wpkg', :via => [:get, :patch]
