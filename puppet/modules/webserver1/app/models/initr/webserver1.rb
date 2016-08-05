@@ -6,6 +6,7 @@ class Initr::Webserver1 < Initr::Klass
   validates_confirmation_of :password, :allow_nil => true
   validates_format_of :webserver_default_domain, :with => /http(|s):\/\/(.*)/, :on => :update 
   attr_accessor :password, :password_confirmation
+  attr_accessible :password, :password_confirmation, :webserver_default_domain
   self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php allow_anonymous_ftp manage_default_domain))
 
   after_initialize {
