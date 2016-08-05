@@ -11,7 +11,7 @@ class CreateNagiosTables < ActiveRecord::Migration
       t.string :hour
       t.string :ensure
       t.boolean :notifications_enabled
-      t.timestamps
+      t.timestamps null: false
     end
   end
 

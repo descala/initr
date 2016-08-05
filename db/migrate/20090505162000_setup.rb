@@ -42,7 +42,7 @@ class Setup < ActiveRecord::Migration
     create_table :base_confs do |t|
       t.integer :base_id
       t.string :optshash
-      t.timestamps
+      t.timestamps null: true
     end
 
   end

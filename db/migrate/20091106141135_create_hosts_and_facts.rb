@@ -15,7 +15,7 @@ class CreateHostsAndFacts < ActiveRecord::Migration
         t.column :source_file_id, :integer
         t.column :created_at, :datetime
       end
-      add_index :hosts, :source_file_id, :integer => true
+      add_index :hosts, :source_file_id
       add_index :hosts, :name
       create_table :fact_names do |t|
         t.column :name, :string, :null => false
@@ -30,8 +30,8 @@ class CreateHostsAndFacts < ActiveRecord::Migration
         t.column :updated_at, :datetime
         t.column :created_at, :datetime
       end
-      add_index :fact_values, :fact_name_id, :integer => true
-      add_index :fact_values, :host_id, :integer => true
+      add_index :fact_values, :fact_name_id
+      add_index :fact_values, :host_id
     rescue ActiveRecord::StatementInvalid
       # tables already exist
       puts "--> puppet tables already exist"

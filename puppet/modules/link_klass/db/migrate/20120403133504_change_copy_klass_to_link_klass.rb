@@ -1,11 +1,11 @@
 class ChangeCopyKlassToLinkKlass < ActiveRecord::Migration
 
   def self.up
-    Initr::Klass.update_all("type = 'LinkKlass'","type='CopyKlass'")
+    Initr::Klass.where("type='CopyKlass'").update_all("type = 'LinkKlass'")
   end
 
   def self.down
-    Initr::Klass.update_all("type = 'CopyKlass'","type='LinkKlass'")
+    Initr::Klass.where("type='LinkKlass'").update_all("type = 'CopyKlass'")
   end
 
 end
