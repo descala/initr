@@ -1,1 +1,1 @@
-match '/base/:action/:id' => 'base', :via => [:get, :post]
+match '/base/configure/:id', to: 'base#configure', via: [:get, :patch]

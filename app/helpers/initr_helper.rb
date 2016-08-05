@@ -38,7 +38,9 @@ module InitrHelper
   def list_facts_like(obj,name='ipaddress_')
     facts = []
     if obj.is_a? Initr::Node and host=obj.puppet_host
-      facts = host.fact_values.where("fact_names.name LIKE '#{name}%'").includes(:fact_name)
+      facts = host.fact_values.where("fact_names.name LIKE '#{name}%'").
+        includes(:fact_name).
+        references(:fact_name)
     end
     out = ""
     facts.each do |fv|

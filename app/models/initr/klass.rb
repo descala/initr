@@ -155,6 +155,8 @@ class Initr::Klass < ActiveRecord::Base
   def self.accessors_for(attributes)
     attributes.each do |c|
       src = <<-END_SRC
+      attr_accessible :#{c}
+
       def #{c}
         config["#{c}"] rescue nil
       end

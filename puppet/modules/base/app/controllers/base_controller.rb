@@ -5,7 +5,7 @@ class BaseController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes(params[:base])
         flash[:notice] = "Configuration successfully updated."
         redirect_to :controller => 'klass', :action => 'list', :id => @node
