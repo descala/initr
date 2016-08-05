@@ -52,8 +52,11 @@ class LinkKlassController < InitrController
     @copiable_klasses = []
     User.current.projects.collect {|p| p.nodes }.compact.flatten.sort.each do |node|
       next if node == @node
-      n = [node.fqdn, node.klasses.collect {|k| [k.name,k.id.to_s] if k.copyable? }.compact]
-      @copiable_klasses << n unless n.last.size == 0
+      begin
+        n = [node.fqdn, node.klasses.collect {|k| [k.name,k.id.to_s] if k.copyable? }.compact]
+        @copiable_klasses << n unless n.last.size == 0
+      rescue ActiveRecord::SubclassNotFound
+      end
     end
   end
 

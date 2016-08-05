@@ -15,6 +15,8 @@ class Initr::Klass < ActiveRecord::Base
 
   serialize :config
 
+  attr_accessible :node_id, :type, :config, :name, :description, :klass_id, :active
+
   # add klasses to this variable to automatically add them on include
   # example: @@adds_klasses = [ Initr::PackageManager ]
   @@adds_klasses = false
