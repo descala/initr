@@ -29,9 +29,6 @@ class CustomKlassController < InitrController
     if request.post? or request.put?
       if @klass.update_attributes(params[:custom_klass])
         flash[:notice]='Configuration saved'
-        redirect_to :controller => 'klass', :action => 'list', :id => @node.id, :tab => 'klasses'
-      else
-        render :action => 'configure'
       end
     end
   end

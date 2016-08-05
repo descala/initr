@@ -27,13 +27,10 @@ class LinkKlassController < InitrController
 
   def configure
     @html_title=[@node.fqdn, "#{@klass.name} (link klass)"]
-    if request.post? or request.put?
+    if request.patch?
       params["link_klass"] ||= {}
       if @klass.update_attributes(params["link_klass"])
         flash[:notice]='Configuration saved'
-        redirect_to :controller => 'klass', :action=>'list', :id => @node, :tab=>'klasses'
-      else
-        render :action=>'configure'
       end
     end
   end

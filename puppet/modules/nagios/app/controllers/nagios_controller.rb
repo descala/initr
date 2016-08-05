@@ -10,12 +10,9 @@ class NagiosController < InitrController
     @nagios_servers = Initr::NagiosServer.all.collect {|ns|
       ns if User.current.projects.include? ns.node.project or User.current.admin?
     }.compact
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes(params[:nagios])
         flash[:notice] = 'Configuration successfully updated.'
-        redirect_to :action => 'configure'
-      else
-        render :action => 'configure'
       end
     end
   end

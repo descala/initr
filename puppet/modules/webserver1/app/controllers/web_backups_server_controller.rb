@@ -6,12 +6,9 @@ class WebBackupsServerController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes params[:web_backups_server]
-          flash[:notice] = 'Configuration saved'
-          redirect_to :controller => 'klass', :action => 'list', :id => @node
-      else
-        render :action => 'configure'
+        flash[:notice] = 'Configuration saved'
       end
     end
   end

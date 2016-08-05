@@ -1,7 +1,7 @@
 class Initr::Fail2ban < Initr::Klass
 
   # simple getters and setters for serialized attributes
-  self.accessors_for(%w(mailto custom_jails))
+  self.accessors_for(%w(mailto custom_jails jails))
 
   # set some defaults
   after_initialize {
@@ -30,11 +30,6 @@ class Initr::Fail2ban < Initr::Klass
   def print_parameters
     return super if jails.size == 0
     "Active jails: #{jails.join(', ')}"
-  end
-
-  # getter for serialized attribute
-  def jails
-    config["jails"]
   end
 
   # custom setter for serialized attribute

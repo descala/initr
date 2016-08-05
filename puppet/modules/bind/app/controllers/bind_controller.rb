@@ -12,16 +12,14 @@ class BindController < InitrController
       params["bind"] ||= {}
       if @klass.update_attributes(params["bind"])
         flash[:notice]='Configuration saved'
-        redirect_to :action=>'configure'
-      else
-        render :action=>'configure'
       end
     else
       respond_to do |format|
         format.html
         format.csv do
-          export = FCSV.generate(:col_sep => l(:general_csv_separator)) do |csv|
-            csv << ["Name","Notes","Invoice Type","Client","Domain owner","Expire date","Active DNS"]
+          export = CSV.generate(
+            :headers => ["Name","Notes","Invoice Type","Client","Domain owner","Expire date","Active DNS"],
+            :write_headers => true ) do |csv|
             @klass.bind_zones.sort.each do |z|
               csv << [
                 z.domain,

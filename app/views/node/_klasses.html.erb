@@ -87,8 +87,8 @@
           templ.klasses.sort.collect { |k|
             link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
           }.join(", ").html_safe
-        rescue ActiveRecord::SubclassNotFound => e
-          link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
+        rescue ActiveRecord::SubclassNotFound
+          link_to("SubclassNotFound", "#") 
         end
       -%>
       </td>

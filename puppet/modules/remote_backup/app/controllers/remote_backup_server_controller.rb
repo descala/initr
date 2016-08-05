@@ -6,12 +6,9 @@ class RemoteBackupServerController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes params[:remote_backup_server]
         flash[:notice] = 'Configuration saved'
-        redirect_to :controller => 'klass', :action => 'list', :id => @node
-      else
-        render :action => 'configure'
       end
     end
   end
