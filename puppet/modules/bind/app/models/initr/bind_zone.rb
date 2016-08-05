@@ -4,8 +4,8 @@ class Initr::BindZone < ActiveRecord::Base
   validates_presence_of :domain, :ttl
   validates_uniqueness_of :domain, :scope => 'bind_id'
   validates_numericality_of :ttl
-  validates_format_of :domain, :with => /^[\w\d]+([\-\.]{1}[\w\d]+)*\.[a-z]{2,20}$/i
-  validates_format_of :domain, :with => /^[^_]+$/i
+  validates_format_of :domain, :with => /\A\w+([\-\.]{1}\w+)*\.[a-z]{2,20}\z/i
+  validates_format_of :domain, :with => /\A[^_]+\z/i
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
   before_validation :increment_zone_serial

@@ -6,8 +6,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   belongs_to :web_backups_server, :class_name => "Initr::WebBackupsServer"
   validates_uniqueness_of :name, :scope => :webserver1_id
   validates_uniqueness_of :name, :scope => :web_backups_server_id, :unless => Proc.new {|domain| domain.web_backups_server_id.nil? }
-  validates_format_of :name, :with => /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
-  validates_format_of :dbname, :with => /^[a-zA-Z0-9\$_]+$/, :allow_nil => true, :allow_blank => true
+  validates_format_of :name, :with => /\A[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/i
+  validates_format_of :dbname, :with => /\A[a-zA-Z0-9\$_]+\z/, :allow_nil => true, :allow_blank => true
   validates_uniqueness_of :dbname, :scope => :webserver1_id, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_uniqueness_of :user_ftp,     :scope => :webserver1_id
   validates_uniqueness_of :user_awstats, :scope => :webserver1_id
