@@ -8,6 +8,7 @@ class Initr::NagiosServer < Initr::Klass
   validate :admin_contactgroup_belongs_to_user
   before_validation :set_password
   attr_accessor :password, :password_confirmation
+  attr_accessible  :password, :password_confirmation
 
   self.accessors_for(["address","nagiosadmin_password","nsca_decryption_password","admin_contactgroup"])
 

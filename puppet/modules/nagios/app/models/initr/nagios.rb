@@ -6,6 +6,8 @@ class Initr::Nagios < Initr::Klass
 
   after_create :create_all_default_checks
 
+  attr_accessible :klass_id
+
   def puppetname
     "nagios::nsca_node"
   end
