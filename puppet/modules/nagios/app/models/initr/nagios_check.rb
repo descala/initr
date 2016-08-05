@@ -5,6 +5,8 @@ class Initr::NagiosCheck < ActiveRecord::Base
   validates_presence_of :name, :command
   after_initialize :set_default_values
 
+  attr_protected :created_at, :updated_at
+
   def validate
     # name can't contain single quotes
     errors.add(:name, "can't have single quotes") if name =~ /'/
