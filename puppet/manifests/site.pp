@@ -119,7 +119,7 @@ $httpd_confdir = $operatingsystem ? {
   Debian => $lsbmajdistrelease ? {
     8       => "/etc/apache2/conf-available",
     default => "/etc/apache2/conf.d"
-  }
+  },
   default => "/etc/httpd/conf.d"
 }
 $httpd_sitedir = $operatingsystem ? {
