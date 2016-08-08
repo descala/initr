@@ -9,6 +9,8 @@ class Initr::CustomKlass < Initr::Klass
 
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :node_id
+
+  attr_accessible :custom_klass_confs_attributes
   
   # Allow more than one CutomKlass per node
   # see validates_uniqueness_of on Klass

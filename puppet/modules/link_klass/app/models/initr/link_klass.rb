@@ -3,6 +3,8 @@ class Initr::LinkKlass < Initr::Klass
   validates_presence_of :copied_klass_id
   validate :copied_klass_unique_for_node
 
+  attr_accessible :copied_klass_id
+
   def copied_klass_unique_for_node
     if node
       node.klasses.where("type='LinkKlass'").each do |ck|
@@ -57,7 +59,7 @@ class Initr::LinkKlass < Initr::Klass
 
   def copied_klass
     Initr::Klass.find copied_klass_id
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     nil
   end
 
