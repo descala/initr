@@ -117,7 +117,7 @@ class BindController < InitrController
     user_projects = Project.all if User.current.login == "admin"
     Initr::Bind.all.collect { |bind|
       next if @klass.masters.include?(bind) or bind == @klass
-      bind if user_projects.include? bind.node.project
+      bind if bind.node and user_projects.include?(bind.node.project)
     }.compact
   end
 
