@@ -17,6 +17,7 @@ class webserver1 {
   case $operatingsystem {
     "Debian": {
       case $lsbmajdistrelease {
+        "8": { include webserver1::awstats::debian::jessie }
         "7": { include webserver1::awstats::debian::wheezy }
         default: { include webserver1::awstats::debian }
       }
@@ -94,27 +95,43 @@ class webserver1 {
 
   if $manage_default_domain == "1" {
     if $operatingsystem == "Debian" {
-      common::apache::ensite { "default": }
+      if $lsbmajdistrelease == '8' {
+        common::apache::ensite { "000-default.conf": }
+      } else {
+        common::apache::ensite { "default": }
+      }
       common::apache::enmod { "rewrite.load": }
-    }
-    else
-    {
+    } else {
       file {
         "$httpd_sitedir/000-default.conf":
           ensure => "$httpd_sitedir/default",
       }
     }
   
-    file {
-      "$httpd_sitedir/default":
-        content => inline_template('# Puppet managed
+    if $operatingsystem == "Debian" and $lsbmajdistrelease == '8' {
+      file {
+        "$httpd_sitedir/000-default.conf":
+          content => inline_template('# Puppet managed
 <VirtualHost *:80>
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
 RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
-        require => Package[$httpd],
-        notify => Exec["apache reload"];
+          require => Package[$httpd],
+          notify => Exec["apache reload"];
+      }
+    } else {
+      file {
+        "$httpd_sitedir/default":
+          content => inline_template('# Puppet managed
+<VirtualHost *:80>
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
+RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
+</VirtualHost>'),
+          require => Package[$httpd],
+          notify => Exec["apache reload"];
+      }
     }
   }
 
