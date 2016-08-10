@@ -65,7 +65,7 @@ class Initr::NodeInstance < Initr::Node
 
   def puppet_fact(factname, default=nil)
     begin
-      if fv = puppet_host.fact_values.where("fact_names.name = '#{factname}'").includes(:fact_name)
+      if fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
         return fv.first.value
       else
         return nil
