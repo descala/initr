@@ -16,6 +16,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_presence_of :name, :user_ftp, :user_awstats, :password_ftp, :password_awstats
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_length_of :user_mysql, :in => 1..16, :allow_nil => true, :allow_blank => true
+  validates_inclusion_of :allow_override, in: %w(All None)
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
 
@@ -25,7 +26,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     self.awstats_www = false if self.awstats_www.nil?
   }
 
-  attr_accessible :name, :add_www, :force_www, :awstats_www, :railsapp, :rails_root, :rails_spawn_method, :web_backups_server_id, :use_suphp, :user_ftp, :password_ftp, :shell, :user_awstats, :password_awstats, :user_mysql, :dbname, :password_db
+  attr_accessible :name, :add_www, :force_www, :awstats_www, :railsapp, :rails_root, :rails_spawn_method, :web_backups_server_id, :use_suphp, :user_ftp, :password_ftp, :shell, :user_awstats, :password_awstats, :user_mysql, :dbname, :password_db, :allow_override
 
   def parameters
     parameters = { "name" => name,

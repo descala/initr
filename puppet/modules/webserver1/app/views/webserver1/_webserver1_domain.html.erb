@@ -9,6 +9,7 @@
   <p><%= form.select(:rails_spawn_method, ["smart","smart-lv2","conservative"], :include_blank=>true) %> <%= help :help_rails_spawn_method %></p>
   <p><%= form.select(:web_backups_server_id, @web_backups_servers, :include_blank=>true) %> <%= help :help_web_backups_server_id %></p>
   <p><%= form.check_box(:use_suphp) %> <%= help :help_use_suphp %></p>
+  <p><%= form.select(:allow_override, ['None', 'All'], :include_blank=>false) %> <%= help :help_allow_override %></p>
 </fieldset>
 <fieldset>
   <legend>Authentication</legend>

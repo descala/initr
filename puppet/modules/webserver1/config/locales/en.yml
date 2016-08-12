@@ -35,3 +35,5 @@ en:
   field_allow_anonymous_ftp: "Allow anonymous FTP access"
   field_manage_default_domain: "Redirect"
   help_manage_default_domain: "Redirect requests with no virtualhost to default domain"
+  field_allow_override: "AllowOverride"
+  help_allow_override: "AllowOverride for htdocs dir"

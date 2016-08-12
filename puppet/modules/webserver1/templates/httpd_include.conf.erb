@@ -31,7 +31,7 @@
 
   <Directory /var/www/<%=name%>/htdocs>
     Options FollowSymLinks
-    AllowOverride None
+    AllowOverride <%=allow_override%>
     Order allow,deny
     Allow from all
 <% if use_suphp == 'true' -%>
