@@ -1,5 +1,8 @@
 class Initr::PackageManager < Initr::Klass
 
+  attr_accessible :security_updates, :packages_from_squeeze,
+    :packages_from_wheezy, :packages_from_jessie, :packages_from_stretch
+
   self.accessors_for(["security_updates"])
 
   after_initialize {
