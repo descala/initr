@@ -4,7 +4,7 @@
 ; masterzone.erb template
 
 $TTL <%= ttl %>
-@   IN  SOA <%= scope.lookupvar('bind::nameservers').first %>.  webmaster.<%= name %>. (
+@   IN  SOA <%= @nameservers.first %>.  webmaster.<%= name %>. (
             <%= serial %>  ; serial automatically incremented
             3600        ; refresh, seconds
             600         ; retry, seconds
@@ -12,7 +12,7 @@ $TTL <%= ttl %>
             300 )       ; minimum, seconds
                         ; This value was used to serve as a default TTL for records without a given TTL value
                         ; and now is used for negative caching (indicates how long a resolver may cache the negative answer)
-<% scope.lookupvar('bind::nameservers').each do |ns| -%>
+<% @nameservers.each do |ns| -%>
     IN  NS  <%= ns %>.
 <% end -%>
 <%= zone %>
