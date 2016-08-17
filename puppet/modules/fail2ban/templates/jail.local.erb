@@ -10,7 +10,7 @@ maxretry = 3
 backend = auto
 
 [pop3-iptables]
-enabled  = <%= jails.include? "pop3" %>
+enabled  = <%= @jails.include? "pop3" %>
 <% if operatingsystem == "Debian" -%>
 filter   = dovecot
 <% else -%>
@@ -24,7 +24,7 @@ logpath  = <%= maillog %>
 maxretry = 5
 
 [ssh-iptables]
-enabled  = <%= jails.include? "ssh" %>
+enabled  = <%= @jails.include? "ssh" %>
 filter   = sshd
 action   = iptables[name=SSH, port=ssh, protocol=tcp]
 <% unless mailto.blank? -%>
@@ -38,7 +38,7 @@ logpath  = /var/log/secure
 maxretry = 5
 
 [vsftpd-iptables]
-enabled  = <%= jails.include? "vsftpd" %>
+enabled  = <%= @jails.include? "vsftpd" %>
 filter   = vsftpd
 action   = iptables[name=VSFTPD, port=ftp, protocol=tcp]
 <% unless mailto.blank? -%>
@@ -48,8 +48,8 @@ logpath  = /var/log/vsftpd.log
 maxretry = 5
 bantime  = 1800
 
-<% if custom_jails and custom_jails != "" -%>
+<% if @custom_jails and @custom_jails != "" -%>
 # Additional configuration, configured from initr
 
-<%= custom_jails %>
+<%= @custom_jails %>
 <% end -%>
