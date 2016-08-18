@@ -35,6 +35,10 @@
     Order allow,deny
     Allow from all
 <% if use_suphp == 'true' -%>
+<% if operatingsystem == 'Debian' and lsbmajdistrelease == '8' -%>
+    # use mpm_itk
+    AssignUserId <%=user_ftp%> <%=user_ftp%>
+<% else -%>
     # use suPHP instead mod_php
 <% if operatingsystem == "Debian" or operatingsystem == "Ubuntu" -%>
     php_admin_value engine Off
@@ -45,6 +49,7 @@
     suPHP_Engine on
     AddHandler x-httpd-php .php .php3 .php4 .php5
     suPHP_AddHandler x-httpd-php
+<% end -%>
 <% end -%>
 <% end -%>
   </Directory>
