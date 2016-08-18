@@ -10,8 +10,12 @@ class common::suphp {
   }
   # Debian provided suphp.conf works
   if ( $operatingsystem == 'Debian' ) or ( $operatingsystem == 'Ubuntu' ) {
+    if ($operatingsystem == 'Debian' and $lsbmajdistrelease == '8') {
+    common::apache::enmod { 'mpm_itk.load': }
+    } else {
     common::apache::enmod { "suphp.load": }
     common::apache::enmod { "suphp.conf": }
+    }
   } else {
     file {
       "/etc/suphp.conf":
