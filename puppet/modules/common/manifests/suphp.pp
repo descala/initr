@@ -3,7 +3,7 @@ class common::suphp {
     'Debian' => $::lsbmajdistrelease ? {
       '8'     => 'libapache2-mpm-itk',
       default => 'libapache2-mod-suphp'
-    }
+    },
     'Ubuntu' => 'libapache2-mod-suphp',
     default  => 'mod_suphp'
   }
