@@ -5,10 +5,10 @@ define common::mysql::database($ensure, $owner, $passwd) {
 
   if $::operatingsystem == 'Debian' and $::lsbmajdistrelease == '8' {
     $cmd='/usr/bin/mysql --defaults-file=/root/.my.cnf'
-    $cmd='/usr/bin/mysqlshow --defaults-file=/root/.my.cnf'
+    $cmd_show='/usr/bin/mysqlshow --defaults-file=/root/.my.cnf'
   } else {
     $cmd='/usr/bin/mysql'
-    $cmd='/usr/bin/mysqlshow'
+    $cmd_show='/usr/bin/mysqlshow'
   }
 
   case $ensure {
