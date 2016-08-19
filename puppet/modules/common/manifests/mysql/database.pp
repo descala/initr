@@ -4,9 +4,11 @@ define common::mysql::database($ensure, $owner, $passwd) {
   $priv = "GRANT ALL PRIVILEGES ON ${name}.* TO '${owner}'@localhost IDENTIFIED BY '${passwd}';"
 
   if $::operatingsystem == 'Debian' and $::lsbmajdistrelease == '8' {
-    $cmd='mysql --defaults-file=/root/.my.cnf'
+    $cmd='/usr/bin/mysql --defaults-file=/root/.my.cnf'
+    $cmd='/usr/bin/mysqlshow --defaults-file=/root/.my.cnf'
   } else {
-    $cmd='mysql'
+    $cmd='/usr/bin/mysql'
+    $cmd='/usr/bin/mysqlshow'
   }
 
   case $ensure {
@@ -15,12 +17,12 @@ define common::mysql::database($ensure, $owner, $passwd) {
         "Create MySQL DB: ${name}":
           command => "${cmd} -e \"${dbcr}\"",
           user    => root,
-          unless  => "/usr/bin/mysql ${name} -e \";\"",
+          unless  => "${cmd} ${name} -e \";\"",
           require => Service[$::mysqld];
         "MySQL Privileges for ${owner} to DB ${name}":
           command => "${cmd} -e \"${priv}\"",
           user    => root,
-          unless  => "/usr/bin/mysqlshow --user=${owner} --password=${passwd} ${name}",
+          unless  => "${cmd_show} --user=${owner} --password=${passwd} ${name}",
           require => Exec["Create MySQL DB: ${name}"];
       }
     }
@@ -28,7 +30,7 @@ define common::mysql::database($ensure, $owner, $passwd) {
       exec { "Drop MySQL DB: ${name}":
         command => "${cmd} -e \"DROP DATABASE ${name};\"",
         user    => root,
-        onlyif  => "/usr/bin/mysqlshow ${name}",
+        onlyif  => "${cmd_show} ${name}",
       }
     }
     default: {
