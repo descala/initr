@@ -1,5 +1,12 @@
 class nagios::server::debian inherits nagios::server::common {
 
+  $nagios_init_script = $::operatingsystem ? {
+    'Debian'  => $::lsbmajdistrelease ? {
+      '8'     => 'puppet:///modules/nagios/nagios_init_script_debian8',
+      default => 'puppet:///modules/nagios/nagios_init_script_debian'
+    },
+    default => 'puppet:///modules/nagios/nagios_init_script_debian'
+  }
   package {
     "nagios3":
       ensure => installed,
@@ -61,11 +68,11 @@ class nagios::server::debian inherits nagios::server::common {
     "/etc/apache2/conf.d/nagios3.conf":
       source => "puppet:///modules/nagios/apache.conf";
     # Replace init.d script to check config before restart nagios daemon
-    "/etc/init.d/nagios3":
-      owner => root,
-      group => root,
-      mode => 755,
-      source => "puppet:///modules/nagios/nagios_init_script_debian";
+    '/etc/init.d/nagios3':
+      owner  => root,
+      group  => root,
+      mode   => '0755',
+      source => $nagios_init_script;
   }
   cron {
     # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=479330
