@@ -23,8 +23,6 @@ class common::munin::server {
       group => $httpd_user,
       mode => 660,
       require => Package["munin"];
-    "/etc/logrotate.d/munin":
-      source => "puppet:///modules/common/munin/logrotate";
     "/usr/share/munin/munin-html":
       content => "#!/usr/bin/perl", # avoid html generation http://munin-monitoring.org/ticket/949
       mode => 755,
