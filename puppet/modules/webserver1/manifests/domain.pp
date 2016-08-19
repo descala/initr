@@ -23,15 +23,12 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
     include common::suphp
   }
 
-  if $operatingsystem == 'Debian' and $lsbmajdistrelease == '8' {
-    #TODO
-  } else {
-    webserver1::awstats::domain { $name:
-      user        => $user_awstats,
-      pass        => $password_awstats,
-      awstats_www => $awstats_www
-    }
+  webserver1::awstats::domain { $name:
+    user        => $user_awstats,
+    pass        => $password_awstats,
+    awstats_www => $awstats_www
   }
+
   #TODO: create a config file to avoid having to pass too many parameters to backup.rb
   webserver1::domain::remotebackup { $name:
     web_backups_server => $web_backups_server,

@@ -4,7 +4,7 @@ class webserver1::awstats::debian inherits webserver1::awstats {
       mode => 755,
       content => template("webserver1/awstats_cron.erb"),
       notify => Service[$cron_service];
-    "/etc/apache2/conf.d/awstats.conf":
+    "${::httpd_confdir}/awstats.conf":
       mode => 644,
       owner => $httpd_user,
       group => $httpd_user,
