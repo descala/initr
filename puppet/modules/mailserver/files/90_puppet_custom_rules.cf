@@ -1,6 +1,7 @@
 body     __CORREOS_01 /descargar.*informaci/i
 header   __CORREOS_02 Subject =~ /entregado/
-meta     CORREOS_VIRUS (__CORREOS_01 && __CORREOS_02)
+header   __CORREOS_03 Subject =~ /certificada cd/i
+meta     CORREOS_VIRUS (__CORREOS_01 && ( __CORREOS_02 || __CORREOS_03))
 score    CORREOS_VIRUS 9
 describe CORREOS_VIRUS Virus correos link descargar informacion sobre su envio
 
