@@ -305,8 +305,12 @@ $perl_net_xwhois = $operatingsystem ? {
   default => "perl-Net-XWhois"
 }
 $ruby_shadow = $operatingsystem ? {
-  /Debian|Ubuntu/ => "libshadow-ruby1.8",
-  default => "ruby-shadow"
+  Ubuntu => 'libshadow-ruby1.8',
+  Debian => $lsbmajdistrelease ? {
+    '6'     => 'libshadow-ruby1.8',
+    default => 'ruby-shadow'
+  },
+  default => 'ruby-shadow'
 }
 $php_gd = $operatingsystem ? {
   /Debian|Ubuntu/ => "php5-gd",
