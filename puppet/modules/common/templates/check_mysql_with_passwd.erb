@@ -1,11 +1,10 @@
 #!/bin/bash
 
+user=root
+password=`grep -s password /root/.my.cnf | cut -d "=" -f2`
 
-if [ -f /root/.my.cnf ]; then
-        user=root
-        password=`tail -1 /root/.my.cnf | cut -d "=" -f2`
-        <%=nagios_plugins_dir%>/check_mysql -u $user -p $password
+if [ -n "$password" ] ; then
+  <%=nagios_plugins_dir%>/check_mysql -u $user -p $password
 else
-        <%=nagios_plugins_dir%>/check_mysql
+  <%=nagios_plugins_dir%>/check_mysql
 fi
-

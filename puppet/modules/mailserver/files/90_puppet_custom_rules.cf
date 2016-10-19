@@ -1,9 +1,14 @@
 body     __CORREOS_01 /descargar.*informaci/i
 header   __CORREOS_02 Subject =~ /entregado/
-meta     CORREOS_VIRUS (__CORREOS_01 && __CORREOS_02)
+header   __CORREOS_03 Subject =~ /certificada cd/i
+meta     CORREOS_VIRUS (__CORREOS_01 && ( __CORREOS_02 || __CORREOS_03))
 score    CORREOS_VIRUS 9
 describe CORREOS_VIRUS Virus correos link descargar informacion sobre su envio
 
 body     ENDESA_VIRUS /Endesa.*Notificat/i
 score    ENDESA_VIRUS 9
 describe ENDESA_VIRUS Virus endesa
+
+header   PHP_EVAL X-PHP-Originating-Script =~ /eval\(\)\'d code/i
+describe PHP_EVAL Eval()'ed PHP code as source
+score    PHP_EVAL 8.0
