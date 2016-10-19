@@ -33,6 +33,7 @@ es:
   help_web_backups_server_id: "Necesita un servidor con la classe web_backups_server"
   help_use_suphp: "Ejecuta los PHP como usuario propietario, util para entornos multiusuario"
   field_allow_anonymous_ftp: "Permite el acceso anónimo al FTP"
+  field_allow_writeable_chroot: "Permite chroot con escritura"
   field_manage_default_domain: "Redirigir"
   help_manage_default_domain: "Redirigir peticiones sin virtualhost al dominio por defecto"
   field_allow_override: "AllowOverride"

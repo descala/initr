@@ -33,6 +33,7 @@ ca:
   help_web_backups_server_id: "Necessita un servidor amb la classe web_backups_server"
   help_use_suphp: "Executa els PHP amb l'usuari que n'és propietari, útil per a entorns multiusuari"
   field_allow_anonymous_ftp: "Permet l'accés anònim a l'FTP"
+  field_allow_writeable_chroot: "Permet chroot amb escriptura"
   field_manage_default_domain: "Redirigir"
   help_manage_default_domain: "Redirigir peticions sense virtualhost al domini per defecte"
   field_allow_override: "AllowOverride"

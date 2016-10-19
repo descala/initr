@@ -70,3 +70,6 @@ userlist_file=/etc/ftpusers
 reverse_lookup_enable=NO
 #
 <% end -%>
+<% if allow_writeable_chroot == '1' -%>
+allow_writeable_chroot=YES
+<% end -%>
