@@ -136,7 +136,11 @@ class Initr::NagiosServer < Initr::Klass
       next unless p.active?
       members = nagios_hosts_for(p).collect {|n| n.fqdn }.join(', ')
       next if members.blank?
-      groups[p.identifier] = { 'nagiosalias' => p.name ,'members' => members }
+      groups[p.identifier] = {
+        # https://tickets.puppetlabs.com/browse/PUP-3368
+        'nagiosalias' => p.name.to_s.gsub(/\P{ASCII}/, ''),
+        'members' => members
+      }
     end
     groups
   end
