@@ -60,7 +60,11 @@ class Initr::NagiosServer < Initr::Klass
       next unless project.nodes.size > 0
       allowed_roles.each do |role|
         project.users.collect do |user|
-          contacts[user.login] = { 'email' => user.mail, 'nagiosalias' => user.name } if user.roles_for_project(project).include?(role) and user.active?
+          contacts[user.login] = {
+            'email' => user.mail,
+            # https://tickets.puppetlabs.com/browse/PUP-3368
+            'nagiosalias' => user.name.to_s.gsub(/\P{ASCII}/, '')
+          } if user.roles_for_project(project).include?(role) and user.active?
         end
       end
     end
