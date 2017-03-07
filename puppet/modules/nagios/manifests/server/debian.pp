@@ -7,6 +7,12 @@ class nagios::server::debian inherits nagios::server::common {
     },
     default => 'puppet:///modules/nagios/nagios_init_script_debian'
   }
+  if $::lsbmajdistrelease == '7' {
+    file {
+      '/etc/apache2/conf.d/nagios3.conf':
+        source => 'puppet:///modules/nagios/apache.conf';
+    }
+  }
   package {
     "nagios3":
       ensure => installed,
@@ -65,8 +71,6 @@ class nagios::server::debian inherits nagios::server::common {
       content => template("nagios/nsca.cfg.erb"),
       require => [Package["nsca"], Package["nagios"]],
       notify => Service["nsca"];
-    "/etc/apache2/conf.d/nagios3.conf":
-      source => "puppet:///modules/nagios/apache.conf";
     # Replace init.d script to check config before restart nagios daemon
     '/etc/init.d/nagios3':
       owner  => root,
