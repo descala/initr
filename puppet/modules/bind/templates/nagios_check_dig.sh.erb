@@ -4,8 +4,8 @@
 ##################
 
 <% @bind_masterzones.each_key do |domain| -%>
-/usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_<%=domain%>' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
+/usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_master_zones' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1 -v' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
 <% end -%>
 <% @bind_slave_zones.values.flatten.each do |domain| -%>
-/usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_<%=domain%>' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
+/usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_slave_zones' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1 -v' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
 <% end -%>
