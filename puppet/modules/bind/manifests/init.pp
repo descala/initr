@@ -61,14 +61,10 @@ class bind($bind_masterzones={},$nameservers=[],
       source  => 'puppet:///modules/bind/empty',
       mode    => '0770';
     "$var_dir/puppet_slave_zones":
+      ensure  => directory,
       owner   => $binduser,
       group   => $binduser,
       require => [File[$var_dir],Package[$bind]],
-      purge   => true,
-      force   => true,
-      recurse => true,
-      ignore  => '.gitignore',
-      source  => 'puppet:///modules/bind/empty',
       mode    => '0770';
     "$var_dir/puppet_zones.conf":
       owner   => root,
