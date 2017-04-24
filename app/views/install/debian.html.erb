@@ -23,4 +23,4 @@ START=yes
 # Startup options
 DAEMON_OPTS=""
 FI
-apt-get update -qq; apt-get install -qq -o DPkg::Options::=--force-confold puppet lsb-release && echo "OK! Look for puppetd logs in syslog (tail -f /var/log/syslog)."
+apt-get update -qq; apt-get install -qq -o DPkg::Options::=--force-confold puppet lsb-release libssl-dev && echo "OK! Look for puppetd logs in syslog (tail -f /var/log/syslog)."
