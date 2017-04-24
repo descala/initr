@@ -41,6 +41,9 @@ class Initr::Webserver1Domain < ActiveRecord::Base
                    "force_www" => force_www.to_s,
                    "awstats_www" => awstats_www.to_s,
                    "use_suphp" => use_suphp.to_s }
+    unless allow_override.blank?
+      parameters["allow_override"] = allow_override
+    end
     if web_backups_server
       parameters["web_backups_server"] = web_backups_server.address
       parameters["web_backups_server_port"] = web_backups_server.port
