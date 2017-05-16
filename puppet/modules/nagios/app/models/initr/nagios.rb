@@ -61,7 +61,7 @@ class Initr::Nagios < Initr::Klass
   def default_nagios_checks
     dc = {}
     dc["load"]   = "check_load -w 5,4,2 -c 8,6,4"
-    dc["df"]     = "check_disk -w 10\\% -c 5\\% -p / -p /"
+    dc["df"]     = "check_disk -W 10\% -K 5\% -w 10\% -c 5\% -p /"
     dc["ssh"]    = "check_ssh -H localhost"
     dc["swap"]   = 'check_swap -w 25\% -c 5\%'
     dc
