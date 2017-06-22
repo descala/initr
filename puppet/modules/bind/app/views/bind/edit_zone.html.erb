@@ -3,7 +3,7 @@
   <p><%= error_messages_for 'bind_zone' %></p>
 
   <p>
-  <%= link_to @bind_zone.invoice_line, invoice_path(@bind_zone.invoice_line.invoice) if @bind_zone.invoice_line %>
+  <%= link_to @bind_zone.invoice_line, invoice_path(@bind_zone.invoice_line.invoice) if Initr.haltr? and @bind_zone.invoice_line %>
   </p>
 
   <%= render :partial => 'bind_zone', :locals => {:f => f} %>
