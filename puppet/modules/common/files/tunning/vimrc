@@ -35,6 +35,13 @@ set hlsearch
 " Canvia al directori del fitxer obert
 set autochdir
 
+" Cerca case insensitive
+set ignorecase
+set smartcase
+
+" Canvia al directori en obrir un fitxer
+set autochdir
+
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
@@ -66,5 +73,3 @@ else
   set autoindent		" always set autoindenting on
 
 endif " has("autocmd")
-
-
