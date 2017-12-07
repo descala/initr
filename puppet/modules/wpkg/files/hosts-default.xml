@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wpkg>
-  <!-- This one will match all hosts that were not matched before -->
-  <host name=".+" profile-id="default" />
-</wpkg>

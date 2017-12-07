@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<packages>
-  <package id="openoffice3" name="OpenOffice.org 3.2" revision="321" reboot="false" priority="0">
-    <check type="file" condition="versionequalto" path="%PROGRAMFILES%\OpenOffice.org 3\program\soffice.exe" value="3.2.9498.500" />
-    <install cmd='msiexec /qn /i "%SOFTWARE%\openoffice\openofficeorg32.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1 ADDLOCAL=ALL REMOVE=gm_o_Quickstart,gm_o_Onlineupdate' />
-    <upgrade cmd='msiexec /qn /i "%SOFTWARE%\openoffice\openofficeorg32.msi" ALLUSERS=1 REGISTER_ALL_MSO_TYPES=1 ADDLOCAL=ALL REMOVE=gm_o_Quickstart,gm_o_Onlineupdate' />
-    <remove  cmd='msiexec /qn /x {DFFC0648-BC4B-47D1-93D2-6CA6B9457641}' /> 
-  </package>
-</packages>
