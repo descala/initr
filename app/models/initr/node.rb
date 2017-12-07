@@ -67,6 +67,7 @@ class Initr::Node < ActiveRecord::Base
     result["parameters"] = parameters.except('updated_at','created_at')
     result["parameters"]["classes"] = classes.keys.sort
     result["classes"] = classes
+    result["environment"] = "development"
     @parameters = result
     result
   end

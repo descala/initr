@@ -21,7 +21,7 @@ class base::puppet {
     "/usr/local/sbin/puppet-restart.sh":
       owner => root,
       group => root,
-      mode => 744,
+      mode => "0744",
       before => Service["puppet"],
       source => ["puppet:///specific/puppet-restart.sh","puppet:///modules/base/puppet/puppet-restart.sh"];
   }

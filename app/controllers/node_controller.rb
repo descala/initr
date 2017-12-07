@@ -147,7 +147,7 @@ class NodeController < InitrController
   end
   
   def get_host_definition
-    if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
+    if !Rails.env.production? or request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       node = Initr::NodeInstance.find_by_name(params[:hostname])
       if node
         render :text => YAML.dump(node.parameters)
