@@ -8,7 +8,7 @@ module Initr
       # Plugin config
       Setting.plugin_initr = {'puppetmaster'=>'puppet', 'puppetmaster_ip'=>'127.0.0.1','puppetmaster_port'=>'8140'}
 
-      modules = [:initr, :base, :bind, :common, :custom_klasses, :fail2ban, :link_klass, :nagios, :package_manager, :remote_backup, :webserver1, :wpkg]
+      modules = [:initr, :base, :bind, :common, :custom_klasses, :fail2ban, :link_klass, :nagios, :package_manager, :remote_backup, :webserver1]
 
       # Enables modules on project 'OnlineStore'
       modules.each do |m|
