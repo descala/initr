@@ -17,7 +17,7 @@ u_sure() {
 }
 
 case "$DOMAIN" in
-<% webserver_domains.each do |k,v| -%>
+<% @webserver_domains.each do |k,v| -%>
   <%= v['name'] %>)
     SERVER=<%= v['web_backups_server'] %>
     u_sure

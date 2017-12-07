@@ -88,7 +88,7 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
       ensure => directory,
       require => [File["/var/www/$name"],User[$user_ftp]];
     ["/var/www/$name/logs/access_log","/var/www/$name/logs/error_log"]:
-      mode => 644,
+      mode => "0644",
       owner => root,
       group => $httpd_user;
     "/var/www/$name/conf":

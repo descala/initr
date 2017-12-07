@@ -1,8 +1,8 @@
 ##################
 # Puppet Managed #
 ##################
-<% if operatingsystem == "Debian" -%>
-<% if lsbmajdistrelease == '8' -%>
+<% if @operatingsystem == "Debian" -%>
+<% if @lsbmajdistrelease == '8' -%>
 <Location /awstats>
   DirectoryIndex awstats.pl
   Options ExecCGI
@@ -63,7 +63,7 @@ ScriptAlias /awstats /usr/lib/cgi-bin
 RedirectMatch ^/awstats[/]*$ /awstats/awstats.pl
 <% end -%>
 <% else -%>
-<% if operatingsystem == "CentOS" and operatingsystemrelease == "5.3" -%>
+<% if @operatingsystem == "CentOS" and @operatingsystemrelease == "5.3" -%>
 Alias /awstats/icon/ /usr/share/awstats/wwwroot/icon/
 <% else -%>
 Alias /awstats/icon/ /var/lib/awstats/icon/

@@ -1,6 +1,6 @@
 class nagios::nsca {
   case $operatingsystem {
-    Debian: {
+    "Debian": {
       case $lsbdistcodename {
         dapper: { include "nagios::nsca::redhat" }
         default: { include "nagios::nsca::debian" }

@@ -16,7 +16,7 @@ class common::mysql {
 
   file {
     "/root/.my.cnf":
-      mode => 600;
+      mode => "0600";
   }
 
 }

@@ -1,7 +1,7 @@
 ##################
 # Puppet managed #
 ##################
-<% if operatingsystem == "Debian" or operatingsystem == "Ubuntu" -%>
+<% if @operatingsystem == "Debian" or @operatingsystem == "Ubuntu" -%>
 /var/www/*/logs/*log {
     weekly
     missingok

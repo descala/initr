@@ -16,11 +16,11 @@ class webserver1::awstats {
     "/etc/awstats/users":
       owner => root,
       group => $httpd_user,
-      mode => 640;
+      mode => "0640";
     ["/etc/awstats/awstats.conf","/etc/awstats/awstats.conf.local"]:
       ensure => absent;
     "/etc/awstats/awstats.model.conf":
-      mode => 644,
+      mode => "0644",
       require => Package["awstats"],
       source => "puppet:///modules/webserver1/awstats.model.conf";
   }

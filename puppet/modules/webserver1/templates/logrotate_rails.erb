@@ -1,18 +1,18 @@
 ##################
 # Puppet managed #
 ##################
-/var/www/<%=name%>/htdocs/<%=rails_root%>/../log/*.log {
+/var/www/<%=@name%>/htdocs/<%=@rails_root%>/../log/*.log {
     weekly
     missingok
     rotate 52
     compress
     delaycompress
     notifempty
-    create 660 <%=username%> <%=httpd_user%>
+    create 660 <%=@username%> <%=@httpd_user%>
     sharedscripts
     postrotate
-      if [ -d "/var/www/<%=name%>/htdocs/<%=rails_root%>/../tmp" ]; then
-        /usr/bin/touch /var/www/<%=name%>/htdocs/<%=rails_root%>/../tmp/restart.txt
+      if [ -d "/var/www/<%=@name%>/htdocs/<%=@rails_root%>/../tmp" ]; then
+        /usr/bin/touch /var/www/<%=@name%>/htdocs/<%=@rails_root%>/../tmp/restart.txt
       fi
     endscript
 }

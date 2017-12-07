@@ -16,7 +16,7 @@ class bind($bind_masterzones={},$nameservers=[],
 
   $osavn = "$lsbdistid$lsbdistrelease"
   case $operatingsystem {
-    Debian,Ubuntu: {
+    "Debian", "Ubuntu": {
       $etc_dir = '/etc/bind'
       $var_dir = $etc_dir
       include bind::debian

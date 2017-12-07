@@ -7,7 +7,7 @@
 listen=YES
 #
 # Allow anonymous FTP? (Beware - allowed by default if you comment this out).
-anonymous_enable=<%= allow_anonymous_ftp == "1" ? "YES" : "NO" %>
+anonymous_enable=<%= @allow_anonymous_ftp == "1" ? "YES" : "NO" %>
 #
 # Uncomment this to allow local users to log in.
 local_enable=YES
@@ -45,7 +45,7 @@ pam_service_name=vsftpd
 #
 userlist_enable=YES
 #
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 # Debian customization
 #
 # Some of vsftpd's settings don't fit the Debian filesystem layout by
@@ -63,13 +63,13 @@ rsa_cert_file=/etc/ssl/certs/vsftpd.pem
 #
 userlist_file=/etc/ftpusers
 #
-<% elsif operatingsystem == "CentOS" and lsbmajdistrelease == "4" -%>
+<% elsif @operatingsystem == "CentOS" and @lsbmajdistrelease == "4" -%>
 # centos 4 vsftpd has no reverse_lookup_enable option
 #reverse_lookup_enable=NO
 <% else -%>
 reverse_lookup_enable=NO
 #
 <% end -%>
-<% if allow_writeable_chroot == '1' -%>
+<% if @allow_writeable_chroot == '1' -%>
 allow_writeable_chroot=YES
 <% end -%>

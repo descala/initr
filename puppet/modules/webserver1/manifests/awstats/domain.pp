@@ -6,14 +6,14 @@ define webserver1::awstats::domain($user, $pass, $awstats_www) {
       file {
         "/etc/awstats/awstats.www.$name.conf":
           require => Package[awstats],
-          mode => 644,
+          mode => "0644",
           content => template("webserver1/awstats.domain.conf.erb");
       }
     } else {
       file {
         "/etc/awstats/awstats.$name.conf":
           require => Package[awstats],
-          mode => 644,
+          mode => "0644",
           content => template("webserver1/awstats.domain.conf.erb");
       }
     }

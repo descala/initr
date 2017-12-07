@@ -6,7 +6,7 @@ class common::mysql::nagios {
   file { "$nagios_plugins_dir/check_mysql_with_passwd":
     owner => root,
     group => root,
-    mode => 700,
+    mode => "0700",
     content => template("common/check_mysql_with_passwd.erb"),
   }
 

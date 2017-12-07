@@ -17,7 +17,7 @@ class remote_backup::server::munin {
   }
 
   case $operatingsystem {
-    Debian: {
+    "Debian": {
       file { "/etc/apache2/sites-available/remotebackup_reports":
         notify => Service[$httpd_service],
         content => template("remote_backup/reports_httpd.conf.erb");

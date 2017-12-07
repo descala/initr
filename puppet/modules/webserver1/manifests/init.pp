@@ -48,22 +48,22 @@ class webserver1 {
 
   file {
     "/usr/local/sbin/backup.rb":
-      mode => 700,
+      mode => "0700",
       source => ["puppet:///specific/webserver_backup.rb", "puppet:///modules/webserver1/backup.rb"];
     "/etc/logrotate.d/webserver1":
-      mode => 644,
+      mode => "0644",
       content => template("webserver1/logrotate.erb");
     "/usr/local/sbin/webserver_backup_all":
-      mode => 700,
+      mode => "0700",
       content => template("webserver1/backup_all.sh.erb");
     "/usr/local/sbin/webserver_restore":
-      mode => 700,
+      mode => "0700",
       content => template("webserver1/restore.sh.erb");
     "/usr/local/sbin/webserver_backup":
-      mode => 700,
+      mode => "0700",
       content => template("webserver1/backup.sh.erb");
     "/usr/local/sbin/webserver_restore_all":
-      mode => 700,
+      mode => "0700",
       content => template("webserver1/restore_all.sh.erb");
     '/var/www':
       ensure => directory,
@@ -84,7 +84,7 @@ class webserver1 {
   if $operatingsystem == "CentOS" {
     file {
       "$httpd_confdir/vhosts.conf":
-        mode => 644,
+        mode => "0644",
         source => "puppet:///modules/webserver1/vhosts.conf",
         notify => Exec["apache reload"];
     }
@@ -115,7 +115,7 @@ class webserver1 {
 <VirtualHost *:80>
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
-RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
+RewriteRule ^/(.*) <%=@webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
           require => Package[$httpd],
           notify => Exec["apache reload"];
@@ -127,7 +127,7 @@ RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
 <VirtualHost *:80>
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/server-status(.*) [NC]
-RewriteRule ^/(.*) <%=webserver_default_domain%>/$1 [L,R]
+RewriteRule ^/(.*) <%=@webserver_default_domain%>/$1 [L,R]
 </VirtualHost>'),
           require => Package[$httpd],
           notify => Exec["apache reload"];

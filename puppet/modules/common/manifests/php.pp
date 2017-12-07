@@ -1,6 +1,6 @@
 class common::php {
   $packages = $operatingsystem ? {
-    Debian => ["php5"],
+    "Debian" => ["php5"],
     default => ["php","php-eaccelerator"]
   }
   package {

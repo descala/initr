@@ -6,7 +6,7 @@ class common::postfix {
   include common::postfix::base
   
   file { '/etc/postfix/main.cf':
-    mode => 644,
+    mode => "0644",
     owner => root,
     group => root,
     source => [ "puppet:///specific/postfix-main.cf", "puppet:///modules/common/postfix-main-default.cf" ],

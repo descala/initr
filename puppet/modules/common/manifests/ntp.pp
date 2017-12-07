@@ -24,7 +24,7 @@ class common::ntp {
         }
       }
       file { "/etc/default/ntp":
-        mode => 644,
+        mode => "0644",
 		owner => root,
 		group => root,
 		source => [ "puppet:///specific/ntp", "puppet:///modules/common/ntp_debian" ],
@@ -35,7 +35,7 @@ class common::ntp {
     default:
     {
       file { "/etc/ntp/step-tickers":
-        mode => 644,
+        mode => "0644",
         owner => root,
         group => root,
         source => [ "puppet:///specific/ntp", "puppet:///modules/common/ntp" ],

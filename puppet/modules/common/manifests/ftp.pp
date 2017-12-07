@@ -5,7 +5,7 @@ class common::ftp {
   }
 
   $hasstatus = $operatingsystem ? {
-    Debian => false,
+    "Debian" => false,
     default => true
   }
   service { "vsftpd":

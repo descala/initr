@@ -34,13 +34,13 @@ class common::amavis::debian inherits common::amavis::common {
       ensure => absent;
     '/usr/local/sbin/amavis_update_local_domains.sh':
       source => 'puppet:///modules/common/amavis/amavis_update_local_domains.sh',
-      mode   => 0700;
+      mode   => "0700";
     '/etc/amavis/local_domains':
       ensure  => present,
       require => Package['amavisd-new'];
     '/etc/amavis/conf.d/40-local_domains':
       source  => 'puppet:///modules/common/amavis/40-local_domains',
-      mode    => 0644,
+      mode    => "0644",
       require => Package['amavisd-new'],
       notify  => Service['amavis'];
   }

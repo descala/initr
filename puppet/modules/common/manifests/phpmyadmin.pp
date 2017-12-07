@@ -1,7 +1,7 @@
 class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
 
   $phpmyadmindir = $operatingsystem ? {
-    Debian => "/etc/phpmyadmin",
+    "Debian" => "/etc/phpmyadmin",
     default => $lsbdistrelease ? {
       "5.4" => "/usr/share/phpMyAdmin",
       default => "/usr/share/phpmyadmin"
@@ -18,7 +18,7 @@ class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
   if $operatingsystem == "Debian" and ($lsbmajdistrelease == "7" or $lsbmajdistrelease == "8") {
     file {
       "$phpmyadmindir/config.inc.php":
-        mode    => 640,
+        mode    => "0640",
         group   => $httpd_user,
         require => [Package["phpmyadmin"],Package[$webserver1::httpd]],
         source  => "puppet:///modules/common/phpmyadmin/config.inc.php";
@@ -35,12 +35,12 @@ class common::phpmyadmin($accessible_phpmyadmin="0", $blowfish_secret="") {
   } else {
     file {
       "$phpmyadmindir/config.inc.php":
-        mode    => 640,
+        mode    => "0640",
         group   => $httpd_user,
         require => [Package["phpmyadmin"],Package[$webserver1::httpd]],
         content => template("common/phpmyadmin/config.inc.php.erb");
       "$httpd_confdir/phpmyadmin.conf":
-        mode => 640,
+        mode => "0640",
         group => $httpd_user,
         require => Package["phpmyadmin"],
         content => template("common/phpmyadmin/apache_phpmyadmin.conf.erb");

@@ -1,27 +1,27 @@
 --
-Dades del hosting <%= name %>
+Dades del hosting <%= @name %>
 --
 
-Servidor compartit <%=fqdn%> [<%=ipaddress%>] 
+Servidor compartit <%=@fqdn%> [<%=@ipaddress%>] 
 
-ACCES FTP <%= "i SSH" if shell!=$nologin %>
+ACCES FTP <%= "i SSH" if @shell!=$nologin %>
 
-Host: 	      <%= name %>
-Usuari:	      <%= user_ftp %>
+Host: 	      <%= @name %>
+Usuari:	      <%= @user_ftp %>
 Contrasenya:  ********
 
 ESTADISTIQUES DE VISITES
 
-URL:	      http://<%= "www." if awstats_www %><%= name %>/awstats
-Usuari:	      <%= user_awstats %>
+URL:	      http://<%= "www." if @awstats_www %><%= name %>/awstats
+Usuari:	      <%= @user_awstats %>
 Contrasenya:  ********
 
-<% if database != "" %>
+<% if @database != "" %>
 BASE DE DADES MySQL
 
 Host:              localhost
-Nom base de dades: <%= database %>
-Usuari:            <%= user_mysql %>
+Nom base de dades: <%= @database %>
+Usuari:            <%= @user_mysql %>
 Contrasenya:       ********
 
 <% end -%>
