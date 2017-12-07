@@ -26,7 +26,7 @@ class base::puppet {
       source => ["puppet:///specific/puppet-restart.sh","puppet:///modules/base/puppet/puppet-restart.sh"];
   }
   cron {
-    puppet_restart:
+    "puppet_restart":
       command => "/usr/local/sbin/puppet-restart.sh > /dev/null",
       before => Service["puppet"],
       user => root,

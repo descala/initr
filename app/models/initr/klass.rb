@@ -147,7 +147,7 @@ class Initr::Klass < ActiveRecord::Base
   end
 
   def installed?
-    self.node.puppet_fact('puppet_classes','').split.include? self.puppetname
+    self.node.fact('puppet_classes','').split.include? self.puppetname
   end
 
   def active?

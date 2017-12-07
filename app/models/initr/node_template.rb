@@ -7,9 +7,6 @@ class Initr::NodeTemplate < Initr::Node
     Initr::FakeProject.new
   end
 
-  def puppet_host
-  end
-
   def fqdn
     name
   end
@@ -18,7 +15,7 @@ class Initr::NodeTemplate < Initr::Node
     false
   end
 
-  def puppet_fact(factname, default=nil)
+  def fact(factname, default=nil)
     "&lt;#{factname}&gt;"
   end
 

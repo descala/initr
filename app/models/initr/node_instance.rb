@@ -40,12 +40,28 @@ class Initr::NodeInstance < Initr::Node
     "no_provider"
   end
 
-  # returns the host of the puppethost of this node
-  def puppet_host
-    return @host_object if @host_object
-    @host_object = Puppet::Rails::Host.find_by_name(name)
-    logger.debug("Puppet::Rails::Host for '#{name}' is a class='#{@host_object.class}'") if logger
-    return @host_object
+  # [
+  #  {"name"=>"kernel", "value"=>"Linux"},
+  #  {"name"=>"kernelrelease", "value"=>"4.9.0-4-amd64"}
+  # ]
+  def facts
+    return @facts if @facts
+    data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'}").data
+    hash = {}
+    data.each do |fact|
+      hash[fact['name']] = fact['value'] rescue nil
+    end
+    @facts = hash
+  end
+
+  def fact(factname, default=nil)
+    if facts.has_key? factname
+      facts[factname]
+    else
+      default
+    end
+  rescue
+    default
   end
 
   def puppet_host_destroy
@@ -54,24 +70,12 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def exported_resources
-    puppet_host.resources.where(exported: true).order("restype, title")
+    Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data
   end
 
   def destroy_exported_resources
     exported_resources.each do |r|
       r.destroy
-    end
-  end
-
-  def puppet_fact(factname, default=nil)
-    begin
-      if fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
-        return fv.first.value
-      else
-        return nil
-      end
-    rescue
-      default
     end
   end
 
@@ -84,36 +88,36 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def puppetversion
-    puppet_fact('puppetversion','?')
+    fact('puppetversion','?')
   end
 
   def os
-    f = puppet_fact('lsbdistid')
-    f = puppet_fact('operatingsystem') unless f
+    f = fact('lsbdistid')
+    f = fact('operatingsystem') unless f
     logger.debug("OS= '#{f}'") if logger
     return f
   end
 
   def os_release
-    f = puppet_fact('lsbdistrelease')
-    f = puppet_fact('operatingsystemrelease','?') unless f
+    f = fact('lsbdistrelease')
+    f = fact('operatingsystemrelease','?') unless f
     return f
   end
 
   def hostname
-    puppet_fact("hostname",name)
+    fact("hostname",name)
   end
 
   # if there is no domain fact, we define domain as
   # removing the hostname part of the fqdn
   def domain
-    d = puppet_fact 'domain'
+    d = fact 'domain'
     d = fqdn.gsub("#{hostname}.",'') if d.nil?
     d
   end
 
   def fqdn
-    puppet_fact("fqdn", hostname)
+    fact("fqdn", hostname)
   end
 
   def reverse_fqdn
@@ -143,7 +147,7 @@ class Initr::NodeInstance < Initr::Node
 
   def kernel
     begin
-      a = puppet_fact('kernelrelease').split(/\.|-|mdk/)
+      a = fact('kernelrelease').split(/\.|-|mdk/)
         "#{a[0]}.#{a[1]}.#{a[2]}-#{a[3]}"
     rescue Exception
       ''

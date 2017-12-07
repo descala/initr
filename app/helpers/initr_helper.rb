@@ -51,7 +51,7 @@ module InitrHelper
 
   def klass_list_tabs
     tabs = []
-    if @node.is_a? Initr::NodeInstance and @node.puppet_host.nil?
+    if @node.is_a? Initr::NodeInstance and @node.facts.empty?
       tabs << {:name => 'install', :partial => 'node/node', :label => :label_install }
     end
     tabs << {:name => 'klasses', :partial => 'node/klasses', :label => :label_klasses}
@@ -60,7 +60,7 @@ module InitrHelper
       tabs << {:name => 'exported_resources', :partial => 'node/exported_resources', :label => :label_exported_resources}
       tabs << {:name => 'facts', :partial => 'node/facts', :label => :label_facts}
       tabs << {:name => 'reports', :partial => 'node/reports', :label => :label_reports}
-      unless @node.puppet_host.nil?
+      if @node.facts.any?
         tabs << {:name => 'install', :partial => 'node/node', :label => :label_reinstall }
       end
     end

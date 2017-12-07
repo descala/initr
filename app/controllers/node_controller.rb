@@ -123,8 +123,10 @@ class NodeController < InitrController
       end
     end
     @facts={}
+    # TODO: more efficent with 
+    # Initr.puppetdb.request('',"facts[value] {name = '#{params[:id]}'}")
     nodes.each do |n|
-      @facts[n] = n.puppet_fact(params[:id]) unless n.puppet_fact(params[:id]).nil?
+      @facts[n] = n.fact(params[:id]) unless n.fact(params[:id]).nil?
     end
   end
 

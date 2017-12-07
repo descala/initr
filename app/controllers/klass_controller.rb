@@ -22,10 +22,10 @@ class KlassController < InitrController
     @templates = @node.project.node_templates if User.current.allowed_to?(:view_nodes,@node.project)
     @templates += User.current.node_templates.collect {|t| t if t.visible_by?(User.current)}.compact
     @templates.uniq!
-    @facts = @node.puppet_host.get_facts_hash rescue []
+    @facts = @node.facts
     @external_nodes_yaml = YAML.dump @node.parameters
     flash.now[:error] = @node.config_errors.join("<br />") if @node.config_errors?
-    if @node.puppet_host
+    if @node.exported_resources
       @exported_resources = @node.exported_resources 
     else
       @exported_resources = []
