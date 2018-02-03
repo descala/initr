@@ -8,7 +8,7 @@ class BindController < InitrController
   def configure
     @html_title=[@node.fqdn, @klass.name]
     @eligible_masters = eligible_masters
-    if request.patch?
+    if request.put?
       params["bind"] ||= {}
       if @klass.update_attributes(params["bind"])
         flash[:notice]='Configuration saved'
@@ -54,7 +54,7 @@ class BindController < InitrController
 
   def edit_zone
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
-    if request.patch?
+    if request.put?
       if @bind_zone.update_attributes(params[:bind_zone])
         @bind_zone.query_registry
         @bind_zone.update_active_ns
