@@ -8,8 +8,8 @@ options {
   listen-on-v6 { none; };
 
   // do not allow axfr requests
-<% if @bind_slave_servers.any? -%>
-  allow-transfer { <%=@bind_slave_servers.join(';')%>; };
+<% if scope.lookupvar('::bind_slave_servers') -%>
+  allow-transfer { <%=scope.lookupvar('bind_slave_servers').join(';')%>; };
 <% else -%>
   allow-transfer { none; };
 <% end -%>
