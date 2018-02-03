@@ -1,7 +1,8 @@
 class Initr::PackageManager < Initr::Klass
 
   attr_accessible :security_updates, :packages_from_squeeze,
-    :packages_from_wheezy, :packages_from_jessie, :packages_from_stretch
+    :packages_from_wheezy, :packages_from_jessie, :packages_from_stretch,
+    :packages_from_buster
 
   self.accessors_for(["security_updates"])
 
@@ -10,6 +11,7 @@ class Initr::PackageManager < Initr::Klass
     config["packages_from_wheezy"]  ||= []
     config["packages_from_jessie"]  ||= []
     config["packages_from_stretch"] ||= []
+    config["packages_from_buster"]  ||= []
     config["security_updates"]      ||= "0"
   }
 
@@ -17,7 +19,8 @@ class Initr::PackageManager < Initr::Klass
     { "packages_from_squeeze" => config["packages_from_squeeze"],
       "packages_from_wheezy"  => config["packages_from_wheezy"],
       "packages_from_jessie"  => config["packages_from_jessie"],
-      "packages_from_stretch" => config["packages_from_stretch"]
+      "packages_from_stretch" => config["packages_from_stretch"],
+      "packages_from_buster" => config["packages_from_buster"]
     }
   end
 
@@ -55,6 +58,14 @@ class Initr::PackageManager < Initr::Klass
 
   def packages_from_stretch
     config["packages_from_stretch"].join(', ') rescue ""
+  end
+
+  def packages_from_buster=(packages)
+    config["packages_from_buster"] = packages.is_a?(String) ? packages.gsub(/ */,'').split(',') : packages
+  end
+
+  def packages_from_buster
+    config["packages_from_buster"].join(', ') rescue ""
   end
 
 end

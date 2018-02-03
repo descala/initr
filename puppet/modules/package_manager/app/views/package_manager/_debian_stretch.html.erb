@@ -1,0 +1,6 @@
+<p><%=f.check_box(:security_updates)%></p>
+<p><%=f.text_area(:packages_from_buster)%></p>
+<% unless @klass.packages_from_stretch.blank? -%>
+  <p>this packages where installed from stretch when node was jessie</p>
+  <p>packages_from_stretch: <%= @klass.packages_from_stretch %></p>
+<% end -%>

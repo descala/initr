@@ -10,7 +10,7 @@ class NodeTest < ActiveSupport::TestCase
     host = node.puppet_host 
     assert_equal "node_001", host.name
     assert_equal "google-public-dns-a.google.com", host.get_facts_hash['fqdn'].first.value
-    assert_equal "google-public-dns-a.google.com", node.puppet_fact('fqdn')
+    assert_equal "google-public-dns-a.google.com", node.fact('fqdn')
   end
   
 end

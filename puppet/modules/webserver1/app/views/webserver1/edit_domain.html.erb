@@ -23,7 +23,7 @@ Dades del hosting <%= @domain.name %>
 --
 
 Servidor: <%= @domain.webserver1.node.fqdn %>
-IP: <%=@domain.webserver1.node.puppet_fact('ipaddress')%>
+IP: <%=@domain.webserver1.node.fact('ipaddress')%>
 
 ACCÉS FTP <%= "i SSH" unless @domain.shell == "0" %>
 

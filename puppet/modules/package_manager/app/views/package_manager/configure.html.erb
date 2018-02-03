@@ -4,7 +4,7 @@
   <%= error_messages_for 'klass' %>
 
   <% begin -%>
-    <%= render :partial => @node.puppet_fact("operatingsystem").downcase, :locals=>{:f=>f} %>
+    <%= render :partial => @node.fact("operatingsystem").downcase, :locals=>{:f=>f} %>
   <% rescue NoMethodError -%>
     <h3>Node has no facts yet, please run puppet</h3>
   <% rescue ActionView::MissingTemplate -%>

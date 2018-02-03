@@ -1,19 +1,19 @@
 <% begin -%>
   <%
-    if @node.puppet_fact("lsbdistcodename") == "n/a"
-      if @node.puppet_fact("lsbdistrelease") =~ /^5/
+    if @node.fact("lsbdistcodename") == "n/a"
+      if @node.fact("lsbdistrelease") =~ /^5/
         partial="debian_lenny"
-      elsif @node.puppet_fact("lsbdistrelease") =~ /^6/
+      elsif @node.fact("lsbdistrelease") =~ /^6/
         partial="debian_squeeze"
       end
     else
-      partial="debian_#{@node.puppet_fact("lsbdistcodename").downcase}"
+      partial="debian_#{@node.fact("lsbdistcodename").downcase}"
     end
    -%>
   <%= render :partial => partial, :locals=>{:f=>f} %>
 <% rescue NoMethodError -%>
   <h4>Missing fact "lsbdistcodename"</h4>
 <% rescue ActionView::MissingTemplate => e -%>
-  No specific template for <%=@node.puppet_fact("lsbdistcodename")%><br /><br />
+  No specific template for <%=@node.fact("lsbdistcodename")%><br /><br />
   <%= e.message %>
 <% end -%>

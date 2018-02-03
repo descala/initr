@@ -4,3 +4,4 @@ en:
   field_packages_from_wheezy: "Packages from Wheezy repository (coma separated)"
   field_packages_from_jessie: "Packages from Jessie repository (coma separated)"
   field_packages_from_stretch: "Packages from Stretch repository (coma separated)"
+  field_packages_from_buster: "Packages from Buster repository (coma separated)"
