@@ -1,1 +1,1 @@
-match '/initr_mailserver/:action/:id' => 'initr_mailserver', :via => [:get, :post, :patch]
+match '/initr_mailserver/:action/:id' => 'initr_mailserver', :via => [:get, :post, :put]

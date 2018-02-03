@@ -27,7 +27,7 @@ class InitrController < ApplicationController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.patch?
+    if request.put?
       if @klass.update_attributes(params[@klass.params_name])
         flash[:notice] = "#{@klass.name.capitalize} configuration successfully updated."
       end

@@ -9,7 +9,7 @@ class NagiosServerController < InitrController
     @user_projects = Project.all.collect {|proj|
       proj if User.current.projects.include? proj or User.current.admin?
     }.compact.sort
-    if request.patch?
+    if request.put?
       if @klass.update_attributes(params[:nagios_server])
         flash[:notice] = 'Configuration successfully updated.'
       end

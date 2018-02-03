@@ -1,7 +1,7 @@
 match '/node/:action(/:id)' => 'node', :via => [:get, :post]
 match '/nodes' => 'node#list', :via => :get
 match '/reports' => 'node#store_report',  :via => 'post'
-match '/klass/:action/:id' => 'klass', :via => [:get, :post, :patch]
+match '/klass/:action/:id' => 'klass', :via => [:get, :post, :put]
 # http://stackoverflow.com/questions/5369654/why-do-routes-with-a-dot-in-a-parameter-fail-to-match
 match '/:id/install/:action' => 'install', :constraints => { :id => /[^\/]+/ }, :as => 'install', :via => :get
 
