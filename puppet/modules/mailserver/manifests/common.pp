@@ -42,7 +42,7 @@ class mailserver::common {
     include common::clamav
   }
 
-  if $::amavis == '1' {
+  if $mailserver::amavis == '1' {
     include mailserver::amavis
   }
   if $::vacation == '1' {

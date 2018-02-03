@@ -16,7 +16,7 @@ class mailserver::nginx {
   }
 
   package {
-    'php5-fpm':
+    "php-fpm":
       ensure => installed;
   }
 
