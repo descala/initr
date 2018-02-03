@@ -10,27 +10,27 @@ maxretry = 3
 backend = auto
 
 [pop3-iptables]
-enabled  = <%= @jails.include? "pop3" %>
-<% if operatingsystem == "Debian" -%>
+enabled  = <%= scope.lookupvar('fail2ban::jails').include? "pop3" %>
+<% if scope.lookupvar('operatingsystem') == "Debian" -%>
 filter   = dovecot
 <% else -%>
 filter   = mail
 <% end -%>
 action   = iptables[name=pop3, port=pop3, protocol=tcp]
-<% unless mailto.blank? -%>
-           sendmail-whois[name=POP3, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
+<% unless scope.lookupvar('fail2ban::mailto').empty? -%>
+           sendmail-whois[name=POP3, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= fqdn %>]
 <% end -%>
-logpath  = <%= maillog %>
+logpath  = <%= scope.lookupvar('maillog') %>
 maxretry = 5
 
 [ssh-iptables]
-enabled  = <%= @jails.include? "ssh" %>
+enabled  = <%= scope.lookupvar('fail2ban::jails').include? "ssh" %>
 filter   = sshd
 action   = iptables[name=SSH, port=ssh, protocol=tcp]
-<% unless mailto.blank? -%>
-           sendmail-whois[name=SSH, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
+<% unless scope.lookupvar('fail2ban::mailto').empty? -%>
+           sendmail-whois[name=SSH, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= fqdn %>]
 <% end -%>
-<% if operatingsystem == "Debian" or operatingsystem == "Ubuntu" -%>
+<% if scope.lookupvar('operatingsystem') == "Debian" or scope.lookupvar('operatingsystem') == "Ubuntu" -%>
 logpath  = /var/log/auth.log
 <% else -%>
 logpath  = /var/log/secure
@@ -38,11 +38,11 @@ logpath  = /var/log/secure
 maxretry = 5
 
 [vsftpd-iptables]
-enabled  = <%= @jails.include? "vsftpd" %>
+enabled  = <%= scope.lookupvar('fail2ban::jails').include? "vsftpd" %>
 filter   = vsftpd
 action   = iptables[name=VSFTPD, port=ftp, protocol=tcp]
-<% unless mailto.blank? -%>
-           sendmail-whois[name=VSFTPD, dest=<%= mailto %>, sender=fail2ban@<%= fqdn %>]
+<% unless scope.lookupvar('fail2ban::mailto').empty? -%>
+           sendmail-whois[name=VSFTPD, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= fqdn %>]
 <% end -%>
 logpath  = /var/log/vsftpd.log
 maxretry = 5
