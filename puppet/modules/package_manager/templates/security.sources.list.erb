@@ -13,4 +13,6 @@
 deb http://security.debian.org wheezy/updates main contrib non-free
 <% elsif lsbdistcodename == "jessie" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "8") -%>
 deb http://security.debian.org jessie/updates main contrib non-free
+<% elsif lsbdistcodename == "stretch" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "9") -%>
+deb http://deb.debian.org/debian-security stretch/updates main contrib non-free
 <% end -%>

@@ -7,12 +7,14 @@ class package_manager::debian {
     'squeeze': { include package_manager::debian::squeeze }
     'wheezy':  { include package_manager::debian::wheezy  }
     'jessie':  { include package_manager::debian::jessie  }
+    'stretch': { include package_manager::debian::stretch }
     'n/a': {
       case $::lsbmajdistrelease {
         '5': { include package_manager::debian::lenny   }
         '6': { include package_manager::debian::squeeze }
         '7': { include package_manager::debian::wheezy  }
         '8': { include package_manager::debian::jessie  }
+        '9': { include package_manager::debian::stretch }
         default: {}
       }
     }

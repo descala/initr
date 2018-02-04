@@ -52,4 +52,15 @@ deb http://http.debian.net/debian jessie-updates main
 deb http://http.debian.net/debian stretch main contrib non-free
 <% end -%>
 
+<% elsif lsbdistcodename == "stretch" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "9") -%>
+# debian stretch
+deb http://deb.debian.org/debian stretch main contrib non-free
+
+<% pfw = scope.lookupvar('::packages_from_buster')
+   pfw = [] unless pfw.is_a?(Array)
+   if pfw.any? -%>
+# debian buster
+deb http://deb.debian.org/debian buster main contrib non-free
+<% end -%>
+
 <% end -%>
