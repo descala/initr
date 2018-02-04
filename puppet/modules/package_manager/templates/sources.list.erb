@@ -2,7 +2,7 @@
 # Puppet Managed #
 ##################
 
-<% if lsbdistcodename == "lenny" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "5") -%>
+<% if scope.lookupvar("::lsbdistcodename") == "lenny" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "5") -%>
 # debian leeny
 deb http://archive.debian.org/debian-archive lenny main contrib non-free
 
@@ -13,7 +13,7 @@ deb http://archive.debian.org/debian-archive lenny main contrib non-free
 deb http://archive.debian.org/debian-archive/debian squeeze main contrib non-free
 <% end -%>
 
-<% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "6") -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "squeeze" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "6") -%>
 deb http://archive.debian.org/debian-archive/debian squeeze main contrib non-free
 deb http://archive.debian.org/debian-archive/debian squeeze-lts main contrib non-free
 
@@ -24,7 +24,7 @@ deb http://archive.debian.org/debian-archive/debian squeeze-lts main contrib non
 deb http://http.debian.net/debian wheezy main contrib non-free
 <% end -%>
 
-<% elsif lsbdistcodename == "wheezy" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "7") -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "wheezy" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "7") -%>
 # debian wheezy
 deb http://http.debian.net/debian wheezy main contrib non-free
 
@@ -38,7 +38,7 @@ deb http://http.debian.net/debian wheezy-updates main
 deb http://http.debian.net/debian jessie main contrib non-free
 <% end -%>
 
-<% elsif lsbdistcodename == "jessie" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "8") -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "jessie" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "8") -%>
 # debian jessie
 deb http://http.debian.net/debian jessie main contrib non-free
 
@@ -52,7 +52,7 @@ deb http://http.debian.net/debian jessie-updates main
 deb http://http.debian.net/debian stretch main contrib non-free
 <% end -%>
 
-<% elsif lsbdistcodename == "stretch" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "9") -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "stretch" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "9") -%>
 # debian stretch
 deb http://deb.debian.org/debian stretch main contrib non-free
 
