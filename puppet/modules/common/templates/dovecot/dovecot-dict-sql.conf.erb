@@ -2,7 +2,7 @@
 # Puppet Managed #
 ##################
 
-connect = host=localhost dbname=<%= scope.lookupvar('dovecot::db_name') %> user=<%= scope.lookupvar('dovecot::db_user') %> password=<%= scope.lookupvar('dovecot::db_passwd') %>
+connect = host=localhost dbname=<%= scope.lookupvar('::db_name') %> user=<%= scope.lookupvar('::db_user') %> password=<%= scope.lookupvar('::db_passwd') %>
 map {
   pattern = priv/quota/storage
   table = quota2
