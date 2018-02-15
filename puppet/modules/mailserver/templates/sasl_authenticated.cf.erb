@@ -1,2 +1,2 @@
-header LOCAL_AUTH_RCVD    Received =~  /Authenticated sender.* by <%= fqdn.gsub(/\./, '\\.') %>.*/
+header LOCAL_AUTH_RCVD    Received =~  /Authenticated sender.* by <%= scope.lookupvar('::fqdn').gsub(/\./, '\\.') %>.*/
 score  LOCAL_AUTH_RCVD -8 -8 -8 -8
