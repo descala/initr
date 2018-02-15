@@ -1,1 +1,1 @@
-match '/bind/:action/:id' => 'bind', :via => [:get, :post, :put]
+match '/bind/:action/:id' => 'bind', :via => [:get, :post, :patch]
