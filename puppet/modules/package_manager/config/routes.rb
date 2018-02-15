@@ -1,1 +1,1 @@
-match '/package_manager/:action/:id' => 'package_manager', :via => [:get, :post, :put]
+match '/package_manager/:action/:id' => 'package_manager', :via => [:get, :post, :patch]

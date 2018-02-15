@@ -24,7 +24,7 @@ class Webserver1Controller < InitrController
     # check if we have a name server
     @bind = Initr::Bind.for_node @node
     @bind_zone = @bind.bind_zones.where("domain=?",@domain.name).first if @bind
-    if request.put?
+    if request.patch?
       if @domain.update_attributes(params["webserver1_domain"])
         redirect_to :action => 'configure', :id => @klass
       else

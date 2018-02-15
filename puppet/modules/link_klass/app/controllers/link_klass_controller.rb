@@ -27,7 +27,7 @@ class LinkKlassController < InitrController
 
   def configure
     @html_title=[@node.fqdn, "#{@klass.name} (link klass)"]
-    if request.put?
+    if request.patch?
       params["link_klass"] ||= {}
       if @klass.update_attributes(params["link_klass"])
         flash[:notice]='Configuration saved'
