@@ -3,7 +3,7 @@
 ##########################
 #
 # see /var/spool/vacation/vacation.pl
-$db_type = '<%=db_driver%>';
+$db_type = '<%=scope.lookupvar('::db_driver')%>';
 # leave empty for connection via UNIX socket
 $db_host = '';
 $db_username = '<%=db_user%>';
