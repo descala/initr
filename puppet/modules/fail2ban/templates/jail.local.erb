@@ -18,7 +18,7 @@ filter   = mail
 <% end -%>
 action   = iptables[name=pop3, port=pop3, protocol=tcp]
 <% unless scope.lookupvar('fail2ban::mailto').empty? -%>
-           sendmail-whois[name=POP3, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= fqdn %>]
+           sendmail-whois[name=POP3, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= scope.lookupvar("::fqdn") %>]
 <% end -%>
 logpath  = <%= scope.lookupvar('maillog') %>
 maxretry = 5
@@ -28,7 +28,7 @@ enabled  = <%= scope.lookupvar('fail2ban::jails').include? "ssh" %>
 filter   = sshd
 action   = iptables[name=SSH, port=ssh, protocol=tcp]
 <% unless scope.lookupvar('fail2ban::mailto').empty? -%>
-           sendmail-whois[name=SSH, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= fqdn %>]
+           sendmail-whois[name=SSH, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= scope.lookupvar("::fqdn") %>]
 <% end -%>
 <% if scope.lookupvar('operatingsystem') == "Debian" or scope.lookupvar('operatingsystem') == "Ubuntu" -%>
 logpath  = /var/log/auth.log
@@ -42,14 +42,14 @@ enabled  = <%= scope.lookupvar('fail2ban::jails').include? "vsftpd" %>
 filter   = vsftpd
 action   = iptables[name=VSFTPD, port=ftp, protocol=tcp]
 <% unless scope.lookupvar('fail2ban::mailto').empty? -%>
-           sendmail-whois[name=VSFTPD, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= fqdn %>]
+           sendmail-whois[name=VSFTPD, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= scope.lookupvar("::fqdn") %>]
 <% end -%>
 logpath  = /var/log/vsftpd.log
 maxretry = 5
 bantime  = 1800
 
-<% if @custom_jails and @custom_jails != "" -%>
+<% if scope.lookupvar('fail2ban::custom_jails') and scope.lookupvar('fail2ban::custom_jails') != "" -%>
 # Additional configuration, configured from initr
 
-<%= @custom_jails %>
+<%= scope.lookupvar('fail2ban::custom_jails') %>
 <% end -%>
