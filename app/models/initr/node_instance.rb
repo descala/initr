@@ -4,7 +4,6 @@ class Initr::NodeInstance < Initr::Node
 
   after_save :trigger_puppetrun
   after_create :add_base_klass
-  after_destroy :puppet_host_destroy
 
   #TODO
 #  def validate
@@ -62,11 +61,6 @@ class Initr::NodeInstance < Initr::Node
     end
   rescue
     default
-  end
-
-  def puppet_host_destroy
-    @host_object = puppet_host
-    Puppet::Rails::Host.destroy @host_object if @host_object
   end
 
   def exported_resources
