@@ -45,7 +45,7 @@ class Initr::NodeInstance < Initr::Node
   # ]
   def facts
     return @facts if @facts
-    data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'}").data
+    data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'}").data rescue {}
     hash = {}
     data.each do |fact|
       hash[fact['name']] = fact['value'] rescue nil
@@ -64,7 +64,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def exported_resources
-    Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data
+    Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data rescue {}
   end
 
   def destroy_exported_resources
