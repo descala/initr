@@ -1,0 +1,78 @@
+<%= klass_menu %>
+<%= form_for(@klass, :url => {:action => 'configure'}, :html => { :method => 'post'}) do |f|%>
+  <p><%= error_messages_for 'klass' %></p>
+  <table>
+    <tr>
+      <td>Ssh station server to connect:</td>
+      <td><%= f.select("ssh_station_server_id", @ssh_station_servers.collect {|s| [s,s.id.to_s]}, :include_blank=>true) %></td>
+    </tr>
+    <tr>
+      <td>Connect through port 80 (proxytunnel)</td>
+      <td><%= f.check_box(:ssh_proxytunnel,:checked_value => "true", :unchecked_value => "false") %></td>
+    </tr>
+    <tr>
+      <td>Additional ssh_config</td>
+      <td><%= f.text_area :additional_ssh_config, :rows => 3, :cols => 36 %></td>
+    </tr>
+
+    <tr>
+      <td colspan="2"><%= submit_tag "Save" %></td>
+    </tr>
+  </table>
+<% end -%>
+<hr />
+
+<% if @klass.ssh_station_ports.size > 0 -%>
+<h3>Services configured</h3>
+<table>
+  <tr>
+    <th>Service name</th>
+    <th>Service url</th>
+    <th>Redirection port</th>
+  </tr>
+  <% @klass.ssh_station_ports.each do |port| -%>
+  <tr>
+    <td><%= port.name %></td>
+    <td><%= port.host %>:<%= port.service %></td>
+    <td><%= port.num %></td>
+    <td>
+      <%= link_to image_tag("edit.png"), { :action => :edit_port, :id => port } %>
+      <%= link_to image_tag("delete.png"), { :action => :del_port, :id => port }, :confirm => "Delete port redirection #{port.num} -> #{port.service}?", :method => 'post' %>
+    </td>
+  </tr>
+  <% end -%>
+</table>
+
+<% else -%>
+
+  <h3>No services configured</h3>
+
+<% end -%>
+
+<p><%= link_to "add port redirection", :action => 'add_port', :id => @klass %></p>
+
+<% if @klass.recomended_ports.size > 0 -%>
+  <h3>Possibly interesting ports</h3>
+
+  <table>
+  <% @klass.recomended_ports.each do |port,name| -%>
+    <% next unless port.split(':').size == 2 -%>
+    <tr class="<%=cycle("odd","even")%>">
+      <td valign="top" style="font-weight:bold;"><%= name %> (<%=port%>)</td>
+      <td align="right" style="padding-left:40px">
+        <% service=port.split(':').last
+          host=port.split(':').first
+          p = Initr::SshStationPort.new(:ssh_station_id=>@klass.id,:service=>service,:host=>host,:name=>name) -%>
+        <%= form_for(p, :url => {:action=>'add_port',:id=>@klass}) do |f| %>
+          <%= render :partial => 'ssh_station_port', :locals => {:form => f} %>
+          <%= submit_tag("Add")%>
+        <% end -%>
+      </td>
+    </tr>
+  <% end -%>
+  </table>
+<% end -%>
+
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+

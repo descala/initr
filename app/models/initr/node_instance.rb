@@ -64,7 +64,13 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def exported_resources
-    Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data rescue {}
+    return @exported_resources if @exported_resources
+    data = Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data rescue {}
+    hash = {}
+    data.each do |res|
+      hash["#{res['type']}[#{res['title']}]"] = res['parameters'] rescue nil
+    end
+    @exported_resources = hash
   end
 
   def destroy_exported_resources

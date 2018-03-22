@@ -1,0 +1,12 @@
+<h1>Your ~/.ssh/config</h1>
+
+<p>Add to the configuration of your SSH client:</p>
+
+<pre>
+<% @ssh_stations.each do |ss| -%>
+Host <%= ss.node.hostname.downcase %> <%= ss.node.fqdn.downcase %>
+  User root
+  ProxyCommand ssh -W localhost:<%= ss.ssh_station_ports.where(service: 22).first.num %> root@<%= ss.ssh_station_server.node.fqdn %>
+
+<% end -%>
+</pre>

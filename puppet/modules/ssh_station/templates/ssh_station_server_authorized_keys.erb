@@ -1,0 +1,7 @@
+##################
+# Puppet managed #
+##################
+<% scope.lookupvar('ssh_info').each do |node,port,ak| -%>
+# <%= node %>
+<%= ak %>
+<% end -%>

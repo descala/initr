@@ -1,0 +1,36 @@
+# This is the ssh client system-wide configuration file.  See
+# ssh_config(5) for more information.  This file provides defaults for
+# users, and the values can be changed in per-user configuration files
+# or on the command line.
+
+# Configuration data is parsed as follows:
+#  1. command line options
+#  2. user-specific file
+#  3. system-wide file
+
+##################
+# puppet managed #
+##################
+
+Host initr
+  HostName <%= ssh_station_server_ip %>
+  User sshst
+  IdentityFile /home/ssh_station/.ssh/id_dsa
+  GSSAPIAuthentication yes
+  ForwardX11Trusted yes
+  StrictHostKeyChecking yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 30
+  TCPKeepAlive no
+
+  # ssh_station redirections
+<% scope.lookupvar('initr_ports').each do |ports| -%>
+<% if ports[0] == "localhost:22" -%>
+  # ssh_station_watch redirection
+  LocalForward 7783 localhost:<%= ports[1] %>
+<% end -%>
+  RemoteForward <%= ports[1] %> <%= ports[0] %>
+
+<% end -%>
+
+<%= scope.lookupvar('::additional_ssh_config') %>

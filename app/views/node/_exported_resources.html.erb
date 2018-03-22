@@ -10,10 +10,10 @@
         <th>Resource</th>
         <th>Tags</th>
       </tr>
-      <% @exported_resources.each do |resource| %>
+      <% @exported_resources.each do |name, value| %>
         <tr class="<%= cycle('odd', 'even') %>">
-          <td><%= link_to resource.name, :controller=>'node', :action=>'resource', :id=>resource %></td>
-          <td><%= resource.param_values.collect {|v| v.value if v.param_name.name == "tag"}.compact.sort.join(" ") %></td>
+          <td><%= link_to name, :controller=>'node', :action=>'resource', :id=>name %></td>
+          <td><%= value %></td>
         </tr>
       <% end %>
     </table>

@@ -1,0 +1,18 @@
+<%= klass_menu %>
+
+<%= labelled_form_for( @klass, :url => {:action => 'configure'}, :html => { :method => 'patch'}) do |f|%>
+  <p><%= error_messages_for 'klass' %></p>
+  <table>
+    <tr>
+      <td>IP or name:</td>
+      <td><%= f.text_field("ip") %></td>
+      <td>(clients will use this to connect)</td>
+    </tr>
+    <tr>
+      <td colspan="3">Leave blank to use fqdn (<%= @node.fqdn %>)</td>
+    </tr>
+    <tr>
+      <td colspan="3"><%= submit_tag "Save" %></td>
+    </tr>
+  </table>
+<% end -%>

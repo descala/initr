@@ -1,0 +1,84 @@
+#!/usr/bin/ruby
+#
+#
+
+begin
+
+  nodes=%w(<%= scope.lookupvar('nodes').sort.join(" ") %>)
+
+  def print_options(nodes)
+    nodes.each_with_index do |node,i|
+      i+=1
+      puts "#{" " if i < 10}#{i} - #{node}"
+    end
+  end
+
+  user=`whoami`.chomp
+  if !user =~ /initr_/
+    puts "Only for initr users"
+    exit
+  end
+
+  db_user=user.gsub(/initr_/,"")
+
+  option=0;
+
+  if nodes.size <= 0
+    puts "You have no assigned nodes, bye!"
+    exit
+  end
+
+  nodes_originals = nodes
+
+rescue
+  puts "== Internal error =="
+  puts "   Bye!"
+  exit
+end
+
+while true
+  begin
+    print_options nodes
+    part = gets
+
+    m=[]
+    if part!="" and part!="\n" and !part.nil?
+      part=part.chomp.split.join(".*")
+      if part =~ /^\d+$/ and part =~ /^[^0]/ and nodes[part.to_i - 1]
+        m << nodes[part.to_i - 1]
+      else
+        nodes.each do |n|
+          if n =~ /#{part}/
+              m << n
+          end
+        end
+      end
+    end
+
+    if m.size==1
+      hostname = "#{m.first.chomp}"
+      if ( `grep "^Host #{hostname}$" /home/ssh_station_operators/#{user}/.ssh/config` and $?.success? )
+        puts "#{hostname} ..."
+        Kernel.exec("ssh #{hostname}")
+      else
+        puts "#{hostname} is not on .ssh/config file, run puppet to fix"
+        m = []
+        break
+      end
+    end
+
+    if m.size==0
+      puts "  --"
+      nodes = nodes_originals
+    else
+      nodes = m
+    end
+
+  rescue RegexpError
+    # Invalid regexp generated from user input
+
+  rescue EOFError, Interrupt
+    puts "\n\nBye!"
+    exit
+  end
+end
