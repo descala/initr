@@ -36,7 +36,7 @@ class mailserver::nginx {
 
   file {
     '/etc/nginx/fastcgi_params':
-      source  => 'puppet:///modules/mailserver/nginx_php_fpm',
+      content => template('mailserver/nginx_php_fpm.erb'),
       owner   => root,
       group   => root,
       mode    => '0644',
