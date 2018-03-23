@@ -17,5 +17,9 @@ class common::postfixadmin::debian inherits common::postfixadmin {
       target => '/etc/postfixadmin/apache.conf';
   }
 
+  case $::lsbdistcodename {
+    'stretch': { include common::postfixadmin::debian::stretch }
+  }
+
 }
 
