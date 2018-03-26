@@ -2,6 +2,9 @@
 # Puppet Managed #
 ##################
 
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=214741
+mydomain=<%=scope.lookupvar("::domain")%>
+
 unknown_local_recipient_reject_code = 550
 myorigin = $mydomain
 relay_domains = $mydestination
@@ -43,8 +46,10 @@ virtual_mailbox_maps = proxy:<%=scope.lookupvar("db_driver")%>:/etc/postfix/sql-
 virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1
 
+<% if scope.lookupvar('mailserver::vacation') == '1' -%>
 ### vacation delivery agent
 vacation_destination_recipient_limit = 1
+<% end -%>
 transport_maps = hash:/etc/postfix/transport
 
 # would tell spamassassin, that the user is authenticated
