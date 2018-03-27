@@ -62,7 +62,7 @@ nsca_user=nagios
 #
 # NOTE: This option is ignored if NSCA is running under either inetd or xinetd
 
-nsca_group=<%= operatingsystem == "Debian" ? "nogroup" : "nagios" %>
+nsca_group=<%= @operatingsystem == "Debian" ? "nogroup" : "nagios" %>
 
 
 
@@ -99,7 +99,7 @@ debug=0
 #command_file=/var/lib/nagios2/rw/nagios.cmd
 # and this is the default location for nagios3:
 #command_file=/var/lib/nagios3/rw/nagios.cmd
-command_file=<%= operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nagios.cmd" : "/usr/local/nagios/var/rw/nagios.cmd" %>
+command_file=<%= @operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nagios.cmd" : "/usr/local/nagios/var/rw/nagios.cmd" %>
 
 
 # ALTERNATE DUMP FILE
@@ -113,7 +113,7 @@ command_file=<%= operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nagios.cmd" 
 # check results received while Nagios was not running...
 
 #alternate_dump_file=/var/run/nagios/nsca.dump
-alternate_dump_file=<%= operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nsca.dump" : "/usr/local/nagios/var/rw/nsca.dump" %>
+alternate_dump_file=<%= @operatingsystem == "Debian" ? "/var/lib/nagios3/rw/nsca.dump" : "/usr/local/nagios/var/rw/nsca.dump" %>
 
 
 
