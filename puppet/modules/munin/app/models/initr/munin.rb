@@ -63,7 +63,7 @@ class Initr::Munin < Initr::Klass
         mc << @@plugins[name] if config["munin_#{name}"] == "1"
       end
       if config["munin_network"] == "1"
-        self.node.puppet_fact("interfaces","").split(",").each do |iface|
+        self.node.fact("interfaces","").split(",").each do |iface|
           next unless iface =~ /^eth[0-9]$/
           mc << "if_#{iface}"
           mc << "if_err_#{iface}"

@@ -20,7 +20,7 @@ anonymous_enable=NO
 local_enable=YES
 #
 # Uncomment this to enable any form of FTP write command.
-<% if ftp_writeable=="1" -%>
+<% if @ftp_writeable=="1" -%>
 write_enable=YES
 <% else -%>
 write_enable=NO
@@ -125,7 +125,7 @@ userlist_deny=NO
 userlist_enable=YES
 userlist_file=/etc/vsftpd.user_list
 #
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 # Debian customization
 #
 # Some of vsftpd's settings don't fit the Debian filesystem layout by

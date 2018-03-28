@@ -12,8 +12,8 @@ define ftp_server::user($password) {
       owner => $name,
       group => $name,
       mode => $home_writeable ? {
-        "1" => 0750,
-        default => 0550
+        "1" => '0750',
+        default => '0550'
       };
   }
 }

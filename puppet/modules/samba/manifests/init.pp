@@ -23,10 +23,10 @@ class samba {
       ensure => directory;
     "${rubysitedir}/facter/localsid.rb":
       source => "puppet:///modules/samba/facter/localsid.rb",
-      mode => '0064'4, owner => root, group => root;
+      mode => '0644', owner => root, group => root;
     "/etc/samba/":
       ensure => directory,
-      mode => '0075'5, owner => root, group => root;
+      mode => '0755', owner => root, group => root;
   }
 
   case $operatingsystem {

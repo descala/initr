@@ -14,6 +14,6 @@ pid file=/var/run/rsyncd.pid
 secrets file = /etc/rsyncd.secrets
 
 # MODULE OPTIONS
-<% [rsyncd_modules].flatten.each do |mod| -%>
+<% [@rsyncd_modules].flatten.each do |mod| -%>
 <%= mod %>
 <% end -%>
