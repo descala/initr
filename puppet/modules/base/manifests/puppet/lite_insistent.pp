@@ -4,7 +4,7 @@ class base::puppet::lite_insistent inherits base::puppet::lite {
       before => Service["puppet"],
       owner => root,
       group => root,
-      mode => 700,
+      mode => '0700',
       content => template("base/puppet/puppet-run-if-needed.sh.erb");
   }
   Cron["check_configuration_changes"] {

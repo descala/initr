@@ -1,6 +1,6 @@
 ##################
 # Puppet managed #
 ##################
-<% scope.lookupvar('authorized_keys').sort {|a,b| a["key"] <=> b["key"] }.each do |ak| -%>
+<% @authorized_keys.sort {|a,b| a["key"] <=> b["key"] }.each do |ak| -%>
 <%= ak["type"] %> <%= ak["key"] %> <%= ak["comment"] %>
 <% end -%>

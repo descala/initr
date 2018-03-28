@@ -1,0 +1,3 @@
+ca:
+  field_ddns_domain: Domini
+  field_skip_nagios_check: Salta la comprovació del router amb nagios

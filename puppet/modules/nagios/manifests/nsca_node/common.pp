@@ -21,10 +21,10 @@ class nagios::nsca_node::common {
 
   file {
     "/usr/local/bin/nsca_wrapper":
-      mode => 744,
+      mode => '0744',
       content => template("nagios/nsca_wrapper.erb");
     "/usr/local/bin/nsca_send":
-      mode => 740,
+      mode => '0740',
       content => template("nagios/nsca_send.erb");
     "/usr/local/nsca/bin/send":
       ensure => absent; # file above replaces this

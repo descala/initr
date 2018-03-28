@@ -1,0 +1,60 @@
+#!/usr/bin/python
+##################
+# Puppet managed #
+##################
+# shorewall_accounting
+# A munin plugin for tracking traffic as recorded by shorewall accounting rules
+# Written by Chris AtLee <chris@atlee.ca>
+# Released under the GPL v2
+import sys, commands, re
+accountingLineExp = re.compile(r"^\s*\d+\s+(\d+)\s+(\w+).*$")
+negativeValueExp = re.compile(r".*_up$")
+
+def getBytesByChain():
+    status, output = commands.getstatusoutput("shorewall -x show accounting")
+    if status != 0:
+        raise OSError("Error running command (%s)[%i]: %s" % (trafficCmd, status, output))
+    chains = {}
+    for line in output.split("\n"):
+        m = accountingLineExp.match(line)
+        if m is not None:
+            target = m.group(2)
+            bytes = int(m.group(1))
+            if target in chains:
+                chains[target] += bytes
+            else:
+                chains[target] = bytes
+    retval = []
+    chainNames = chains.keys()
+    chainNames.sort()
+    for name in chainNames:
+        mm = negativeValueExp.match(name)
+        if mm is not None:
+            value = chains[name] * -1
+        else:
+            value = chains[name]
+        retval.append((name, value))
+    return retval
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == "autoconf":
+        print "yes"
+        sys.exit(0)
+    elif sys.argv[1] == "config":
+        print "graph_title Shorewall accounting"
+        print "graph_category network"
+        print "graph_vlabel bits per ${graph_period}"
+        print "http_down.line 0:000000"
+        for chain,bytes in getBytesByChain():
+            neg_val = negativeValueExp.match(chain)
+            if neg_val is not None:
+                print "%s.max 0" % chain
+            else:
+                print "%s.min 0" % chain
+            print "%s.type DERIVE" % chain
+            print "%s.label %s" % (chain, chain)
+            print "%s.cdef %s,8,*" % (chain, chain)
+        sys.exit(0)
+
+for chain, bytes in getBytesByChain():
+    print "%s.value %i" % (chain, bytes)

@@ -13,7 +13,7 @@
 ##################
 
 Host initr
-  HostName <%= ssh_station_server_ip %>
+  HostName <%= @ssh_station_server_ip %>
   User sshst
   IdentityFile /home/ssh_station/.ssh/id_dsa
   GSSAPIAuthentication yes
@@ -24,7 +24,7 @@ Host initr
   TCPKeepAlive no
 
   # ssh_station redirections
-<% scope.lookupvar('initr_ports').each do |ports| -%>
+<% @initr_ports.each do |ports| -%>
 <% if ports[0] == "localhost:22" -%>
   # ssh_station_watch redirection
   LocalForward 7783 localhost:<%= ports[1] %>
@@ -33,4 +33,4 @@ Host initr
 
 <% end -%>
 
-<%= scope.lookupvar('::additional_ssh_config') %>
+<%= @additional_ssh_config %>

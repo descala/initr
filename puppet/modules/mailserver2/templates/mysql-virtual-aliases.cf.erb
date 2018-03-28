@@ -1,0 +1,10 @@
+##################
+# Puppet managed #
+##################
+# the user name and password to log into the mysql server
+hosts = localhost
+user = <%= db_user %>
+password = <%= db_passwd %>
+dbname = <%= db_name %>
+
+query = SELECT goto FROM alias WHERE address = '%s' and active = '1'

@@ -1,0 +1,10 @@
+/var/log/monit.log {
+  rotate 6
+  weekly
+  compress
+  missingok
+  notifempty
+  postrotate
+    [ -e /usr/bin/monit ] && /usr/bin/monit reload >/dev/null 2>&1 || true
+  endscript
+}

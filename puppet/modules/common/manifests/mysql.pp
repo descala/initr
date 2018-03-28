@@ -1,7 +1,7 @@
 class common::mysql {
 
   if array_includes($classes,"nagios::nsca_node") {
-    include mysql::nagios
+    include common::mysql::nagios
   }
 
   service { $mysqld:

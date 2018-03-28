@@ -4,7 +4,7 @@
 
 begin
 
-  nodes=%w(<%= scope.lookupvar('nodes').sort.join(" ") %>)
+  nodes=%w(<%= @nodes.sort.join(" ") %>)
 
   def print_options(nodes)
     nodes.each_with_index do |node,i|

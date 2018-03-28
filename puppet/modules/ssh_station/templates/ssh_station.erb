@@ -4,7 +4,7 @@
 if grep -sq "^ssh_station::client$" /var/lib/puppet/state/classes.txt; then
 
   sleep 5
-  logger -i $$ -t ssh_station -- "Connecting to <%= scope.lookupvar('ssh_station_server') %> (using <%=scope.lookupvar('ssh_station_server_ip')%>)"
+  logger -i $$ -t ssh_station -- "Connecting to <%= @ssh_station_server %> (using <%=@ssh_station_server_ip%>)"
   logger -i $$ -t ssh_station -- "`/usr/bin/ssh -N initr 2>&1`"
 
 fi

@@ -1,0 +1,10 @@
+<%
+if drives.class == Array and drives.first.class == Array
+  i=0
+  while i < drives.first.size  -%>
+  /dev/<%=drives[0][i]-%> -d <%=drives[1][i]-%> <%= drives[2][i] unless drives[2].nil? -%> -s (L/../../7/03|S/../.././05) -m <nomailer> -M exec /usr/local/bin/smartd.sh -M test -M diminishing
+<%
+    i=i+1
+  end
+end
+-%>

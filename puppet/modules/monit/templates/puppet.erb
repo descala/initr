@@ -1,0 +1,10 @@
+check process puppet
+<% if clientversion =~ /^0\./ -%>
+  with pidfile /var/run/puppet/puppetd.pid
+<% else -%>
+  with pidfile /var/run/puppet/agent.pid
+<% end -%>
+  start program = "/etc/init.d/puppet start"
+  stop program = "/etc/init.d/puppet stop"
+  if 5 restarts within 5 cycles then timeout
+

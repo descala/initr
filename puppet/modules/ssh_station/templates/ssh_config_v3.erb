@@ -22,7 +22,7 @@ Host initr
   KeepAlive no
 
   # ssh_station redirections
-<% scope.lookupvar('initr_ports').each do |ports| -%>
+<% initr_ports.each do |ports| -%>
 <% if ports[0] == "localhost:22" -%>
   # ssh_station_watch redirection
   LocalForward 7783 localhost:<%= ports[1] %>

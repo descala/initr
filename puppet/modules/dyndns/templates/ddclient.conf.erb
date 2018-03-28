@@ -1,0 +1,11 @@
+##################
+# Puppet managed #
+##################
+protocol=dyndns2
+use=cmd, cmd='/usr/bin/dig +short myip.opendns.com @resolver1.opendns.com'
+server=<%=ddns_domain%>
+login=<%=fqdn%>
+password=<%=ddns_pass%>
+<%=fqdn%>.<%=ddns_domain%>
+pid=<%= (operatingsystem == "CentOS") ? "/var/run/ddclient/ddclient.pid" : "/var/run/ddclient.pid" %>
+ssl=yes

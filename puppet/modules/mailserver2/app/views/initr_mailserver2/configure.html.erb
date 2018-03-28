@@ -1,0 +1,20 @@
+<%= klass_menu %>
+
+<%= labelled_form_for(:initr_mailserver2, @klass, :url => {:action => 'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
+
+  <%= error_messages_for 'klass' %>
+
+  <p><%= f.text_field :mailserver2_admin_email %><%=help :help_mailserver2_admin_email%></p>
+  <p><%= f.text_field :mailserver2_mail_location %></p>
+  <p><%= f.check_box :domain_path %><%=help :help_domain_path%></p>
+  <p><%= f.check_box :domain_in_mailbox %><%=help :help_domain_in_mailbox%></p>
+
+  <p><%= submit_tag("Send")%></p>
+
+<% end -%>
+
+
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+
+

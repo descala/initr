@@ -4,7 +4,7 @@ user=root
 password=`grep -s password /root/.my.cnf | cut -d "=" -f2`
 
 if [ -n "$password" ] ; then
-  <%=nagios_plugins_dir%>/check_mysql -u $user -p $password
+  <%=@nagios_plugins_dir%>/check_mysql -u $user -p $password
 else
-  <%=nagios_plugins_dir%>/check_mysql
+  <%=@nagios_plugins_dir%>/check_mysql
 fi

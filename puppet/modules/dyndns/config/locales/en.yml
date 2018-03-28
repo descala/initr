@@ -1,0 +1,4 @@
+en:
+  field_ddns_domain: Domain
+  field_skip_nagios_check: Skip router nagios check
+

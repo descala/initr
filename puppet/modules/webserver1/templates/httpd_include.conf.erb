@@ -18,7 +18,7 @@
   ServerAdmin  "webmaster@<%=@name%>"
 <% if @railsapp == "true" -%>
   DocumentRoot /var/www/<%=@name%>/htdocs/<%=@rails_root%>
-  RailsSpawnMethod <%=@rails_spawn_method.blank? ? "smart" : rails_spawn_method %>
+  RailsSpawnMethod <%=@rails_spawn_method.empty? ? "smart" : @rails_spawn_method %>
   <Directory /var/www/<%=@name%>/htdocs/<%=@rails_root%>>
      AllowOverride all
      Options -MultiViews

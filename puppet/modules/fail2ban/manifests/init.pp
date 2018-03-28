@@ -39,7 +39,7 @@ class fail2ban($jails=[],$mailto="",$custom_jails="") {
         mode => '0755',
         source => "puppet:///modules/fail2ban/munin-fail2ban_all_jails",
         require => $operatingsystem ? {
-          Gentoo => Package["munin"],
+          "Gentoo" => Package["munin"],
           default => Package["munin-node"],
         },
         notify => Service["munin-node"];

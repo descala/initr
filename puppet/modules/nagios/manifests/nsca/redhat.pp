@@ -1,7 +1,7 @@
 class nagios::nsca::redhat {
   file {
     "/usr/local/src/install_nsca.sh":
-      mode => 744,
+      mode => '0744',
       source => "puppet:///modules/nagios/install_nsca.sh";
   }
   exec {

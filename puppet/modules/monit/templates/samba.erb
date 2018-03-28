@@ -1,0 +1,65 @@
+<% if operatingsystem == "Debian" -%>
+check process smbd with pidfile /var/run/samba/smbd.pid
+  group samba
+  start program = "/etc/init.d/samba start"
+  stop  program = "/etc/init.d/samba stop"
+  if failed host 127.0.0.1 port 139 type TCP then restart
+  if 5 restarts within 5 cycles then timeout
+  depends on smbd_bin
+
+check file smbd_bin with path /usr/sbin/smbd
+  group samba
+  if failed checksum then unmonitor
+  if failed permission 755 then unmonitor
+  if failed uid root then unmonitor
+  if failed gid root then unmonitor
+
+check process nmbd with pidfile /var/run/samba/nmbd.pid
+  group samba
+  start program = "/etc/init.d/samba start"
+  stop  program = "/etc/init.d/samba stop"
+  if failed host 127.0.0.1 port 138 type UDP  then restart
+  if failed host 127.0.0.1 port 137 type UDP  then restart
+  if 5 restarts within 5 cycles then timeout
+  depends on nmbd_bin
+
+check file nmbd_bin with path /usr/sbin/nmbd
+  group samba
+  if failed checksum then unmonitor
+  if failed permission 755 then unmonitor
+  if failed uid root then unmonitor
+  if failed gid root then unmonitor
+
+<% else -%>
+check process smbd with pidfile /var/run/smbd.pid
+  group samba
+  start program = "/etc/init.d/smb start"
+  stop  program = "/etc/init.d/smb stop"
+  if failed host 127.0.0.1 port 139 type TCP  then restart
+  if 5 restarts within 5 cycles then timeout
+  depends on smbd_bin
+
+check file smbd_bin with path /usr/sbin/smbd
+  group samba
+  if failed checksum then unmonitor
+  if failed permission 755 then unmonitor
+  if failed uid root then unmonitor
+  if failed gid root then unmonitor
+
+check process nmbd with pidfile /var/run/nmbd.pid
+  group samba
+  start program = "/etc/init.d/smb start"
+  stop  program = "/etc/init.d/smb stop"
+  if failed host 127.0.0.1 port 138 type UDP  then restart
+  if failed host 127.0.0.1 port 137 type UDP  then restart
+  if 5 restarts within 5 cycles then timeout
+  depends on nmbd_bin
+
+check file nmbd_bin with path /usr/sbin/nmbd
+  group samba
+  if failed checksum then unmonitor
+  if failed permission 755 then unmonitor
+  if failed uid root then unmonitor
+  if failed gid root then unmonitor
+
+<% end -%>

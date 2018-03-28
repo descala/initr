@@ -1,0 +1,3 @@
+# Changing this file will trigger an "apt-get -y dist-upgrade" on all Debian 7
+# see puppet/modules/gnulinux/manifests/debian.pp
+dl nov  3 10:57:07 CET 2014

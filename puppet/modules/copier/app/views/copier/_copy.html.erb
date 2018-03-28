@@ -1,0 +1,33 @@
+<p><%=f.text_field("name")%></p>
+<fieldset>
+  <legend>Rsync</legend>
+  <p><%=f.text_field("bdays")%></p>
+  <p><%=f.text_field("options")%></p>
+  <p><%=f.text_field("warn")%></p>
+</fieldset>
+<fieldset>
+  <legend>Cron</legend>
+  <p><%=f.text_field("minute")%></p>
+  <p><%=f.text_field("hour")%></p>
+  <p><%=f.text_field("weekday")%></p>
+  <p><%=f.text_field("monthday")%></p>
+</fieldset>
+<fieldset>
+  <legend>Source</legend>
+  <p><%=f.text_field("source")%></p>
+  <p><%=f.text_area("excludes",:rows=>5)%></p>
+</fieldset>
+<fieldset>
+  <legend>Destination</legend>
+  <p><%=f.text_field("destination")%></p>
+  <p><%=f.text_field("historic")%></p>
+  <p><%=f.select("fs",["ext3","fat32","ntfs","curlftpfs","rsyncd","rdiff-backup"])%></p>
+  <p><%=f.select("mount_type",["usb"],:include_blank=>true)%></p>
+  <p><%=f.text_field("mount_file_to_check")%></p>
+  <p><%=f.text_field("rsyncd_password")%></p>
+</fieldset>
+<fieldset>
+  <legend>Reporting</legend>
+  <p><%=f.text_field("email")%></p>
+</fieldset>
+

@@ -15,11 +15,11 @@ class nagios::nsca_node::debian  inherits nagios::nsca_node::common {
 
   file {
     "/etc/send_nsca.cfg":
-      mode => 640,
+      mode => '0640',
       require => Package["nsca"],
       content => template("nagios/send_nsca.cfg.erb");
     "/usr/lib/nagios/plugins/heartbeat":
-      mode => 740,
+      mode => '0740',
       require => Package["nagios-plugins-basic"],
       content => template("nagios/heartbeat.sh.erb");
   }

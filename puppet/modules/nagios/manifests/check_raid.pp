@@ -3,7 +3,7 @@
 class nagios::check_raid {
   file {
     "$nagios_plugins_dir/check_raid.pl":
-      mode => 755,
+      mode => '0755',
       source => "puppet:///modules/nagios/check_raid.pl";
   }
   nagios::nsca_node::wrapper_check {

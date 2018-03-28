@@ -211,7 +211,7 @@ $p7zip_package = $operatingsystem ? {
   default => p7zip
 }
 
-$ssh = $operatingsystem ? {
+$ssh_package = $operatingsystem ? {
   /Debian|Ubuntu/ => ssh,
   default => openssh
 }

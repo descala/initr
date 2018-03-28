@@ -1,0 +1,8 @@
+en:
+  field_smbmode: "Mode"
+  field_smbdomain: "Domain"
+  field_ldappasswd: "LDAP password"
+  field_smbdir: "Shares directory"
+  field_netlogon_script: "netlogon script"
+  field_nagios_smbuser: "User for nagios check"
+  field_nagios_smbpass: "Pass for nagios check"

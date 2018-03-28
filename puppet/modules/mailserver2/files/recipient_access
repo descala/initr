@@ -1,0 +1,6 @@
+##########################
+#     Puppet managed     #
+##########################
+#  amavis --> FILTER smtp-amavis:[localhost]:10024
+
+/.*/  FILTER smtp-amavis:[localhost]:10024

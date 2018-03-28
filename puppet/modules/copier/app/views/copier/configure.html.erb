@@ -1,0 +1,21 @@
+<%= klass_menu "Copier" %>
+
+<% if @klass.copies.any? -%>
+<table width="50%">
+  <tr>
+    <th><%= I18n.t "copy_name" %></th>
+    <th></th>
+    <th></th>
+  </tr>
+<% @klass.copies.each do |copy| -%>
+    <tr>
+      <td><%=copy.name%></td>
+      <td align="center"><%= link_to "Edit",   :controller => 'copier', :action => 'edit_copy', :id => copy.id %></td>
+      <td align="center"><%= link_to "Delete", { :controller => 'copier', :action => 'destroy_copy', :id => copy.id }, :confirm => "Delete copy #{copy.name}?", :method => :post %></td>
+    </tr>
+<% end -%>
+
+</table>
+<% end -%>
+
+<%= link_to I18n.t(:new_copy), :action=>'new_copy', :id=>@klass %>

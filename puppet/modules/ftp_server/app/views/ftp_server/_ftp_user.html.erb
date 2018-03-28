@@ -1,0 +1,12 @@
+<div class="ftp_user">
+<p>
+Username
+<%= f.text_field :username, :readonly=>!f.object.new_record? %>
+Password
+<%= f.text_field :password %>
+
+<% unless f.object.new_record? %>
+  <%= f.check_box(:_destroy, :no_label=>true) %><span style="font-weight:bold;"> Remove </span>
+<% end %>
+</p>
+</div>

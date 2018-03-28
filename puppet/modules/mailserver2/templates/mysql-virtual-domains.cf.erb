@@ -1,0 +1,9 @@
+##################
+# Puppet managed #
+##################
+hosts = localhost
+user = <%= db_user %>
+password = <%= db_passwd %>
+dbname = <%= db_name %>
+
+query = SELECT domain FROM domain WHERE domain = '%s' AND active = '1'

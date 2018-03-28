@@ -17,44 +17,44 @@ class nagios::server::redhat inherits nagios::server::common {
     "/usr/local/src/install_nagios.sh":
       owner => root,
       group => root,
-      mode => 744,
+      mode => '0744',
       source => "puppet:///modules/nagios/install_nagios.sh";
     "/usr/local/nagios/etc/nagios.cfg":
       owner => nagios,
       group => nagcmd,
-      mode => 640,
+      mode => '0640',
       source => "puppet:///modules/nagios/nagios.cfg",
       notify => Service["nagios"],
       require => [User["nagios"],Exec["/usr/local/src/install_nagios.sh"]];
     "/usr/local/nagios/etc/objects/passive.cfg":
       owner => nagios,
       group => nagcmd,
-      mode => 640,
+      mode => '0640',
       content => template("nagios/passive.cfg.erb"),
       notify => Service["nagios"],
       require => User["nagios"];
     "$httpd_confdir/nagios.conf":
       owner => root,
       group => root,
-      mode => 644,
+      mode => '0644',
       source => "puppet:///modules/nagios/nagios_httpd.conf",
       notify => Exec["apache reload"];
     "/usr/local/nagios/etc/htpasswd.users":
       owner => root,
       group => $httpd_user,
-      mode => 640,
+      mode => '0640',
       content => template("nagios/htpasswd.users.erb"),
       require => Package[$httpd],
       notify => Exec["apache reload"];
     "/etc/init.d/nagios":
       owner => root,
       group => root,
-      mode => 755,
+      mode => '0755',
       source => "puppet:///modules/nagios/nagios_init_script";
     "/usr/local/nsca/etc/nsca.cfg":
       owner => nagios,
       group => nagcmd,
-      mode => 640,
+      mode => '0640',
       content => template("nagios/nsca.cfg.erb"),
       require => Exec["/usr/local/src/install_nagios.sh"];
   }

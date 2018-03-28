@@ -1,0 +1,17 @@
+<%= klass_menu "Rsyncd" %>
+
+<%= labelled_form_for(:initr_rsyncd, @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
+
+  <p><%= error_messages_for 'klass' %></p>
+
+  <p><%= f.text_area :modules, :rows => 20, :cols => 50 %></p>
+
+  <p><%= f.text_area :secrets, :rows => 5, :cols => 50 %></p>
+
+  <p><%= submit_tag("Send")%></p>
+
+<% end -%>
+
+
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

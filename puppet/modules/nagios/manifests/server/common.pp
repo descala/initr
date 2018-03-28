@@ -6,14 +6,14 @@ class nagios::server::common {
   file {
     "/etc/nagios/":
       ensure => directory,
-      mode => 755,
+      mode => '0755',
       owner => nagios,
       group => $nagios_group;
     # file to manually enter conf
     "/etc/nagios/nagios_extra.cfg":
       owner => nagios,
       group => $nagios_group,
-      mode => 0644,
+      mode => '0064'4,
       ensure => file,
       replace => false,
       require => File["/etc/nagios"];
@@ -26,7 +26,7 @@ class nagios::server::common {
       "/etc/nagios/nagios_serviceescalation.cfg" ]:
       owner => nagios,
       group => $nagios_group,
-      mode => 0644,
+      mode => '0064'4,
       ensure => file,
       replace => false,
       require => File["/etc/nagios"],
@@ -34,14 +34,14 @@ class nagios::server::common {
     "/etc/nagios/templates":
       owner => nagios,
       group => $nagios_group,
-      mode => 640,
+      mode => '0640',
       recurse => true,
       source => "puppet:///modules/nagios/templates",
       notify => Service["nagios"];
     "/etc/nagios/templates/passive.cfg":
       owner => nagios,
       group => $nagios_group,
-      mode => 640,
+      mode => '0640',
       recurse => true,
       content => template("nagios/passive.cfg.erb"),
       notify => Service["nagios"],
@@ -49,7 +49,7 @@ class nagios::server::common {
     "/etc/nagios/templates/templates.cfg":
       owner => nagios,
       group => $nagios_group,
-      mode => 640,
+      mode => '0640',
       recurse => true,
       content => template("nagios/templates.cfg.erb"),
       notify => Service["nagios"],

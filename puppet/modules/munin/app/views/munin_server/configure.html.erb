@@ -1,0 +1,15 @@
+<%= klass_menu "Munin server" %>
+
+<%= labelled_form_for(:initr_munin_server, @klass, :url => {:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
+
+  <p><%= f.text_field("authorized_referer") %> (currently unused)</p>
+  <p><%= f.select("protocol", ['http', 'https']) %></p>
+  <p><%= f.text_field("url") %></p>
+  <p><%= f.check_box("cgi") %></p>
+
+  <p><%= submit_tag "Save" %></p>
+
+<% end -%>
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+

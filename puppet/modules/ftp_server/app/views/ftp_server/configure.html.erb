@@ -1,0 +1,48 @@
+<%= klass_menu "Ftp Server" %>
+
+<%= form_for @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'} do |server_form| -%>
+
+  <p><%=error_messages_for 'klass'%></p>
+
+  <fieldset>
+    <legend>Server configuration</legend>
+    <p>
+    <%= label_tag :ftp_writeable, "FTP Write access" %>
+    <%= server_form.check_box :ftp_writeable %>
+    </p>
+    <p>
+    <%= label_tag :home_writeable, "Home dir write access" %>
+    <%= server_form.check_box :home_writeable %>
+    </p>
+  </fieldset>
+
+  <fieldset>
+    <legend>FTP users</legend>
+    <div id="ftp_users">
+    <%= server_form.fields_for :ftp_users do |user_form| %>
+      <%= render :partial => 'ftp_user', :locals => { :f => user_form } %>
+    <% end %>
+    </div>
+
+    <p>
+    <%= add_user_link(server_form) %>
+    </p>
+    <p>note that removing an user you are also deleting its files</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Additional users allowed to connect but not managed</legend>
+    <p><%=server_form.text_field :extra_users%> (space separated)</p>
+  </fieldset>
+
+  <p>
+  <%= server_form.submit %>
+  </p>
+
+<% end -%>
+
+<%=
+  content_for :header_tags do
+    javascript_include_tag('ftp_server.js', :plugin => 'ftp_server')
+  end
+%>

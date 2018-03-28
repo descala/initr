@@ -36,19 +36,19 @@ class nagios::server::debian inherits nagios::server::common {
       content => template("nagios/htpasswd.users.erb"),
       owner => root,
       group => $httpd_user,
-      mode => 0640,
+      mode => '0064'0,
       require => Package["nagios3"];
     # needed for nagios external command (/usr/share/doc/nagios3/README.Debian)
     "/var/lib/nagios3":
       owner => nagios,
       group => nagios,
-      mode => 0751,
+      mode => '0075'1,
       require => Package["nagios3"];
     # needed for nagios external command (/usr/share/doc/nagios3/README.Debian)
     "/var/lib/nagios3/rw":
       owner => nagios,
       group => www-data,
-      mode => 2710,
+      mode => '0271'0,
       require => Package["nagios3"];
     "/etc/nagios3/nagios.cfg":
       content => template("nagios/nagios.cfg.erb"),
@@ -67,7 +67,7 @@ class nagios::server::debian inherits nagios::server::common {
     "/etc/nsca.cfg":
       owner => nagios,
       group => $nagios_group,
-      mode => 640,
+      mode => '0640',
       content => template("nagios/nsca.cfg.erb"),
       require => [Package["nsca"], Package["nagios"]],
       notify => Service["nsca"];

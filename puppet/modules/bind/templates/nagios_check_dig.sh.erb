@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
-HOST="<%=fqdn%>"
-CONF="<%=send_nsca_cfg%>"
-SERVER="<%=nagios_server%>"
+HOST="<%=@fqdn%>"
+CONF="<%=@send_nsca_cfg%>"
+SERVER="<%=@nagios_server%>"
 PORT="5667"
-NSCA="<%=send_nsca%>"
-MASTER_ZONES="<%=var_dir%>/puppet_zones"
-SLAVE_ZONES= "<%=var_dir%>/puppet_slave_zones"
+NSCA="<%=@send_nsca%>"
+MASTER_ZONES="<%=@var_dir%>/puppet_zones"
+SLAVE_ZONES= "<%=@var_dir%>/puppet_slave_zones"
 
 def check_zones(zones, nagios_name)
   zko = []
