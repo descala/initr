@@ -79,14 +79,6 @@ class Initr::NodeInstance < Initr::Node
     end
   end
 
-  def puppet_attribute(attribute, default=nil)
-    begin
-      puppet_host.send(attribute)
-    rescue
-      default
-    end
-  end
-
   def puppetversion
     fact('puppetversion','?')
   end
@@ -125,24 +117,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def ip
-    puppet_attribute('ipaddress')
-  end
-
-  def compile_warning?
-    begin
-      (Time.now - puppet_attribute('last_compile')) > 60 * 30
-    rescue
-      false
-    end
-  end
-
-  def compile
-    begin
-      remaining(puppet_attribute('last_compile'))
-    rescue Exception
-      ''
-    end
-
+    fact('ipaddress')
   end
 
   def kernel
@@ -159,7 +134,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def config_errors
-    self.parameters["classes"]["common::configuration_errors"]["errors"]
+    self.parameters["classes"]["common::configuration_errors"]["errors"] rescue []
   end
 
   def report

@@ -95,5 +95,11 @@ end
       f.puts "DOMAIN: http://localhost:3000"
     end
   end
+
+# Deprecated Klasses
+ActiveRecord::Base.connection.execute("delete from klasses where type='InitrWpkg';")
+ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackup';")
+ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackupServer';")
+
 #end
 

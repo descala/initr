@@ -13,7 +13,7 @@ class nagios::server::common {
     "/etc/nagios/nagios_extra.cfg":
       owner => nagios,
       group => $nagios_group,
-      mode => '0064'4,
+      mode => '0644',
       ensure => file,
       replace => false,
       require => File["/etc/nagios"];
@@ -26,7 +26,7 @@ class nagios::server::common {
       "/etc/nagios/nagios_serviceescalation.cfg" ]:
       owner => nagios,
       group => $nagios_group,
-      mode => '0064'4,
+      mode => '0644',
       ensure => file,
       replace => false,
       require => File["/etc/nagios"],

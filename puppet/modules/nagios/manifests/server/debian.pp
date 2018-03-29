@@ -36,19 +36,19 @@ class nagios::server::debian inherits nagios::server::common {
       content => template("nagios/htpasswd.users.erb"),
       owner => root,
       group => $httpd_user,
-      mode => '0064'0,
+      mode => '0640',
       require => Package["nagios3"];
     # needed for nagios external command (/usr/share/doc/nagios3/README.Debian)
     "/var/lib/nagios3":
       owner => nagios,
       group => nagios,
-      mode => '0075'1,
+      mode => '0751',
       require => Package["nagios3"];
     # needed for nagios external command (/usr/share/doc/nagios3/README.Debian)
     "/var/lib/nagios3/rw":
       owner => nagios,
       group => www-data,
-      mode => '0271'0,
+      mode => '2710',
       require => Package["nagios3"];
     "/etc/nagios3/nagios.cfg":
       content => template("nagios/nagios.cfg.erb"),

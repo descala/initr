@@ -248,15 +248,10 @@ class Initr::NagiosServer < Initr::Klass
   # if we return here a host that is not defined in nagios_host.cfg, nagios will fail to restart
   def nagios_hosts_for(proj)
     members = []
-    proj.nodes.collect do |n|
-      next if n.puppet_host.nil?
-      # check that node has a Nagios_host exported resource with server tag
-      exported_resources = n.puppet_host.resources.where("exported=true and restype='Nagios_host'")
-      exported_resources.each do |r|
-        if r.puppet_tags.collect {|pt| pt.name}.include? address
-          members << n
-        end
-      end
+    proj.nodes.each do |n|
+      exported_resources = Initr.puppetdb.request('', "resources {certname = '#{n.name}' and type = 'Nagios_host' and exported = true }").data
+      next if exported_resources.empty?
+      members << n if exported_resources[0]['parameters']['tag'] == address
     end
     members
   end
