@@ -8,7 +8,6 @@ class NodeController < InitrController
   before_filter :find_project, :only => [:new]
   before_filter :find_optional_project, :only => [:list]
   before_filter :find_report, :only => [:report]
-  before_filter :find_resource, :only => [:resource]
   before_filter :authorize,
     :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report]
   before_filter :authorize_global, :only => [:list,:facts,:new_template]
@@ -140,14 +139,12 @@ class NodeController < InitrController
   end
   
   def destroy_exported_resources
-    (render_403; return) unless @node && @node.editable_by?(User.current)
-    @node.destroy_exported_resources
-    redirect_to :controller => 'klass', :action => 'list', :id => @node
+    # (render_403; return) unless @node && @node.editable_by?(User.current)
+    # @node.destroy_exported_resources
+    flash[:notice] = "TODO: destroy_exported_resources not implemented"
+    redirect_to :controller => 'klass', :action => 'list', :id => @node, :tab => 'exported_resources'
   end
 
-  def resource
-  end
-  
   def get_host_definition
     if !Rails.env.production? or request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       node = Initr::NodeInstance.find_by_name(params[:hostname])
@@ -257,12 +254,6 @@ class NodeController < InitrController
   def find_report
     @report = Initr::Report.find params[:id]
     @node = @report.node
-    @project = @node.project
-  end
-
-  def find_resource
-    @resource = Puppet::Rails::Resource.find params[:id]
-    @node = Initr::NodeInstance.find @resource.host.name
     @project = @node.project
   end
 

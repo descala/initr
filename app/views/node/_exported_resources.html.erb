@@ -12,8 +12,8 @@
       </tr>
       <% @exported_resources.each do |name, value| %>
         <tr class="<%= cycle('odd', 'even') %>">
-          <td><%= link_to name, :controller=>'node', :action=>'resource', :id=>name %></td>
-          <td><%= value %></td>
+          <td style='text-align:left;'><%= name %></td>
+          <td title="<%= value %>"><%= value['tag'] %></td>
         </tr>
       <% end %>
     </table>
