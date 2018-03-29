@@ -8,7 +8,8 @@ class nagios::server::common {
       ensure => directory,
       mode => '0755',
       owner => nagios,
-      group => $nagios_group;
+      group => $nagios_group,
+      require => Package['nagios'];
     # file to manually enter conf
     "/etc/nagios/nagios_extra.cfg":
       owner => nagios,

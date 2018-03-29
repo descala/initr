@@ -4,6 +4,7 @@ class nagios::server {
     "Debian": {
       case $lsbdistcodename {
         dapper: { include nagios::server::redhat }
+        stretch: { include nagios::server::debian_stretch }
         default: { include nagios::server::debian }
       }
     }

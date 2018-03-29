@@ -81,7 +81,7 @@ class Initr::NagiosServer < Initr::Klass
       # WARNING
       # TODO passwords are usernames TODO
       # WARNING
-      nagios_users[username] = username.crypt(random_string(2))
+      nagios_users[username] = username.crypt('asdfsecret')
     end
     nagios_users
   end
