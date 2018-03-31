@@ -28,12 +28,12 @@ define ssh_station::server::operator_user($pubkey,$nodes) {
       require => User[$username];
   }
 
-  # generate dsa key for the user, this key will be authorized on ssh_station clients
+  # generate RSA key for the user, this key will be authorized on ssh_station clients
   exec {
-    "ssh-keygen -t dsa -C '$username' -N '' -f /home/ssh_station_operators/$username/.ssh/id_dsa":
+    "ssh-keygen -t rsa -C '$username' -N '' -f /home/ssh_station_operators/$username/.ssh/id_rsa":
       user => $username,
       require => [ File["/home/ssh_station_operators/$username/.ssh"], User[$username] ],
-      unless => "test -f /home/ssh_station_operators/$username/.ssh/id_dsa";
+      unless => "test -f /home/ssh_station_operators/$username/.ssh/id_rsa";
   }
 
   # key provided by the user to redmine (authorized on server)
