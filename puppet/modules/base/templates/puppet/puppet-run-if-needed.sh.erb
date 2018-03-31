@@ -7,7 +7,7 @@ function run_puppet {
 
 function run_puppet_if_needed {
   sleep $[ ( $RANDOM % 10 ) ]
-  last_config=$(curl -k -f <%= initr_url%>/puppetrun_<%=node_hash%>)
+  last_config=$(curl -k -f <%= @initr_url%>/puppetrun_<%=@node_hash%>)
   if [ -n "$last_config" ]; then
     last_run=$(cat /etc/puppet/initr_conf_last_config)
     if [ -z "$last_run" ]; then

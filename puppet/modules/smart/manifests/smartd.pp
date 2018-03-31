@@ -2,7 +2,7 @@ class smart::smartd inherits smart::smartd_conf_only {
 
   case $operatingsystem {
     "Debian": {
-      Service[$::smartd_service] {
+      Service[$smartd_service] {
         name => smartmontools,
         require => [ Package[$smartd_packagename], File[smartd-notice] ],
         hasstatus => false,
@@ -17,7 +17,7 @@ class smart::smartd inherits smart::smartd_conf_only {
       warning("Mandriva: install smartmontools manually.")
     }
     default: {
-      Service[$::smartd_service] {
+      Service[$smartd_service] {
         require => [ Package[$smartd_packagename], File[smartd-notice] ],
       }
     }

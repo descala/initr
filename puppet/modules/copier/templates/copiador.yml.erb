@@ -1,21 +1,21 @@
 # directori d'on volem fer el backup
-origen: <%=source%>
+origen: <%=@source%>
 
 # directori on guardar el backup
-desti: <%=destination%>
+desti: <%=@destination%>
 
 # directori on desarem l'historic
-historic: <%=historic%>
+historic: <%=@historic%>
 
 # dies d'historic a guardar
-bdays: <%=bdays%>
+bdays: <%=@bdays%>
 
 # sistema de fitxers del desti
 # accepta: ext3, ntfs, fat32, curlftpfs, rsyncd, rdiff-backup
-fs: <%=fs%>
+fs: <%=@fs%>
 
 # fitxer de log
-log: <%="/var/log/#{name}"%>
+log: <%="/var/log/#{@name}"%>
 
 # mostrar missatges de debug?
 #debug: true
@@ -26,22 +26,22 @@ debug: false
 dryrun: false
 
 # fitxer d'excludes (si no n'hi ha, en blanc)
-exclude: <%="/usr/local/etc/copiador/#{name}_excludes"%>
+exclude: <%="/usr/local/etc/copiador/#{@name}_excludes"%>
 
 # opcions addicionals per passar directament al rsync
-opcions: <%=options%>
+opcions: <%=@options%>
 
 ### per la comprovacio de mount
 # tipus de dispositiu a muntar
-mount_type: <%=mount_type%>
+mount_type: <%=@mount_type%>
 # fitxer a comprovar si veiem
-mount_file_to_check: <%=mount_file_to_check%>
+mount_file_to_check: <%=@mount_file_to_check%>
 
 # nagios service name:
-nagios_name: <%=name%>
+nagios_name: <%=@name%>
 
 # rsyncd password:
-rsyncd_password: <%=rsyncd_password%>
+rsyncd_password: <%=@rsyncd_password%>
 
 # report to email 
-email: <%=email%>
+email: <%=@email%>
