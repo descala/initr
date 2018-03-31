@@ -33,8 +33,8 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $use
 
   @@ssh_authorized_key { "backups for $name":
     ensure => $ensure,
-    key => $sshdsakey,
-    type => "dsa",
+    key => $sshrsakey,
+    type => "rsa",
     options => "no-port-forwarding",
     user => $username,
     target => "$backups_path/webservers/$name/.ssh/authorized_keys",

@@ -47,7 +47,7 @@ class Initr::SshStationServer < Initr::Klass
     ssh_info = []
     self.nodes.sort.each do |n|
       next unless n.is_a? Initr::NodeInstance # Skip node templates
-      node_key = n.fact("ssh_station_sshdsakey")
+      node_key = n.fact("ssh_station_sshrsakey")
       node_port = n.klasses.find_by_type("Initr::SshStation").port_for_service(22).num rescue nil
       next if node_key.nil? or node_port.nil?
       ssh_info << [n.fqdn,node_port,node_key]
@@ -59,7 +59,7 @@ class Initr::SshStationServer < Initr::Klass
     ssh_info = []
     self.nodes.sort.each do |n|
       next unless n.is_a? Initr::NodeInstance # Skip node templates
-      node_key = n.fact("ssh_station_sshdsakey")
+      node_key = n.fact("ssh_station_sshrsakey")
       node_port = n.klasses.find_by_type("Initr::SshStation").port_for_service(22).num rescue nil
       next if node_key.nil? or node_port.nil?
       ssh_info << %{Host #{n.fqdn}
