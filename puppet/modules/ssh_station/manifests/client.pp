@@ -75,8 +75,8 @@ class ssh_station::client {
     }
     'Debian': {
       case $::lsbmajdistrelease {
-        '8': { include ssh_station::systemd_client }
-        default: { include ssh_station::sysv_client }
+        '4','5','6','7': { include ssh_station::sysv_client }
+        default: { include ssh_station::systemd_client }
       }
     }
     default:  { include ssh_station::sysv_client }
