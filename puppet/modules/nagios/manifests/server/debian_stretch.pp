@@ -53,7 +53,7 @@ class nagios::server::debian_stretch inherits nagios::server::common {
       owner => nagios,
       group => $nagios_group,
       mode => '0640',
-      content => template("nagios/nsca.cfg.erb"),
+      content => template("nagios/nsca_icinga.cfg.erb"),
       require => [Package["nsca"], Package["icinga"]],
       notify => Service["nsca"];
   }

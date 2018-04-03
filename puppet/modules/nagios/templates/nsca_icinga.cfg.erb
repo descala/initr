@@ -1,0 +1,16 @@
+##################
+# puppet managed #
+##################
+log_facility=daemon
+pid_file=/var/run/nsca.pid
+server_port=5667
+nsca_user=nagios
+nsca_group=nogroup
+debug=1
+command_file=/var/lib/icinga/rw/icinga.cmd
+alternate_dump_file=/var/lib/icinga/rw/icinga.dump
+aggregate_writes=0
+append_to_file=0
+max_packet_age=30
+password=<%=@nsca_decryption_password%>
+decryption_method=3
