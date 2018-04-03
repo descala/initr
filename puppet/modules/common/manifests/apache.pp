@@ -3,7 +3,7 @@ class common::apache {
   if array_includes($classes,"nagios::nsca_node") {
     include common::apache::nagios
   }
-  if array_includes($classes,"munin::server") {
+  if array_includes($classes,"munin") {
     include common::apache::munin
   }
 
