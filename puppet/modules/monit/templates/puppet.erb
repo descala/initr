@@ -1,5 +1,5 @@
 check process puppet
-<% if clientversion =~ /^0\./ -%>
+<% if @clientversion =~ /^0\./ -%>
   with pidfile /var/run/puppet/puppetd.pid
 <% else -%>
   with pidfile /var/run/puppet/agent.pid

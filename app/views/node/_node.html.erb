@@ -1,9 +1,18 @@
 <p class="box" style="text-align: center;">To complete your node installation choose your operating system and copy&paste lines in a root shell</p>
 
-<h4>Debian</h4>
+<h4>Debian Stretch</h4>
 <pre>
 <% if Setting[:protocol] == "https" -%>
  apt-get install ca-certificates && wget -qO - <%= install_url(:action=>'debian',:id=>@node.name,:protocol=>'https') %> | /bin/sh
+<% else -%>
+ wget -qO - <%= install_url(:action=>'debian',:id=>@node.name) %> | /bin/sh
+<% end -%>
+</pre>
+
+<h4>Debian Jessie</h4>
+<pre>
+<% if Setting[:protocol] == "https" -%>
+ apt-get install ca-certificates && wget -qO - <%= install_url(:action=>'debian_jessie',:id=>@node.name,:protocol=>'https') %> | /bin/sh
 <% else -%>
  wget -qO - <%= install_url(:action=>'debian',:id=>@node.name) %> | /bin/sh
 <% end -%>

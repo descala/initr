@@ -1,4 +1,4 @@
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 check process smbd with pidfile /var/run/samba/smbd.pid
   group samba
   start program = "/etc/init.d/samba start"

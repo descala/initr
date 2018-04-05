@@ -73,8 +73,8 @@ class monit {
   }
 
   case $operatingsystem {
-    Debian,Ubuntu: {
-      if $::operatingsystem == 'Debian' and $::lsbmajdistrelease =~ /7|8/ {
+    'Debian','Ubuntu': {
+      if $operatingsystem == 'Debian' and $lsbmajdistrelease =~ /7|8/ {
         file {
           $monitrc:
             mode => '0700',

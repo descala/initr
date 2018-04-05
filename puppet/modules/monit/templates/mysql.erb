@@ -1,4 +1,4 @@
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 check process mysql with pidfile /var/run/mysqld/mysqld.pid
   group database
   start program = "/etc/init.d/mysql start"
