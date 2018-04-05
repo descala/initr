@@ -1,4 +1,4 @@
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 check process cron with pidfile /var/run/crond.pid
   group system
   start program = "/etc/init.d/cron start"

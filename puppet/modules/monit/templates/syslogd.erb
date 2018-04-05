@@ -1,4 +1,4 @@
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 check process syslogd with pidfile /var/run/rsyslogd.pid
   start program = "/etc/init.d/rsyslog start"
   stop program = "/etc/init.d/rsyslog stop"

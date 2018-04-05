@@ -14,7 +14,7 @@ class samba::arxiver {
   file {
     "$samba::smbdir/documents/.ingent":
       ensure => directory,
-      mode => 755;
+      mode => '0755';
   }
 
 }
