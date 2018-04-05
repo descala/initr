@@ -3,7 +3,7 @@
 ##################
 protocol=dyndns2
 use=cmd, cmd='/usr/bin/dig +short myip.opendns.com @resolver1.opendns.com'
-server=<%=Setting.host_name%>
+server=<%=@ddns_domain%>
 login=<%=@fqdn%>
 password=<%=@ddns_pass%>
 <%=@fqdn%>.<%=@ddns_domain%>
