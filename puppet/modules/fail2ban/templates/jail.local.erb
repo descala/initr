@@ -16,7 +16,7 @@ filter   = dovecot
 <% else -%>
 filter   = mail
 <% end -%>
-action   = iptables[name=pop3, port=pop3, protocol=tcp]
+action   = iptables[name=pop3, port="pop3,pop3s", protocol=tcp]
 <% unless scope.lookupvar('fail2ban::mailto').empty? -%>
            sendmail-whois[name=POP3, dest=<%= scope.lookupvar('fail2ban::mailto') %>, sender=fail2ban@<%= scope.lookupvar("::fqdn") %>]
 <% end -%>
