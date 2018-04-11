@@ -11,5 +11,14 @@ class common::clamav::debian {
       ensure => running;
   }
 
+  if array_includes($classes,'common::amavis::common') {
+    user {
+      "clamav":
+        groups     => ['amavis'],
+        membership => 'minimum',
+        require => Package['amavisd-new'];
+    }
+  }
+
 }
 
