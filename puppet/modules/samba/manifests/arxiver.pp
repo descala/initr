@@ -8,7 +8,7 @@ class samba::arxiver {
   user { "arxiver":
     comment => "Ingent Arxiver",
     ensure => present,
-    shell => "/sbin/nologin",
+    shell => $nologin,
   }
 
   file {

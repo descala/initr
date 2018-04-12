@@ -17,7 +17,7 @@ class common::postfix::disclaimer {
     comment => "Postfix Filters",
     ensure => present,
     home => "/var/spool/filter",
-    shell => "/sbin/nologin"
+    shell => $nologin,
   }
   file { "/var/spool/filter":
     ensure => directory,
