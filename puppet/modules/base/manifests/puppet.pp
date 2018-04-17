@@ -1,6 +1,6 @@
 class base::puppet {
 
-  # Let's assume puppet is installed, rigth?
+  # Let's assume puppet is installed, right?
 
   # case $operatingsystem {
   #   "CentOS","Fedora","Mandriva": {

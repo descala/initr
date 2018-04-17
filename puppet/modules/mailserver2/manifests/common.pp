@@ -79,7 +79,7 @@ class mailserver2::common {
       uid => 201,
       gid => mail,
       home => $mail_location,
-      shell => "/sbin/nologin";
+      shell => $nologin,
   }  
   
   service { 
