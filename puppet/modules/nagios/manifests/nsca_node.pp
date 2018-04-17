@@ -7,7 +7,7 @@ class nagios::nsca_node {
         default: { include nagios::nsca_node::debian }
       }
     }
-    Ubuntu: {
+    "Ubuntu": {
       include nagios::nsca_node::debian
       }
     default: { include nagios::nsca_node::redhat }
