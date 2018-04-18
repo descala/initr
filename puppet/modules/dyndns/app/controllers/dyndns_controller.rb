@@ -12,7 +12,7 @@ class DyndnsController < InitrController
       else
         stderr = ""
         IO.popen("nsupdate -k /etc/bind/keys/Klocalhost*.private 2>&1 >/dev/null", 'r+') { |io|
-          io.puts "server 127.0.0.1"
+          io.puts "server #{@klass.ddns_domain}"
           if @klass.current_url
             io.puts "update delete #{@klass.current_url}"
           else
