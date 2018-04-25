@@ -1,12 +1,4 @@
 class ssh_station::server_user {
-  case $operatingsystem {
-    "Debian": {
-      $nologin = "/bin/false"
-    }
-    default: {
-      $nologin = "/sbin/nologin"
-    }
-  }
   user { "sshst":
     comment => "Ssh station user",
     ensure => present,
