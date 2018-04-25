@@ -11,3 +11,4 @@ es:
   field_nsca_decryption_password: Contraseña de encriptación NSCA
   field_admin_contactgroup: Grupo administrador (recive las notificaciones de todos los grupos)
   invalid_admin_contactgroup: Grupo administrador inválido
+  field_nagios_webserver: Servidor web

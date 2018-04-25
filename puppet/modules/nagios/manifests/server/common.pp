@@ -1,6 +1,9 @@
 class nagios::server::common {
 
-  include common::apache
+  if $nagios_webserver == 'other' {
+  } else {
+    include common::apache
+  }
   include nagios::nsca
 
   file {

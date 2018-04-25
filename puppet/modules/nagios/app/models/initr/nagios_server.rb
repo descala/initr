@@ -10,7 +10,9 @@ class Initr::NagiosServer < Initr::Klass
   attr_accessor :password, :password_confirmation
   attr_accessible  :password, :password_confirmation
 
-  self.accessors_for(["address","nagiosadmin_password","nsca_decryption_password","admin_contactgroup"])
+  self.accessors_for(["address","nagiosadmin_password",
+                      "nsca_decryption_password","admin_contactgroup",
+                      "nagios_webserver"])
 
   def set_password
     self.nagiosadmin_password = password.crypt(random_string(2)) unless password.blank?
@@ -38,7 +40,8 @@ class Initr::NagiosServer < Initr::Klass
       "nagiosadmin_password" => nagiosadmin_password,
       "nagios_users" => nagios_users,
       "nsca_decryption_password" => nsca_decryption_password,
-      "admin_contactgroup" => admin_contactgroup }
+      "admin_contactgroup" => admin_contactgroup,
+      "nagios_webserver" => nagios_webserver }
   end
 
   def print_parameters
