@@ -1,5 +1,12 @@
 class gnulinux::debian6 inherits gnulinux::debian {
 
+  if $is_virtual != "true" {
+    package {
+      "firmware-linux-nonfree":
+        ensure => present;
+    }
+  }
+
   # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=380425
   # al actualitzar el paquet automàticament amb force-confold
   # aquest fitxer no s'havia actualitzat

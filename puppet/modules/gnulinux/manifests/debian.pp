@@ -14,13 +14,6 @@ class gnulinux::debian inherits gnulinux {
       ensure => installed;
   }
 
-  if $is_virtual != "true" {
-    package {
-      "firmware-linux-nonfree":
-        ensure => present;
-    }
-  }
-
   # change this file to upgrade debian with puppet
   file {
     "/etc/apt/auto_upgrade":
