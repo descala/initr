@@ -1,10 +1,9 @@
 class Initr::Base < Initr::Klass
 
-
   self.accessors_for(%w(puppet))
 
   after_initialize {
-    self.puppet ||= "none"
+    self.puppet ||= "normal"
   }
 
   def name
