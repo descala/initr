@@ -73,6 +73,8 @@ class Initr::NodeInstance < Initr::Node
     @exported_resources = hash
   end
 
+  # TODO we should do here the equivalent to this in the puppetmaster:
+  #      puppet node deactivate #{certname}
   def destroy_exported_resources
     exported_resources.each do |r|
       r.destroy
