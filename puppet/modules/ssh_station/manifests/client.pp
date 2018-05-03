@@ -71,7 +71,10 @@ class ssh_station::client {
   # Ubuntu uses upstart and Debian systemd since Jessie
   case $::operatingsystem {
     'Ubuntu': {
-      include ssh_station::upstart_client
+      case $::lsbmajdistrelease {
+        '8.04','14.04': { include ssh_station::upstart_client }
+        default: { include ssh_station::systemd_client }
+      }
     }
     'Debian': {
       case $::lsbmajdistrelease {
