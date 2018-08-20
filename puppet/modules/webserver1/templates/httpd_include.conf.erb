@@ -35,7 +35,7 @@
     Order allow,deny
     Allow from all
 <% if @use_suphp == 'true' -%>
-<% if @operatingsystem == 'Debian' and @lsbmajdistrelease == '8' -%>
+<% if @operatingsystem == 'Debian' and ( @lsbmajdistrelease == '8' or @lsbmajdistrelease == '9')  -%>
     # use mpm_itk
     AssignUserId <%=@user_ftp%> <%=@user_ftp%>
 <% else -%>
