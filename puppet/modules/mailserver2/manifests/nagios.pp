@@ -12,7 +12,7 @@ class mailserver2::nagios {
     }
   } else {
     nagios::check { 'smtp_ssl':
-      command => 'check_smtp -H localhost -S -D 30,15',
+      command => 'check_smtp -H localhost -S -D 28,15',
     }
   }
 
