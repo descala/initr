@@ -4,22 +4,22 @@
 # Samba as PDC with an LDAP backend
 
 [global]
-workgroup = <%=smbdomain%>
+workgroup = <%= scope.lookupvar('smbdomain') %>
 passdb backend = ldapsam:"ldap://localhost:389"
-ldap admin dn = "cn=manager,dc=<%=smbdomain%>,dc=loc"
+ldap admin dn = "cn=manager,dc=<%= scope.lookupvar('smbdomain') %>,dc=loc"
 ldap ssl = off
 ldap delete dn = no
 ldap user suffix = ou=People
 ldap group suffix = ou=Groups
 ldap machine suffix = ou=People
-ldap suffix = dc=<%=smbdomain%>,dc=loc
+ldap suffix = dc=<%= scope.lookupvar('smbdomain') %>,dc=loc
 <% if lsbdistcodename == "squeeze" -%>
 idmap uid = 10000-30000
 idmap gid = 10000-30000
 <% else -%>
 idmap config * : range = 10000-30000
 <% end -%>
-server string = <%=smbdomain%> Arxiver
+server string = <%= scope.lookupvar('smbdomain') %> Arxiver
 security = user
 hosts allow = 192. 10. 127.
 username map = /etc/samba/smbusers
