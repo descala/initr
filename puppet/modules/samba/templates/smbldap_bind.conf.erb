@@ -1,7 +1,7 @@
 ##################
 # Puppet managed #
 ##################
-slaveDN="cn=manager,dc=<%= scope.lookupvar('smbdomain') %>,dc=loc"
-slavePw="<%=ldappasswd%>"
-masterDN="cn=manager,dc=<%= scope.lookupvar('smbdomain') %>,dc=loc"
-masterPw="<%=ldappasswd%>"
+slaveDN="cn=manager,dc=<%= scope.lookupvar('samba::smbdomain') %>,dc=loc"
+slavePw="<%=scope.lookupvar('samba::ldappasswd')%>"
+masterDN="cn=manager,dc=<%= scope.lookupvar('samba::smbdomain') %>,dc=loc"
+masterPw="<%=scope.lookupvar('samba::ldappasswd')%>"
