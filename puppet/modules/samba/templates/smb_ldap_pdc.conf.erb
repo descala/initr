@@ -13,7 +13,7 @@ ldap user suffix = ou=People
 ldap group suffix = ou=Groups
 ldap machine suffix = ou=People
 ldap suffix = dc=<%= scope.lookupvar('smbdomain') %>,dc=loc
-<% if lsbdistcodename == "squeeze" -%>
+<% if @lsbdistcodename == "squeeze" -%>
 idmap uid = 10000-30000
 idmap gid = 10000-30000
 <% else -%>
