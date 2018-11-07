@@ -1,7 +1,7 @@
 ##################
 # Puppet managed #
 ##################
-suffix="dc=<%=smbdomain%>,dc=loc"
+suffix="dc=<%= scope.lookupvar('smbdomain') %>,dc=loc"
 usersdn="ou=People,${suffix}"
 computersdn="ou=People,${suffix}"
 groupsdn="ou=Groups,${suffix}"

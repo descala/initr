@@ -1,7 +1,7 @@
 ##################
 # Puppet managed #
 ##################
-slaveDN="cn=manager,dc=<%=smbdomain%>,dc=loc"
+slaveDN="cn=manager,dc=<%= scope.lookupvar('smbdomain') %>,dc=loc"
 slavePw="<%=ldappasswd%>"
-masterDN="cn=manager,dc=<%=smbdomain%>,dc=loc"
+masterDN="cn=manager,dc=<%= scope.lookupvar('smbdomain') %>,dc=loc"
 masterPw="<%=ldappasswd%>"
