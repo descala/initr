@@ -8,7 +8,7 @@ class ldap {
   }
 
   case $operatingsystem {
-    Debian: {
+    'Debian': {
       service { "$ldap_service":
         enable => true,
         ensure => running,
