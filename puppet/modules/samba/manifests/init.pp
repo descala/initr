@@ -17,7 +17,7 @@ class samba {
       owner => root,
       group => root,
       source => "puppet:///specific/smb.conf",
-      notify => Service['samba'],
+      notify => Service[$samba_service],
       require => Package['samba'];
     "${rubysitedir}/facter":
       ensure => directory;
@@ -31,7 +31,7 @@ class samba {
 
   case $operatingsystem {
     "Debian": {
-      service { samba:
+      service { $samba_service:
         require => Package[samba],
         enable => true,
         ensure => running,
@@ -41,7 +41,7 @@ class samba {
       }
     }
     default: {
-      service { samba:
+      service { $samba_service:
         name => 'smb',
         require => Package[samba],
         enable => true,

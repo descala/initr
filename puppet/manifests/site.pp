@@ -305,6 +305,13 @@ $samba_tdb_dir = $operatingsystem ? {
   /Debian|Ubuntu/ => "/var/lib/samba",
   default => "/var/cache/samba"
 }
+$samba_service = $operatingsystem ? {
+  'Debian' => $lsbmajdistrelease ? {
+    '9' => 'smbd',
+    default => 'samba'
+  }
+  default => 'samba'
+}
 $smbclient = $operatingsystem ? {
   "CentOS" => "samba-client",
   default => "smbclient"
