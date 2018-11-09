@@ -309,7 +309,7 @@ $samba_service = $operatingsystem ? {
   'Debian' => $lsbmajdistrelease ? {
     '9' => 'smbd',
     default => 'samba'
-  }
+  },
   default => 'samba'
 }
 $smbclient = $operatingsystem ? {
