@@ -434,8 +434,12 @@ $mysqld = $operatingsystem ? {
   default => "mysqld"
 }
 $mysql_dev = $operatingsystem ? {
-  /Debian|Ubuntu/ => "libmysqlclient-dev",
-  default => "mysql-devel"
+  'Ubuntu' => 'libmysqlclient-dev',
+  'Debian' => $lsbmajdistrelease ? {
+    '9' => 'libmariadbclient-dev',
+    default => 'libmysqlclient-dev'
+  },
+  default => 'mysql-devel'
 }
 $perl_net_dns = $operatingsystem ? {
   /Debian|Ubuntu/ => "libnet-dns-perl",
