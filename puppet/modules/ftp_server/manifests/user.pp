@@ -9,10 +9,10 @@ define ftp_server::user($password) {
   file {
     "/home/ftpusers/$name":
       ensure => directory,
-      owner => $name,
+      owner => 'root',
       group => $name,
       mode => $home_writeable ? {
-        "1" => '0750',
+        "1" => '0770',
         default => '0550'
       };
   }
