@@ -26,10 +26,7 @@ deb http://http.debian.net/debian wheezy main contrib non-free
 
 <% elsif lsbdistcodename == "wheezy" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "7") -%>
 # debian wheezy
-deb http://http.debian.net/debian wheezy main contrib non-free
-
-# wheezy-updates, previously known as 'volatile'
-deb http://http.debian.net/debian wheezy-updates main
+deb http://archive.debian.org/debian-archive/debian wheezy main contrib non-free
 
 <% pfw = scope.lookupvar('::packages_from_jessie')
    pfw = [] unless pfw.is_a?(Array)
@@ -42,8 +39,8 @@ deb http://http.debian.net/debian jessie main contrib non-free
 # debian jessie
 deb http://http.debian.net/debian jessie main contrib non-free
 
-# jessie-updates, previously known as 'volatile'
-deb http://http.debian.net/debian jessie-updates main
+# jessie-updates ja no esta als repos..
+#deb http://http.debian.net/debian jessie-updates main
 
 <% pfw = scope.lookupvar('::packages_from_stretch')
    pfw = [] unless pfw.is_a?(Array)
