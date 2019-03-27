@@ -21,7 +21,7 @@ deb http://archive.debian.org/debian-archive/debian squeeze-lts main contrib non
    pfw = [] unless pfw.is_a?(Array)
    if pfw.any? -%>
 # debian wheezy
-deb http://http.debian.net/debian wheezy main contrib non-free
+deb http://archive.debian.org/debian wheezy main contrib non-free
 <% end -%>
 
 <% elsif scope.lookupvar("::lsbdistcodename") == "wheezy" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "7") -%>
