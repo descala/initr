@@ -8,7 +8,7 @@
   <p><%= f.text_field :mail_location %></p>
   <p><%= f.check_box :domain_path %><%=help :help_domain_path%></p>
   <p><%= f.check_box :domain_in_mailbox %><%=help :help_domain_in_mailbox%></p>
-  <p><%= f.select :webserver,  %w(apache2 nginx)%></p>
+  <p><%= f.select :webserver,  %w(apache nginx)%></p>
   <p><%= f.select :db_backend, %w(mysql postgres)%></p>
   <p><%= f.select :webmail, %w(roundcube squirrelmail)%></p>
   <p><%= f.text_field :db_name %></p>
