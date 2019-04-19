@@ -42,7 +42,7 @@ class mailserver::common {
     include common::clamav
   }
 
-  if $mailserver::amavis == '1' {
+  if $::amavis == '1' {
     include mailserver::amavis
   }
   if $::vacation == '1' {
@@ -69,7 +69,7 @@ class mailserver::common {
       home    => $::mail_location,
       shell   => $::nologin;
   }
-  
+
   service {
     ['postfix','postgrey']:
       ensure     => running,
