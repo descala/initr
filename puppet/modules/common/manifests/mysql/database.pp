@@ -1,10 +1,11 @@
+# mysql database
 define common::mysql::database($ensure, $owner, $passwd) {
 
   $dbcr = "CREATE DATABASE IF NOT EXISTS ${name};"
   $priv = "GRANT ALL PRIVILEGES ON ${name}.* TO '${owner}'@localhost IDENTIFIED BY '${passwd}';"
 
   if $::operatingsystem == 'Debian' and $::lsbmajdistrelease in ['8','9'] {
-    $cmd='/usr/bin/mysql'
+    $cmd='/usr/bin/mysql --defaults-extra-file=/root/.my.cnf'
     $cmd_show='/usr/bin/mysqlshow'
   } else {
     $cmd='/usr/bin/mysql'

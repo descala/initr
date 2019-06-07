@@ -1,23 +1,24 @@
+# mysql
 class common::mysql {
 
-  if array_includes($classes,"nagios::nsca_node") {
+  if array_includes($classes,'nagios::nsca_node') {
     include common::mysql::nagios
   }
 
   service { $mysqld:
-    ensure => "running",
-    enable => true,
+    ensure     => 'running',
+    enable     => true,
     hasrestart => true,
   }
 
-  package { [$mysqlclient, "mysql-server"]:
-    ensure => "installed",
+  package { [$mysqlclient, 'mysql-server']:
+    ensure => 'installed',
   }
 
   file {
-    "/root/.my.cnf":
-      mode => "0600";
+    '/root/.my.cnf':
+      ensure => present,
+      mode   => '0600';
   }
 
 }
-
