@@ -8,7 +8,7 @@ module Initr
     end
 
     def puppetdb
-      PuppetDB::Client.new({:server => 'http://172.18.0.1:8080'})
+      PuppetDB::Client.new({:server => 'http://puppet:8080'})
     end
   end
 end
