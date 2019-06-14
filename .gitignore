@@ -1,2 +1,5 @@
 server_info.yml
 .DS_Store
+puppet/modules/b2bnet
+puppet/modules/ingent_common
+puppet/modules/ingent_reports
