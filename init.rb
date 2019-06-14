@@ -97,9 +97,9 @@ end
   end
 
 # Deprecated Klasses
-ActiveRecord::Base.connection.execute("delete from klasses where type='InitrWpkg';")
-ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackup';")
-ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackupServer';")
+# ActiveRecord::Base.connection.execute("delete from klasses where type='InitrWpkg';")
+# ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackup';")
+# ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackupServer';")
 
 #end
 
