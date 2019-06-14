@@ -5,7 +5,8 @@ rake redmine:load_default_data RAILS_ENV=test REDMINE_LANG=en
 
 # preload Redmine fixtures
 
-rake db:fixtures:load redmine:plugins:migrate RAILS_ENV=test
+rake db:fixtures:load redmine:plugins:migrate NAME=initr RAILS_ENV=test
+rake redmine:plugins:migrate RAILS_ENV=test
 
 # to run test with Zeus + Guard
 #

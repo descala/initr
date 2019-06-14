@@ -39,6 +39,14 @@ class Initr::NodeInstance < Initr::Node
     "no_provider"
   end
 
+  # returns the host of the puppethost of this node
+  def puppet_host
+    return @host_object if @host_object
+    @host_object = Puppet::Rails::Host.find_by_name(name)
+    logger.debug("Puppet::Rails::Host for '#{name}' is a class='#{@host_object.class}'") if logger
+    return @host_object
+  end
+
   # [
   #  {"name"=>"kernel", "value"=>"Linux"},
   #  {"name"=>"kernelrelease", "value"=>"4.9.0-4-amd64"}
