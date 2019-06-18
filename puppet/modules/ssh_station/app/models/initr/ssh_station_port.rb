@@ -13,7 +13,7 @@ class Initr::SshStationPort < ActiveRecord::Base
                           :message => "Name already exists in this node."
   before_validation :assign_port_num
 
-  attr_accessible :name, :host, :service
+  attr_accessible :name, :host, :service, :ssh_station_id, :num
 
   after_initialize {
     host ||= "localhost"
