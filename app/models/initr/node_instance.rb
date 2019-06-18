@@ -43,7 +43,7 @@ class Initr::NodeInstance < Initr::Node
   def facts
     return @facts if @facts
     data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'}").data rescue {}
-    if data.empty?
+    if data.empty? and puppet_host
       @facts = puppet_host.get_facts_hash
     else
       # [
@@ -69,7 +69,7 @@ class Initr::NodeInstance < Initr::Node
     else
       # TODO: use Puppet DB
       # facts not loaded, we are just interested in one fact
-      if fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
+      if puppet_host and fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
         fv.first.value
       else
         nil
@@ -82,7 +82,7 @@ class Initr::NodeInstance < Initr::Node
   def exported_resources
     return @exported_resources if @exported_resources
     data = Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data rescue {}
-    if data.empty?
+    if data.empty? and puppet_host
       # try with ActiveRecord instead of PuppetDB
       @exported_resources = puppet_host.get_exported_resources_hash
     else
