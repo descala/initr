@@ -26,7 +26,10 @@ class Initr::Webserver1Domain < ActiveRecord::Base
     self.awstats_www = false if self.awstats_www.nil?
   }
 
-  attr_accessible :name, :add_www, :force_www, :awstats_www, :railsapp, :rails_root, :rails_spawn_method, :web_backups_server_id, :use_suphp, :user_ftp, :password_ftp, :shell, :user_awstats, :password_awstats, :user_mysql, :dbname, :password_db, :allow_override
+  attr_accessible :name, :add_www, :force_www, :awstats_www, :railsapp, :rails_root,
+    :rails_spawn_method, :web_backups_server_id, :use_suphp, :user_ftp, :password_ftp,
+    :shell, :user_awstats, :password_awstats, :user_mysql, :dbname, :password_db,
+    :allow_override, :webserver1_id, :crypted_password
 
   def parameters
     parameters = { "name" => name,
