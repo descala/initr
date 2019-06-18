@@ -5,13 +5,6 @@ class Initr::NodeInstance < Initr::Node
   after_save :trigger_puppetrun
   after_create :add_base_klass
 
-  #TODO
-#  def validate
-#    unless user.member_of?(project) or user.admin?
-#      errors.add_to_base "User #{user.name} don't belongs to #{project.name} project."
-#    end
-#  end
-
   def add_base_klass
     b = Initr::Base.new
     self.klasses << b
@@ -47,25 +40,40 @@ class Initr::NodeInstance < Initr::Node
     return @host_object
   end
 
-  # [
-  #  {"name"=>"kernel", "value"=>"Linux"},
-  #  {"name"=>"kernelrelease", "value"=>"4.9.0-4-amd64"}
-  # ]
   def facts
     return @facts if @facts
     data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'}").data rescue {}
-    hash = {}
-    data.each do |fact|
-      hash[fact['name']] = fact['value'] rescue nil
+    if data.empty?
+      @facts = puppet_host.get_facts_hash
+    else
+      # [
+      #  {"name"=>"kernel", "value"=>"Linux"},
+      #  {"name"=>"kernelrelease", "value"=>"4.9.0-4-amd64"}
+      # ]
+      hash = {}
+      data.each do |fact|
+        hash[fact['name']] = fact['value'] rescue nil
+      end
+      @facts = hash
     end
-    @facts = hash
   end
 
   def fact(factname, default=nil)
-    if facts.has_key? factname
-      facts[factname]
+    if @facts
+      # we have previously loaded all facts
+      if facts.has_key? factname
+        facts[factname]
+      else
+        default
+      end
     else
-      default
+      # TODO: use Puppet DB
+      # facts not loaded, we are just interested in one fact
+      if fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
+        fv.first.value
+      else
+        nil
+      end
     end
   rescue
     default
@@ -74,11 +82,16 @@ class Initr::NodeInstance < Initr::Node
   def exported_resources
     return @exported_resources if @exported_resources
     data = Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data rescue {}
-    hash = {}
-    data.each do |res|
-      hash["#{res['type']}[#{res['title']}]"] = res['parameters'] rescue nil
+    if data.empty?
+      # try with ActiveRecord instead of PuppetDB
+      @exported_resources = puppet_host.get_exported_resources_hash
+    else
+      hash = {}
+      data.each do |res|
+        hash["#{res['type']}[#{res['title']}]"] = res['parameters'] rescue nil
+      end
+      @exported_resources = hash
     end
-    @exported_resources = hash
   end
 
   # TODO we should do here the equivalent to this in the puppetmaster:

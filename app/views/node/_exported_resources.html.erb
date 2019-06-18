@@ -13,7 +13,7 @@
       <% @exported_resources.each do |name, value| %>
         <tr class="<%= cycle('odd', 'even') %>">
           <td style='text-align:left;'><%= name %></td>
-          <td title="<%= value %>"><%= value['tag'] %></td>
+          <td title="<%= value %>"><%= value['tag'] || value %></td>
         </tr>
       <% end %>
     </table>
