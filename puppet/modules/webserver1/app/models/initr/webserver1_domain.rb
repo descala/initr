@@ -95,7 +95,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   end
 
   def trigger_puppetrun
-    self.webserver.trigger_puppetrun
+    self.webserver.trigger_puppetrun rescue nil
   end
 
 end
