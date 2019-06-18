@@ -68,7 +68,7 @@ class Initr::NodeInstance < Initr::Node
       end
     else
       # facts not loaded, we are just interested in one fact
-      data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'} and name = '#{factname}'").data rescue {}
+      data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}' and name = '#{factname}'}").data rescue {}
       if data.empty? and puppet_host
         if fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
           fv.first.value
