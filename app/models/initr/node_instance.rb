@@ -59,8 +59,6 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def fact(factname, default=nil)
-    # TODO: use Puppet DB
-    facts if puppet_host.nil?
     if @facts
       # we have previously loaded all facts
       if facts.has_key? factname
@@ -70,10 +68,15 @@ class Initr::NodeInstance < Initr::Node
       end
     else
       # facts not loaded, we are just interested in one fact
-      if puppet_host and fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
-        fv.first.value
+      data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'} and name = '#{factname}'").data rescue {}
+      if data.empty? and puppet_host
+        if fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
+          fv.first.value
+        else
+          nil
+        end
       else
-        nil
+        data.first['value'] rescue default
       end
     end
   rescue
