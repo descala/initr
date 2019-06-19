@@ -1,6 +1,6 @@
 <tr class="<%= cycle('odd', 'even') %> issue">
-  <td><%= os_img(node) %><span class="initr_os_version"><%= node.os_release.split('.').first %></span></td>
-  <td><span title="<%= node.puppetversion %>"><%= node.puppetversion.split('.').first %></span></td>
+  <td><%= os_img(node) %><span class="initr_os_version"><%= node.os_release.split('.').first rescue nil %></span></td>
+  <td><span title="<%= node.puppetversion %>"><%= node.puppetversion.split('.').first rescue nil %></span></td>
 <td class="subject">
   <span title="<%= node.name %>">
     <%= link_to node.fqdn, :controller => 'klass', :action => 'list', :id => node %>

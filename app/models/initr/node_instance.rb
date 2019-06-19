@@ -181,7 +181,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def <=>(other)
-    self.fqdn.downcase <=> other.fqdn.downcase
+    self.fqdn.downcase <=> other.fqdn.downcase rescue 0
   end
 
   def valid_fqdn?
