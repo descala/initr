@@ -284,7 +284,7 @@ class Initr::NagiosServer < Initr::Klass
   def admin_contactgroup_belongs_to_user
     return true if User.current.admin? or config["admin_contactgroup"].blank?
     unless User.current.projects.collect {|p| p.identifier}.include?(config["admin_contactgroup"])
-      errors.add_to_base l(:invalid_admin_contactgroup)
+      errors.add :base, l(:invalid_admin_contactgroup)
     end
   end
 

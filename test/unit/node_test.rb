@@ -10,10 +10,8 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal "Initr::NodeInstance", node.type
     host = node.puppet_host 
     assert_equal "node_001", host.name
-    assert_equal "google-public-dns-a.google.com", host.get_facts_hash['fqdn'].first.value
-
-    # TODO
-    #assert_equal "google-public-dns-a.google.com", node.fact('fqdn')
+    assert_equal "google-public-dns-a.google.com", host.get_facts_hash['fqdn']
+    assert_equal "google-public-dns-a.google.com", node.fact('fqdn')
   end
   
 end

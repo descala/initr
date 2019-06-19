@@ -20,6 +20,16 @@ class Initr::NodeInstance < Initr::Node
     end
   end
 
+  def update_fact_cache
+    update_attributes(
+      fqdn: fact('fqdn'),
+      lsbdistid: fact('lsbdistid'),
+      lsbdistrelease: fact('lsbdistrelease'),
+      kernelrelease: fact('kernelrelease'),
+      puppetversion: fact('puppetversion')
+    )
+  end
+
   def provider
     "User provided"
   end
@@ -106,19 +116,14 @@ class Initr::NodeInstance < Initr::Node
     end
   end
 
-  def puppetversion
-    fact('puppetversion','?')
-  end
-
   def os
-    f = fact('lsbdistid')
+    f = lsbdistid
     f = fact('operatingsystem') unless f
-    logger.debug("OS= '#{f}'") if logger
     return f
   end
 
   def os_release
-    f = fact('lsbdistrelease')
+    f = lsbdistrelease
     f = fact('operatingsystemrelease','?') unless f
     return f
   end
@@ -135,12 +140,8 @@ class Initr::NodeInstance < Initr::Node
     d
   end
 
-  def fqdn
-    fact("fqdn", hostname)
-  end
-
   def reverse_fqdn
-    self.fqdn.split(".").reverse.join("_")
+    fqdn.split(".").reverse.join("_")
   end
 
   def ip
@@ -149,7 +150,7 @@ class Initr::NodeInstance < Initr::Node
 
   def kernel
     begin
-      a = fact('kernelrelease').split(/\.|-|mdk/)
+      a = kernelrelease.split(/\.|-|mdk/)
         "#{a[0]}.#{a[1]}.#{a[2]}-#{a[3]}"
     rescue Exception
       ''

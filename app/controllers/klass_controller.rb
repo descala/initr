@@ -6,6 +6,9 @@ class KlassController < InitrController
   before_filter :authorize
  
   def list
+    @facts = @node.facts
+    @node.update_fact_cache
+
     @html_title=[@node.fqdn, "klasses"]
     (render_403; return) unless @node.visible_by?(User.current)
     @klass_definitions = []
@@ -22,8 +25,10 @@ class KlassController < InitrController
     @templates = @node.project.node_templates if User.current.allowed_to?(:view_nodes,@node.project)
     @templates += User.current.node_templates.collect {|t| t if t.visible_by?(User.current)}.compact
     @templates.uniq!
-    @facts = @node.facts
-    @external_nodes_yaml = YAML.dump @node.parameters
+
+    # TODO this is too slow
+    @external_nodes_yaml = YAML.dump @node.parameters if params[:external_nodes]
+
     flash.now[:error] = @node.config_errors.join("<br />") if @node.config_errors?
     if @node.exported_resources
       @exported_resources = @node.exported_resources 

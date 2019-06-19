@@ -41,3 +41,8 @@ ul.klasses a {
     vertical-align: middle;
     max-width: 156px;
 }
+
+.initr_os_version {
+  vertical-align: text-bottom;
+  font-size: smaller;
+}
