@@ -19,11 +19,6 @@ class samba {
       source => "puppet:///specific/smb.conf",
       notify => Service[$samba_service],
       require => Package['samba'];
-    "${rubysitedir}/facter":
-      ensure => directory;
-    "${rubysitedir}/facter/localsid.rb":
-      source => "puppet:///modules/samba/facter/localsid.rb",
-      mode => '0644', owner => root, group => root;
     "/etc/samba/":
       ensure => directory,
       mode => '0755', owner => root, group => root;
