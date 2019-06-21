@@ -1,7 +1,7 @@
 ##################
 # Puppet managed #
 ##################
-suffix="dc=<%= scope.lookupvar('samba::smbdomain') %>,dc=loc"
+suffix="dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc"
 usersdn="ou=People,${suffix}"
 computersdn="ou=People,${suffix}"
 groupsdn="ou=Groups,${suffix}"
@@ -9,7 +9,7 @@ idmapdn="ou=idmap,${suffix}"
 scope="sub"
 hash_encrypt="SSHA"
 userLoginShell="/bin/bash"
-userHome="<%=scope.lookupvar('samba::smbdir')%>/home/%U"
+userHome="<%=scope.lookupvar('::smbdir')%>/home/%U"
 userGecos="System User"
 defaultUserGid="513"
 defaultComputerGid="515"
@@ -17,7 +17,7 @@ skeletonDir="/etc/skel"
 defaultMaxPasswordAge="-1"
 userSmbHome="\\<%=@hostname%>\homes\%U"
 userHomeDrive="H:"
-userScript="<%=scope.lookupvar('samba::netlogon_script')%>" # make sure script file is edited under dos
+userScript="<%=scope.lookupvar('::netlogon_script')%>" # make sure script file is edited under dos
 mailDomain=""
 with_smbpasswd="0"
 smbpasswd="/usr/bin/smbpasswd"
