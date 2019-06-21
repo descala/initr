@@ -39,7 +39,7 @@ class Initr::SshStationServer < Initr::Klass
 
   def nodes
     Initr::SshStation.all.order('name').collect { |sss|
-      sss.node if active? and sss.ssh_station_server_id == id.to_s and sss.node and sss.node.project.active?
+      sss.node if active? and sss.ssh_station_server_id.to_i == id.to_i and sss.node and sss.node.project.active?
     }.compact
   end
 
