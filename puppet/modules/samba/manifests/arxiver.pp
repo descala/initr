@@ -1,8 +1,8 @@
 class samba::arxiver {
 
-  exec { "/bin/mkdir -p $samba::smbdir/documents":
-    creates => "$samba::smbdir/documents",
-    before => File["$samba::smbdir/documents/.ingent"],
+  exec { "/bin/mkdir -p $::smbdir/documents":
+    creates => "$::smbdir/documents",
+    before => File["$::smbdir/documents/.ingent"],
   }
 
   user { "arxiver":
@@ -12,7 +12,7 @@ class samba::arxiver {
   }
 
   file {
-    "$samba::smbdir/documents/.ingent":
+    "$::smbdir/documents/.ingent":
       ensure => directory,
       mode => '0755';
   }
