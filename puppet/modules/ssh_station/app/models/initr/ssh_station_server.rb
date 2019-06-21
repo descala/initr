@@ -39,7 +39,7 @@ class Initr::SshStationServer < Initr::Klass
 
   def nodes
     Initr::SshStation.all.order('name').collect { |sss|
-      sss.node if active? and sss.ssh_station_server_id == id.to_s and sss.node and sss.node.project.active?
+      sss.node if active? and sss.ssh_station_server_id.to_i == id.to_i and sss.node and sss.node.project.active?
     }.compact
   end
 
@@ -48,7 +48,10 @@ class Initr::SshStationServer < Initr::Klass
     self.nodes.sort.each do |n|
       next unless n.is_a? Initr::NodeInstance # Skip node templates
       node_key = n.fact("ssh_station_sshrsakey")
-      node_port = n.klasses.find_by_type("Initr::SshStation").port_for_service(22).num rescue nil
+      ssh_klass = n.klasses.find_by_type("Initr::SshStation")
+      node_port = ssh_klass.port_for_service(22).num rescue nil
+      # TODO include ssh port in ssh_info, because may not be 22
+      node_port ||= ssh_klass.ssh_station_ports.where(name: 'ssh').first.num rescue nil
       next if node_key.nil? or node_port.nil?
       ssh_info << [n.fqdn,node_port,node_key]
     end
