@@ -1,9 +1,9 @@
 ##################
 # Puppet managed #
 ##################
-base dc=<%= scope.lookupvar('samba::smbdomain') %>,dc=loc
+base dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc
 uri ldap://127.0.0.1/
-rootbinddn cn=manager,dc=<%= scope.lookupvar('samba::smbdomain') %>,dc=loc
+rootbinddn cn=manager,dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc
 
 timelimit 50
 bind_timelimit 50

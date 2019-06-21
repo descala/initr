@@ -16,9 +16,9 @@ sizelimit 500
 tool-threads 1
 backend         bdb
 database        bdb
-suffix          "dc=<%=scope.lookupvar('samba::smbdomain')%>,dc=loc"
-rootdn          "cn=manager,dc=<%=scope.lookupvar('samba::smbdomain')%>,dc=loc"
-rootpw          <%=scope.lookupvar('samba::ldappasswd')%>
+suffix          "dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc"
+rootdn          "cn=manager,dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc"
+rootpw          <%=scope.lookupvar('::ldappasswd')%>
 directory       "/var/lib/ldap"
 dbconfig set_cachesize 0 2097152 0
 dbconfig set_lk_max_objects 1500
@@ -29,11 +29,11 @@ index           sambaSID,gidNumber,uid,sambaSIDList,cn,displayName,memberUid,uni
 lastmod         on
 checkpoint      512 30
 access to attrs=userPassword,shadowLastChange
-        by dn="cn=manager,dc=<%=scope.lookupvar('samba::smbdomain')%>,dc=loc" write
+        by dn="cn=manager,dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc" write
         by anonymous auth
         by self write
         by * none
 access to dn.base="" by * read
 access to *
-        by dn="cn=manager,dc=<%=scope.lookupvar('samba::smbdomain')%>,dc=loc" write
+        by dn="cn=manager,dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc" write
         by * read
