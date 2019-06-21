@@ -31,12 +31,12 @@ class samba::ldap_pdc inherits samba {
       source => 'puppet:///modules/samba/nsswitch.conf';
   }
   package {
-    [acl,libnss-ldap,ldap-utils,samba-doc,samba-common]:
+    [acl,libnss-ldap,ldap-utils,samba-common]:
       ensure => installed;
   }
   exec{
-    'zcat /usr/share/doc/samba-doc/examples/LDAP/samba.schema.gz > /etc/ldap/schema/samba.schema':
-      require => Package[samba-doc],
+    'zcat /usr/share/doc/samba/examples/LDAP/samba.schema.gz > /etc/ldap/schema/samba.schema':
+      require => Package[samba],
       creates => '/etc/ldap/schema/samba.schema';
     "smbpasswd -w $ldappasswd":
       alias       => 'set ldap password',
