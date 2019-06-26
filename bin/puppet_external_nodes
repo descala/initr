@@ -1,0 +1,12 @@
+#!/bin/bash
+
+filename="/usr/local/cache/$1.yaml"
+
+if [[ $(find "$filename" -mmin -30 -print) ]]; then
+  echo "Using   $filename (exists and is newer than 30 minutes)" >> /usr/local/cache/log
+else
+  echo "Caching $filename" >> /usr/local/cache/log
+  /usr/bin/wget -O $filename -q https://ingent.network/node/get_host_definition?hostname=$1
+fi
+
+/bin/cat $filename
