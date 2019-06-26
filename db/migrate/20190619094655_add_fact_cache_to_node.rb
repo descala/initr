@@ -5,7 +5,7 @@ class AddFactCacheToNode < ActiveRecord::Migration
     add_column :nodes, :lsbdistrelease, :string, limit: 30
     add_column :nodes, :kernelrelease, :string, limit: 40
     add_column :nodes, :puppetversion, :string, limit: 10
-    Initr::Node.find_each do |n|
+    Initr::NodeInstance.find_each do |n|
       n.update_fact_cache
     end
   end
