@@ -29,7 +29,7 @@ smtpd_recipient_restrictions =  reject_unauth_pipelining,
                                 reject_rbl_client b.barracudacentral.org,
                                 reject_rbl_client bl.spamcop.net,
                                 check_recipient_access pcre:/etc/postfix/recipient_greylist,
-<% if scope.lookupvar('mailserver::amavis') == '1' -%>
+<% if scope.lookupvar('::amavis') == '1' -%>
                                 check_recipient_access pcre:/etc/postfix/recipient_access,
 <% end -%>
 
@@ -49,7 +49,7 @@ virtual_mailbox_maps = proxy:<%=scope.lookupvar("db_driver")%>:/etc/postfix/sql-
 virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1
 
-<% if scope.lookupvar('mailserver::vacation') == '1' -%>
+<% if scope.lookupvar('::vacation') == '1' -%>
 ### vacation delivery agent
 vacation_destination_recipient_limit = 1
 <% end -%>
