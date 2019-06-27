@@ -4,10 +4,10 @@ en:
   field_domain_path: "split mailboxes per domain"
   field_domain_in_mailbox: "Include domain at mailboxes name"
   help_domain_path: "Example:<br />
-   YES: /var/mail/virtual/domain.tld/username@domain.tld<br />
-   NO:  /var/mail/virtual/username@domain.tld"
+   YES: /var/vmail/domain.tld/username@domain.tld<br />
+   NO:  /var/vmail/username@domain.tld"
   help_domain_in_mailbox: "Example: <br />
-   YES: /var/mail/virtual/domain.tld/username@domain.tld<br />
-   NO:  /var/mail/virtual/domain.tld/username<br />
+   YES: /var/vmail/domain.tld/username@domain.tld<br />
+   NO:  /var/vmail/domain.tld/username<br />
    (required if the above not checked)"
   field_mailserver_mail_location: "Mailboxes location"
