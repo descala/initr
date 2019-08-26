@@ -1,0 +1,45 @@
+<%= klass_menu "BorgBackup" %>
+
+<%= form_for(@klass, as: :borg_backup, url: {action: 'configure'}) do |f| -%>
+
+  <%= error_messages_for 'klass' %>
+
+  <p>
+  <%= f.label 'repository', 'Repository' %>:<br />
+  <%= f.text_field 'repository', size: 40 %><br />
+  examples:<br />
+  user@server.domain:/home/user/backup<br />
+  ssh://u199222@u199222.your-storagebox.de:23/./backups/server
+  </p>
+
+  <p>
+    <%= f.label 'borg_passphrase', 'Backup passphrase' %>:<br/>
+    <%= f.text_field 'borg_passphrase', size: 40 %>
+  </p>
+
+  <p>
+  <%= f.label 'paths', 'Backup paths' %>:<br />
+  <%= f.text_area 'paths', rows: 3, cols: 50 %>
+  </p>
+
+  <p>
+  <%= f.label 'excludes', 'Excludes' %>:<br />
+  <%= f.text_area 'excludes', rows: 10, cols: 50 %>
+  </p>
+
+  <% if @klass.repository.present? -%>
+    <br />
+    <span style="background-color: #FFFFE0; padding: 10px;">
+      You need to initialize repository the first time, run:
+    </span>
+    <pre style="padding: 10px;">BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg init <%= @klass.repository %></pre>
+    <br />
+  <% end -%>
+
+  <p><%= submit_tag 'Save' %></p>
+
+<% end -%>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

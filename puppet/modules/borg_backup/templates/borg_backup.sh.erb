@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+##
+## Set environment variables
+##
+
+## if you don't use the standard SSH key,
+## you have to specify the path to the key like this
+export BORG_RSH="ssh -i /root/.ssh/borg_rsa"
+
+## You can save your borg passphrase in an environment
+## variable, so you don't need to type it in when using borg
+export BORG_PASSPHRASE="<%= @borg_passphrase %>"
+
+##
+## Set some variables
+##
+
+LOG="/var/log/borg/backup.log"
+REPOSITORY="<%= @repository %>"
+
+##
+## Output to a logfile
+##
+
+exec 3>&1 # backup stdout
+exec 4>&2 # backup stderr
+
+# copy stderr to $ERROR
+# https://stackoverflow.com/questions/26915448
+function exec_copy_stderr {
+  # Run the command, redirecting its stdout to the shell's stdout,
+  # duplicating its stderr and sending one copy to the shell's stderr
+  # and using the other to replace the command's stdout, which we then
+  # capture
+  { ERROR=$( $@ 2> >(tee >(cat 1>&2)) 1>&3) ; }
+}
+
+# redirect stdout and stderr to log
+exec >> ${LOG}
+exec 2>> ${LOG}
+
+
+echo "###### Backup started: $(date) ######"
+
+##
+## At this place you could perform different tasks
+## that will take place before the backup, e.g.
+##
+## - Create a list of installed software
+## - Create a database dump
+##
+
+##
+## Transfer the files into the repository.
+## In this example the folders root, etc,
+## var/www and home will be saved.
+## In addition you find a list of excludes that should not
+## be in a backup and are excluded by default.
+##
+
+echo "Transfer files ..."
+
+# full server backup
+exec_copy_stderr borg create -v --stats          \
+    $REPOSITORY::{hostname}-{now:%Y-%m-%d_%H:%M} \
+<% @paths.each do |path| -%>
+    <%= path %> <%= "\\" unless @excludes.empty? %>
+<% end -%>
+<% @excludes.each_with_index do |exclude,i| -%>
+    --exclude <%= exclude %> <%= "\\" unless i+1 == @excludes.size %>
+<% end -%>
+
+retval=$?
+
+# print any errors to stderr
+if [ $retval -ne 0 ]; then
+  (>&4 echo "[$retval] ERROR borg create: $ERROR")
+fi
+
+echo "Prune files ..."
+
+# Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly
+# archives of THIS machine. --prefix `hostname`- is very important to
+# limit prune's operation to this machine's archives and not apply to
+# other machine's archives also.
+
+exec_copy_stderr borg prune -v $REPOSITORY \
+    --prefix {hostname}                    \
+        --keep-daily=7                     \
+        --keep-weekly=4                    \
+        --keep-monthly=6
+
+retval=$?
+
+# print any errors to stderr
+if [ $retval -ne 0 ]; then
+  (>&4 echo "[$retval] ERROR borg prune: $ERROR")
+fi
+
+echo "###### Backup ended: $(date) ######"
+echo
