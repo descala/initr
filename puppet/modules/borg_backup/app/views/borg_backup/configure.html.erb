@@ -32,7 +32,14 @@
     <span style="background-color: #FFFFE0; padding: 10px;">
       You need to initialize repository the first time, run:
     </span>
-    <pre style="padding: 10px;">BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg init <%= @klass.repository %></pre>
+    <pre style="padding: 10px;">
+    BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg init <%= @klass.repository %>
+    </pre>
+    Useful commands:
+    <pre style="padding: 10px;">
+    BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg list <%= @klass.repository %>
+    BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg mount <%= @klass.repository %> /mnt
+    </pre>
     <br />
   <% end -%>
 

@@ -36,6 +36,14 @@ function exec_copy_stderr {
   { ERROR=$( $@ 2> >(tee >(cat 1>&2)) 1>&3) ; }
 }
 
+<% if @puppet_classes =~ /nagios::nsca_node/ -%>
+# $1 = exit code of backup.rb
+# $2 = info string
+function nagios_notify {
+  /usr/local/bin/nsca_send "borg_backup_<%= @fqdn %>\t$1\t$2" > /dev/null 2>&1
+}
+<% end -%>
+
 # redirect stdout and stderr to log
 exec >> ${LOG}
 exec 2>> ${LOG}
@@ -77,6 +85,10 @@ retval=$?
 if [ $retval -ne 0 ]; then
   (>&4 echo "[$retval] ERROR borg create: $ERROR")
 fi
+
+<% if @puppet_classes =~ /nagios::nsca_node/ -%>
+nagios_notify $retval "$ERROR"
+<% end -%>
 
 echo "Prune files ..."
 

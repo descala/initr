@@ -46,4 +46,11 @@ class borg_backup($borg_passphrase,$repository,$excludes,$paths) {
       user    => root;
   }
 
+  if array_includes($::classes, 'nagios::nsca_node') {
+    nagios::service { "borg_backup_${::fqdn}":
+      ensure    => present,
+      freshness => 93600;
+    }
+  }
+
 }
