@@ -60,4 +60,15 @@ deb http://deb.debian.org/debian stretch main contrib non-free
 deb http://deb.debian.org/debian buster main contrib non-free
 <% end -%>
 
+<% elsif scope.lookupvar("::lsbdistcodename") == "buster" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "10") -%>
+# debian buster
+deb http://deb.debian.org/debian buster main contrib non-free
+
+<% pfw = scope.lookupvar('::packages_from_bullseye')
+   pfw = [] unless pfw.is_a?(Array)
+   if pfw.any? -%>
+# debian bullseye
+deb http://deb.debian.org/debian bullseye main contrib non-free
+<% end -%>
+
 <% end -%>

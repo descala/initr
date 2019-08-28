@@ -1,0 +1,6 @@
+<p><%=f.check_box(:security_updates)%></p>
+<p><%=f.text_area(:packages_from_bullseye)%></p>
+<% unless @klass.packages_from_buster.blank? -%>
+  <p>this packages where installed from buster when node was stretch</p>
+  <p>packages_from_buster: <%= @klass.packages_from_buster %></p>
+<% end -%>
