@@ -16,7 +16,7 @@ class package_manager::debian::buster {
       content => template('package_manager/preferences_buster.erb'),
       notify  => Exec['apt-get update'];
     '/etc/apt/apt.conf.d/50unattended-upgrades':
-      source  => 'puppet:///modules/package_manager/50unattended-upgrades',
+      source  => 'puppet:///modules/package_manager/50unattended-upgrades_buster',
       require => Package['unattended-upgrades'];
   }
 
