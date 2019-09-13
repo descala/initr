@@ -4,16 +4,16 @@
 #
 # Highest priority to stable
 Package: *
-Pin: release n=stretch
+Pin: release n=buster
 Pin-Priority: 700
 
-<% pfw = scope.lookupvar('::packages_from_buster')
+<% pfw = scope.lookupvar('::packages_from_bullseye')
    pfw = [] unless pfw.is_a?(Array)
    pfw.uniq.each do |package|
 -%>
-# we want <%=package%> from buster
+# we want <%=package%> from bullseye
 Package: <%=package%>
-Pin: release n=buster
+Pin: release n=bullseye
 Pin-Priority: 700
 
 <% end -%>
