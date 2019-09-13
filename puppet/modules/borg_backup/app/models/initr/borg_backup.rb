@@ -1,6 +1,7 @@
 class Initr::BorgBackup < Initr::Klass
 
-  validates_presence_of :borg_passphrase, :repository, :excludes, :paths
+  validates_presence_of :borg_passphrase, :repository, :excludes, :paths,
+    :on => :update
 
   # simple getters and setters for serialized attributes
   self.accessors_for(%w(borg_passphrase repository excludes paths))
