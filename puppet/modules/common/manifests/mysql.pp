@@ -9,6 +9,7 @@ class common::mysql {
     ensure     => 'running',
     enable     => true,
     hasrestart => true,
+    require    => Package['mysql-server']
   }
 
   package { [$mysqlclient, 'mysql-server']:

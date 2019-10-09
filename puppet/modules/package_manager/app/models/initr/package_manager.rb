@@ -2,25 +2,27 @@ class Initr::PackageManager < Initr::Klass
 
   attr_accessible :security_updates, :packages_from_squeeze,
     :packages_from_wheezy, :packages_from_jessie, :packages_from_stretch,
-    :packages_from_buster
+    :packages_from_buster, :packages_from_bullseye
 
   self.accessors_for(["security_updates"])
 
   after_initialize {
-    config["packages_from_squeeze"] ||= ["puppet","rubygems","rubygems1.8"]
-    config["packages_from_wheezy"]  ||= []
-    config["packages_from_jessie"]  ||= []
-    config["packages_from_stretch"] ||= []
-    config["packages_from_buster"]  ||= []
-    config["security_updates"]      ||= "0"
+    config["packages_from_squeeze"]  ||= ["puppet","rubygems","rubygems1.8"]
+    config["packages_from_wheezy"]   ||= []
+    config["packages_from_jessie"]   ||= []
+    config["packages_from_stretch"]  ||= []
+    config["packages_from_buster"]   ||= []
+    config["packages_from_bullseye"] ||= []
+    config["security_updates"]       ||= "0"
   }
 
   def parameters
-    { "packages_from_squeeze" => config["packages_from_squeeze"],
-      "packages_from_wheezy"  => config["packages_from_wheezy"],
-      "packages_from_jessie"  => config["packages_from_jessie"],
-      "packages_from_stretch" => config["packages_from_stretch"],
-      "packages_from_buster" => config["packages_from_buster"]
+    { "packages_from_squeeze"  => config["packages_from_squeeze"],
+      "packages_from_wheezy"   => config["packages_from_wheezy"],
+      "packages_from_jessie"   => config["packages_from_jessie"],
+      "packages_from_stretch"  => config["packages_from_stretch"],
+      "packages_from_buster"   => config["packages_from_buster"],
+      "packages_from_bullseye" => config["packages_from_bullseye"]
     }
   end
 
@@ -66,6 +68,14 @@ class Initr::PackageManager < Initr::Klass
 
   def packages_from_buster
     config["packages_from_buster"].join(', ') rescue ""
+  end
+
+  def packages_from_bullseye=(packages)
+    config["packages_from_bullseye"] = packages.is_a?(String) ? packages.gsub(/ */,'').split(',') : packages
+  end
+
+  def packages_from_bullseye
+    config["packages_from_bullseye"].join(', ') rescue ""
   end
 
 end

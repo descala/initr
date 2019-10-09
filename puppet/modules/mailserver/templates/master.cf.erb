@@ -81,7 +81,7 @@ ifmail    unix  -       n       n       -       -       pipe
 bsmtp     unix  -       n       n       -       -       pipe
   flags=Fq. user=foo argv=/usr/local/sbin/bsmtp -f $sender $nexthop $recipient
 
-<% if scope.lookupvar('mailserver::amavis') == '1' -%>
+<% if scope.lookupvar('::amavis') == '1' -%>
 # reingection port
 localhost:10025  inet    n       -       n       -       -       smtpd
        -o smtpd_authorized_xforward_hosts=127.0.0.0/8
@@ -108,7 +108,7 @@ dovecot   unix  -       n       n       -       -       pipe
 
 retry     unix  -       -       -       -       -       error
 
-<% if scope.lookupvar('mailserver::vacation') == '1' -%>
+<% if scope.lookupvar('::vacation') == '1' -%>
 # vacation
 vacation    unix  -       n       n       -       -       pipe
   flags=Rq user=vacation argv=/var/spool/vacation/vacation.pl -f ${sender} -- ${recipient}

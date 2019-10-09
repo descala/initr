@@ -4,10 +4,10 @@ es:
   field_domain_path: "Separar buzones por dominio"
   field_domain_in_mailbox: "Incluir dominio en el nombre del buzon"
   help_domain_path: "Ejemplo:<br />
-   SI: /var/mail/virtual/domain.tld/username@domain.tld<br />
-   NO: /var/mail/virtual/username@domain.tld"
+   SI: /var/vmail/domain.tld/username@domain.tld<br />
+   NO: /var/vmail/username@domain.tld"
   help_domain_in_mailbox: "Ejemplo: <br />
-   SI: /var/mail/virtual/domain.tld/username@domain.tld<br />
-   NO: /var/mail/virtual/domain.tld/username<br />
+   SI: /var/vmail/domain.tld/username@domain.tld<br />
+   NO: /var/vmail/domain.tld/username<br />
    (obligatorio si no se marca el anterior)"
   field_mailserver_mail_location: "Directorio de los buzones"

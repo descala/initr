@@ -17,12 +17,12 @@ end
 # TODO
 # Dirty patch to let manifests who use the fqdn fact work
 # when there is no domain name defined in the node
-Facter.add("fqdn") do
-  setcode do
-    if Facter["fqdn"]
-      Facter["fqdn"].value
-    else
-      "#{Facter["hostname"].value}.#{Facter["uniqueid"].value}"
-    end
-  end
-end
+#Facter.add("fqdn") do
+#  setcode do
+#    if Facter["fqdn"]
+#      Facter["fqdn"].value
+#    else
+#      "#{Facter["hostname"].value}.#{Facter["uniqueid"].value}"
+#    end
+#  end
+#end

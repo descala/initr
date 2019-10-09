@@ -48,6 +48,7 @@ class Initr::SshStationServer < Initr::Klass
     self.nodes.sort.each do |n|
       next unless n.is_a? Initr::NodeInstance # Skip node templates
       node_key = n.fact("ssh_station_sshrsakey")
+      node_key = n.fact("ssh_station_sshdsakey") if node_key.blank?
       ssh_klass = n.klasses.find_by_type("Initr::SshStation")
       node_port = ssh_klass.port_for_service(22).num rescue nil
       # TODO include ssh port in ssh_info, because may not be 22

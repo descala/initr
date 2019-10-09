@@ -14,7 +14,7 @@ class InitrMailserver < Initr::Klass
   after_initialize {
     self.domain_path             ||= '1'
     self.domain_in_mailbox       ||= '0'
-    self.mail_location           ||= '/var/mail/virtual'
+    self.mail_location           ||= '/var/vmail'
     self.webserver               ||= 'apache'
     self.db_backend              ||= 'mysql'
     self.db_name                 ||= 'postfix'
