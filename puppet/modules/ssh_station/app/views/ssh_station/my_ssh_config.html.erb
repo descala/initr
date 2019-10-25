@@ -6,7 +6,7 @@
 <% @ssh_stations.each do |ss| -%>
 Host <%= ss.node.hostname.downcase %> <%= ss.node.fqdn.downcase %>
   User root
-  ProxyCommand ssh -W localhost:<%= ss.ssh_station_ports.where(service: 22).first.num %> root@<%= ss.ssh_station_server.node.fqdn %>
+  ProxyCommand ssh -W localhost:<%= ss.ssh_station_ports.where(service: 22).first.num rescue 'XXXXX' %> root@<%= ss.ssh_station_server.node.fqdn %>
 
 <% end -%>
 </pre>
