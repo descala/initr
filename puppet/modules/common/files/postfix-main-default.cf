@@ -27,3 +27,4 @@ inet_interfaces = 127.0.0.1
 
 # use TLS to send
 smtp_tls_security_level = may
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated reject_unauth_destination
