@@ -4,7 +4,7 @@
 #
 # Highest priority to stable
 Package: *
-Pin: release n=buster
+Pin: release n=buster,o=Debian
 Pin-Priority: 700
 
 <% pfw = scope.lookupvar('::packages_from_bullseye')
@@ -13,7 +13,7 @@ Pin-Priority: 700
 -%>
 # we want <%=package%> from bullseye
 Package: <%=package%>
-Pin: release n=bullseye
+Pin: release n=bullseye,o=Debian
 Pin-Priority: 700
 
 <% end -%>
