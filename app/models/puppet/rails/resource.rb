@@ -2,8 +2,8 @@ class Puppet::Rails::Resource < ActiveRecord::Base
   belongs_to :host
   belongs_to :source_file
   has_many :param_values, :class_name => "Puppet::Rails::ParamValue"
-  has_many :puppet_tags, :through => :resource_tags, :class_name => "Puppet::Rails::PuppetTag"
   has_many :resource_tags, :class_name => "Puppet::Rails::ResourceTag"
+  has_many :puppet_tags, :through => :resource_tags, :class_name => "Puppet::Rails::PuppetTag"
 
   def name
     ref
