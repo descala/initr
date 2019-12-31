@@ -13,9 +13,6 @@ class Initr::BindZone < ActiveRecord::Base
   # Uses package "apt-get install bind9utils"
   validate :named_checkzone
 
-  attr_accessible :domain, :zone, :ttl, :info, :registrant, :expires_on,
-    :whois_ns, :active_ns
-
   if Initr.haltr?
     belongs_to :invoice_line
     has_one :invoice, :through => :invoice_line

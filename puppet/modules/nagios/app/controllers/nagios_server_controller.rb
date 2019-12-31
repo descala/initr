@@ -1,8 +1,8 @@
 class NagiosServerController < InitrController
 
   menu_item :initr
-  before_filter :find_nagios_server
-  before_filter :authorize
+  before_action :find_nagios_server
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

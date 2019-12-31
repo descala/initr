@@ -1,9 +1,4 @@
 class Initr::PackageManager < Initr::Klass
-
-  attr_accessible :security_updates, :packages_from_squeeze,
-    :packages_from_wheezy, :packages_from_jessie, :packages_from_stretch,
-    :packages_from_buster, :packages_from_bullseye
-
   self.accessors_for(["security_updates"])
 
   after_initialize {
@@ -77,5 +72,4 @@ class Initr::PackageManager < Initr::Klass
   def packages_from_bullseye
     config["packages_from_bullseye"].join(', ') rescue ""
   end
-
 end

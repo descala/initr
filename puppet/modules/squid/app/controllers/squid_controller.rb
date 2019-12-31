@@ -1,8 +1,8 @@
 class SquidController < InitrController
 
   menu_item :initr
-  before_filter :find_squid
-  before_filter :authorize
+  before_action :find_squid
+  before_action :authorize
 
   private
 

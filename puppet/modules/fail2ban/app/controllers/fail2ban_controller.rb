@@ -3,7 +3,7 @@ class Fail2banController < InitrController
   menu_item :initr
   # authorize filter expects @project to be the current project
   # we set this on find_fail2ban filter
-  before_filter :find_fail2ban, :authorize
+  before_action :find_fail2ban, :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

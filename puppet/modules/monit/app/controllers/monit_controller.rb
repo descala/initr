@@ -1,8 +1,8 @@
 class MonitController < InitrController
 
   menu_item :initr
-  before_filter :find_monit
-  before_filter :authorize
+  before_action :find_monit
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

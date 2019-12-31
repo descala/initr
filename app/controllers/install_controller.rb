@@ -1,7 +1,7 @@
 class InstallController < InitrController
 
-  before_filter :find_node
-  before_filter :render_text, :except=>'can_sign'
+  before_action :find_node
+  before_action :render_text, :except=>'can_sign'
   menu_item :initr
   layout false
   

@@ -1,9 +1,9 @@
 class KlassController < InitrController
 
   menu_item :initr
-  before_filter :find_node, :only => [:list,:create,:apply_template,:activate]
-  before_filter :find_klass, :only => [:configure,:destroy,:move,:copy]
-  before_filter :authorize
+  before_action :find_node, :only => [:list,:create,:apply_template,:activate]
+  before_action :find_klass, :only => [:configure,:destroy,:move,:copy]
+  before_action :authorize
  
   def list
     @facts = @node.facts
@@ -195,5 +195,8 @@ class KlassController < InitrController
       deny_access unless @node.editable_by?(User.current)
     end
   end
+
+  # TODO klass_params
+  # attr_accessible :node_id, :type, :config, :name, :description, :klass_id, :active
 
 end

@@ -1,7 +1,4 @@
 class Initr::Smart < Initr::Klass
-
-  attr_accessible :drives
-
   after_initialize {
     self.drives ||= [[],[]]
   }
@@ -21,5 +18,4 @@ class Initr::Smart < Initr::Klass
   def drives=(drives)
     config["drives"]=drives
   end
-
 end

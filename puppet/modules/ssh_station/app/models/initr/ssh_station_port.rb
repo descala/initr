@@ -1,6 +1,4 @@
 class Initr::SshStationPort < ActiveRecord::Base
-
-
   belongs_to :ssh_station
 
   validates_presence_of :num, :host, :name
@@ -12,8 +10,6 @@ class Initr::SshStationPort < ActiveRecord::Base
                           :scope => [:ssh_station_id],
                           :message => "Name already exists in this node."
   before_validation :assign_port_num
-
-  attr_accessible :name, :host, :service, :ssh_station_id, :num
 
   after_initialize {
     host ||= "localhost"
@@ -45,5 +41,4 @@ class Initr::SshStationPort < ActiveRecord::Base
     last_assigned_port = Initr::SshStationPort.order('num desc').first
     self.num = last_assigned_port.nil? ? 31000 : last_assigned_port.num + 1
   end
-
 end

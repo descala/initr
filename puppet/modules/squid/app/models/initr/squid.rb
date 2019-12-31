@@ -1,7 +1,4 @@
 class Initr::Squid < Initr::Klass
-
-  attr_accessible :squid_cache, :squid_config
-
   validate :valid_cache_size
 
   after_initialize {
@@ -33,5 +30,4 @@ class Initr::Squid < Initr::Klass
   def squid_config=(v)
     config["squid_config"]=v
   end
-
 end

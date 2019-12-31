@@ -1,7 +1,4 @@
 class Initr::Monit < Initr::Klass
-
-  attr_accessible :monit_checks
-
   after_initialize {
     self.monit_checks ||= []
     self.apache_path  ||= ""
@@ -31,5 +28,4 @@ class Initr::Monit < Initr::Klass
   def apache_path=(v)
     config["apache_path"]=v
   end
-
 end

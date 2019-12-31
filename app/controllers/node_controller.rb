@@ -3,21 +3,17 @@ class NodeController < InitrController
   menu_item :initr
   helper :projects, :initr
 
-  before_filter :find_node,
+  before_action :find_node,
     :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:report,:resource]
-  before_filter :find_project, :only => [:new]
-  before_filter :find_optional_project, :only => [:list]
-  before_filter :find_report, :only => [:report]
-  before_filter :authorize,
+  before_action :find_project, :only => [:new]
+  before_action :find_optional_project, :only => [:list]
+  before_action :find_report, :only => [:report]
+  before_action :authorize,
     :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report]
-  before_filter :authorize_global, :only => [:list,:facts,:new_template]
-  before_filter :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
+  before_action :authorize_global, :only => [:list,:facts,:new_template]
+  before_action :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
 
-  skip_before_filter :check_if_login_required, :only => [ :get_host_definition, :store_report ]
-
-  # skip ssl_requirement's plugin before_filter, in case it is
-  # pressent in redmine, for get_host_definition and store_report
-  skip_before_filter :ensure_proper_protocol, :only => [:get_host_definition,:store_report]
+  skip_before_action :check_if_login_required, :only => [ :get_host_definition, :store_report ]
 
   protect_from_forgery :except=>[:store_report]
 

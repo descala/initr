@@ -1,9 +1,9 @@
 class DyndnsController < InitrController
 
   menu_item :initr
-  before_filter :find_dyndns, :except => [:update]
-  before_filter :authorize,   :except => [:update]
-  before_filter :basic_auth,  :only => [:update]
+  before_action :find_dyndns, :except => [:update]
+  before_action :authorize,   :except => [:update]
+  before_action :basic_auth,  :only => [:update]
 
   def update
     if params["myip"] and params["hostname"]

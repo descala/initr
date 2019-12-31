@@ -34,4 +34,8 @@ class InitrController < ApplicationController
     end
   end
 
+  # disable Srong Parameters in all Initr controllers
+  def params
+    request.parameters
+  end
 end

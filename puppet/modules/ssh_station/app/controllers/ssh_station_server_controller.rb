@@ -1,8 +1,8 @@
 class SshStationServerController < InitrController
 
   menu_item :initr
-  before_filter :find_ssh_station_server
-  before_filter :authorize
+  before_action :find_ssh_station_server
+  before_action :authorize
 
   private
 

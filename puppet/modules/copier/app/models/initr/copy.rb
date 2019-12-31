@@ -1,5 +1,4 @@
 class Initr::Copy < ActiveRecord::Base
-
   belongs_to :copier, :class_name => "Initr::Copier"
   validates_presence_of :name, :source, :destination, :bdays, :fs
   validates_uniqueness_of :name, :scope => :copier_id
@@ -7,8 +6,6 @@ class Initr::Copy < ActiveRecord::Base
   validates_inclusion_of :fs, :in => %w( ext3 ntfs fat32 curlftpfs rsyncd rdiff-backup )
   validates_inclusion_of :mount_type, :in => %w( usb ), :allow_blank => true
   validates_numericality_of :warn
-
-  attr_protected :crit, :created_at, :updated_at
 
   after_initialize {
     self.source          ||= "/var/arxiver"
@@ -61,5 +58,4 @@ class Initr::Copy < ActiveRecord::Base
   def for_cron(v)
     v =~ /,/ ? v.split(",") : v
   end
-
 end

@@ -1,9 +1,6 @@
 class Initr::LinkKlass < Initr::Klass
-
   validates_presence_of :copied_klass_id
   validate :copied_klass_unique_for_node
-
-  attr_accessible :copied_klass_id
 
   def copied_klass_unique_for_node
     if node
@@ -66,5 +63,4 @@ class Initr::LinkKlass < Initr::Klass
   def copyable?
     false
   end
-
 end

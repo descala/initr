@@ -1,8 +1,8 @@
 class InitrMailserverController < InitrController
 
   menu_item :initr
-  before_filter :find_mailserver
-  before_filter :authorize
+  before_action :find_mailserver
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

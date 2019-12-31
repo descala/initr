@@ -1,9 +1,9 @@
 class BindController < InitrController
 
   menu_item :initr
-  before_filter :find_bind, :except => [:edit_zone,:destroy_zone]
-  before_filter :find_bind_zone, :only => [:edit_zone,:destroy_zone]
-  before_filter :authorize
+  before_action :find_bind, :except => [:edit_zone,:destroy_zone]
+  before_action :find_bind_zone, :only => [:edit_zone,:destroy_zone]
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

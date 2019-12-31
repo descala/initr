@@ -1,8 +1,8 @@
 class MuninServerController < InitrController
 
   menu_item :initr
-  before_filter :find_munin_server
-  before_filter :authorize
+  before_action :find_munin_server
+  before_action :authorize
 
   private
 

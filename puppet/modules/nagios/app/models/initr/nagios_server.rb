@@ -1,14 +1,10 @@
 class Initr::NagiosServer < Initr::Klass
-
-
   has_many :nagios, :class_name => "Initr::Nagios", :foreign_key => "klass_id"
   validates_presence_of :address, :on => :update
   validates_presence_of :nagiosadmin_password, :on => :update
   validates_confirmation_of :password, :allow_nil => true
   validate :admin_contactgroup_belongs_to_user
   before_validation :set_password
-  attr_accessor :password, :password_confirmation
-  attr_accessible  :password, :password_confirmation
 
   self.accessors_for(["address","nagiosadmin_password",
                       "nsca_decryption_password","admin_contactgroup",
@@ -287,5 +283,4 @@ class Initr::NagiosServer < Initr::Klass
       errors.add :base, l(:invalid_admin_contactgroup)
     end
   end
-
 end

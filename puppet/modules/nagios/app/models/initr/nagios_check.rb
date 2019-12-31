@@ -1,11 +1,7 @@
 class Initr::NagiosCheck < ActiveRecord::Base
-
-
   belongs_to :nagios, :class_name => "Initr::Nagios"
   validates_presence_of :name, :command
   after_initialize :set_default_values
-
-  attr_protected :created_at, :updated_at
 
   def validate
     # name can't contain single quotes
@@ -60,6 +56,5 @@ class Initr::NagiosCheck < ActiveRecord::Base
   def <=>(oth)
     self.name.downcase <=> oth.name.downcase
   end
-
 end
 

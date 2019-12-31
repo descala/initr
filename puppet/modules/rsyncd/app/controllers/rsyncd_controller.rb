@@ -2,8 +2,8 @@ class RsyncdController < InitrController
 
   menu_item :initr
 
-  before_filter :find_rsyncd
-  before_filter :authorize
+  before_action :find_rsyncd
+  before_action :authorize
 
   # def configure in InitrController
 

@@ -1,11 +1,8 @@
 module Initr
   class WebBackupsServer < Initr::Klass
-
     has_many :webserver1_domains, :class_name => "Initr::Webserver1Domain"
     validate :address_is_unique, :on => :update
     validates_presence_of :backups_path, :port, :address, :on => :update
-
-    attr_accessible :address, :port, :backups_path
 
     def address_is_unique
       if WebBackupsServer.where("id != ?",id).collect {|wbs| wbs.address }.include? address
@@ -54,6 +51,5 @@ module Initr
     def backups_path=(p)
       config["backups_path"]=p
     end
-
   end
 end

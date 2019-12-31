@@ -1,9 +1,9 @@
 class Webserver1Controller < InitrController
 
   menu_item :initr
-  before_filter :find_webserver, :except => [:edit_domain,:rm_domain]
-  before_filter :find_domain, :only => [:edit_domain,:rm_domain]
-  before_filter :authorize
+  before_action :find_webserver, :except => [:edit_domain,:rm_domain]
+  before_action :find_domain, :only => [:edit_domain,:rm_domain]
+  before_action :authorize
 
   def add_domain
     @web_backups_servers = Initr::Webserver1.backup_servers_for_current_user.collect {|wbs| [wbs.node.fqdn, wbs.id] }

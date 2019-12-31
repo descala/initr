@@ -2,8 +2,8 @@ class SambaController < InitrController
 
   menu_item :initr
 
-  before_filter :find_samba
-  before_filter :authorize
+  before_action :find_samba
+  before_action :authorize
 
   # def configure in InitrController
 

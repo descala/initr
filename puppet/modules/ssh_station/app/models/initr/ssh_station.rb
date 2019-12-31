@@ -1,9 +1,7 @@
 class Initr::SshStation < Initr::Klass
-
   has_many :ssh_station_ports, :dependent => :destroy
   self.accessors_for(%w(additional_ssh_config))
   after_create :assign_standard_ports
-  attr_accessible :ssh_station_server_id, :additional_ssh_config, :ssh_proxytunnel
 
   def name
     "ssh_station::client"
@@ -106,5 +104,4 @@ class Initr::SshStation < Initr::Klass
       port.save
     end
   end
-
 end

@@ -2,9 +2,9 @@ class CopierController < InitrController
 
   menu_item :initr
 
-  before_filter :find_copier, :except => [:edit_copy,:destroy_copy]
-  before_filter :find_copy,  :only   => [:edit_copy,:destroy_copy]
-  before_filter :authorize
+  before_action :find_copier, :except => [:edit_copy,:destroy_copy]
+  before_action :find_copy,  :only   => [:edit_copy,:destroy_copy]
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

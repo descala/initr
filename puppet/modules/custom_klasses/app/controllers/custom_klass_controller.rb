@@ -1,9 +1,9 @@
 class CustomKlassController < InitrController
 
   menu_item :initr
-  before_filter :find_node,         :only => [:new,:create]
-  before_filter :find_custom_klass, :only => [:configure]
-  before_filter :authorize
+  before_action :find_node,         :only => [:new,:create]
+  before_action :find_custom_klass, :only => [:configure]
+  before_action :authorize
 
   def new
     @klass = Initr::CustomKlass.new(:node=>@node)

@@ -1,7 +1,4 @@
 class Initr::Munin < Initr::Klass
-
-  attr_protected #none
-
   @@munin_checks = ["manual", "apache","system","squid","postfix","sendmail","mysql","network","gateway"]
   @@plugins = { "system"   => ["cpu","df","df_abs","hddtemp_smartctl","iostat","load","memory","processes","swap","netstat"],
                 "apache"   => ["apache_accesses","apache_processes","apache_volume"],
@@ -112,5 +109,4 @@ class Initr::Munin < Initr::Klass
     END_SRC
     class_eval src, __FILE__, __LINE__
   end
-
 end

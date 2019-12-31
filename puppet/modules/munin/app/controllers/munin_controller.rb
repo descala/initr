@@ -1,9 +1,9 @@
 class MuninController < InitrController
 
   menu_item :initr
-  before_filter :find_munin,   :except => [:graphs]
-  before_filter :find_project, :only => [:graphs]
-  before_filter :authorize
+  before_action :find_munin,   :except => [:graphs]
+  before_action :find_project, :only => [:graphs]
+  before_action :authorize
 
   def index
     # TODO: use munin_server url

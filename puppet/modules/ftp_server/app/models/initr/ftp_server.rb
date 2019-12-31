@@ -1,7 +1,4 @@
 class Initr::FtpServer < Initr::Klass
-
-  attr_accessible :ftp_users_attributes
-
   after_initialize {
     self.config["ftp_writeable"] ||= "0"
     self.config["home_writeable"] ||= "0"
@@ -26,5 +23,4 @@ class Initr::FtpServer < Initr::Klass
   end
 
   self.accessors_for ["ftp_writeable","home_writeable","extra_users"]
-
 end

@@ -1,10 +1,10 @@
 class LinkKlassController < InitrController
 
   menu_item :initr
-  before_filter :find_node,       :except => [:configure]
-  before_filter :find_link_klass, :only => [:configure]
-  before_filter :set_copiable_klasses
-  before_filter :authorize
+  before_action :find_node,       :except => [:configure]
+  before_action :find_link_klass, :only => [:configure]
+  before_action :set_copiable_klasses
+  before_action :authorize
 
   def new
     @klass = Initr::LinkKlass.new(:node=>@node)

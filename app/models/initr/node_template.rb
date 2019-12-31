@@ -1,6 +1,5 @@
 class Initr::NodeTemplate < Initr::Node
   validates_uniqueness_of :name, :scope => :user_id
-  attr_accessible :name
 
   def project
     return Project.find(project_id) if Project.exists?(project_id)

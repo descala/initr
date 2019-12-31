@@ -1,10 +1,10 @@
 class SshStationController < InitrController
 
   menu_item :initr
-  before_filter :find_ssh_station, :except => [ :del_port, :get_user_nodes, :edit_port, :my_ssh_config ]
-  before_filter :find_port, :only => [ :del_port, :edit_port ]
-  before_filter :find_project, :only => [ :my_ssh_config ]
-  before_filter :authorize, :except => [:get_user_nodes]
+  before_action :find_ssh_station, :except => [ :del_port, :get_user_nodes, :edit_port, :my_ssh_config ]
+  before_action :find_port, :only => [ :del_port, :edit_port ]
+  before_action :find_project, :only => [ :my_ssh_config ]
+  before_action :authorize, :except => [:get_user_nodes]
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

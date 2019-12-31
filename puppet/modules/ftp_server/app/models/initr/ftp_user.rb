@@ -1,7 +1,4 @@
 class Initr::FtpUser < Initr::Klass
-
-  attr_protected #none
-
   belongs_to :ftp_server, :class_name => "Initr::FtpServer", :foreign_key => "klass_id"
 
   after_initialize {

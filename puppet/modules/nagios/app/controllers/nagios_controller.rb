@@ -1,9 +1,9 @@
 class NagiosController < InitrController
 
   menu_item :initr
-  before_filter :find_nagios, :except => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
-  before_filter :find_nagios_check, :only => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
-  before_filter :authorize
+  before_action :find_nagios, :except => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
+  before_action :find_nagios_check, :only => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

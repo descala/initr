@@ -1,8 +1,8 @@
 class SmartController < InitrController
 
   menu_item :initr
-  before_filter :find_smart
-  before_filter :authorize
+  before_action :find_smart
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

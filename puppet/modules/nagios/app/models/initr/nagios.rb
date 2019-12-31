@@ -1,12 +1,8 @@
 class Initr::Nagios < Initr::Klass
-
-
   has_many :nagios_checks, :dependent => :destroy, :class_name => "Initr::NagiosCheck"
   belongs_to :nagios_server, :class_name => "Initr::NagiosServer", :foreign_key => "klass_id"
 
   after_create :create_all_default_checks
-
-  attr_accessible :klass_id
 
   def puppetname
     "nagios::nsca_node"
@@ -92,5 +88,4 @@ class Initr::Nagios < Initr::Klass
       check.save
     end
   end
-
 end

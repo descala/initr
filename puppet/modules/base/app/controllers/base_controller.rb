@@ -1,7 +1,7 @@
 class BaseController < InitrController
 
   menu_item :initr
-  before_filter :find_base, :authorize
+  before_action :find_base, :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]

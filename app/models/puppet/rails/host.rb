@@ -1,11 +1,4 @@
 class Puppet::Rails::Host < ActiveRecord::Base
-
-  begin
-    establish_connection("puppet_#{Rails.env}".to_sym)
-  rescue ActiveRecord::AdapterNotSpecified => e
-    logger.info "store_configs not configured (#{e.message})"
-  end
-
   has_many :resources, :class_name => "Puppet::Rails::Resource"
   has_many :fact_values, :class_name => "Puppet::Rails::FactValue"
 
@@ -25,5 +18,4 @@ class Puppet::Rails::Host < ActiveRecord::Base
       hash
     end
   end
-
 end
