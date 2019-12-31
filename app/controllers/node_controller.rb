@@ -145,13 +145,13 @@ class NodeController < InitrController
     if !Rails.env.production? or request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       node = Initr::NodeInstance.find_by_name(params[:hostname])
       if node
-        render :text => YAML.dump(node.parameters)
+        render plain: YAML.dump(node.parameters)
       else
-        render :text => "Unknown hostname '#{params[:hostname]}'\n", :status => 404
+        render plain: "Unknown hostname '#{params[:hostname]}'\n", :status => 404
         logger.error "Unknown hostname '#{params[:hostname]}'."
       end
     else
-      render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
+      render plain: "Not allowed from your IP #{request.remote_ip}\n", :status => 403
       logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr['puppetmaster_ip']}).\n"
     end
   end
@@ -159,9 +159,9 @@ class NodeController < InitrController
   def getip
     xff=request.env['HTTP_X_FORWARDED_FOR'].split(",").first
     unless xff.blank?
-      render :text => "#{xff}\n"
+      render plain: "#{xff}\n"
     else
-      render :text => "#{request.env['REMOTE_ADDR']}\n"
+      render plain: "#{request.env['REMOTE_ADDR']}\n"
     end
   end
 
@@ -206,14 +206,14 @@ class NodeController < InitrController
       respond_to do |format|
         format.yml {
           if Initr::Report.import request.body
-            render :text => "Imported report", :status => 200 and return
+            render plain: "Imported report", :status => 200 and return
           else
-            render :text => "Failed to import report", :status => 500
+            render plain: "Failed to import report", :status => 500
           end
         }
       end
     else
-      render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
+      render plain: "Not allowed from your IP #{request.remote_ip}\n", :status => 403
       logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr['puppetmaster_ip']}).\n"
     end
   end
