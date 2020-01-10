@@ -1,14 +1,14 @@
 class DyndnsController < InitrController
 
   menu_item :initr
-  before_action :find_dyndns, :except => [:update]
-  before_action :authorize,   :except => [:update]
-  before_action :basic_auth,  :only => [:update]
+  before_action :find_dyndns, except: [:update]
+  before_action :authorize,   except: [:update]
+  before_action :basic_auth,  only:   [:update]
 
   def update
     if params["myip"] and params["hostname"]
       if @klass.current_ip == params["myip"] and @klass.current_url == params["hostname"]
-        render :text => "nochg #{params["myip"]}"
+        render plain: "nochg #{params["myip"]}"
       else
         stderr = ""
         IO.popen("nsupdate -k /etc/bind/keys/Klocalhost*.private 2>&1 >/dev/null", 'r+') { |io|
@@ -27,16 +27,16 @@ class DyndnsController < InitrController
           @klass.current_ip=params["myip"]
           @klass.current_url=params["hostname"]
           @klass.save
-          render :text => "good #{params["myip"]}"
+          render plain: "good #{params["myip"]}"
         else
-          render :text => "error calling nsupdate: '#{stderr}'"
+          render plain: "error calling nsupdate: '#{stderr}'"
         end
       end
     else
-      render :text => "error: missing parameters"
+      render plain: "error: missing parameters"
     end
   rescue Exception => e
-    render :text => e.message
+    render plain: e.message
   end
 
   private
