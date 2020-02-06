@@ -4,6 +4,7 @@ class DyndnsController < InitrController
   before_action :find_dyndns, except: [:update]
   before_action :authorize,   except: [:update]
   before_action :basic_auth,  only:   [:update]
+  accept_api_auth :update
 
   def update
     if params["myip"] and params["hostname"]
