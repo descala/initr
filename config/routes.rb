@@ -3,7 +3,8 @@ match '/nodes' => 'node#list', :via => :get
 match '/reports' => 'node#store_report',  :via => 'post'
 match '/klass/:action/:id' => 'klass', :via => [:get, :post, :patch]
 # http://stackoverflow.com/questions/5369654/why-do-routes-with-a-dot-in-a-parameter-fail-to-match
-match '/:id/install/:action' => 'install', :constraints => { :id => /[^\/]+/ }, :as => 'install', :via => :get
+match '/:id/install/:action' => 'install',
+  constraints: { id: /[^\/]+/ }, as: 'install', via: :get, controller: 'install'
 
 Dir.glob File.expand_path("plugins/initr/puppet/modules/*", Rails.root) do |plugin_dir|
   file = File.join(plugin_dir, "config/routes.rb")
