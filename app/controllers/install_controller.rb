@@ -4,6 +4,8 @@ class InstallController < InitrController
   before_action :render_text, :except=>'can_sign'
   menu_item :initr
   layout false
+
+  skip_before_action :check_if_login_required, only: [:can_sign]
   
   # Used by puppet/sign_request.sh to find out if cert should be signed
   def can_sign
