@@ -9,7 +9,7 @@ class MuninController < InitrController
     # TODO: use munin_server url
     @html_title = [@node.fqdn, "graphics"]
     @munin_server = @node.klasses.find_by_type("Initr::Munin").server.node rescue nil
-    render :text => "no server defined" if @munin_server.nil?
+    render plain: "no server defined" if @munin_server.nil?
     @munin_klass = Initr::Munin.for_node(@node)
     @graphs = @node.fact("munin_graphs","").split(",").sort
     if params['period'].nil? or params['period'] == "day" or params['period'] == "week"

@@ -7,7 +7,7 @@ class InstallController < InitrController
   
   # Used by puppet/sign_request.sh to find out if cert should be signed
   def can_sign
-    render :text => true
+    render plain: 'true'
   end
 
   def ssl_required?
