@@ -21,7 +21,8 @@ fi
 export HISTSIZE=9999
 
 # don't put duplicate lines in the history. See bash(1) for more options
-export HISTCONTROL=ignoredups
+# lines which begin with a space character are not saved in the history list
+export HISTCONTROL=ignoreboth
 
 # default editor vim
 export EDITOR=/usr/bin/vim
