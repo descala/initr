@@ -555,3 +555,17 @@ $php_socket = $operatingsystem ? {
   },
   default => "/var/run/php5-fpm.sock"
 }
+$nagios_plugins_basic = $operatingsystem ? {
+  'Debian' => $lsbmajdistrelease ? {
+    '10' => 'monitoring-plugins-basic',
+    default => 'nagios-plugins-basic'
+  },
+  default => 'nagios-plugins-basic'
+}
+$nagios_plugins_standard= $operatingsystem ? {
+  'Debian' => $lsbmajdistrelease ? {
+    '10' => 'monitoring-plugins-standard',
+    default => 'nagios-plugins-standard'
+  },
+  default => 'nagios-plugins-standard'
+}
