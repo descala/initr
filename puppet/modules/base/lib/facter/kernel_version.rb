@@ -7,7 +7,6 @@ Facter.add("kernel_version") do
     kernelrelease=Facter["kernelrelease"].value
     kernelrelease.split('-').first
   end
-
 end
 
 Facter.add("kernel_version_n") do
@@ -16,6 +15,10 @@ Facter.add("kernel_version_n") do
     abc=kernel_version.split('.')
     sprintf("%d%03d%03d",abc[0],abc[1],abc[2])
   end
+end
 
-
+Facter.add("uname_a") do
+  setcode do
+    %x{/bin/uname -a}.chomp
+  end
 end
