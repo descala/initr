@@ -6,7 +6,8 @@ class mailserver::nagios {
   nagios::check { 'pop':
     command => "check_pop -H localhost -e 'OK'",
   }
-  if $::operatingsystem == 'CentOS' and $::lsbmajdistrelease == '5' {
+  if ($operatingsystem == 'CentOS' and $lsbmajdistrelease == '5') or
+  ($operatingsystem == 'Ubuntu' and $lsbmajdistrelease == '12.04' ) {
     nagios::check { 'smtp_ssl':
       command => 'check_smtp -H localhost -S -D 30',
     }
