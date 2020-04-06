@@ -27,7 +27,7 @@ class mailserver::vacation {
   file {
     '/var/spool/vacation':
       ensure  => directory,
-      owner   => 'root',
+      owner   => 'vacation',
       mode    => '0555',
       require => User['vacation'];
     '/var/spool/vacation/vacation.pl':
