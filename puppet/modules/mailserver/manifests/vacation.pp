@@ -28,12 +28,12 @@ class mailserver::vacation {
     '/var/spool/vacation':
       ensure  => directory,
       owner   => 'vacation',
-      mode    => '0755',
+      mode    => '0555',
       require => User['vacation'];
     '/var/spool/vacation/vacation.pl':
       source  => 'puppet:///modules/mailserver/vacation.pl',
       owner   => 'vacation',
-      mode    => '0700',
+      mode    => '0500',
       require => [File['/var/spool/vacation'], User['vacation']];
     '/etc/postfixadmin/vacation.conf':
       content => template('mailserver/vacation.conf.erb'),
