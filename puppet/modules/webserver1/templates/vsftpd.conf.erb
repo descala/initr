@@ -29,9 +29,7 @@ xferlog_enable=YES
 # Make sure PORT transfer connections originate from port 20 (ftp-data).
 connect_from_port_20=YES
 #
-<% if @lsbmajdistrelease.to_i >= 9 -%>
 xferlog_file=/var/log/vsftpd.log
-<% end -%>
 # If you want, you can have your log file in standard ftpd xferlog format
 xferlog_std_format=YES
 #
