@@ -107,16 +107,12 @@ define webserver1::domain($user_ftp, $user_awstats, $user_mysql, $password_ftp, 
       mode => '0750',
       ensure => directory,
       require => File["/var/www/$name"];
-    "/var/www/$name/conf/httpd_include.conf":
-      owner => $httpd_user,
-      group => $user_ftp,
+    "$httpd_sitedir/$name.conf":
+      owner => root,
+      group => $httpd_user,
       mode => '0640',
       notify => Exec["apache reload"],
-      require => File["/var/www/$name/conf"],
       content => template("webserver1/httpd_include.conf.erb");
-    "$httpd_sitedir/$name.conf":
-      notify => Exec["apache reload"],
-      ensure => "/var/www/$name/conf/httpd_include.conf";
     "/var/www/$name/conf/vhost.conf":
       mode => '0660',
       owner => $httpd_user,
