@@ -43,6 +43,7 @@ class MuninController < InitrController
   def munins_for_current_user
     user_projects = User.current.projects
     Initr::Munin.all.collect { |m|
+      next unless m.node
       mgraphs = m.node.fact('munin_graphs','').split(',')
       m if user_projects.include?(m.node.project) and mgraphs.include?(@name)
     }.compact.sort {|a,b| a.node.fqdn <=> b.node.fqdn }
