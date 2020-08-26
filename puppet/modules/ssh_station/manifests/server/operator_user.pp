@@ -1,4 +1,4 @@
-define ssh_station::server::operator_user($pubkey,$nodes) {
+define ssh_station::server::operator_user($pubkeys, $nodes) {
 
   $username="initr_$name"
 
@@ -36,15 +36,18 @@ define ssh_station::server::operator_user($pubkey,$nodes) {
       unless => "test -f /home/ssh_station_operators/$username/.ssh/id_rsa";
   }
 
+  # each necessita puppet >= 3.2
   # key provided by the user to redmine (authorized on server)
-  ssh_authorized_key { "${username}_user_key":
-    ensure => present,
-    key => hash_value($pubkey,"key"),
-    options => undef,
-    type => hash_value($pubkey,"type"),
-    user => $username,
-    require => File["/home/ssh_station_operators/$username/.ssh"],
-    target => "/home/ssh_station_operators/$username/.ssh/authorized_keys"
+  $pubkeys.each |$index, $pubkey| {
+    ssh_authorized_key { "${username}_user_key_${index}":
+      ensure => present,
+      key => hash_value($pubkey,"key"),
+      options => undef,
+      type => hash_value($pubkey,"type"),
+      user => $username,
+      require => File["/home/ssh_station_operators/$username/.ssh"],
+      target => "/home/ssh_station_operators/$username/.ssh/authorized_keys"
+    }
   }
 }
 

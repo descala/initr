@@ -17,12 +17,15 @@ class Initr::SshStationServer < Initr::Klass
       next unless n.is_a? Initr::NodeInstance # Skip node templates
       n.project.users.each do |u|
         #TODO: check for user permisions
-        pubkey = u.custom_value_for(UserCustomField.find_by_name("public key")).value rescue next
-        next if pubkey.nil? or pubkey.size <= 0
+        pubkeys = u.custom_value_for(UserCustomField.find_by_name("public key")).value rescue nil
+        next if pubkeys.blank?
         if operators[u.login]
           operators[u.login]['nodes'] << n.fqdn
         else
-          operators[u.login] = {'pubkey'=>Initr::PublicKey.to_hash(pubkey),'nodes'=>[n.fqdn]}
+          operators[u.login] = {
+            'pubkey' => pubkeys.lines.reject {|k| k.blank? }.collect {|k| Initr::PublicKey.to_hash(k) },
+            'nodes' => [n.fqdn]
+          }
         end
       end
     end
