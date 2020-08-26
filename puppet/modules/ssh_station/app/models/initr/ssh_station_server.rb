@@ -23,7 +23,7 @@ class Initr::SshStationServer < Initr::Klass
           operators[u.login]['nodes'] << n.fqdn
         else
           operators[u.login] = {
-            'pubkey' => pubkeys.lines.reject {|k| k.blank? }.collect {|k| Initr::PublicKey.to_hash(k) },
+            'pubkeys' => pubkeys.lines.reject {|k| k.blank? }.collect {|k| Initr::PublicKey.to_hash(k) },
             'nodes' => [n.fqdn]
           }
         end
