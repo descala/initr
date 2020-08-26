@@ -22,10 +22,17 @@ class Initr::SshStationServer < Initr::Klass
         if operators[u.login]
           operators[u.login]['nodes'] << n.fqdn
         else
-          operators[u.login] = {
-            'pubkeys' => pubkeys.lines.reject {|k| k.blank? }.collect {|k| Initr::PublicKey.to_hash(k) },
-            'nodes' => [n.fqdn]
-          }
+          if node.puppetversion.to_s =~ /\A3\./
+            operators[u.login] = {
+              'pubkey' => Initr::PublicKey.to_hash(pubkeys.lines.reject {|k| k.blank? }.first),
+              'nodes' => [n.fqdn]
+            }
+          else
+            operators[u.login] = {
+              'pubkeys' => pubkeys.lines.reject {|k| k.blank? }.collect {|k| Initr::PublicKey.to_hash(k) },
+              'nodes' => [n.fqdn]
+            }
+          end
         end
       end
     end
