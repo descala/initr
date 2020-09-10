@@ -36,12 +36,12 @@ http_access allow localhost
 http_reply_access allow all
 icp_access allow all
 coredump_dir /var/spool/squid
-cache_dir ufs /var/spool/squid <%= squid_cache %> 16 256
+cache_dir ufs /var/spool/squid <%= @squid_cache %> 16 256
 access_log /var/log/squid/access.log squid
 
-<% if squid_config and squid_config != "" -%>
+<% if @squid_config and @squid_config != "" -%>
 # Additional Squid configuration, configured from initr
-<%= squid_config %>
+<%= @squid_config %>
 <% end -%>
 
 http_access deny all
