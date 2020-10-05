@@ -6,11 +6,10 @@
 mydomain=<%=scope.lookupvar("::domain")%>
 
 unknown_local_recipient_reject_code = 550
+myorigin = $mydomain
 relay_domains = $mydestination
 alias_maps = hash:/etc/aliases
-alias_database = hash:/etc/aliases
-append_dot_mydomain = no
-message_size_limit =  52428800
+message_size_limit =  41943040
 
 ### SASL
 smtpd_sasl_type = dovecot
