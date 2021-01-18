@@ -13,4 +13,13 @@ class common::mongodb_backup {
       minute  => 30;
   }
 
+  file {
+    '/var/backups/mongodb':
+      ensure => directory,
+      owner  => mongodb,
+      group  => nogroup,
+      mode   => '0755';
+
+  }
+
 }
