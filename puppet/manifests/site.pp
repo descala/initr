@@ -1,5 +1,5 @@
 # site.pp
-import "nodes/*"
+#import "nodes/*"
 #import "../modules/common/manifests/functions.pp"
 
 # Usage:
