@@ -15,7 +15,7 @@ class postgres::backup_all {
 
   cron {
     'backup postgres all db':
-      command => '/var/backups/postgres/dump_all.sh'
+      command => '/var/backups/postgres/dump_all.sh',
       require => File['/var/backups/postgres/dump_all.sh'],
       user    => 'root',
       hour    => '0',
