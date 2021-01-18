@@ -5,7 +5,7 @@ class postgres::backup_all {
       source => 'puppet:///modules/postgres/dump_all.sh',
       owner  => postgres,
       group  => postgres,
-      mode   => '0700',
+      mode   => '0700';
     '/var/backups/postgres':
       ensure => directory,
       owner  => postgres,
