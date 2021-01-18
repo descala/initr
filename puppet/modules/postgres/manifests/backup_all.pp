@@ -17,7 +17,7 @@ class postgres::backup_all {
     'backup postgres all db':
       command => '/var/backups/postgres/dump_all.sh',
       require => File['/var/backups/postgres/dump_all.sh'],
-      user    => 'root',
+      user    => 'postgres',
       hour    => '0',
       minute  => '0';
   }
