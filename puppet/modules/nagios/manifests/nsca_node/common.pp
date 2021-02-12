@@ -14,9 +14,11 @@ class nagios::nsca_node::common {
   nagios::service { "uptime": }
   create_resources(nagios::check, $nagios_checks)
 
-  package {
-    $libmcrypt:
-      ensure => present;
+  if $libmcrypt {
+    package {
+      $libmcrypt:
+        ensure => present;
+    }
   }
 
   file {
