@@ -39,9 +39,6 @@ set autochdir
 set ignorecase
 set smartcase
 
-" Canvia al directori en obrir un fitxer
-set autochdir
-
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
