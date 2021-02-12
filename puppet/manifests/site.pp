@@ -365,7 +365,7 @@ $libmcrypt = $operatingsystem ? {
   "Mandriva" => "libmcrypt4-devel",
   "Gentoo" =>   "libmcrypt",
   /Debian|Ubuntu/ =>   "libmcrypt-dev",
-  default =>    "libmcrypt-devel"
+  default => undef
 }
 $smartd_packagename = $operatingsystem ? { 
   "Fedora" => $lsbdistrelease_class ? {
