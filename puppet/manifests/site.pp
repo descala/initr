@@ -225,24 +225,24 @@ $ruby_devel = $operatingsystem ? {
 }
 $rdoc = $operatingsystem ? {
   /Debian|Ubuntu/ => "rdoc",
-  Gentoo => undef,
-  Fedora => $operatingsystemrelease ? {
-    2 => ruby-rdoc,
-    5 => ruby-rdoc,
-    6 => ruby-rdoc,
+  /Gentoo/ => undef,
+  /Fedora/ => $operatingsystemrelease ? {
+    "2" => ruby-rdoc,
+    "5" => ruby-rdoc,
+    "6" => ruby-rdoc,
     default => rdoc
   },
-  CentOS => undef,
+  /CentOS/ => undef,
   default => ruby-rdoc
 }
 $cron_service = $operatingsystem ? {
   /Debian|Ubuntu/ => cron,
-  Gentoo => fcron,
+  /Gentoo/ => fcron,
   default => crond
 }
 $httpd = $operatingsystem ? {
   /Debian|Ubuntu/ => apache2,
-  Mandriva => apache-base,
+  /Mandriva/ => apache-base,
   default => httpd
 }
 $httpd_service = $operatingsystem ? {
@@ -252,7 +252,7 @@ $httpd_service = $operatingsystem ? {
 $ssl_module = $operatingsystem ? {
   "Debian" => $lsbmajdistrelease ? {
     # debian > 5.0 does not have libapache-mod-ssl
-    4 => "libapache-mod-ssl",
+    "4" => "libapache-mod-ssl",
     default => ""
   },
   # TODO ubuntu > 7.4 does not have libapache-mod-ssl
@@ -266,7 +266,7 @@ $httpd_user = $operatingsystem ? {
 }
 $httpd_confdir = $operatingsystem ? {
   "Debian" => $lsbmajdistrelease ? {
-    8       => "/etc/apache2/conf-available",
+    "8"       => "/etc/apache2/conf-available",
     default => "/etc/apache2/conf.d"
   },
   default => "/etc/httpd/conf.d"
@@ -289,7 +289,7 @@ $httpd_logdir = $operatingsystem ? {
 }
 $dnsutils = $operatingsystem ? {
   /Debian|Ubuntu/ => dnsutils,
-  Gentoo => bind-tools,
+  /Gentoo/ => bind-tools,
   default => bind-utils
 }
 $manpages = $operatingsystem ? {
@@ -389,7 +389,7 @@ $smartd_service = $operatingsystem ? {
 
 $vim = $operatingsystem ? {
   /Debian|Ubuntu/  => "vim-nox",
-  Gentoo  => "vim",
+  /Gentoo/  => "vim",
   default => "vim-enhanced",
 }
 
