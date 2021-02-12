@@ -62,6 +62,10 @@ password=<%=@nsca_decryption_password%>
 #       26 = SAFER+
 #
 
+<% if @operatingsystem == "CentOS" -%>
+encryption_method=0
+<% else %>
 encryption_method=3
+<% end %>
 
 
