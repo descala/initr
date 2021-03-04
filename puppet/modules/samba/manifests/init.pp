@@ -56,7 +56,7 @@ class samba {
       user => root,
       require => Package['samba'];
     "tdb_backup":
-      command => "/usr/bin/tdbbackup $samba_tdb_dir/*.tdb /etc/samba/*.tdb",
+      command => "/usr/bin/tdbbackup $samba_tdb_dir/*.tdb $samba_tdb_dir/private/*.tdb /etc/samba/*.tdb",
       hour => 4, minute => 30,
       user => root,
       require => Package['samba'];
