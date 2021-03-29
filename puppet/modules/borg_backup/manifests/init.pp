@@ -1,5 +1,6 @@
 # backups amb Borg
-class borg_backup($borg_passphrase,$repository,$excludes,$paths) {
+class borg_backup($borg_passphrase,$repository,$excludes,$paths,
+                  $keep_daily,$keep_weekly,$keep_monthly,$keep_yearly) {
 
   package {
     'borgbackup':
