@@ -101,10 +101,11 @@ echo "Prune files ..."
 # other machine's archives also.
 
 exec_copy_stderr borg prune -v $REPOSITORY \
-    --prefix {hostname}                    \
-        --keep-daily=7                     \
-        --keep-weekly=4                    \
-        --keep-monthly=6
+    --prefix {hostname} \
+    --keep-daily=<%=@keep_daily%> \
+    --keep-weekly=<%=@keep_weekly%> \
+    --keep-monthly=<%=@keep_monthly%> \
+    --keep-yearly=<%=@keep_yearly%>
 
 retval=$?
 

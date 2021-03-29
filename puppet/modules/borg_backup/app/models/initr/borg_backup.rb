@@ -4,7 +4,10 @@ class Initr::BorgBackup < Initr::Klass
     :on => :update
 
   # simple getters and setters for serialized attributes
-  self.accessors_for(%w(borg_passphrase repository excludes paths))
+  self.accessors_for(
+    %w(borg_passphrase repository excludes paths keep_daily keep_weekly
+    keep_monthly keep_yearly)
+  )
 
   # set some defaults
   after_initialize {
@@ -21,6 +24,10 @@ class Initr::BorgBackup < Initr::Klass
 /var/lib/lxcfs
 EOF
     self.paths ||= "/"
+    self.keep_daily   ||= "7"
+    self.keep_weekly  ||= "4"
+    self.keep_monthly ||= "6"
+    self.keep_yearly  ||= "0"
   }
 
   # puppet class is named borg_backup

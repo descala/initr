@@ -27,6 +27,25 @@
   <%= f.text_area 'excludes', rows: 10, cols: 50 %>
   </p>
 
+  <table>
+    <tr>
+      <td><%= f.label 'keep_daily', 'Keep daily' %>:</td>
+      <td><%= f.text_field 'keep_daily', size: 3 %></td>
+    </tr>
+    <tr>
+      <td><%= f.label 'keep_weekly', 'Keep weekly' %>:</td>
+      <td><%= f.text_field 'keep_weekly', size: 3 %></td>
+    </tr>
+    <tr>
+      <td><%= f.label 'keep_monthly', 'Keep monthly' %>:</td>
+      <td><%= f.text_field 'keep_monthly', size: 3 %></td>
+    </tr>
+    <tr>
+      <td><%= f.label 'keep_yearly', 'Keep yearly' %>:</td>
+      <td><%= f.text_field 'keep_yearly', size: 3 %></td>
+    </tr>
+  </table>
+
   <% if @klass.repository.present? -%>
     <br />
     <span style="background-color: #FFFFE0; padding: 10px;">
