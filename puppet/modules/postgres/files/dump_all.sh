@@ -19,12 +19,12 @@ for l in $CLUSTERS ; do
   DBS=( $($PSQL -p $port --list --tuples-only | awk '!/template[01]/ && $1 != "|" {print $1}') )
 
   # next dump globals (roles and tablespaces) only
-  $DUMPALL --globals-only  > "$DIR/globals_$cluster"
+  $DUMPALL --globals-only  > "$DIR/globals_$cluster.$port"
 
   # now loop through each individual database and backup the
   # schema and data separately
   for database in "${DBS[@]}" ; do
-    pg_dump -p $port -f "$DIR/$database.$cluster.backup" -F c -w "$database"
+    pg_dump -p $port -f "$DIR/$database.$cluster.$port.backup" -F c -w "$database"
   done
 
 done
