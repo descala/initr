@@ -10,6 +10,9 @@ cd "$DIR"
 # list postgres clusters
 CLUSTERS=$( $LSCLUSTERS -h | grep online | tr -s ' ' | cut -d" " -f 2,3 --output-delimiter=',' )
 
+# store clusters info
+$LSCLUSTERS > $DIR/clusters.txt
+
 for l in $CLUSTERS ; do
 
   cluster=$(echo $l | cut -d"," -f1)
