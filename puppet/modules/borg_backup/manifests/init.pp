@@ -1,5 +1,5 @@
 # backups amb Borg
-class borg_backup($borg_passphrase,$repository,$excludes,$paths,
+class borg_backup($borg_passphrase,$repository,$excludes,$paths,$hour,$minute,
                   $keep_daily,$keep_weekly,$keep_monthly,$keep_yearly) {
 
   package {
@@ -42,8 +42,8 @@ class borg_backup($borg_passphrase,$repository,$excludes,$paths,
     # TODO: random delay?
     'borg backup':
       command => '/usr/local/sbin/borg_backup.sh',
-      hour    => 3,
-      minute  => 0,
+      hour    => $hour,
+      minute  => $minute,
       user    => root;
   }
 

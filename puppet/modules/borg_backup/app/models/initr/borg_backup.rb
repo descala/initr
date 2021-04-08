@@ -6,7 +6,7 @@ class Initr::BorgBackup < Initr::Klass
   # simple getters and setters for serialized attributes
   self.accessors_for(
     %w(borg_passphrase repository excludes paths keep_daily keep_weekly
-    keep_monthly keep_yearly)
+    keep_monthly keep_yearly hour minute)
   )
 
   # set some defaults
@@ -28,6 +28,8 @@ EOF
     self.keep_weekly  ||= "4"
     self.keep_monthly ||= "6"
     self.keep_yearly  ||= "0"
+    self.hour   ||= '3'
+    self.minute ||= '0'
   }
 
   # puppet class is named borg_backup

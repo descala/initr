@@ -29,6 +29,14 @@
 
   <table>
     <tr>
+      <td><%= f.label 'hour', 'Backup time' %>:</td>
+      <td><%= f.text_field 'hour', size: 2 %> h</td>
+      <td><%= f.text_field 'minute', size: 2 %> m</td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
       <td><%= f.label 'keep_daily', 'Keep daily' %>:</td>
       <td><%= f.text_field 'keep_daily', size: 3 %></td>
     </tr>
