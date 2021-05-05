@@ -167,14 +167,14 @@ File {
 
 # Manage root's crontab
 # absent values are a workaround for bug http://projects.puppetlabs.com/issues/4528#note-5
-Cron {
-  user => "root",
-  minute => absent,
-  hour => absent,
-  monthday => absent,
-  month => absent,
-  weekday => absent,
-}
+#Cron {
+#  user => "root",
+#  minute => absent,
+#  hour => absent,
+#  monthday => absent,
+#  month => absent,
+#  weekday => absent,
+#}
 
 # Do not change Nagios definitions too often
 Nagios_host {
