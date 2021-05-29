@@ -550,6 +550,7 @@ $maillog = $operatingsystem ? {
 }
 $php_socket = $operatingsystem ? {
   "Debian" => $lsbmajdistrelease ? {
+    '10' => '/var/run/php/php7.0-fpm.sock',
     '9' => "/var/run/php/php7.0-fpm.sock",
     default => "/var/run/php5-fpm.sock"
   },
