@@ -1,5 +1,7 @@
 class base::puppet {
 
+  include base::get_services
+
   # Let's assume puppet is installed, right?
 
   # case $operatingsystem {
@@ -49,4 +51,3 @@ class base::puppet {
     }
   }
 }
-

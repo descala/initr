@@ -39,7 +39,7 @@ Redmine::Plugin.register :initr do
       {:node => [:new_template]},
       :require => :loggedin
     permission :view_nodes,
-      {:node  => [:list,:facts,:report,:resource],
+      {:node  => [:list,:facts,:report,:resource,:all_services],
         :klass => [:list]}
     permission :view_own_nodes,
       {:node  => [:list,:facts,:report,:resource],

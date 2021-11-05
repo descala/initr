@@ -4,13 +4,13 @@ class NodeController < InitrController
   helper :projects, :initr
 
   before_action :find_node,
-    :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:report,:resource]
+    :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:report,:resource,:get_services]
   before_action :find_project, :only => [:new]
   before_action :find_optional_project, :only => [:list]
   before_action :find_report, :only => [:report]
   before_action :authorize,
-    :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report]
-  before_action :authorize_global, :only => [:list,:facts,:new_template]
+    :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:get_services]
+  before_action :authorize_global, :only => [:list,:facts,:new_template,:all_services]
   before_action :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
 
   skip_before_action :check_if_login_required, :only => [ :get_host_definition, :store_report ]
@@ -251,6 +251,18 @@ class NodeController < InitrController
     @report = Initr::Report.find params[:id]
     @node = @report.node
     @project = @node.project
+  end
+
+  def get_services
+    @services = []
+    nodes=Project.all.collect {|p| p.node_instances }.flatten.compact
+    nodes.each do |n|
+      services = JSON.parse n.facts["services_list"]
+      services.each do |s|
+        @services << s
+      end
+    end
+    render plain: @services.to_json
   end
 
 end
