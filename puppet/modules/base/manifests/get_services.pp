@@ -20,6 +20,7 @@ class base::get_services {
     group => root,
     mode => "0644",
     ensure  => present,
+    replace => "no",
     source => "puppet:///modules/base/puppet/in.conf",
   }
 
