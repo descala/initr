@@ -22,6 +22,7 @@ class base::get_services {
     ensure  => present,
     replace => "no",
     source => "puppet:///modules/base/puppet/in.conf",
+    notify => Exec['execute_get_services'],
   }
 
   # file get_services.rb
