@@ -38,7 +38,6 @@ class base::get_services {
   exec {
     'execute_get_services':
     command => '/usr/local/sbin/get_services.rb 1> /etc/in/services_list.json 2> /etc/in/outdated_services.json',
-    creates => '/etc/in/services_list.json',
     refreshonly => true,
   }
 
