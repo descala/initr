@@ -39,7 +39,7 @@ Redmine::Plugin.register :initr do
       {:node => [:new_template]},
       :require => :loggedin
     permission :view_nodes,
-      {:node  => [:list,:facts,:report,:resource,:all_services],
+      {:node  => [:list,:facts,:report,:resource,:get_services],
         :klass => [:list]}
     permission :view_own_nodes,
       {:node  => [:list,:facts,:report,:resource],
@@ -102,4 +102,3 @@ end
 # ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackupServer';")
 
 #end
-
