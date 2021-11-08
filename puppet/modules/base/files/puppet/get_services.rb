@@ -32,7 +32,7 @@ if File.exist?('/etc/in/in.conf')
 
   # llista noms de domini
 
-  if config['entorno_file'] != ''
+  if config['entorno_file'] != '' and config['entorno_file'] != nil
 
     file = File.open("/etc/in/" + config['entorno_file'], 'r')
     data = file.read
@@ -48,9 +48,9 @@ if File.exist?('/etc/in/in.conf')
     end
   end
 
-  require 'rest-client' if config['api-key-gandi'] != '' or config['api-key-arsys'] != ''
+  if config['api-key-gandi'] != '' and config['api-key-gandi'] != nil
 
-  if config['api-key-gandi'] != ''
+    require 'rest-client'
     begin
       url = 'https://api.gandi.net/v5/domain/domains'
       params = {}
@@ -67,7 +67,9 @@ if File.exist?('/etc/in/in.conf')
     end
   end
 
-  if config['api-key-arsys'] != ''
+  if config['api-key-arsys'] != '' and config['api-key-arsys'] != nil
+
+    require 'rest-client'
     begin
       url = 'https://domain.apitool.info/v2/domains'
       params = {}
