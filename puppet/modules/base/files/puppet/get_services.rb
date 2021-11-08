@@ -26,11 +26,11 @@ if File.exist?('/etc/in/in.conf')
   file.close
   config = JSON.parse(config)
 
-  # ingent_network
+# ingent_network
 
   @found_services << { 'service' => 'ingent_network', 'host' => @host } if config['ingent_network'] == 'true'
 
-  # llista noms de domini
+# llista noms de domini
 
   if config['entorno_file'] != '' and config['entorno_file'] != nil
 
@@ -140,6 +140,13 @@ find_webs('/etc/apache2/sites-enabled', 'apache.hosting.standard')
 find_webs('/etc/nginx/sites-enabled', 'nginx.hosting.standard')
 find_email('/var/vmail', 'mail.versio1')
 find_email_in_docker('mail.versio2')
+
+if @outdated_webs.empty?
+  @outdated_webs << {}
+end
+if @found_services.empty?
+  @found_services << {}
+end
 
 warn @outdated_webs.to_json
 puts @found_services.to_json
