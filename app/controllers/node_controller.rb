@@ -10,7 +10,7 @@ class NodeController < InitrController
   before_action :find_report, :only => [:report]
   before_action :authorize,
     :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:get_services]
-  before_action :authorize_global, :only => [:list,:facts,:new_template,:all_services]
+  before_action :authorize_global, :only => [:list,:facts,:new_template,:get_services]
   before_action :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
 
   skip_before_action :check_if_login_required, :only => [ :get_host_definition, :store_report ]
@@ -20,7 +20,7 @@ class NodeController < InitrController
   ## TODO redmine2
   ## avoids storing the report data in the log files
   ##filter_parameter_logging :report
-  
+
   def new
     if Setting.plugin_initr["puppetmaster"].blank? or Setting.plugin_initr["puppetmaster_port"].blank?
       if User.current.admin?
@@ -118,7 +118,7 @@ class NodeController < InitrController
       end
     end
     @facts={}
-    # TODO: more efficent with 
+    # TODO: more efficent with
     # Initr.puppetdb.request('',"facts[value] {name = '#{params[:id]}'}")
     nodes.each do |n|
       @facts[n] = n.fact(params[:id]) unless n.fact(params[:id]).nil?
@@ -133,7 +133,7 @@ class NodeController < InitrController
       redirect_to :action => 'list'
     end
   end
-  
+
   def destroy_exported_resources
     # (render_403; return) unless @node && @node.editable_by?(User.current)
     # @node.destroy_exported_resources
@@ -222,6 +222,18 @@ class NodeController < InitrController
     #TODO
   end
 
+  def get_services
+    @services = []
+    nodes=Project.all.collect {|p| p.node_instances }.flatten.compact
+    nodes.each do |n|
+      services = JSON.parse n.facts["services_list"]
+      services.each do |s|
+        @services << s
+      end
+    end
+    render plain: @services.to_json
+  end
+
   private
 
   def find_node
@@ -230,7 +242,7 @@ class NodeController < InitrController
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-  
+
   def find_project
     begin
       @project = Project.find(params[:id])
@@ -239,7 +251,7 @@ class NodeController < InitrController
       render_404
     end
   end
-  
+
   def find_optional_project
     return true unless params[:id]
     @project = Project.find(params[:id])
@@ -251,18 +263,6 @@ class NodeController < InitrController
     @report = Initr::Report.find params[:id]
     @node = @report.node
     @project = @node.project
-  end
-
-  def get_services
-    @services = []
-    nodes=Project.all.collect {|p| p.node_instances }.flatten.compact
-    nodes.each do |n|
-      services = JSON.parse n.facts["services_list"]
-      services.each do |s|
-        @services << s
-      end
-    end
-    render plain: @services.to_json
   end
 
 end
