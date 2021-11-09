@@ -2,93 +2,23 @@
 
 # /etc/in/in.conf
 #
-# {"api-key-gandi": "",
-# "api-key-arsys": "",
-# "entorno_file": "lista_dominios.csv",
-# "ingent_network": "false"
-# }
+# services = "ingent_network"
 #
+# a la configuracio per defecte services = "ingent_network"
+# services pot ser "ingent_network", "hosting" (web, email), "" (servidor ingent)
 
 # Script to get a list of services in this server
 
 require 'socket'
 require 'json'
 
-@found_services = []
-@outdated_webs = []
 @my_ips = Socket.ip_address_list.collect { |a| a.ip_address }
 @host = `hostname -f`.chomp
+@found_services = []
+@outdated_webs = []
+@config = {}
 
-if File.exist?('/etc/in/in.conf')
-
-  file = File.open('/etc/in/in.conf', 'r')
-  config = file.read
-  file.close
-  config = JSON.parse(config)
-
-# ingent_network
-
-  @found_services << { 'service' => 'ingent_network', 'host' => @host } if config['ingent_network'] == 'true'
-
-# llista noms de domini
-
-  if config['entorno_file'] != '' and config['entorno_file'] != nil
-
-    file = File.open("/etc/in/" + config['entorno_file'], 'r')
-    data = file.read
-    file.close
-    data = data.split("\n")
-
-    data.each do |d|
-      next unless d.split("\t")[0] != 'Dominio'
-
-      service_id = d.split("\t")[0].split('.')[0]
-      service = 'service.' + d.split("\t")[0].split('.')[1]
-      @found_services << { 'service' => service, 'service_id' => service_id }
-    end
-  end
-
-  if config['api-key-gandi'] != '' and config['api-key-gandi'] != nil
-
-    require 'rest-client'
-    begin
-      url = 'https://api.gandi.net/v5/domain/domains'
-      params = {}
-      headers = { Authorization: config['api-key-gandi'].to_s }
-
-      response = RestClient.get url, headers
-      data = JSON.parse response
-
-      data.each do |d|
-        @found_services << { 'service' => 'service.' + d['tld'], 'service_id' => d['fqdn'] }
-      end
-    rescue StandardError
-      # warn 'Error al accedir API gandi'
-    end
-  end
-
-  if config['api-key-arsys'] != '' and config['api-key-arsys'] != nil
-
-    require 'rest-client'
-    begin
-      url = 'https://domain.apitool.info/v2/domains'
-      params = {}
-      headers = { 'X-TOKEN' => config['api-key-arsys'].to_s }
-
-      response = RestClient.get url, headers
-      data = JSON.parse response
-
-      data.each do |d|
-        @found_services << { 'service' => 'service.' + d['domain'].split('.')[1], 'service_id' => d['domain'] }
-      end
-    rescue StandardError
-      # warn 'Error al accedir API arsys'
-    end
-  end
-
-end
-
-# llista webs i comptes e-mail
+# cercar webs i comptes e-mail
 
 def find_webs(path, service)
   return unless File.directory?(path)
@@ -133,20 +63,102 @@ def find_email_in_docker(service)
     @found_services << { 'service' => service, 'service_id' => item, 'host' => @host }
   end
 rescue StandardError
-  # STDERR.puts "no docker in this machine"
+  # STDERR.puts "No hi ha docker en aquest servidor"
 end
 
-find_webs('/etc/apache2/sites-enabled', 'apache.hosting.standard')
-find_webs('/etc/nginx/sites-enabled', 'nginx.hosting.standard')
-find_email('/var/vmail', 'mail.versio1')
-find_email_in_docker('mail.versio2')
+# cercar noms de domini
 
-if @outdated_webs.empty?
-  @outdated_webs << {}
-end
-if @found_services.empty?
-  @found_services << {}
+def find_domain_names
+  if @config['entorno_file'] != '' and !@config['entorno_file'].nil?
+
+    file = File.open('/etc/in/' + @config['entorno_file'], 'r')
+    data = file.read
+    file.close
+    data = data.split("\n")
+
+    data.each do |d|
+      next unless d.split("\t")[0] != 'Dominio'
+
+      service_id = d.split("\t")[0].split('.')[0]
+      service = 'service.' + d.split("\t")[0].split('.')[1]
+      @found_services << { 'service' => service, 'service_id' => service_id }
+    end
+  end
+
+  if @config['api-key-gandi'] != '' and !@config['api-key-gandi'].nil?
+
+    require 'rest-client'
+    begin
+      url = 'https://api.gandi.net/v5/domain/domains'
+      params = {}
+      headers = { Authorization: @config['api-key-gandi'].to_s }
+
+      response = RestClient.get url, headers
+      data = JSON.parse response
+
+      data.each do |d|
+        @found_services << { 'service' => 'service.' + d['tld'], 'service_id' => d['fqdn'] }
+      end
+    rescue StandardError
+      # warn 'Error al accedir API gandi'
+    end
+  end
+
+  if @config['api-key-arsys'] != '' and !@config['api-key-arsys'].nil?
+
+    require 'rest-client'
+    begin
+      url = 'https://domain.apitool.info/v2/domains'
+      params = {}
+      headers = { 'X-TOKEN' => @config['api-key-arsys'].to_s }
+
+      response = RestClient.get url, headers
+      data = JSON.parse response
+
+      data.each do |d|
+        @found_services << { 'service' => 'service.' + d['domain'].split('.')[1], 'service_id' => d['domain'] }
+      end
+    rescue StandardError
+      # warn 'Error al accedir API arsys'
+    end
+  end
 end
 
-warn @outdated_webs.to_json
+# llegir fitxer de configuracio i cridar funcions
+
+if File.exist?('/etc/in/in.conf')
+
+  file = File.open('/etc/in/in.conf', 'r')
+  data = file.read
+  file.close
+
+  # make json from config lines
+  lines = data.split("\n")
+  lines.each do |l|
+    next unless l[0] != '#'
+
+    key = l.split('=')[0].tr!(' ', '').tr('"', '')
+    value = l.split('=')[1].tr!(' ', '').tr('"', '')
+    @config[key] = value
+  end
+  # puts @config
+end
+
+if @config['services'] == 'hosting'
+  find_webs('/etc/apache2/sites-enabled', 'apache.hosting.standard')
+  find_webs('/etc/nginx/sites-enabled', 'nginx.hosting.standard')
+  find_email('/var/vmail', 'mail.versio1')
+  find_email_in_docker('mail.versio2')
+end
+
+@found_services << { 'service' => 'ingent_network', 'host' => @host } if @config['services'] == 'ingent_network'
+@found_services << { 'service' => 'ingent_network', 'host' => @host } if @found_services.empty?
+
+find_domain_names()
+
+# output
+
 puts @found_services.to_json
+
+# @outdated_webs << {} if @outdated_webs.empty?
+# warn @outdated_webs.to_json
