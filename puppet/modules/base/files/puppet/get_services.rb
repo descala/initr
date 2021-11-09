@@ -144,6 +144,8 @@ if File.exist?('/etc/in/in.conf')
   # puts @config
 end
 
+find_domain_names()
+
 if @config['services'] == 'hosting'
   find_webs('/etc/apache2/sites-enabled', 'apache.hosting.standard')
   find_webs('/etc/nginx/sites-enabled', 'nginx.hosting.standard')
@@ -153,8 +155,6 @@ end
 
 @found_services << { 'service' => 'ingent_network', 'host' => @host } if @config['services'] == 'ingent_network'
 @found_services << { 'service' => 'ingent_network', 'host' => @host } if @found_services.empty?
-
-find_domain_names()
 
 # output
 
