@@ -69,9 +69,9 @@ end
 # cercar noms de domini
 
 def find_domain_names
-  if @config['entorno_file'] != '' and !@config['entorno_file'].nil?
+  if @config['entorno-file'] != '' and !@config['entorno-file'].nil?
 
-    file = File.open('/etc/in/' + @config['entorno_file'], 'r')
+    file = File.open('/etc/in/' + @config['entorno-file'], 'r')
     data = file.read
     file.close
     data = data.split("\n")
