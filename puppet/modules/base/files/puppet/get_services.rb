@@ -136,16 +136,19 @@ if File.exist?('/etc/in/in.conf')
   lines = data.split("\n")
   lines.each do |l|
     next unless l[0] != '#'
-
-    key = l.split('=')[0].tr!(' ', '').tr('"', '')
-    value = l.split('=')[1].tr!(' ', '').tr('"', '')
-    @config[key] = value
+    begin
+      key = l.split('=')[0].tr!(' ', '').tr('"', '')
+      value = l.split('=')[1].tr!(' ', '').tr('"', '')
+      @config[key] = value
+    rescue
+    end
   end
   # puts @config
 end
 
 find_domain_names()
 
+# hosting
 if @config['services'] == 'hosting'
   find_webs('/etc/apache2/sites-enabled', 'apache.hosting.standard')
   find_webs('/etc/nginx/sites-enabled', 'nginx.hosting.standard')
@@ -153,11 +156,13 @@ if @config['services'] == 'hosting'
   find_email_in_docker('mail.versio2')
 end
 
+# ingent network
 @found_services << { 'service' => 'ingent_network', 'host' => @host } if @config['services'] == 'ingent_network'
-#@found_services << { 'service' => 'ingent_network', 'host' => @host } if @found_services.empty?
+
+# ingent
+@found_services << {} if @found_services.empty?
 
 # output
-
 puts @found_services.to_json
 
 # @outdated_webs << {} if @outdated_webs.empty?
