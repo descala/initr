@@ -13,15 +13,14 @@ class base::get_services {
   }
 
   # file /etc/in.conf
-  # PRECAUCIO: el fitxer in.conf ha d'anar sense api-keys
   file {
     "/etc/in/in.conf":
     owner => root,
     group => root,
     mode => "0644",
     ensure  => present,
-    # descomentar a producció quan tot funcioni be
-    # replace => "no",
+    # descomentar o comentar seguent linia
+    replace => "no",
     source => "puppet:///modules/base/puppet/in.conf",
     notify => Exec['execute_get_services'],
   }
@@ -37,7 +36,7 @@ class base::get_services {
     notify => Exec['execute_get_services'],
   }
 
-  # exec nomes s'executa el primer cop que es copia el fitxer, o quan es modifica
+  # exec s'executa amb notify => Exec[]
   exec {
     'execute_get_services':
     command => '/usr/local/sbin/get_services.rb 1> /etc/in/services_list.json',
@@ -52,7 +51,7 @@ class base::get_services {
     month       => '*',
     weekday     => '*',
     user        => 'root',
-    command     => '/usr/local/sbin/get_services.rb 1> /etc/in/services_list.json 2> /etc/in/outdated_services.json',
+    command     => '/usr/local/sbin/get_services.rb 1> /etc/in/services_list.json',
   }
 
 }
