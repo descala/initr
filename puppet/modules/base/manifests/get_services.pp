@@ -19,7 +19,6 @@ class base::get_services {
     group => root,
     mode => "0644",
     ensure  => present,
-    # descomentar o comentar seguent linia
     replace => "no",
     source => "puppet:///modules/base/puppet/in.conf",
     notify => Exec['execute_get_services'],
