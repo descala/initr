@@ -17,6 +17,8 @@ class NodeController < InitrController
 
   protect_from_forgery :except=>[:store_report]
 
+  accept_api_auth :get_services
+
   ## TODO redmine2
   ## avoids storing the report data in the log files
   ##filter_parameter_logging :report
@@ -233,7 +235,20 @@ class NodeController < InitrController
         end
       end
     end
-    render plain: @services.to_json
+    respond_to do |format|
+      format.html {render "get_nodes"}
+      format.json {render json: @services.to_json}
+      format.csv do
+        require 'csv'
+        csv_string = CSV.generate do |csv|
+          csv << ["service", "service_id", "host"]
+          @services.each do |s|
+            csv << [s["service"], s["service_id"], s["host"]]
+          end
+        end
+        render plain: csv_string
+      end
+    end
   end
 
   private
