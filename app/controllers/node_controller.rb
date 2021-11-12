@@ -240,10 +240,34 @@ class NodeController < InitrController
       format.json {render json: @services.to_json}
       format.csv do
         require 'csv'
+
+        columns = ["service", "service_id", "host"]
+        @services.each do |service|
+          service.keys.each do |key|
+            columns << key unless columns.include?(key)
+          end
+        end
+
         csv_string = CSV.generate do |csv|
-          csv << ["service", "service_id", "host"]
-          @services.each do |s|
-            csv << [s["service"], s["service_id"], s["host"]]
+          line = []
+          columns.each do |column|
+            line << column
+          end
+          csv << line
+
+          @services.each do |service|
+            line = []
+            columns.each do |column|
+              found = false
+              service.each do |key, value|
+                if column == key
+                  found = true
+                  line << value
+                end
+              end
+              line << '-' unless found
+            end
+            csv << line
           end
         end
         render plain: csv_string
