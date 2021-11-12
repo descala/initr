@@ -79,9 +79,9 @@ def find_domain_names
     data.each do |d|
       next unless d.split("\t")[0] != 'Dominio'
 
-      service_id = d.split("\t")[0].split('.')[0]
+      service_id = d.split("\t")[0]
       service = 'service.' + d.split("\t")[0].split('.')[1]
-      @found_services << { 'service' => service, 'service_id' => service_id }
+      @found_services << { 'service' => service, 'service_id' => service_id, 'host' => @host }
     end
   end
 
@@ -98,7 +98,7 @@ def find_domain_names
       data = JSON.parse response
 
       data.each do |d|
-        @found_services << { 'service' => 'service.' + d['tld'], 'service_id' => d['fqdn'] }
+        @found_services << { 'service' => 'service.' + d['tld'], 'service_id' => d['fqdn'], 'host' => @host }
       end
     rescue StandardError
       # warn 'Error al accedir API gandi'
@@ -117,7 +117,7 @@ def find_domain_names
       data = JSON.parse response
 
       data.each do |d|
-        @found_services << { 'service' => 'service.' + d['domain'].split('.')[1], 'service_id' => d['domain'] }
+        @found_services << { 'service' => 'service.' + d['domain'].split('.')[1], 'service_id' => d['domain'], 'host' => @host }
       end
     rescue StandardError
       # warn 'Error al accedir API arsys'
@@ -144,9 +144,9 @@ if File.exist?('/etc/in/in.conf')
     rescue
     end
   end
-  # puts @config
 end
 
+# dominis
 find_domain_names()
 
 # hosting
