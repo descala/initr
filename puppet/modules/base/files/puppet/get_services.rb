@@ -87,6 +87,7 @@ def find_domain_names
 
   if @config['api-key-gandi'] != '' and !@config['api-key-gandi'].nil?
 
+    @config['api-key-gandi'] = "Apikey " + @config['api-key-gandi']
     require 'rest-client'
     begin
       url = 'https://api.gandi.net/v5/domain/domains'
