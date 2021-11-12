@@ -1,14 +1,33 @@
 <table>
   <tr>
-    <th>service</th>
-    <th>service id</th>
-    <th>host</th>
-  </tr>
-  <% @services.each do |service|%>
-  <tr class="<%= cycle('odd', 'even') %>">
-    <td><%= service["service"]%></td>
-    <td><%= service["service_id"]%></td>
-    <td><%= service["host"]%></td>
-  </tr>
+  <% columns = ["service", "service_id", "host"]
+  @services.each do |service|
+    service.keys.each do |key|
+      if !columns.include? (key)
+        columns << key
+      end
+    end
+  end%>
+
+  <% columns.each do |column|%>
+    <th><%= column %></th>
   <% end %>
+
+  </tr>
+    <% @services.each do |service|%>
+      <tr class="<%= cycle('odd', 'even') %>">
+      <% columns.each do |column|
+        found = false
+        service.each do |key, value|
+          if column == key
+            found = true%>
+            <td><%= value %></td>
+          <% end
+        end
+        if !found %>
+          <td><center> - </center></td>
+        <%end
+      end
+    end%>
+  </tr>
 </table>
