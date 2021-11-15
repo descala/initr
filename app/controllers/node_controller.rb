@@ -226,12 +226,12 @@ class NodeController < InitrController
 
   def get_services
     @services = []
-    nodes=Project.all.collect {|p| p.node_instances }.flatten.compact
+    nodes = Project.all.collect {|p| p.node_instances }.flatten.compact
     nodes.each do |n|
       unless n.facts["services_list"].blank?
         services = JSON.parse n.facts["services_list"]
         services.each do |s|
-          @services << s
+          unless s.empty? { @services << s }
         end
       end
     end
