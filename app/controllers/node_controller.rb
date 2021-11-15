@@ -230,7 +230,7 @@ class NodeController < InitrController
     nodes.each do |n|
       unless n.facts["services_list"].blank?
         services = JSON.parse n.facts["services_list"]
-        ervices.each do |s|
+        services.each do |s|
           unless s.empty?
             @services << s
           end
