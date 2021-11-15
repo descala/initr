@@ -231,9 +231,8 @@ class NodeController < InitrController
       unless n.facts["services_list"].blank?
         services = JSON.parse n.facts["services_list"]
         services.each do |s|
-          unless s.empty?
-            @services << s
-          end
+          # cal arreglar, hi ha un espai en blanc al final de cada llista 
+          @services << s
         end
       end
     end
