@@ -158,7 +158,7 @@ if @config['services'] == 'hosting'
 end
 
 # ingent network
-@found_services << { 'service' => 'ingent_network', 'host' => @host } if @config['services'] == 'ingent_network'
+@found_services << { 'service' => 'ingent_network', 'service_id' => 'ingent_network', 'host' => @host } if @config['services'] == 'ingent_network'
 
 # ingent
 @found_services << {} if @found_services.empty?
