@@ -236,27 +236,29 @@ class NodeController < InitrController
           end
         end
       end
+      puts @services
+      # es compta amb que tots els serveis tenen el camp service_id
+      @services.sort_by! {|h| h["service_id"]}
     end
     respond_to do |format|
       format.html {render "get_nodes"}
       format.json {render json: @services.to_json}
       format.csv do
         require 'csv'
-
-        columns = ["service", "service_id", "host"]
+        # afegir columnes
+        columns = ["service_id", "service", "host"]
         @services.each do |service|
           service.keys.each do |key|
             columns << key unless columns.include?(key)
           end
         end
-
+        # genera csv posant els camps a columnes corresponents
         csv_string = CSV.generate do |csv|
           line = []
           columns.each do |column|
             line << column
           end
           csv << line
-
           @services.each do |service|
             line = []
             columns.each do |column|
