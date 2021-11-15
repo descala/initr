@@ -231,7 +231,9 @@ class NodeController < InitrController
       unless n.facts["services_list"].blank?
         services = JSON.parse n.facts["services_list"]
         services.each do |s|
-          unless s.empty? { @services << s }
+          unless s.empty?
+            @services << s
+          end
         end
       end
     end
