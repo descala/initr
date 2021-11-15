@@ -1,6 +1,6 @@
 <table>
   <tr>
-  <% columns = ["service", "service_id", "host"]
+  <% columns = ["service_id", "service", "host"]
   @services.each do |service|
     service.keys.each do |key|
       if !columns.include? (key)
