@@ -236,7 +236,6 @@ class NodeController < InitrController
           end
         end
       end
-      puts @services
       # es compta amb que tots els serveis tenen el camp service_id
       @services.sort_by! {|h| h["service_id"]}
     end
