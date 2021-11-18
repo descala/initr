@@ -237,7 +237,7 @@ class NodeController < InitrController
         end
       end
       # es compta amb que tots els serveis tenen el camp service_id
-      @services.sort_by! { |h| h["service_id"] }
+      @services.sort_by! {|h| h["service_id"]}
     end
     respond_to do |format|
       format.html {render "get_nodes"}
