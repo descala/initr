@@ -32,6 +32,12 @@ def find_webs(path, service)
     ip = `dig a #{web} +short +time=5 +tries=5 2&>1`.split.join(' ') # podria valer la pena modifcar time i tries ?
     ip = 'none' if ip == ''
 
+    # extreu la ip en els casos de cname
+    lines = ip.split(" ")
+    if lines.length > 1
+      ip = lines[1]
+    end
+
     if @my_ips.include?(ip)
       @found_services << { 'service' => service, 'service_id' => web, 'host' => @host }
     else
@@ -69,6 +75,7 @@ end
 # cercar noms de domini
 
 def find_domain_names
+
   if @config['entorno-file'] != '' and !@config['entorno-file'].nil?
 
     file = File.open('/etc/in/' + @config['entorno-file'], 'r')
@@ -125,6 +132,32 @@ def find_domain_names
   end
 end
 
+# servidors hetzner
+
+def find_servers()
+
+  if @config['api-keys-hetzner'] != '' and !@config['api-keys-hetzner'].nil?
+    require 'rest-client'
+    begin
+      api_keys = @config['api-keys-hetzner'].split("%")
+      url = 'https://api.hetzner.cloud/v1/servers'
+
+      api_keys.each do |k|
+        params = {}
+        headers = { 'Authorization' => 'Bearer ' + k.to_s }
+        response = RestClient.get url, headers
+        data = JSON.parse response
+
+        data["servers"].each do |s|
+          @found_services << { 'service' => s['server_type']['name'], 'service_id' => s['name'], 'host' => @host }
+        end
+      end
+    rescue StandardError
+      #warn 'Error al accedir API hetzner'
+    end
+  end
+end
+
 # llegir fitxer de configuracio i cridar funcions
 
 if File.exist?('/etc/in/in.conf')
@@ -146,6 +179,9 @@ if File.exist?('/etc/in/in.conf')
   end
 end
 
+# servidors
+find_servers()
+
 # dominis
 find_domain_names()
 
@@ -158,7 +194,7 @@ if @config['services'] == 'hosting'
 end
 
 # ingent network
-@found_services << { 'service' => 'ingent_network', 'service_id' => 'ingent_network', 'host' => @host } if @config['services'] == 'ingent_network'
+@found_services << { 'service' => @host, 'service_id' => 'ingent_network', 'host' => @host } if @config['services'] == 'ingent_network'
 
 # ingent
 @found_services << {} if @found_services.empty?
