@@ -238,6 +238,8 @@ class NodeController < InitrController
       end
       # es compta amb que tots els serveis tenen el camp service_id
       @services.sort_by! {|h| h["service_id"]}
+      @services.sort_by! {|h| h["service"]}
+
     end
     respond_to do |format|
       format.html {render "get_nodes"}
@@ -245,7 +247,7 @@ class NodeController < InitrController
       format.csv do
         require 'csv'
         # afegir columnes
-        columns = ["service_id", "service", "host"]
+        columns = ["service", "service_id", "host"]
         @services.each do |service|
           service.keys.each do |key|
             columns << key unless columns.include?(key)
