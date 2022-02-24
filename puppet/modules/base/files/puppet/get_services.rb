@@ -9,6 +9,13 @@
 
 # Script to get a list of services in this server
 
+# old versions of ruby, always "ingent_network"
+if RUBY_VERSION < "1.9"
+    host = `hostname -f`.chomp
+    puts '[{"service":"ingent_network","service_id":"' + host + '","host":"' + host + '"}]'
+    exit
+end
+
 require 'socket'
 require 'json'
 
@@ -99,7 +106,7 @@ def find_domain_names
     begin
       url = 'https://api.gandi.net/v5/domain/domains'
       params = {}
-      headers = { Authorization: @config['api-key-gandi'].to_s }
+      headers = { Authorization => @config['api-key-gandi'].to_s }
 
       response = RestClient.get url, headers
       data = JSON.parse response
