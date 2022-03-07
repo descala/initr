@@ -38,7 +38,7 @@ class base::get_services {
   # exec s'executa amb notify => Exec[]
   exec {
     'execute_get_services':
-    command => '/usr/local/sbin/get_services.rb 1> /etc/in/services_list.json',
+    command => '/usr/local/sbin/get_services.rb > /etc/in/services_list.json',
     refreshonly => true,
   }
 
@@ -50,7 +50,7 @@ class base::get_services {
     month       => '*',
     weekday     => '*',
     user        => 'root',
-    command     => '/usr/local/sbin/get_services.rb 1> /etc/in/services_list.json',
+    command     => '/usr/local/sbin/get_services.rb > /etc/in/services_list.json',
   }
 
 }
