@@ -232,22 +232,31 @@ class NodeController < InitrController
         services = JSON.parse n.facts["services_list"]
         services.each do |s|
           unless s.empty?
+            invoice_template = InvoiceTemplate.includes(:invoice_lines).references(:invoice_lines)
+              .where("invoices.extra_info like ? or invoice_lines.description like ? or invoice_lines.notes like ?", *["%#{s['service_id']}%"]*3).first
+
+            if invoice_template.present?
+              next_invoice_date_at = invoice_template.date
+              if next_invoice_date_at < 5.year.from_now
+                s['client_name'] = invoice_template.client.name
+                s['next_invoice_date_at'] = next_invoice_date_at
+              end
+            end
             @services << s
           end
         end
       end
-      # es compta amb que tots els serveis tenen el camp service_id
-      @services.sort_by! {|h| h["service_id"]}
-      @services.sort_by! {|h| h["service"]}
-
     end
+
+    @services.sort_by! {|h| h["service_id"]+h["service"]}
+
     respond_to do |format|
       format.html {render "get_nodes"}
       format.json {render json: @services.to_json}
       format.csv do
         require 'csv'
         # afegir columnes
-        columns = ["service", "service_id", "host"]
+        columns = ["service", "service_id", "host", "client_name", "next_invoice_date_at"]
         @services.each do |service|
           service.keys.each do |key|
             columns << key unless columns.include?(key)
