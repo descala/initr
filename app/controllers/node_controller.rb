@@ -239,7 +239,7 @@ class NodeController < InitrController
             if invoice_template.present?
               s['client_name'] = invoice_template.client&.name
               s['next_invoice_date_at'] = invoice_template.date
-              s['frequency'] = invoice_template.frequency
+              # s['frequency'] = invoice_template.frequency
             end
             @services << s
           end
