@@ -233,14 +233,13 @@ class NodeController < InitrController
         services.each do |s|
           unless s.empty?
             invoice_template = InvoiceTemplate.includes(:invoice_lines).references(:invoice_lines)
+              .where('invoices.date < ?', 5.year.from_now)
               .where("invoices.extra_info like ? or invoice_lines.description like ? or invoice_lines.notes like ?", *["%#{s['service_id']}%"]*3).first
 
             if invoice_template.present?
-              next_invoice_date_at = invoice_template.date
-              if next_invoice_date_at < 5.year.from_now
-                s['client_name'] = invoice_template.client.name
-                s['next_invoice_date_at'] = next_invoice_date_at
-              end
+              s['client_name'] = invoice_template.client&.name
+              s['next_invoice_date_at'] = invoice_template.date
+              s['frequency'] = invoice_template.frequency
             end
             @services << s
           end
