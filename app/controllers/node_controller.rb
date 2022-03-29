@@ -238,7 +238,7 @@ class NodeController < InitrController
 
             if invoice_template.present?
               s['client_name'] = invoice_template.client&.name
-              s['next_invoice_date_at'] = invoice_template.date
+              # s['next_invoice_date_at'] = invoice_template.date
               # s['frequency'] = invoice_template.frequency
             end
             @services << s
@@ -255,7 +255,7 @@ class NodeController < InitrController
       format.csv do
         require 'csv'
         # afegir columnes
-        columns = ["service", "service_id", "host", "client_name", "next_invoice_date_at"]
+        columns = ["service", "service_id", "host", "client_name"]
         @services.each do |service|
           service.keys.each do |key|
             columns << key unless columns.include?(key)
