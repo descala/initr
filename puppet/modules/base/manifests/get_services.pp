@@ -46,7 +46,7 @@ class base::get_services {
   cron {
     "get_services":
     minute      => '40',
-    hour        => '2',
+    hour        => '*',
     month       => '*',
     weekday     => '*',
     user        => 'root',
