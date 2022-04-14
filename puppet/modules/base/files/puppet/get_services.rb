@@ -34,6 +34,7 @@ def find_webs(path, service)
   webs = items.each { |f| f.chomp!('.conf') } # obté llista dels noms de webs
 
   webs.each do |web|
+    web.gsub!(/^http_/,'')
     next unless web =~ /^([a-zA-Z0-9-]{1,61}\.)?[a-zA-Z0-9-]{1,61}\.[a-zA-Z]{2,}$/ # nomes noms tipus abcd0.abcd0.abcd
 
     ip = `dig a #{web} +short +time=5 +tries=5 2&>1`.split.join(' ') # podria valer la pena modifcar time i tries ?
