@@ -28,8 +28,8 @@ EOF
     self.keep_weekly  ||= "4"
     self.keep_monthly ||= "6"
     self.keep_yearly  ||= "0"
-    self.hour   ||= '3'
-    self.minute ||= '0'
+    self.hour   ||= 3+rand(2)
+    self.minute ||= rand(60)
   }
 
   # puppet class is named borg_backup

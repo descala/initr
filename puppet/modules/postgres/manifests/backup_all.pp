@@ -11,6 +11,8 @@ class postgres::backup_all {
       owner  => postgres,
       group  => postgres,
       mode   => '0750';
+    '/backup/postgres':
+      ensure => '/var/backups/postgres';
   }
 
   cron {

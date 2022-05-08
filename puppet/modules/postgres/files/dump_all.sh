@@ -4,6 +4,13 @@ LSCLUSTERS='/usr/bin/pg_lsclusters'
 DUMPALL='/usr/bin/pg_dumpall'
 PSQL='/usr/bin/psql'
 DIR='/var/backups/postgres'
+
+if ! command -v $LSCLUSTERS &> /dev/null
+then
+  echo "$LSCLUSTERS could not be found"
+  exit
+fi
+
 mkdir -p "$DIR"
 cd "$DIR"
 

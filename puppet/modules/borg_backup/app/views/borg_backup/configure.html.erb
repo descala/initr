@@ -54,21 +54,46 @@
     </tr>
   </table>
 
-  <% if @klass.repository.present? -%>
-    <br />
-    <span style="background-color: #FFFFE0; padding: 10px;">
-      You need to initialize repository the first time, run:
-    </span>
-    <pre style="padding: 10px;">
-    BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg init <%= @klass.repository %>
-    </pre>
-    Useful commands:
-    <pre style="padding: 10px;">
-    BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg list <%= @klass.repository %>
-    BORG_PASSPHRASE="<%= @klass.borg_passphrase %>" BORG_RSH="ssh -i /root/.ssh/borg_rsa" borg mount <%= @klass.repository %> /mnt
-    </pre>
-    <br />
-  <% end -%>
+<% if @klass.repository.present? -%>
+<h3>Setup on server</h3>
+<pre style="padding: 10px;">
+USER=<%= @klass.repository.split('@').first %>
+RPATH=/srv/<%= @node.project.identifier %>/<%= @node.fqdn %>
+
+adduser --ingroup <%= @node.project.identifier %> --home $RPATH --disabled-password --gecos "<%= @node.fqdn %> borg backup" $USER
+cd $RPATH
+mkdir .ssh
+cat << EOF > .ssh/authorized_keys
+command="borg serve --restrict-to-path $RPATH",restrict ssh-rsa <%= @node.facts['sshrsakey'] %>
+EOF
+chown -R $USER. .ssh/
+chmod 700 .ssh
+chmod 600 .ssh/authorized_keys
+</pre>
+<h3>On client</h3>
+<pre style="padding: 10px;">
+USER=<%= @klass.repository.split('@').first %>
+HOST=borg.ingent.net
+
+cat << EOF >> .ssh/config
+Host borg
+  User $USER
+  HostName $HOST
+  IdentityFile /etc/ssh/ssh_host_rsa_key
+EOF
+
+cat << EOF >> .bashrc_local
+export BORG_PASSPHRASE=<%= @klass.borg_passphrase %>
+export BORG_REPO=<%= @klass.repository %>
+EOF
+
+. .bashrc_local
+
+borg init -e repokey-blake2
+/usr/local/sbin/borg_backup.sh
+borg list
+</pre>
+<% end -%>
 
   <p><%= submit_tag 'Save' %></p>
 
