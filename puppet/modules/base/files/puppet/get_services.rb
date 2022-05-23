@@ -37,7 +37,7 @@ def find_webs(path, service)
     web.gsub!(/^http_/,'')
     next unless web =~ /^([a-zA-Z0-9-]{1,61}\.)?[a-zA-Z0-9-]{1,61}\.[a-zA-Z]{2,}$/ # nomes noms tipus abcd0.abcd0.abcd
 
-    ip = `dig a #{web} +short +time=5 +tries=5 2&>1`.split.join(' ') # podria valer la pena modifcar time i tries ?
+    ip = `dig a #{web} +short +time=5 +tries=5 2>&1`.split.join(' ') # podria valer la pena modifcar time i tries ?
     ip = 'none' if ip == ''
 
     # extreu la ip en els casos de cname
