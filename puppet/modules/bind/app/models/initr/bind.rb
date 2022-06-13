@@ -40,7 +40,7 @@ class Initr::Bind < Initr::Klass
     bind_masterzones = {}
     self.bind_zones.each do |z|
       next if z.zone.nil? or z.zone.empty?
-      bind_masterzones[z.domain]=z.parameters
+      bind_masterzones[z.domain_idn]=z.parameters
     end
     {
       "nameservers"        => (nameservers.split rescue []),
@@ -103,7 +103,7 @@ class Initr::Bind < Initr::Klass
         raise Initr::Klass::ConfigurationError.new("bind: missing IP address on master")
       else
         sz[master.ipaddress] = master.bind_zones.collect do |z|
-          z.domain if z.zone and !z.zone.empty?
+          z.domain_idn if z.zone and !z.zone.empty?
         end.compact
       end
     end
