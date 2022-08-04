@@ -8,6 +8,7 @@ class Initr::PackageManager < Initr::Klass
     config["packages_from_stretch"]  ||= []
     config["packages_from_buster"]   ||= []
     config["packages_from_bullseye"] ||= []
+    config["packages_from_bookworm"] ||= []
     config["security_updates"]       ||= "0"
   }
 
@@ -17,7 +18,8 @@ class Initr::PackageManager < Initr::Klass
       "packages_from_jessie"   => config["packages_from_jessie"],
       "packages_from_stretch"  => config["packages_from_stretch"],
       "packages_from_buster"   => config["packages_from_buster"],
-      "packages_from_bullseye" => config["packages_from_bullseye"]
+      "packages_from_bullseye" => config["packages_from_bullseye"],
+      "packages_from_bookworm" => config["packages_from_bookworm"],
     }
   end
 
@@ -71,5 +73,13 @@ class Initr::PackageManager < Initr::Klass
 
   def packages_from_bullseye
     config["packages_from_bullseye"].join(', ') rescue ""
+  end
+
+  def packages_from_bookworm=(packages)
+    config["packages_from_bookworm"] = packages.is_a?(String) ? packages.gsub(/ */,'').split(',') : packages
+  end
+
+  def packages_from_bookworm
+    config["packages_from_bookworm"].join(', ') rescue ""
   end
 end

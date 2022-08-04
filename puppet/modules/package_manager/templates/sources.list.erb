@@ -72,4 +72,18 @@ deb http://deb.debian.org/debian buster main contrib non-free
 deb http://deb.debian.org/debian bullseye main contrib non-free
 <% end -%>
 
+<% else -%>
+# debian <%= scope.lookupvar("::lsbdistcodename") %>
+deb http://http.debian.net/debian <%= scope.lookupvar("::lsbdistcodename") %> main contrib non-free
+deb http://http.debian.net/debian <%= scope.lookupvar("::lsbdistcodename") %>-updates main contrib non-free
+deb http://http.debian.net/debian <%= scope.lookupvar("::lsbdistcodename") %>-backports main contrib non-free
+deb http://security.debian.org <%= scope.lookupvar("::lsbdistcodename") %>-security main contrib non-free
+
+<% pfw = scope.lookupvar('::packages_from_bookworm')
+   pfw = [] unless pfw.is_a?(Array)
+   if pfw.any? -%>
+# debian bookworm
+# deb http://deb.debian.org/debian bookworm main contrib non-free
+<% end -%>
+
 <% end -%>
