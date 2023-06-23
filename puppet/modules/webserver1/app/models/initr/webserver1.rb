@@ -18,7 +18,7 @@ class Initr::Webserver1 < Initr::Klass
   }
 
   before_validation do |ws|
-    ws.admin_password = password unless password.blank? or password != password_confirmation
+    (ws.admin_password = password unless password.blank? or password != password_confirmation) rescue nil
   end
 
   def name

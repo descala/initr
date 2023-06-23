@@ -182,8 +182,8 @@ class Initr::Klass < ActiveRecord::Base
     # uncomment on rails 3, rails 2.3 does not detect changes on serialized columns
     # https://rails.lighthouseapp.com/projects/8994/tickets/360-dirty-tracking-on-serialized-columns-is-broken
     # return unless self.changed?
-    return unless self.valid?
     begin
+      return unless self.valid?
       open("public/puppetrun_#{self.node.name}",'w') {|f| f << Time.now.to_i }
     rescue
     end
