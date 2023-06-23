@@ -1,11 +1,10 @@
 class LinkKlassController < InitrController
-  unloadable
 
   menu_item :initr
-  before_filter :find_node,       :except => [:configure]
-  before_filter :find_link_klass, :only => [:configure]
-  before_filter :set_copiable_klasses
-  before_filter :authorize
+  before_action :find_node,       :except => [:configure]
+  before_action :find_link_klass, :only => [:configure]
+  before_action :set_copiable_klasses
+  before_action :authorize
 
   def new
     @klass = Initr::LinkKlass.new(:node=>@node)
@@ -28,13 +27,10 @@ class LinkKlassController < InitrController
 
   def configure
     @html_title=[@node.fqdn, "#{@klass.name} (link klass)"]
-    if request.post? or request.put?
+    if request.patch?
       params["link_klass"] ||= {}
       if @klass.update_attributes(params["link_klass"])
         flash[:notice]='Configuration saved'
-        redirect_to :controller => 'klass', :action=>'list', :id => @node, :tab=>'klasses'
-      else
-        render :action=>'configure'
       end
     end
   end
@@ -56,8 +52,11 @@ class LinkKlassController < InitrController
     @copiable_klasses = []
     User.current.projects.collect {|p| p.nodes }.compact.flatten.sort.each do |node|
       next if node == @node
-      n = [node.fqdn, node.klasses.collect {|k| [k.name,k.id.to_s] if k.copyable? }.compact]
-      @copiable_klasses << n unless n.last.size == 0
+      begin
+        n = [node.fqdn, node.klasses.collect {|k| [k.name,k.id.to_s] if k.copyable? }.compact]
+        @copiable_klasses << n unless n.last.size == 0
+      rescue ActiveRecord::SubclassNotFound
+      end
     end
   end
 

@@ -2,7 +2,7 @@
 ##################
 # Puppet Managed #
 ##################
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 0,10,20,30,40,50 * * * * www-data [ -x /usr/bin/awstats_updateall.pl -a -x /usr/lib/cgi-bin/awstats.pl -a -d /etc/awstats ] && /usr/bin/awstats_updateall.pl now -configdir="/etc/awstats" -awstatsprog="/usr/lib/cgi-bin/awstats.pl" >/dev/null
 <% else -%>
 if [ -x /usr/bin/awstats_updateall.pl -a -x /var/lib/awstats/awstats.pl -a -d /etc/awstats ] ; then

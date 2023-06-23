@@ -4,8 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class InitrTest < ActiveSupport::TestCase
 
-  fixtures :nodes, :klasses, :bind_zones
-  set_fixture_class :bind_zones => Initr::BindZone
+  fixtures 'initr/nodes', 'initr/klasses', 'initr/bind_zones'
 
   test "loads bind klass" do
     assert Initr::Bind.find(2)
@@ -20,15 +19,17 @@ class InitrTest < ActiveSupport::TestCase
   end
 
   test "increments zone serial" do
-    bind_zone = bind_zones(:bind_zone_001)
-    serial_before = bind_zone.serial
-    bind_zone.zone += "\nasdf IN A 8.8.4.4"
+    bind_zone = initr_bind_zones(:bind_zone_001)
+    bind_zone.zone += "\n;"
     bind_zone.save!
-    assert_operator bind_zone.serial.to_i, :>, serial_before.to_i
+    serial_before = bind_zone.serial
+    bind_zone.zone += "\n;"
+    bind_zone.save!
+    assert_equal (serial_before.to_i + 1).to_s, bind_zone.serial
   end
 
   test "does not increment zone serial" do
-    bind_zone = bind_zones(:bind_zone_001)
+    bind_zone = initr_bind_zones(:bind_zone_001)
     serial_before = bind_zone.serial
     bind_zone.save!
     assert_equal bind_zone.serial.to_i, serial_before.to_i

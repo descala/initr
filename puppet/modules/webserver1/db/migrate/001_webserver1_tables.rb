@@ -12,7 +12,7 @@ class Webserver1Tables < ActiveRecord::Migration
       t.string  :username
       t.string  :password
       t.string  :password_clear
-      t.timestamps
+      t.timestamps null: false
     end
 
   end

@@ -1,32 +1,28 @@
 class NodeController < InitrController
-  unloadable
 
   menu_item :initr
   helper :projects, :initr
 
-  before_filter :find_node,
-    :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:report,:resource]
-  before_filter :find_project, :only => [:new]
-  before_filter :find_optional_project, :only => [:list]
-  before_filter :find_report, :only => [:report]
-  before_filter :find_resource, :only => [:resource]
-  before_filter :authorize,
-    :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report]
-  before_filter :authorize_global, :only => [:list,:facts,:new_template]
-  before_filter :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
+  before_action :find_node,
+    :except => [:new,:list,:get_host_definition,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:report,:resource,:get_services]
+  before_action :find_project, :only => [:new]
+  before_action :find_optional_project, :only => [:list]
+  before_action :find_report, :only => [:report]
+  before_action :authorize,
+    :except => [:get_host_definition,:list,:facts,:scan_puppet_hosts,:unassigned_nodes,:assign_node,:new_template,:store_report,:get_services]
+  before_action :authorize_global, :only => [:list,:facts,:new_template,:get_services]
+  before_action :require_admin, :only => [:scan_puppet_hosts,:unassigned_nodes,:assign_node]
 
-  skip_before_filter :check_if_login_required, :only => [ :get_host_definition, :store_report ]
-
-  # skip ssl_requirement's plugin before_filter, in case it is
-  # pressent in redmine, for get_host_definition and store_report
-  skip_before_filter :ensure_proper_protocol, :only => [:get_host_definition,:store_report]
+  skip_before_action :check_if_login_required, :only => [ :get_host_definition, :store_report ]
 
   protect_from_forgery :except=>[:store_report]
+
+  accept_api_auth :get_services
 
   ## TODO redmine2
   ## avoids storing the report data in the log files
   ##filter_parameter_logging :report
-  
+
   def new
     if Setting.plugin_initr["puppetmaster"].blank? or Setting.plugin_initr["puppetmaster_port"].blank?
       if User.current.admin?
@@ -124,8 +120,10 @@ class NodeController < InitrController
       end
     end
     @facts={}
+    # TODO: more efficent with
+    # Initr.puppetdb.request('',"facts[value] {name = '#{params[:id]}'}")
     nodes.each do |n|
-      @facts[n] = n.puppet_fact(params[:id]) unless n.puppet_fact(params[:id]).nil?
+      @facts[n] = n.fact(params[:id]) unless n.fact(params[:id]).nil?
     end
   end
 
@@ -137,27 +135,25 @@ class NodeController < InitrController
       redirect_to :action => 'list'
     end
   end
-  
+
   def destroy_exported_resources
-    (render_403; return) unless @node && @node.editable_by?(User.current)
-    @node.destroy_exported_resources
-    redirect_to :controller => 'klass', :action => 'list', :id => @node
+    # (render_403; return) unless @node && @node.editable_by?(User.current)
+    # @node.destroy_exported_resources
+    flash[:notice] = "TODO: destroy_exported_resources not implemented"
+    redirect_to :controller => 'klass', :action => 'list', :id => @node, :tab => 'exported_resources'
   end
 
-  def resource
-  end
-  
   def get_host_definition
-    if request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
+    if !Rails.env.production? or request.remote_ip == '127.0.0.1' or Setting.plugin_initr['puppetmaster_ip'].gsub(/ /,'').split(",").include?(request.remote_ip)
       node = Initr::NodeInstance.find_by_name(params[:hostname])
       if node
-        render :text => YAML.dump(node.parameters)
+        render plain: YAML.dump(node.parameters)
       else
-        render :text => "Unknown hostname '#{params[:hostname]}'\n", :status => 404
+        render plain: "Unknown hostname '#{params[:hostname]}'\n", :status => 404
         logger.error "Unknown hostname '#{params[:hostname]}'."
       end
     else
-      render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
+      render plain: "Not allowed from your IP #{request.remote_ip}\n", :status => 403
       logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr['puppetmaster_ip']}).\n"
     end
   end
@@ -165,9 +161,9 @@ class NodeController < InitrController
   def getip
     xff=request.env['HTTP_X_FORWARDED_FOR'].split(",").first
     unless xff.blank?
-      render :text => "#{xff}\n"
+      render plain: "#{xff}\n"
     else
-      render :text => "#{request.env['REMOTE_ADDR']}\n"
+      render plain: "#{request.env['REMOTE_ADDR']}\n"
     end
   end
 
@@ -175,7 +171,7 @@ class NodeController < InitrController
   def scan_puppet_hosts
     @hosts_exist = Array.new
     @hosts_new = Array.new
-    hosts = Puppet::Rails::Host.find :all
+    hosts = Puppet::Rails::Host.all
     hosts.each do |host|
       if Initr::NodeInstance.find_by_name host.name
         @hosts_exist << host.name
@@ -191,16 +187,18 @@ class NodeController < InitrController
   def unassigned_nodes
     @projects = Project.all.sort
     @users = User.where(:status=>User::STATUS_ACTIVE).sort
-    @node_instances = Initr::NodeInstance.find :all, :order => "project_id, name"
-    @node_templates = Initr::NodeTemplate.find :all, :order => "project_id, name"
+    @node_instances = Initr::NodeInstance.all.order("project_id, name")
+    @node_templates = Initr::NodeTemplate.all.order("project_id, name")
   end
 
   def assign_node
     @node=Initr::Node.find params[:id]
-    if @node.update_attributes(params[:node])
+    @node.project_id = params[:node][:project_id] if params[:node][:project_id]
+    @node.user_id    = params[:node][:user_id]    if params[:node][:user_id]
+    if @node.save
       flash[:notice] = 'Update successfull'
     else
-      flash[:error] = 'Update error'
+      flash[:error] = "Update error: #{@node.errors.full_messages}"
     end
     redirect_to :action => 'unassigned_nodes'
   end
@@ -210,20 +208,84 @@ class NodeController < InitrController
       respond_to do |format|
         format.yml {
           if Initr::Report.import request.body
-            render :text => "Imported report", :status => 200 and return
+            render plain: "Imported report", :status => 200 and return
           else
-            render :text => "Failed to import report", :status => 500
+            render plain: "Failed to import report", :status => 500
           end
         }
       end
     else
-      render :text => "Not allowed from your IP #{request.remote_ip}\n", :status => 403
+      render plain: "Not allowed from your IP #{request.remote_ip}\n", :status => 403
       logger.error "Not allowed from IP #{request.remote_ip} (must be from #{Setting.plugin_initr['puppetmaster_ip']}).\n"
     end
   end
 
   def delete_report
     #TODO
+  end
+
+  def get_services
+    @services = []
+    nodes = Project.all.collect {|p| p.node_instances }.flatten.compact
+    nodes.each do |n|
+      unless n.facts["services_list"].blank?
+        services = JSON.parse n.facts["services_list"]
+        services.each do |s|
+          unless s.empty?
+            invoice_template = InvoiceTemplate.includes(:invoice_lines).references(:invoice_lines)
+              .where('invoices.date < ?', 5.year.from_now)
+              .where("invoices.extra_info like ? or invoice_lines.description like ? or invoice_lines.notes like ?", *["%#{s['service_id']}%"]*3).first
+
+            if invoice_template.present?
+              s['client_name'] = invoice_template.client&.name
+              # s['next_invoice_date_at'] = invoice_template.date
+              # s['frequency'] = invoice_template.frequency
+            end
+            @services << s
+          end
+        end
+      end
+    end
+
+    @services.sort_by! {|h| h["service_id"]+h["service"]}
+
+    respond_to do |format|
+      format.html {render "get_nodes"}
+      format.json {render json: @services.to_json}
+      format.csv do
+        require 'csv'
+        # afegir columnes
+        columns = ["service", "service_id", "host", "client_name"]
+        @services.each do |service|
+          service.keys.each do |key|
+            columns << key unless columns.include?(key)
+          end
+        end
+        # genera csv posant els camps a columnes corresponents
+        csv_string = CSV.generate do |csv|
+          line = []
+          columns.each do |column|
+            line << column
+          end
+          csv << line
+          @services.each do |service|
+            line = []
+            columns.each do |column|
+              found = false
+              service.each do |key, value|
+                if column == key
+                  found = true
+                  line << value
+                end
+              end
+              line << '-' unless found
+            end
+            csv << line
+          end
+        end
+        render plain: csv_string
+      end
+    end
   end
 
   private
@@ -234,7 +296,7 @@ class NodeController < InitrController
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-  
+
   def find_project
     begin
       @project = Project.find(params[:id])
@@ -243,7 +305,7 @@ class NodeController < InitrController
       render_404
     end
   end
-  
+
   def find_optional_project
     return true unless params[:id]
     @project = Project.find(params[:id])
@@ -254,12 +316,6 @@ class NodeController < InitrController
   def find_report
     @report = Initr::Report.find params[:id]
     @node = @report.node
-    @project = @node.project
-  end
-
-  def find_resource
-    @resource = Puppet::Rails::Resource.find params[:id]
-    @node = Initr::NodeInstance.find @resource.host.name
     @project = @node.project
   end
 

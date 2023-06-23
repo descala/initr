@@ -1,0 +1,12 @@
+<% @ftp_users.each do |user,pass| -%>
+<%= user %>
+<% end -%>
+<%
+  if @extra_users
+    @extra_users.split(" ").each do |user|
+-%>
+<%= user %>
+<%
+    end
+  end
+-%>

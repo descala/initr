@@ -13,7 +13,7 @@ class common::dhcpd {
   }
 
   file { $dhcp_conf:
-    mode => 644,
+    mode => "0644",
     source => [ "puppet:///specific/dhcpd.conf"],
     require => Package[$dhcp_package],
     notify => Service[$dhcp_service],

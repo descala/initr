@@ -17,13 +17,13 @@ u_sure() {
 echo "---------------------"
 echo "Restoring from backup"
 echo "---------------------"
-<% webserver_domains.each do |k,v| -%>
+<% @webserver_domains.each do |k,v| -%>
 echo "<%= v['name'] %> from <%= v['web_backups_server'] %>"
 <% end -%>
 echo "---------------------"
 
 u_sure
 
-<% webserver_domains.each do |k,v| -%>
+<% @webserver_domains.each do |k,v| -%>
 yes | /usr/local/sbin/webserver_restore <%= v['name'] %>
 <% end -%>

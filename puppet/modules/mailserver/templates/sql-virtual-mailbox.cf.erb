@@ -2,8 +2,8 @@
 # Puppet managed #
 ##################
 hosts = localhost
-user = <%= db_user %>
-password = <%= db_passwd %>
-dbname = <%= db_name %>
+user = <%= scope.lookupvar("db_user") %>
+password = <%= scope.lookupvar("db_passwd") %>
+dbname = <%= scope.lookupvar("db_name") %>
 
 query = SELECT maildir FROM mailbox WHERE username = '%s' AND active = '1'

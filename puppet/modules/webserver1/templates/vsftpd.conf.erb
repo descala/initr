@@ -7,7 +7,7 @@
 listen=YES
 #
 # Allow anonymous FTP? (Beware - allowed by default if you comment this out).
-anonymous_enable=<%= allow_anonymous_ftp == "1" ? "YES" : "NO" %>
+anonymous_enable=<%= @allow_anonymous_ftp == "1" ? "YES" : "NO" %>
 #
 # Uncomment this to allow local users to log in.
 local_enable=YES
@@ -29,6 +29,7 @@ xferlog_enable=YES
 # Make sure PORT transfer connections originate from port 20 (ftp-data).
 connect_from_port_20=YES
 #
+xferlog_file=/var/log/vsftpd.log
 # If you want, you can have your log file in standard ftpd xferlog format
 xferlog_std_format=YES
 #
@@ -45,7 +46,7 @@ pam_service_name=vsftpd
 #
 userlist_enable=YES
 #
-<% if operatingsystem == "Debian" -%>
+<% if @operatingsystem == "Debian" -%>
 # Debian customization
 #
 # Some of vsftpd's settings don't fit the Debian filesystem layout by
@@ -55,7 +56,11 @@ userlist_enable=YES
 # directory should not be writable by the ftp user. This directory is used
 # as a secure chroot() jail at times vsftpd does not require filesystem
 # access.
+<% if @lsbmajdistrelease.to_i >= 9 -%>
+secure_chroot_dir=/var/run/vsftpd/empty
+<% else -%>
 secure_chroot_dir=/var/run/vsftpd
+<% end -%>
 #
 # This option specifies the location of the RSA certificate to use for SSL
 # encrypted connections.
@@ -63,10 +68,13 @@ rsa_cert_file=/etc/ssl/certs/vsftpd.pem
 #
 userlist_file=/etc/ftpusers
 #
-<% elsif operatingsystem == "CentOS" and lsbmajdistrelease == "4" -%>
+<% elsif @operatingsystem == "CentOS" and @lsbmajdistrelease == "4" -%>
 # centos 4 vsftpd has no reverse_lookup_enable option
 #reverse_lookup_enable=NO
 <% else -%>
 reverse_lookup_enable=NO
 #
+<% end -%>
+<% if @allow_writeable_chroot == '1' -%>
+allow_writeable_chroot=YES
 <% end -%>

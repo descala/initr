@@ -4,11 +4,11 @@ ca:
   field_domain_path: "Separar bústies per domini"
   field_domain_in_mailbox: "Incloure domini al nom de les bústies"
   help_domain_path: "Exemple:<br />
-   SI: /var/mail/virtual/domain.tld/username@domain.tld<br />
-   NO: /var/mail/virtual/username@domain.tld"
+   SI: /var/vmail/domain.tld/username@domain.tld<br />
+   NO: /var/vmail/username@domain.tld"
   help_domain_in_mailbox: "Exemple: <br />
-   SI: /var/mail/virtual/domain.tld/username@domain.tld<br />
-   NO: /var/mail/virtual/domain.tld/username<br />
+   SI: /var/vmail/domain.tld/username@domain.tld<br />
+   NO: /var/vmail/domain.tld/username<br />
    (obligatori si l'anterior no es marca)"
   field_mail_location: "Directori de les bústies"
   field_webserver: "Servidor web"

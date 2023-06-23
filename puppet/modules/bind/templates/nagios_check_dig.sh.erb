@@ -1,11 +1,39 @@
-#!/bin/sh
-##################
-# Puppet managed #
-##################
+#!/usr/bin/env ruby
 
-<% scope.lookupvar('bind::bind_masterzones').each_key do |domain| -%>
-/usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_<%=domain%>' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
-<% end -%>
-<% scope.lookupvar('bind::bind_slave_zones').values.flatten.each do |domain| -%>
-/usr/local/bin/nsca_wrapper -H <%=fqdn%> -S 'check_dig_<%=domain%>' -C '<%=nagios_plugins_dir%>/check_dig -T NS -l <%=domain%> -H 127.0.0.1' -b <%=send_nsca%> -c <%=send_nsca_cfg%>
-<% end -%>
+HOST="<%=@fqdn%>"
+CONF="<%=@send_nsca_cfg%>"
+SERVER="<%=@nagios_server%>"
+PORT="5667"
+NSCA="<%=@send_nsca%>"
+MASTER_ZONES="<%=@var_dir%>/puppet_zones"
+SLAVE_ZONES= "<%=@var_dir%>/puppet_slave_zones"
+
+def check_zones(zones, nagios_name)
+  zko = []
+  zones.each do |z|
+    `nslookup -query=ns -timeout=1 #{z} 127.0.0.1`
+    if $?.exitstatus != 0
+      zko.push(z)
+      # puts "KO #{$?.exitstatus} #{z}"
+    end
+  end
+  if zko.size > 0
+    code = 2
+    message = "Failed: #{zko.join(' ')}"
+  else
+    code = 0
+    message = 'All OK'
+  end
+  cmd = "echo '#{HOST}\t#{nagios_name}\t#{code}\t#{message}' | #{NSCA} -H #{SERVER} -p #{PORT} -c #{CONF}"
+  # puts cmd
+  `#{cmd}`
+end
+
+masters = Dir.glob('/etc/bind/puppet_zones/*.zone').collect{|f|File.basename(f).gsub(/\.zone$/,'')}
+slaves =  Dir.glob('/etc/bind/puppet_slave_zones/*.zone').collect{|f|File.basename(f).gsub(/\.zone$/,'')}
+
+masters = ['ingent.net'] if masters.size == 0
+slaves  = ['google.com'] if slaves.size  == 0
+
+check_zones(masters, 'check_dig_master_zones')
+check_zones(slaves, 'check_dig_slave_zones')

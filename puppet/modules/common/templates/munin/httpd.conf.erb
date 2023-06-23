@@ -1,7 +1,7 @@
 <VirtualHost *:80>
-    ServerName <%=munin_server_url%>
-    DocumentRoot <%=munin_html_dir%>
-    <Directory <%=munin_html_dir%>>
+    ServerName <%=@munin_server_url%>
+    DocumentRoot <%=@munin_html_dir%>
+    <Directory <%=@munin_html_dir%>>
         <Files ~ "\.(html)$">
             order allow,deny
             deny from all

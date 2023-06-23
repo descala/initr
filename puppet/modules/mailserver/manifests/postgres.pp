@@ -3,7 +3,7 @@ class mailserver::postgres {
   package {
     'postgresql':
       ensure => installed;
-    'php5-pgsql':
+    'php-pgsql':
       ensure => installed;
     'postfix-pgsql':
       ensure => installed,

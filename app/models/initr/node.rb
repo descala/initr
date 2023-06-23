@@ -3,10 +3,6 @@ require 'date'
 
 class Initr::Node < ActiveRecord::Base
 
-  unloadable
-
-  # TODO redimine2
-  #has_many :reports, :dependent => :destroy, :class_name => "Initr::Report"
   has_many :klasses, :dependent => :destroy, :class_name => "Initr::Klass"
   belongs_to :project
   belongs_to :user
@@ -68,6 +64,7 @@ class Initr::Node < ActiveRecord::Base
     result["parameters"] = parameters.except('updated_at','created_at')
     result["parameters"]["classes"] = classes.keys.sort
     result["classes"] = classes
+    result["environment"] = "production"
     @parameters = result
     result
   end

@@ -17,14 +17,14 @@ class fail2ban($jails=[],$mailto="",$custom_jails="") {
 
   file {
     "/etc/fail2ban/filter.d/mail.conf":
-      mode => 644,
+      mode => '0644',
       owner => root,
       group => root,
       source => "puppet:///modules/fail2ban/mail.conf",
       require => Package["fail2ban"],
       notify => Service["fail2ban"];
     "/etc/fail2ban/jail.local":
-      mode => 644,
+      mode => '0644',
       owner => root,
       group => root,
       content => template("fail2ban/jail.local.erb"),
@@ -36,10 +36,10 @@ class fail2ban($jails=[],$mailto="",$custom_jails="") {
   if array_includes($classes,"munin") {
     file {
       "/etc/munin/plugins/fail2ban_all_jails":
-        mode => 755,
+        mode => '0755',
         source => "puppet:///modules/fail2ban/munin-fail2ban_all_jails",
         require => $operatingsystem ? {
-          Gentoo => Package["munin"],
+          "Gentoo" => Package["munin"],
           default => Package["munin-node"],
         },
         notify => Service["munin-node"];

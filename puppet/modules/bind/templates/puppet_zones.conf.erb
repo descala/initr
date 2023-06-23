@@ -5,6 +5,6 @@
 # this zones are managed by initr's bind module
 # you can configure them using initr
 
-<% bind_masterzones.each_key do |mz| -%>
-zone "<%= mz %>" { type master; file "<%=var_dir%>/puppet_zones/<%= mz %>.zone"; };
+<% @bind_masterzones.each_key do |mz| -%>
+zone "<%= mz %>" { type master; file "<%=scope.lookupvar('var_dir')%>/puppet_zones/<%= mz %>.zone"; };
 <% end -%>

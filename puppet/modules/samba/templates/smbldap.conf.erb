@@ -1,0 +1,32 @@
+##################
+# Puppet managed #
+##################
+suffix="dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc"
+usersdn="ou=People,${suffix}"
+computersdn="ou=People,${suffix}"
+groupsdn="ou=Groups,${suffix}"
+idmapdn="ou=idmap,${suffix}"
+scope="sub"
+hash_encrypt="SSHA"
+userLoginShell="/bin/bash"
+userHome="<%=scope.lookupvar('::smbdir')%>/home/%U"
+userGecos="System User"
+defaultUserGid="513"
+defaultComputerGid="515"
+skeletonDir="/etc/skel"
+defaultMaxPasswordAge="-1"
+userSmbHome="\\<%=@hostname%>\homes\%U"
+userHomeDrive="H:"
+userScript="<%=scope.lookupvar('::netlogon_script')%>" # make sure script file is edited under dos
+mailDomain=""
+with_smbpasswd="0"
+smbpasswd="/usr/bin/smbpasswd"
+with_slappasswd="0"
+slappasswd="/usr/sbin/slappasswd"
+
+# TLS for LDAP (see "man Net::LDAP")
+ldapTLS="0"
+verify="none"
+cafile=""
+clientcert=""
+clientkey=""

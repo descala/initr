@@ -17,7 +17,7 @@
 # to read the password you specify here, so make sure to set
 # restrictive permissions on this config file!
 
-password=<%=nsca_decryption_password%>
+password=<%=@nsca_decryption_password%>
 
 
 
@@ -62,6 +62,10 @@ password=<%=nsca_decryption_password%>
 #       26 = SAFER+
 #
 
+<% if @operatingsystem == "CentOS" -%>
+encryption_method=0
+<% else %>
 encryption_method=3
+<% end %>
 
 

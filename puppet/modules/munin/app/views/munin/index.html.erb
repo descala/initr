@@ -1,0 +1,27 @@
+<h3><%= @node.fqdn %> - Graphics</h3>
+
+<%= link_to "day-month graphs",  :period => "day" %> | 
+<%= link_to "month-year graphs", :period => "month" %>
+
+<hr />
+<br />
+
+<table>
+  <th><%= @period[0] == "day" ? "Daily"  : "Monthly" %> graphs</th>
+  <th><%= @period[0] == "day" ? "Weekly" : "Yearly" %> graphs</th>
+
+<% @graphs.each do |name| -%>
+  <tr>
+    <td colspan="2"><h4><%=name%></h4></td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <%= link_to(image_tag(@munin_klass.graph_url("#{name}-#{@period[0]}")), :action => 'graphs', :id => @project, :graph => name, :period => @period[0]) %>
+    </td>
+    <td>
+      <%= link_to(image_tag(@munin_klass.graph_url("#{name}-#{@period[1]}")), :action => 'graphs', :id => @project, :graph => name, :period => @period[1]) %>
+    </td>
+  </tr>
+<% end -%>
+
+</table>

@@ -1,5 +1,18 @@
 class nagios::server::debian inherits nagios::server::common {
 
+  $nagios_init_script = $::operatingsystem ? {
+    'Debian'  => $::lsbmajdistrelease ? {
+      '8'     => 'puppet:///modules/nagios/nagios_init_script_debian8',
+      default => 'puppet:///modules/nagios/nagios_init_script_debian'
+    },
+    default => 'puppet:///modules/nagios/nagios_init_script_debian'
+  }
+  if $::lsbmajdistrelease == '7' {
+    file {
+      '/etc/apache2/conf.d/nagios3.conf':
+        source => 'puppet:///modules/nagios/apache.conf';
+    }
+  }
   package {
     "nagios3":
       ensure => installed,
@@ -23,19 +36,19 @@ class nagios::server::debian inherits nagios::server::common {
       content => template("nagios/htpasswd.users.erb"),
       owner => root,
       group => $httpd_user,
-      mode => 0640,
+      mode => '0640',
       require => Package["nagios3"];
     # needed for nagios external command (/usr/share/doc/nagios3/README.Debian)
     "/var/lib/nagios3":
       owner => nagios,
       group => nagios,
-      mode => 0751,
+      mode => '0751',
       require => Package["nagios3"];
     # needed for nagios external command (/usr/share/doc/nagios3/README.Debian)
     "/var/lib/nagios3/rw":
       owner => nagios,
       group => www-data,
-      mode => 2710,
+      mode => '2710',
       require => Package["nagios3"];
     "/etc/nagios3/nagios.cfg":
       content => template("nagios/nagios.cfg.erb"),
@@ -54,18 +67,16 @@ class nagios::server::debian inherits nagios::server::common {
     "/etc/nsca.cfg":
       owner => nagios,
       group => $nagios_group,
-      mode => 640,
+      mode => '0640',
       content => template("nagios/nsca.cfg.erb"),
       require => [Package["nsca"], Package["nagios"]],
       notify => Service["nsca"];
-    "/etc/apache2/conf.d/nagios3.conf":
-      source => "puppet:///modules/nagios/apache.conf";
     # Replace init.d script to check config before restart nagios daemon
-    "/etc/init.d/nagios3":
-      owner => root,
-      group => root,
-      mode => 755,
-      source => "puppet:///modules/nagios/nagios_init_script_debian";
+    '/etc/init.d/nagios3':
+      owner  => root,
+      group  => root,
+      mode   => '0755',
+      source => $nagios_init_script;
   }
   cron {
     # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=479330

@@ -1,28 +1,37 @@
+# mysql database
 define common::mysql::database($ensure, $owner, $passwd) {
 
   $dbcr = "CREATE DATABASE IF NOT EXISTS ${name};"
   $priv = "GRANT ALL PRIVILEGES ON ${name}.* TO '${owner}'@localhost IDENTIFIED BY '${passwd}';"
 
+  if $::operatingsystem == 'Debian' and $::lsbmajdistrelease in ['8','9','10'] {
+    $cmd='/usr/bin/mysql --defaults-extra-file=/root/.my.cnf'
+    $cmd_show='/usr/bin/mysqlshow'
+  } else {
+    $cmd='/usr/bin/mysql'
+    $cmd_show='/usr/bin/mysqlshow'
+  }
+
   case $ensure {
     present: {
       exec {
         "Create MySQL DB: ${name}":
-          command => "mysql -e \"${dbcr}\"",
+          command => "${cmd} -e \"${dbcr}\"",
           user    => root,
-          unless  => "/usr/bin/mysql ${name} -e \";\"",
+          unless  => "${cmd} ${name} -e \";\"",
           require => Service[$::mysqld];
         "MySQL Privileges for ${owner} to DB ${name}":
-          command => "mysql -e \"${priv}\"",
+          command => "${cmd} -e \"${priv}\"",
           user    => root,
-          unless  => "/usr/bin/mysqlshow --user=${owner} --password=${passwd} ${name}",
+          unless  => "${cmd_show} --user=${owner} --password=${passwd} ${name}",
           require => Exec["Create MySQL DB: ${name}"];
       }
     }
     absent: {
       exec { "Drop MySQL DB: ${name}":
-        command => "mysql -e \"DROP DATABASE ${name};\"",
+        command => "${cmd} -e \"DROP DATABASE ${name};\"",
         user    => root,
-        onlyif  => "/usr/bin/mysqlshow ${name}",
+        onlyif  => "${cmd_show} ${name}",
       }
     }
     default: {

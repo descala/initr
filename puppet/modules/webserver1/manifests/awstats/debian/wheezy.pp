@@ -17,7 +17,7 @@ class webserver1::awstats::debian::wheezy inherits webserver1::awstats::debian {
   # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=580699
   file { "/etc/awstats/awstats_model.conf":
     ensure  => present,
-    mode    => 644,
+    mode    => "0644",
     require => Package["awstats"],
     source  => "puppet:///modules/webserver1/awstats.model.conf",
   }

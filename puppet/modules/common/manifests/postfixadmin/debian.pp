@@ -12,9 +12,13 @@ class common::postfixadmin::debian inherits common::postfixadmin {
       group   => www-data,
       require => Package['postfixadmin'],
       content => template('common/postfixadmin/config.local.php.erb');
-    "${::httpd_confdir}/postfixadmin":
-      ensure => link,
-      target => '/etc/postfixadmin/apache.conf';
+#    "${::httpd_confdir}/postfixadmin":
+#      ensure => link,
+#      target => '/etc/postfixadmin/apache.conf';
+  }
+
+  case $::lsbdistcodename {
+    'stretch': { include common::postfixadmin::debian::stretch }
   }
 
 }

@@ -81,8 +81,8 @@ define host{
 							; the value that is inherited from the generic-host template!
 	notification_interval		120		; Resend notifications every 2 hours
 	notification_options		d,u,r		; Only send notifications for specific host states
-<% if admin_contactgroup -%>
-    contact_groups			<%= admin_contactgroup %>		; Notifications get sent to the admins by default
+<% if @admin_contactgroup -%>
+    contact_groups			<%= @admin_contactgroup %>		; Notifications get sent to the admins by default
 <% end -%>
 	register			0		; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
 	}
@@ -102,8 +102,8 @@ define host{
 	notification_period	24x7		; Send notification out at any time - day or night
 	notification_interval	30		; Resend notifications every 30 minutes
 	notification_options	d,r		; Only send notifications for specific host states
-<% if admin_contactgroup -%>
-    contact_groups			<%= admin_contactgroup %>		; Notifications get sent to the admins by default
+<% if @admin_contactgroup -%>
+    contact_groups			<%= @admin_contactgroup %>		; Notifications get sent to the admins by default
 <% end -%>
 	hostgroups		windows-servers ; Host groups that Windows servers should be a member of
 	register		0		; DONT REGISTER THIS - ITS JUST A TEMPLATE
@@ -123,8 +123,8 @@ define host{
 	notification_period	workhours		; Printers are only used during the workday
 	notification_interval	30		; Resend notifications every 30 minutes
 	notification_options	d,r		; Only send notifications for specific host states
-<% if admin_contactgroup -%>
-    contact_groups		<%= admin_contactgroup %>		; Notifications get sent to the admins by default
+<% if @admin_contactgroup -%>
+    contact_groups		<%= @admin_contactgroup %>		; Notifications get sent to the admins by default
 <% end -%>
 	register		0		; DONT REGISTER THIS - ITS JUST A TEMPLATE
 	}
@@ -142,8 +142,8 @@ define host{
 	notification_period	24x7		; Send notifications at any time
 	notification_interval	30		; Resend notifications every 30 minutes
 	notification_options	d,r		; Only send notifications for specific host states
-<% if admin_contactgroup -%>
-    contact_groups			<%= admin_contactgroup %>		; Notifications get sent to the admins by default
+<% if @admin_contactgroup -%>
+    contact_groups			<%= @admin_contactgroup %>		; Notifications get sent to the admins by default
 <% end -%>
 	register		0		; DONT REGISTER THIS - ITS JUST A TEMPLATE
 	}
@@ -180,8 +180,8 @@ define service{
         max_check_attempts              3			; Re-check the service up to 3 times in order to determine its final (hard) state
         normal_check_interval           10			; Check the service every 10 minutes under normal conditions
         retry_check_interval            2			; Re-check the service every two minutes until a hard state can be determined
-<% if admin_contactgroup -%>
-        contact_groups			        <%= admin_contactgroup %>		; Notifications get sent out to everyone in the 'admins' group
+<% if @admin_contactgroup -%>
+        contact_groups			        <%= @admin_contactgroup %>		; Notifications get sent out to everyone in the 'admins' group
 <% end -%>
 	notification_options		w,u,c,r			; Send notifications about warning, unknown, critical, and recovery events
         notification_interval           60			; Re-notify about service problems every hour

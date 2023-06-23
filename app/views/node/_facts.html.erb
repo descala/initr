@@ -5,13 +5,13 @@
       <th width="18%">Fact</th>
       <th width="82%"><%="Value"%></th>
     </tr>
-  <% @facts.sort.each do |key, value| %>
+  <% @facts.each do |name, value| %>
     <tr class="<%= cycle('odd', 'even') %>">
-      <td style="font-weight: bold;"><div><%=link_to key, :controller=>'node', :action=>'facts', :id=>key%></div></td>
-      <% if value.first.value.size > 100 %>
-      <td><div class="wiki"><pre style="margin: 0;"><%= value.first.value %></pre></div></td>
+      <td style="font-weight: bold;"><div><%=link_to name, :controller=>'node', :action=>'facts', :id=>name%></div></td>
+      <% if value.to_s.size > 100 %>
+        <td><div class="wiki"><pre style="margin: 0;"><%= value %></pre></div></td>
       <% else %>
-      <td><%= value.first.value %></td>
+        <td><%= value %></td>
       <% end %>
     </tr>
   <% end %>

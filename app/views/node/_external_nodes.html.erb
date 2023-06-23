@@ -1,3 +1,4 @@
+<% if @external_nodes_yaml -%>
 <h3>Puppet "external_nodes" YAML</h3>
 <table class="list" style="table-layout: fixed;">
   <tr>
@@ -8,3 +9,7 @@
     </td>
   </tr>
 </table>
+
+<% else -%>
+  <a href="?external_nodes=true&tab=external_nodes">Click to load</a>
+<% end -%>

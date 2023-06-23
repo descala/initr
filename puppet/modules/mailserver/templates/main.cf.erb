@@ -2,6 +2,9 @@
 # Puppet Managed #
 ##################
 
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=214741
+mydomain=<%=scope.lookupvar("::domain")%>
+
 unknown_local_recipient_reject_code = 550
 myorigin = $mydomain
 relay_domains = $mydestination
@@ -16,14 +19,17 @@ smtpd_sasl_auth_enable = yes
 smtpd_recipient_restrictions =  reject_unauth_pipelining,
                                 reject_non_fqdn_recipient,
                                 reject_non_fqdn_sender,
+                                reject_unknown_sender_domain,
                                 permit_mynetworks,
                                 permit_sasl_authenticated,
                                 reject_unauth_destination,
                                 reject_unknown_recipient_domain,
                                 reject_rbl_client zen.spamhaus.org,
                                 reject_rbl_client cbl.abuseat.org,
+                                reject_rbl_client b.barracudacentral.org,
+                                reject_rbl_client bl.spamcop.net,
                                 check_recipient_access pcre:/etc/postfix/recipient_greylist,
-<% if amavis == '1' -%>
+<% if scope.lookupvar('::amavis') == '1' -%>
                                 check_recipient_access pcre:/etc/postfix/recipient_access,
 <% end -%>
 
@@ -35,16 +41,18 @@ smtpd_restriction_classes = postgrey
 postgrey = check_policy_service inet:127.0.0.1:10023
 
 ### Virtual Mailbox Domains
-virtual_alias_maps = proxy:<%=db_driver%>:/etc/postfix/sql-virtual-aliases.cf,
-                     proxy:<%=db_driver%>:/etc/postfix/sql-virtual-aliases-postmaster.cf,
+virtual_alias_maps = proxy:<%=scope.lookupvar("db_driver")%>:/etc/postfix/sql-virtual-aliases.cf,
+                     proxy:<%=scope.lookupvar("db_driver")%>:/etc/postfix/sql-virtual-aliases-postmaster.cf,
                      pcre:/etc/postfix/aliases.pcre,
-virtual_mailbox_domains = proxy:<%=db_driver%>:/etc/postfix/sql-virtual-domains.cf
-virtual_mailbox_maps = proxy:<%=db_driver%>:/etc/postfix/sql-virtual-mailbox.cf
+virtual_mailbox_domains = proxy:<%=scope.lookupvar("db_driver")%>:/etc/postfix/sql-virtual-domains.cf
+virtual_mailbox_maps = proxy:<%=scope.lookupvar("db_driver")%>:/etc/postfix/sql-virtual-mailbox.cf
 virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1
 
+<% if scope.lookupvar('::vacation') == '1' -%>
 ### vacation delivery agent
 vacation_destination_recipient_limit = 1
+<% end -%>
 transport_maps = hash:/etc/postfix/transport
 
 # would tell spamassassin, that the user is authenticated

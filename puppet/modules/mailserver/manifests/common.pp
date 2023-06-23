@@ -69,7 +69,7 @@ class mailserver::common {
       home    => $::mail_location,
       shell   => $::nologin;
   }
-  
+
   service {
     ['postfix','postgrey']:
       ensure     => running,

@@ -45,7 +45,7 @@
     <h3>Special classes</h3>
     <% @repeatable_klasses.each do |kd| -%>
       <ul class="klasses">
-      <% klasses = @node.klasses.find_all_by_type "Initr::#{kd.name.camelize}" -%>
+      <% klasses = @node.klasses.where(type: "Initr::#{kd.name.camelize}") -%>
       <% klasses.each do |klass| -%>
         <li class="klass<%=klass.active? ? " active" : "" %>">
         <%=check_box_tag "klasses[#{klass.type}]", "active", klass.active?%>
@@ -87,8 +87,8 @@
           templ.klasses.sort.collect { |k|
             link_to(k.name, :controller=>k.controller, :action=>'configure', :id=>k.id)
           }.join(", ").html_safe
-        rescue ActiveRecord::SubclassNotFound => e
-          link_to("SubclassNotFound", :controller=>'klass', :action=>'list', :id=>node.id)
+        rescue ActiveRecord::SubclassNotFound
+          link_to("SubclassNotFound", "#") 
         end
       -%>
       </td>

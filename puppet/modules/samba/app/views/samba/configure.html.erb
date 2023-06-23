@@ -1,0 +1,36 @@
+<%= klass_menu "Samba" %>
+
+<%= labelled_form_for( @klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
+
+  <p><%= error_messages_for 'klass' %></p>
+
+  <p><%= f.select "smbmode", [["manual","samba"],["pdc (ldap)","samba::ldap_pdc"]] %></p>
+  <p><%= f.text_field "smbdir" %></p>
+  <fieldset>
+  <legend>PDC only</legend>
+    <p><%= f.text_field "smbdomain" %></p>
+    <p><%= f.text_field "ldappasswd" %></p>
+    <p><%= f.text_field "netlogon_script" %></p>
+
+    <p>
+    After puppet configures Samba PDC+LDAP you should run these commands:
+    </p>
+    <pre style="padding-left: 180px;">smbldap-populate ; /etc/init.d/samba restart</pre>
+    <p>Note: /etc/ldap/slapd.d/ takes precedence over /etc/ldap/slapd.conf, until we update smb puppet module, you must rename slapd.d directory or it won't work</p>
+    <p>Filesystem should allow ACLs. Edit /etc/fstab and add the acl option, then remount "mount / -o remount" if necessary</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Nagios</legend>
+    <p><%= f.text_field "nagios_smbuser" %></p>
+    <p><%= f.text_field "nagios_smbpass" %></p>
+  </fieldset>
+
+
+  <p><%= submit_tag("Send")%></p>
+
+<% end -%>
+
+
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

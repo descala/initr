@@ -1,0 +1,104 @@
+<%= klass_menu "BorgBackup" %>
+
+<%= form_for(@klass, as: :borg_backup, url: {action: 'configure'}) do |f| -%>
+
+  <%= error_messages_for 'klass' %>
+
+  <p>
+  <%= f.label 'repository', 'Repository' %>:<br />
+  <%= f.text_field 'repository', size: 40 %><br />
+  examples:<br />
+  user@server.domain:/home/user/backup<br />
+  ssh://u199222@u199222.your-storagebox.de:23/./backups/server
+  </p>
+
+  <p>
+    <%= f.label 'borg_passphrase', 'Backup passphrase' %>:<br/>
+    <%= f.text_field 'borg_passphrase', size: 40 %>
+  </p>
+
+  <p>
+  <%= f.label 'paths', 'Backup paths' %>:<br />
+  <%= f.text_area 'paths', rows: 3, cols: 50 %>
+  </p>
+
+  <p>
+  <%= f.label 'excludes', 'Excludes' %>:<br />
+  <%= f.text_area 'excludes', rows: 10, cols: 50 %>
+  </p>
+
+  <table>
+    <tr>
+      <td><%= f.label 'hour', 'Backup time' %>:</td>
+      <td><%= f.text_field 'hour', size: 2 %> h</td>
+      <td><%= f.text_field 'minute', size: 2 %> m</td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td><%= f.label 'keep_daily', 'Keep daily' %>:</td>
+      <td><%= f.text_field 'keep_daily', size: 3 %></td>
+    </tr>
+    <tr>
+      <td><%= f.label 'keep_weekly', 'Keep weekly' %>:</td>
+      <td><%= f.text_field 'keep_weekly', size: 3 %></td>
+    </tr>
+    <tr>
+      <td><%= f.label 'keep_monthly', 'Keep monthly' %>:</td>
+      <td><%= f.text_field 'keep_monthly', size: 3 %></td>
+    </tr>
+    <tr>
+      <td><%= f.label 'keep_yearly', 'Keep yearly' %>:</td>
+      <td><%= f.text_field 'keep_yearly', size: 3 %></td>
+    </tr>
+  </table>
+
+<% if @klass.repository.present? -%>
+<h3>Setup on server</h3>
+<pre style="padding: 10px;">
+USER=<%= @klass.repository.split('@').first %>
+RPATH=/srv/<%= @node.project.identifier %>/<%= @node.fqdn %>
+
+adduser --ingroup <%= @node.project.identifier %> --home $RPATH --disabled-password --gecos "<%= @node.fqdn %> borg backup" $USER
+cd $RPATH
+mkdir .ssh
+cat << EOF > .ssh/authorized_keys
+command="borg serve --restrict-to-path $RPATH",restrict ssh-rsa <%= @node.facts['sshrsakey'] %>
+EOF
+chown -R $USER. .ssh/
+chmod 700 .ssh
+chmod 600 .ssh/authorized_keys
+</pre>
+<h3>On client</h3>
+<pre style="padding: 10px;">
+USER=<%= @klass.repository.split('@').first %>
+HOST=borg.ingent.net
+
+cat << EOF >> .ssh/config
+Host borg
+  User $USER
+  HostName $HOST
+  IdentityFile /etc/ssh/ssh_host_rsa_key
+EOF
+
+cat << EOF >> .bashrc_local
+export BORG_PASSPHRASE=<%= @klass.borg_passphrase %>
+export BORG_REPO=<%= @klass.repository %>
+EOF
+
+. .bashrc_local
+
+borg init -e repokey-blake2
+/usr/local/sbin/borg_backup.sh
+borg list
+</pre>
+<% end -%>
+
+  <p><%= submit_tag 'Save' %></p>
+
+<% end -%>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

@@ -3,40 +3,44 @@
 ################## 
 # 
 # Customize your httpd configuration at: 
-# /var/www/<%=name%>/conf/vhost.conf
+# /var/www/<%=@name%>/conf/vhost.conf
 
 <VirtualHost *:80>
-<% if add_www == 'true' and force_www == 'true' -%>
-  ServerName   www.<%=name%>
-<% elsif add_www -%>
-  ServerName   <%=name%>
-  ServerAlias  www.<%=name%>
+<% if @add_www == 'true' and @force_www == 'true' -%>
+  ServerName   www.<%=@name%>
+<% elsif @add_www -%>
+  ServerName   <%=@name%>
+  ServerAlias  www.<%=@name%>
 <% else -%>
-  ServerName   <%=name%>
+  ServerName   <%=@name%>
 <% end -%>
   UseCanonicalName Off
-  ServerAdmin  "webmaster@<%=name%>"
-<% if railsapp == "true" -%>
-  DocumentRoot /var/www/<%=name%>/htdocs/<%=rails_root%>
-  RailsSpawnMethod <%=rails_spawn_method.blank? ? "smart" : rails_spawn_method %>
-  <Directory /var/www/<%=name%>/htdocs/<%=rails_root%>>
+  ServerAdmin  "webmaster@<%=@name%>"
+<% if @railsapp == "true" -%>
+  DocumentRoot /var/www/<%=@name%>/htdocs/<%=@rails_root%>
+  RailsSpawnMethod <%=@rails_spawn_method.empty? ? "smart" : @rails_spawn_method %>
+  <Directory /var/www/<%=@name%>/htdocs/<%=@rails_root%>>
      AllowOverride all
      Options -MultiViews
   </Directory>
 <% else -%>
-  DocumentRoot /var/www/<%=name%>/htdocs
+  DocumentRoot /var/www/<%=@name%>/htdocs
 <% end -%>
-  CustomLog  /var/www/<%=name%>/logs/access_log combined
-  ErrorLog  /var/www/<%=name%>/logs/error_log
+  CustomLog  /var/www/<%=@name%>/logs/access_log combined
+  ErrorLog  /var/www/<%=@name%>/logs/error_log
 
-  <Directory /var/www/<%=name%>/htdocs>
+  <Directory /var/www/<%=@name%>/htdocs>
     Options FollowSymLinks
-    AllowOverride None
+    AllowOverride <%=@allow_override%>
     Order allow,deny
     Allow from all
-<% if use_suphp == 'true' -%>
+<% if @use_suphp == 'true' -%>
+<% if @operatingsystem == 'Debian' and ( @lsbmajdistrelease == '8' or @lsbmajdistrelease == '9')  -%>
+    # use mpm_itk
+    AssignUserId <%=@user_ftp%> <%=@user_ftp%>
+<% else -%>
     # use suPHP instead mod_php
-<% if operatingsystem == "Debian" or operatingsystem == "Ubuntu" -%>
+<% if @operatingsystem == "Debian" or @operatingsystem == "Ubuntu" -%>
     php_admin_value engine Off
     <FilesMatch "\.ph(p3?|tml)$">
     SetHandler application/x-httpd-suphp
@@ -47,18 +51,19 @@
     suPHP_AddHandler x-httpd-php
 <% end -%>
 <% end -%>
+<% end -%>
   </Directory>
 
-  Include /var/www/<%=name%>/conf/vhost.conf
+  Include /var/www/<%=@name%>/conf/vhost.conf
 
 </VirtualHost>
-<% if force_www == 'true' -%>
+<% if @force_www == 'true' -%>
 
 <VirtualHost *:80>
-  ServerName   <%=name%>
-  # redirect all requests to www.<%=name%>
+  ServerName   <%=@name%>
+  # redirect all requests to www.<%=@name%>
   RewriteEngine On
   RewriteCond %{REQUEST_URI} !^/awstats(.*)$ [NC]
-  RewriteRule ^/(.*)         http://www.<%=name%>/$1 [L,R]
+  RewriteRule ^/(.*)         http://www.<%=@name%>/$1 [L,R]
 </VirtualHost>
 <% end -%>

@@ -1,6 +1,0 @@
----
-node_001:
-  id: 1
-  type: Initr::NodeInstance
-  name: hashasdfasdf
-  project_id: 2

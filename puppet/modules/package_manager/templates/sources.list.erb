@@ -2,54 +2,40 @@
 # Puppet Managed #
 ##################
 
-<% if lsbdistcodename == "lenny" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "5") -%>
+<% if scope.lookupvar("::lsbdistcodename") == "lenny" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "5") -%>
 # debian leeny
 deb http://archive.debian.org/debian-archive lenny main contrib non-free
 
-<% pfs = scope.lookupvar('::packages_from_squeeze')
-   pfs = [] unless pfs.is_a?(Array)
-   if pfs.any? -%>
-# debian squeeze
-deb http://archive.debian.org/debian-archive/debian squeeze main contrib non-free
-<% end -%>
-
-<% elsif lsbdistcodename == "squeeze" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "6") -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "squeeze" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "6") -%>
 deb http://archive.debian.org/debian-archive/debian squeeze main contrib non-free
 deb http://archive.debian.org/debian-archive/debian squeeze-lts main contrib non-free
 
-<% pfw = scope.lookupvar('::packages_from_wheezy')
-   pfw = [] unless pfw.is_a?(Array)
-   if pfw.any? -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "wheezy" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "7") -%>
 # debian wheezy
-deb http://http.debian.net/debian wheezy main contrib non-free
-<% end -%>
+deb http://archive.debian.org/debian-archive/debian wheezy main contrib non-free
+deb http://archive.debian.org/debian-security wheezy/updates main contrib non-free
 
-<% elsif lsbdistcodename == "wheezy" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "7") -%>
-# debian wheezy
-deb http://http.debian.net/debian wheezy main contrib non-free
-
-# wheezy-updates, previously known as 'volatile'
-deb http://http.debian.net/debian wheezy-updates main
-
-<% pfw = scope.lookupvar('::packages_from_jessie')
-   pfw = [] unless pfw.is_a?(Array)
-   if pfw.any? -%>
-# debian jessie
-deb http://http.debian.net/debian jessie main contrib non-free
-<% end -%>
-
-<% elsif lsbdistcodename == "jessie" or (lsbdistcodename == "n/a" and lsbmajdistrelease == "8") -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "jessie" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "8") -%>
 # debian jessie
 deb http://http.debian.net/debian jessie main contrib non-free
 
-# jessie-updates, previously known as 'volatile'
-deb http://http.debian.net/debian jessie-updates main
+# jessie-updates ja no esta als repos..
+#deb http://http.debian.net/debian jessie-updates main
 
-<% pfw = scope.lookupvar('::packages_from_stretch')
-   pfw = [] unless pfw.is_a?(Array)
-   if pfw.any? -%>
-# debian stretch
-deb http://http.debian.net/debian stretch main contrib non-free
-<% end -%>
+<% elsif scope.lookupvar("::lsbdistcodename") == "stretch" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "9") -%>
+# debian 9 stretch
+deb http://archive.debian.org/debian-archive/debian stretch main contrib non-free
+deb http://archive.debian.org/debian-security stretch/updates main contrib non-free
+
+<% elsif scope.lookupvar("::lsbdistcodename") == "buster" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "10") -%>
+# debian 10 buster
+deb http://deb.debian.org/debian buster main contrib non-free
+
+<% else -%>
+# debian <%= scope.lookupvar("::lsbdistcodename") %>
+deb http://http.debian.net/debian <%= scope.lookupvar("::lsbdistcodename") %> main contrib non-free
+deb http://http.debian.net/debian <%= scope.lookupvar("::lsbdistcodename") %>-updates main contrib non-free
+deb http://http.debian.net/debian <%= scope.lookupvar("::lsbdistcodename") %>-backports main contrib non-free
+deb http://security.debian.org <%= scope.lookupvar("::lsbdistcodename") %>-security main contrib non-free
 
 <% end -%>

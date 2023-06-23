@@ -39,7 +39,7 @@ Redmine::Plugin.register :initr do
       {:node => [:new_template]},
       :require => :loggedin
     permission :view_nodes,
-      {:node  => [:list,:facts,:report,:resource],
+      {:node  => [:list,:facts,:report,:resource,:get_services],
         :klass => [:list]}
     permission :view_own_nodes,
       {:node  => [:list,:facts,:report,:resource],
@@ -95,5 +95,10 @@ end
       f.puts "DOMAIN: http://localhost:3000"
     end
   end
-#end
 
+# Deprecated Klasses
+# ActiveRecord::Base.connection.execute("delete from klasses where type='InitrWpkg';")
+# ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackup';")
+# ActiveRecord::Base.connection.execute("delete from klasses where type='Initr::RemoteBackupServer';")
+
+#end

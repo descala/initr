@@ -6,14 +6,14 @@ class common::dovecot::centos inherits common::dovecot::common {
   Service[dovecot] { require => Package["dovecot"] }
   file {
     "/etc/dovecot.conf":
-      mode => 644,
+      mode => "0644",
       group => dovecot,
       source => "puppet:///modules/common/dovecot/dovecot_centos.conf",
       notify => Service["dovecot"],
       require => Package["dovecot"];
     "/etc/dovecot-sql.conf":
       # This file contains the database password
-      mode => 640,
+      mode => "0640",
       group => dovecot,
       content => template("common/dovecot/dovecot-sql.conf.erb"),
       notify => Service["dovecot"],

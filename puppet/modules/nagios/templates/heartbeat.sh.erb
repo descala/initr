@@ -8,16 +8,16 @@
 #
 ### HEARTBEAT ###
 
-CONF=<%= send_nsca_cfg %>
-SERVER=<%= nagios_server %>
+CONF=<%= @send_nsca_cfg %>
+SERVER=<%= @nagios_server %>
 PORT=5667
 
 S=$(expr $RANDOM % 60)
 echo "Sleeping $S seconds ..."
 sleep $S
 
-<%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
-<%= fqdn -%>	0	HOST UP.
+<%= @send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= @fqdn -%>	0	HOST UP.
 EOF
 
 # send uptime after host heartbeat check, this way we
@@ -33,8 +33,8 @@ if [ -f /proc/uptime ]; then
   UPTIME_S=`uptime | cut -d"," -f1`
 else
   # send UNKNOWN status, /proc/uptime does not exist.
-  <%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
-<%= fqdn %>	uptime	3	UNKNOWN - /proc/uptime does not exist.
+  <%= @send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= @fqdn %>	uptime	3	UNKNOWN - /proc/uptime does not exist.
 EOF
   exit
 fi
@@ -45,22 +45,22 @@ if [ -f $UPTIME_FILE ]; then
 else
   echo $UPTIME > $UPTIME_FILE
   # send UNKNOWN, first script run
-  <%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
-<%= fqdn %>	uptime	3	UNKNOWN - First run ($UPTIME_S)
+  <%= @send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= @fqdn %>	uptime	3	UNKNOWN - First run ($UPTIME_S)
 EOF
   exit
 fi
 
 if [ $UPTIME -gt $LAST_UPTIME ] ; then
   # send OK
-  <%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
-<%= fqdn %>	uptime	0	OK - $UPTIME_S.
+  <%= @send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= @fqdn %>	uptime	0	OK - $UPTIME_S.
 EOF
 exit
 fi
 
 # send WARNING, server rebooted
-<%= send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
-<%= fqdn %>	uptime	1	WARNING - SERVER REBOOTED ($UPTIME_S)
+<%= @send_nsca %> -H $SERVER -p $PORT -c $CONF << EOF
+<%= @fqdn %>	uptime	1	WARNING - SERVER REBOOTED ($UPTIME_S)
 EOF
 exit

@@ -1,17 +1,23 @@
 class base::puppet {
-  case $operatingsystem {
-    "CentOS","Fedora","Mandriva": {
-      # puppet < 0.25 install from rubygems or source
-      #TODO: newer versions of these OS have puppet > 0.25, check which ones.
-    }
-    default: {
-      package {
-        ["puppet","facter"]:
-          ensure => installed,
-          notify => Service["puppet"];
-      }
-    }
-  }
+
+  include base::get_services
+
+  # Let's assume puppet is installed, right?
+
+  # case $operatingsystem {
+  #   "CentOS","Fedora","Mandriva": {
+  #     # puppet < 0.25 install from rubygems or source
+  #     #TODO: newer versions of these OS have puppet > 0.25, check which ones.
+  #   }
+  #   default: {
+  #     package {
+  #       ["puppet","facter"]:
+  #         ensure => installed,
+  #         notify => Service["puppet"];
+  #     }
+  #   }
+  # }
+
   service {
     "puppet":
       enable => true,
@@ -21,12 +27,12 @@ class base::puppet {
     "/usr/local/sbin/puppet-restart.sh":
       owner => root,
       group => root,
-      mode => 744,
+      mode => "0744",
       before => Service["puppet"],
       source => ["puppet:///specific/puppet-restart.sh","puppet:///modules/base/puppet/puppet-restart.sh"];
   }
   cron {
-    puppet_restart:
+    "puppet_restart":
       command => "/usr/local/sbin/puppet-restart.sh > /dev/null",
       before => Service["puppet"],
       user => root,
@@ -45,4 +51,3 @@ class base::puppet {
     }
   }
 }
-

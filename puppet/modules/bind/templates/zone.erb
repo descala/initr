@@ -3,9 +3,9 @@
 ;##################
 ; masterzone.erb template
 
-$TTL <%= ttl %>
-@   IN  SOA <%= scope.lookupvar('bind::nameservers').first %>.  webmaster.<%= name %>. (
-            <%= serial %>  ; serial automatically incremented
+$TTL <%= scope.lookupvar('ttl') %>
+@   IN  SOA <%= scope.lookupvar('bind::nameservers').first %>.  webmaster.<%= scope.lookupvar('name') %>. (
+            <%= scope.lookupvar('serial') %>  ; serial automatically incremented
             3600        ; refresh, seconds
             600         ; retry, seconds
             604800      ; expire, seconds
@@ -15,4 +15,4 @@ $TTL <%= ttl %>
 <% scope.lookupvar('bind::nameservers').each do |ns| -%>
     IN  NS  <%= ns %>.
 <% end -%>
-<%= zone %>
+<%= scope.lookupvar('zone') %>

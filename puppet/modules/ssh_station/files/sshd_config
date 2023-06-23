@@ -1,0 +1,22 @@
+# openssh version 4 sshd_config
+
+##################
+# puppet managed #
+##################
+
+Protocol 2
+SyslogFacility AUTHPRIV
+PermitRootLogin no
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+UsePAM yes
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL
+GatewayPorts yes
+X11Forwarding no
+ClientAliveInterval 60
+ClientAliveCountMax 4
+Subsystem sftp /usr/libexec/openssh/sftp-server

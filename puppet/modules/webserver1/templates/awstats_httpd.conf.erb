@@ -1,7 +1,29 @@
-<% if operatingsystem == "Debian" -%>
 ##################
 # Puppet Managed #
 ##################
+<% if @operatingsystem == "Debian" -%>
+<% if @lsbmajdistrelease == '8' -%>
+<Location /awstats>
+  DirectoryIndex awstats.pl
+  Options ExecCGI
+  AllowOverride None
+  AuthUserFile /etc/awstats/users
+  AuthName "WWW Statistics access"
+  AuthType Basic
+  Require valid-user
+</Location>
+
+<Directory /usr/share/awstats/icon>
+  Options None
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+Alias /awstats/icon/ /usr/share/awstats/icon/
+ScriptAlias /awstats /usr/lib/cgi-bin
+RedirectMatch ^/awstats[/]*$ /awstats/awstats.pl
+<% else -%>
 # This provides worldwide access to everything below the directory
 # Security concerns:
 #  * Raw log processing data is accessible too for everyone
@@ -39,11 +61,9 @@ Alias /awstats/icon/ /usr/share/awstats/icon/
 ScriptAlias /awstats /usr/lib/cgi-bin
 
 RedirectMatch ^/awstats[/]*$ /awstats/awstats.pl
+<% end -%>
 <% else -%>
-##################
-# Puppet Managed #
-##################
-<% if operatingsystem == "CentOS" and operatingsystemrelease == "5.3" -%>
+<% if @operatingsystem == "CentOS" and @operatingsystemrelease == "5.3" -%>
 Alias /awstats/icon/ /usr/share/awstats/wwwroot/icon/
 <% else -%>
 Alias /awstats/icon/ /var/lib/awstats/icon/

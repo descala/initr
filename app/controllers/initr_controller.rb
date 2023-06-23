@@ -1,5 +1,4 @@
 class InitrController < ApplicationController
-  unloadable
 
   # to make right menu appear
   layout "nested"
@@ -28,11 +27,15 @@ class InitrController < ApplicationController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes(params[@klass.params_name])
         flash[:notice] = "#{@klass.name.capitalize} configuration successfully updated."
       end
     end
   end
 
+  # disable Srong Parameters in all Initr controllers
+  def params
+    request.parameters
+  end
 end

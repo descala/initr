@@ -11,7 +11,6 @@ module ProjectInitrPatch
  
     # Same as typing in the class
     base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development
       has_many :nodes, :class_name => "Initr::Node"
     end
  
@@ -22,10 +21,10 @@ module ProjectInitrPatch
   
   module InstanceMethods
     def node_instances
-      self.nodes.find :all, :conditions => "type='Initr::NodeInstance'"
+      self.nodes.where("type='Initr::NodeInstance'")
     end
     def node_templates
-      self.nodes.find :all, :conditions => "type='Initr::NodeTemplate'"
+      self.nodes.where("type='Initr::NodeTemplate'")
     end
   end
 

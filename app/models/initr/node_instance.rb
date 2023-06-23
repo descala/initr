@@ -1,18 +1,9 @@
 class Initr::NodeInstance < Initr::Node
-  unloadable
   validates_uniqueness_of :name
   validates_presence_of :project
 
   after_save :trigger_puppetrun
   after_create :add_base_klass
-  after_destroy :puppet_host_destroy
-
-  #TODO
-#  def validate
-#    unless user.member_of?(project) or user.admin?
-#      errors.add_to_base "User #{user.name} don't belongs to #{project.name} project."
-#    end
-#  end
 
   def add_base_klass
     b = Initr::Base.new
@@ -27,6 +18,16 @@ class Initr::NodeInstance < Initr::Node
     else
       super
     end
+  end
+
+  def update_fact_cache
+    update_attributes(
+      fqdn: fact('fqdn'),
+      lsbdistid: fact('lsbdistid'),
+      lsbdistrelease: fact('lsbdistrelease'),
+      kernelrelease: fact('kernelrelease'),
+      puppetversion: fact('puppetversion')
+    )
   end
 
   def provider
@@ -49,104 +50,107 @@ class Initr::NodeInstance < Initr::Node
     return @host_object
   end
 
-  def puppet_host_destroy
-    @host_object = puppet_host
-    Puppet::Rails::Host.destroy @host_object if @host_object
+  def facts
+    return @facts if @facts
+    data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}'}").data rescue {}
+    if data.empty? and puppet_host
+      @facts = puppet_host.get_facts_hash
+    else
+      # [
+      #  {"name"=>"kernel", "value"=>"Linux"},
+      #  {"name"=>"kernelrelease", "value"=>"4.9.0-4-amd64"}
+      # ]
+      hash = {}
+      data.each do |fact|
+        hash[fact['name']] = fact['value'] rescue nil
+      end
+      @facts = hash
+    end
+  end
+
+  def fact(factname, default=nil)
+    if @facts
+      # we have previously loaded all facts
+      if facts.has_key? factname
+        facts[factname]
+      else
+        default
+      end
+    else
+      # facts not loaded, we are just interested in one fact
+      data = Initr.puppetdb.request('',"facts[name,value] {certname = '#{name}' and name = '#{factname}'}").data rescue {}
+      if data.empty? and puppet_host
+        if fv = puppet_host.fact_values.includes(:fact_name).references(:fact_name).where("fact_names.name = '#{factname}'")
+          fv.first.value
+        else
+          nil
+        end
+      else
+        data.first['value'] rescue default
+      end
+    end
+  rescue
+    default
   end
 
   def exported_resources
-    puppet_host.resources.find :all,:conditions => ['exported',true], :order => "restype, title"
+    return @exported_resources if @exported_resources
+    data = Initr.puppetdb.request('',"resources {certname = '#{name}' and exported = true }").data rescue {}
+    if data.empty? and puppet_host
+      # try with ActiveRecord instead of PuppetDB
+      @exported_resources = puppet_host.get_exported_resources_hash
+    else
+      hash = {}
+      data.each do |res|
+        hash["#{res['type']}[#{res['title']}]"] = res['parameters'] rescue nil
+      end
+      @exported_resources = hash
+    end
   end
 
+  # TODO we should do here the equivalent to this in the puppetmaster:
+  #      puppet node deactivate #{certname}
   def destroy_exported_resources
     exported_resources.each do |r|
       r.destroy
     end
   end
 
-  def puppet_fact(factname, default=nil)
-    begin
-      if fv = puppet_host.fact_values.find(
-        :all, :include => :fact_name,
-        :conditions => "fact_names.name = '#{factname}'")
-        return fv.first.value
-      else
-        return nil
-      end
-    rescue
-      default
-    end
-  end
-
-  def puppet_attribute(attribute, default=nil)
-    begin
-      puppet_host.send(attribute)
-    rescue
-      default
-    end
-  end
-
-  def puppetversion
-    puppet_fact('puppetversion','?')
-  end
-
   def os
-    f = puppet_fact('lsbdistid')
-    f = puppet_fact('operatingsystem') unless f
-    logger.debug("OS= '#{f}'") if logger
+    f = lsbdistid
+    f = fact('operatingsystem') unless f
     return f
   end
 
   def os_release
-    f = puppet_fact('lsbdistrelease')
-    f = puppet_fact('operatingsystemrelease','?') unless f
+    f = lsbdistrelease
+    f = fact('operatingsystemrelease','?') unless f
     return f
   end
 
   def hostname
-    puppet_fact("hostname",name)
+    fact("hostname",name)
   end
 
   # if there is no domain fact, we define domain as
   # removing the hostname part of the fqdn
   def domain
-    d = puppet_fact 'domain'
+    d = fact 'domain'
     d = fqdn.gsub("#{hostname}.",'') if d.nil?
     d
   end
 
-  def fqdn
-    puppet_fact("fqdn", hostname)
-  end
-
   def reverse_fqdn
-    self.fqdn.split(".").reverse.join("_")
+    fqdn.split(".").reverse.join("_")
   end
 
   def ip
-    puppet_attribute('ipaddress')
-  end
-
-  def compile_warning?
-    begin
-      (Time.now - puppet_attribute('last_compile')) > 60 * 30
-    rescue
-      false
-    end
-  end
-
-  def compile
-    begin
-      remaining(puppet_attribute('last_compile'))
-    rescue Exception
-      ''
-    end
-
+    fact('ipaddress')
   end
 
   def kernel
     begin
-      a = puppet_fact('kernelrelease').split(/\.|-|mdk/)
+      a = kernelrelease.split(/\.|-|mdk/)
         "#{a[0]}.#{a[1]}.#{a[2]}-#{a[3]}"
     rescue Exception
       ''
@@ -158,7 +162,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def config_errors
-    self.parameters["classes"]["common::configuration_errors"]["errors"]
+    self.parameters["classes"]["common::configuration_errors"]["errors"] rescue []
   end
 
   def report
@@ -177,7 +181,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def <=>(other)
-    self.fqdn.downcase <=> other.fqdn.downcase
+    self.fqdn.downcase <=> other.fqdn.downcase rescue 0
   end
 
   def valid_fqdn?

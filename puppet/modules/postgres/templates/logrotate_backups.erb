@@ -1,0 +1,10 @@
+# Rotate backup files for <%= name %> postgres database
+#
+<%= destination+"/"+name+".sql" %> {
+  nocreate
+  missingok
+  notifempty
+  rotate 7
+  daily
+}
+

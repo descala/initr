@@ -1,5 +1,4 @@
 class Initr::Webserver1Domain < ActiveRecord::Base
-  unloadable
 
   require "digest/md5"
 
@@ -7,8 +6,8 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   belongs_to :web_backups_server, :class_name => "Initr::WebBackupsServer"
   validates_uniqueness_of :name, :scope => :webserver1_id
   validates_uniqueness_of :name, :scope => :web_backups_server_id, :unless => Proc.new {|domain| domain.web_backups_server_id.nil? }
-  validates_format_of :name, :with => /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
-  validates_format_of :dbname, :with => /^[a-zA-Z0-9\$_]+$/, :allow_nil => true, :allow_blank => true
+  validates_format_of :name, :with => /\A[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/i
+  validates_format_of :dbname, :with => /\A[a-zA-Z0-9\$_]+\z/, :allow_nil => true, :allow_blank => true
   validates_uniqueness_of :dbname, :scope => :webserver1_id, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_uniqueness_of :user_ftp,     :scope => :webserver1_id
   validates_uniqueness_of :user_awstats, :scope => :webserver1_id
@@ -17,6 +16,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   validates_presence_of :name, :user_ftp, :user_awstats, :password_ftp, :password_awstats
   validates_presence_of :password_db, :unless => Proc.new {|domain| domain.dbname.nil? or domain.dbname.blank?}
   validates_length_of :user_mysql, :in => 1..16, :allow_nil => true, :allow_blank => true
+  validates_inclusion_of :allow_override, in: %w(All None)
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
 
@@ -39,6 +39,9 @@ class Initr::Webserver1Domain < ActiveRecord::Base
                    "force_www" => force_www.to_s,
                    "awstats_www" => awstats_www.to_s,
                    "use_suphp" => use_suphp.to_s }
+    unless allow_override.blank?
+      parameters["allow_override"] = allow_override
+    end
     if web_backups_server
       parameters["web_backups_server"] = web_backups_server.address
       parameters["web_backups_server_port"] = web_backups_server.port
@@ -77,7 +80,7 @@ class Initr::Webserver1Domain < ActiveRecord::Base
 
   def bind
     bind = Initr::Bind.for_node(webserver.node)
-    bind.bind_zones.find(:first, :conditions=>["domain=?",name.split('.')[-2..-1].join('.')]) if bind
+    bind.bind_zones.where("domain=?",name.split('.')[-2..-1].join('.')).first if bind
   end
 
   private
@@ -90,7 +93,6 @@ class Initr::Webserver1Domain < ActiveRecord::Base
   end
 
   def trigger_puppetrun
-    self.webserver.trigger_puppetrun
+    self.webserver.trigger_puppetrun rescue nil
   end
-
 end

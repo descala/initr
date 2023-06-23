@@ -27,7 +27,7 @@ class common::cups {
 
   if $printers {
     file { "/etc/cups/printers.conf":
-      mode => 600,
+      mode => "0600",
       group => lp,
       content => $printers,
       require => Package["cups"],

@@ -1,10 +1,9 @@
 class PackageManagerController < InitrController
-  unloadable
 
   menu_item :initr
 
-  before_filter :find_package_manager
-  before_filter :authorize
+  before_action :find_package_manager
+  before_action :authorize
 
   private
 

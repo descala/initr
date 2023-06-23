@@ -12,3 +12,9 @@ describe ENDESA_VIRUS Virus endesa
 header   PHP_EVAL X-PHP-Originating-Script =~ /eval\(\)\'d code/i
 describe PHP_EVAL Eval()'ed PHP code as source
 score    PHP_EVAL 8.0
+
+header   __DROPBOX_FACTURA_01 Subject =~ /factura|pago/i
+body     __DROPBOX_FACTURA_02 /dropboxusercontent.*zip/i
+meta     DROPBOX_FACTURA __DROPBOX_FACTURA_01 && __DROPBOX_FACTURA_02
+score    DROPBOX_FACTURA 5
+describe DROPBOX_FACTURA Virus factura dropbox

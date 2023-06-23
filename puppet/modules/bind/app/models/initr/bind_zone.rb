@@ -1,12 +1,14 @@
 class Initr::BindZone < ActiveRecord::Base
-  unloadable
+
+  include IDN
+
   belongs_to :bind, :class_name => "Initr::Bind"
   has_one :project, :through => :bind
   validates_presence_of :domain, :ttl
   validates_uniqueness_of :domain, :scope => 'bind_id'
   validates_numericality_of :ttl
-  validates_format_of :domain, :with => /^[\w\d]+([\-\.]{1}[\w\d]+)*\.[a-z]{2,20}$/i
-  validates_format_of :domain, :with => /^[^_]+$/i
+#  validates_format_of :domain, :with => /\A\w+([\-\.]{1}\w+)*\.[a-z]{2,20}\z/i
+  validates_format_of :domain, :with => /\A[^_]+\.[a-z]{2,20}\z/i
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
   before_validation :increment_zone_serial
@@ -55,13 +57,17 @@ class Initr::BindZone < ActiveRecord::Base
     {"zone"=>zone,"ttl"=>ttl,"serial"=>serial}
   end
 
+  def domain_idn
+    Idna.toASCII domain
+  end
+
   def increment_zone_serial
     # auto-update serial date (YYYYMMDD) + id 01
     if domain_changed? or ttl_changed? or zone_changed?
       self.serial="#{Time.now.strftime('%Y%m%d')}01".to_i
       unless serial_was.nil?
-        while serial <= serial_was.to_i
-          self.serial += 1
+        while serial.to_i <= serial_was.to_i
+          self.serial = serial.to_i + 1
         end
       end
     end
@@ -108,7 +114,7 @@ class Initr::BindZone < ActiveRecord::Base
       tmpfile = Tempfile.new([domain,'.conf'])
       tmpfile.write(zone_for_check)
       tmpfile.close
-      out = `#{checkzone} #{domain} #{tmpfile.path}`
+      out = `#{checkzone} #{domain_idn} #{tmpfile.path}`
       if $? != 0
         errors.add(:base, "Zone check error: #{out}")
       end
@@ -132,7 +138,7 @@ class Initr::BindZone < ActiveRecord::Base
   def zone_for_check
     <<ZONE
 $TTL #{ttl}
-@   IN  SOA #{bind.nameservers.split.first}.  webmaster.#{domain}. (
+@   IN  SOA #{bind.nameservers.split.first}.  webmaster.#{domain_idn}. (
             #{serial}
             3600
             600

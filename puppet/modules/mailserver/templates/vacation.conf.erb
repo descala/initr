@@ -3,11 +3,11 @@
 ##########################
 #
 # see /var/spool/vacation/vacation.pl
-$db_type = '<%=db_driver%>';
+$db_type = '<%=scope.lookupvar('db_driver')%>';
 # leave empty for connection via UNIX socket
 $db_host = '';
-$db_username = '<%=db_user%>';
-$db_password = '<%=db_passwd%>';
+$db_username = '<%=scope.lookupvar('db_user')%>';
+$db_password = '<%=scope.lookupvar('db_passwd')%>';
 $vacation_domain = 'autoreply.localhost';
 $log_to_file = 1;
 $log_level = 1;

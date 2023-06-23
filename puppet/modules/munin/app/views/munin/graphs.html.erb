@@ -1,0 +1,27 @@
+<h3><%= @name %> Graphics</h3>
+
+<%= link_to "daily graphs",  :period => "day", :graph => @name %> | 
+<%= link_to "weekly graphs", :period => "week", :graph => @name %> | 
+<%= link_to "monthly graphs", :period => "month", :graph => @name %> | 
+<%= link_to "yearly graphs", :period => "year", :graph => @name %>
+
+<hr />
+<br />
+
+<table>
+
+<% @munins.each_slice(2) do |m| -%>
+  <tr valign="top">
+    <td>
+      <%= m[0].node.fqdn %><br />
+      <%= link_to(image_tag(m[0].graph_url_http("#{@name}-#{@period}")), :action => 'index', :id => m[0], :period => @period) %>
+    </td>
+    <td>
+      <% next if m[1].nil? -%>
+      <%= m[1].node.fqdn %><br />
+      <%= link_to(image_tag(m[1].graph_url_http("#{@name}-#{@period}")), :action => 'index', :id => m[1], :period => @period) %>
+    </td>
+  </tr>
+<% end -%>
+
+</table>

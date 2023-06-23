@@ -1,0 +1,21 @@
+#########################
+#     Puppet Managed    #
+#########################
+# Monit control file
+set daemon 120
+set logfile /var/log/monit.log
+set idfile /var/lib/monit/id
+set statefile /var/lib/monit/state
+set eventqueue
+    basedir /var/lib/monit/events # set the base directory where events will be stored
+    slots 100                     # optionally limit the queue size
+
+set alert lluis@ingent.net but not on { instance, resource }
+set alert descala@ingent.net but not on { instance, resource }
+set httpd port 2812 and use address 127.0.0.1
+allow localhost   # Allow localhost to connect
+allow admin:ingent # Allow Basic Auth
+set mailserver localhost
+
+include /etc/monit/conf.d/*
+include /etc/monit/monitrc.d/enabled/*

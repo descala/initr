@@ -1,0 +1,6 @@
+<p><%=f.check_box(:security_updates)%></p>
+<!-- <p><%=f.text_area(:packages_from_bookworm)%></p> -->
+<% unless @klass.packages_from_bullseye.blank? -%>
+  <p>this packages where installed from Bullseye when node was Buster</p>
+  <p>packages_from_bullseye: <%= @klass.packages_from_bullseye %></p>
+<% end -%>

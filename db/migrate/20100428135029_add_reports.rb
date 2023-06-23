@@ -6,7 +6,7 @@ class AddReports < ActiveRecord::Migration
       t.text     :log
       t.datetime :reported_at
       t.integer  :status
-      t.timestamps
+      t.timestamps null: true
     end
   end
 

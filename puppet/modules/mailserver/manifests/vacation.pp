@@ -6,10 +6,14 @@
 #   ln -s /usr/share/roundcube/plugins/vacation/
 class mailserver::vacation {
 
+  include common::perl
+
   if $::db_backend == 'postgres' {
     $db_driver = 'Pg'
+    $db_lib_package = 'libdbd-pg-perl'
   } else {
     $db_driver = 'mysql'
+    $db_lib_package = 'libdbd-mysql-perl'
   }
 
   user {
@@ -50,9 +54,10 @@ class mailserver::vacation {
   }
 
   package {
-    ['libmail-sender-perl', 'libdbd-pg-perl', 'libemail-valid-perl',
-    'libmime-perl', 'liblog-log4perl-perl', 'liblog-dispatch-perl',
-    'libgetopt-argvfile-perl', 'libmime-charset-perl', 'libmime-encwords-perl']:
+    ['libemail-sender-perl', 'libemail-simple-perl', 'libemail-valid-perl',
+    'libtry-tiny-perl', 'libdbd-pg-perl', 'libemail-mime-perl',
+    'liblog-log4perl-perl', 'liblog-dispatch-perl', 'libgetopt-argvfile-perl',
+    'libmime-charset-perl', 'libmime-encwords-perl', $db_lib_package]:
       ensure => installed;
   }
 

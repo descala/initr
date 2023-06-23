@@ -1,0 +1,10 @@
+[Unit]
+Description=Ingent SSH Station client
+After=sshd.service
+
+[Service]
+ExecStart=/usr/local/sbin/ssh_station
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

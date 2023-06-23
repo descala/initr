@@ -1,0 +1,13 @@
+<% if @operatingsystem == "Debian" -%>
+check process syslogd with pidfile /var/run/rsyslogd.pid
+  start program = "/etc/init.d/rsyslog start"
+  stop program = "/etc/init.d/rsyslog stop"
+  if 5 restarts within 5 cycles then timeout
+
+<% else -%>
+check process syslogd with pidfile /var/run/syslogd.pid
+  start program = "/etc/init.d/syslog start"
+  stop program = "/etc/init.d/syslog stop"
+  if 5 restarts within 5 cycles then timeout
+
+<% end -%>

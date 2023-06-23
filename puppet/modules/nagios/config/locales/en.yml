@@ -11,3 +11,4 @@ en:
   field_nsca_decryption_password: NSCA decryption password
   field_admin_contactgroup: Admin group (receive notifications from all groups)
   invalid_admin_contactgroup: Invalid admin group
+  field_nagios_webserver: Web server

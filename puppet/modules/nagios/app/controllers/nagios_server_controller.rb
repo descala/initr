@@ -1,21 +1,17 @@
 class NagiosServerController < InitrController
-  unloadable
 
   menu_item :initr
-  before_filter :find_nagios_server
-  before_filter :authorize
+  before_action :find_nagios_server
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
     @user_projects = Project.all.collect {|proj|
       proj if User.current.projects.include? proj or User.current.admin?
     }.compact.sort
-    if request.post?
+    if request.patch?
       if @klass.update_attributes(params[:nagios_server])
         flash[:notice] = 'Configuration successfully updated.'
-        redirect_to :controller => 'klass', :action => 'list', :id => @node
-      else
-        render :action => 'configure'
       end
     end
   end

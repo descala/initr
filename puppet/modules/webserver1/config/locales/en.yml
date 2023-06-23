@@ -33,5 +33,8 @@ en:
   help_web_backups_server_id: "Needs a server with web_backups_server class"
   help_use_suphp: "Runs PHP files as its owner, usefull on multiuser environments"
   field_allow_anonymous_ftp: "Allow anonymous FTP access"
+  field_allow_writeable_chroot: "Allow writeable chroot"
   field_manage_default_domain: "Redirect"
   help_manage_default_domain: "Redirect requests with no virtualhost to default domain"
+  field_allow_override: "AllowOverride"
+  help_allow_override: "AllowOverride for htdocs dir"

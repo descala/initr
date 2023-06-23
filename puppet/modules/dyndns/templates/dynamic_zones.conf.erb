@@ -1,0 +1,12 @@
+include "/etc/bind/keys/localhost";
+
+<% dynamic_zones.each do |zone| -%>
+zone "<%=zone%>" {
+    type master;
+    file "/etc/bind/zones/<%=zone%>.zone";
+    allow-update {
+        key localhost;
+    };
+};
+
+<% end -%>

@@ -1,0 +1,52 @@
+##################
+# Puppet Managed #
+##################
+# Samba as PDC with an LDAP backend
+
+[global]
+workgroup = <%= scope.lookupvar('::smbdomain') %>
+passdb backend = ldapsam:"ldap://localhost:389"
+ldap admin dn = "cn=manager,dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc"
+ldap ssl = off
+ldap delete dn = no
+ldap user suffix = ou=People
+ldap group suffix = ou=Groups
+ldap machine suffix = ou=People
+ldap suffix = dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc
+<% if @lsbdistcodename == "squeeze" -%>
+idmap uid = 10000-30000
+idmap gid = 10000-30000
+<% else -%>
+idmap config * : range = 10000-30000
+<% end -%>
+server string = <%= scope.lookupvar('::smbdomain') %> Arxiver
+security = user
+hosts allow = 192. 10. 127.
+username map = /etc/samba/smbusers
+name resolve order = lmhosts wins host
+add user script = /usr/sbin/smbldap-useradd -m "%u"
+delete user script = /usr/sbin/smbldap-userdel "%u"
+add group script = /usr/sbin/smbldap-groupadd -p "%g"
+delete group script = /usr/sbin/smbldap-groupdel "%g"
+add user to group script = /usr/sbin/smbldap-groupmod -m "%u" "%g"
+delete user from group script = /usr/sbin/smbldap-groupmod -x "%u" "%g"
+set primary group script = /usr/sbin/smbldap-usermod -g "%g" "%u"
+add machine script = /usr/sbin/smbldap-useradd -w "%u"
+# TODO: roaming profiles option, now disabled
+#logon path = \%L\profiles\%U
+#logon drive = X:
+logon path =
+logon home =
+time server = Yes
+domain logons = Yes
+wins support = Yes
+nt acl support = Yes
+map acl inherit = Yes
+domain master = Yes
+local master = yes
+os level = 255
+preferred master = yes
+admin users = 
+
+# define your shares here:
+include = /etc/samba/smb_shares.conf

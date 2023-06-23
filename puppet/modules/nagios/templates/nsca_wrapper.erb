@@ -38,18 +38,18 @@ version=0.6
 # but not generally as good to do that. If you DNS server is down, your passive
 # service check results will not reach the NSCA/Nagios server and will 
 # therefore go stale causing warning/critical conditions.
-NAGIOS_SERVER="<%=nagios_server%>"
+NAGIOS_SERVER="<%=@nagios_server%>"
 
 # This should be the full path to the SEND_NSCA binary. Use this only if your
 # send _nsca program is not in the PATH of the user executing the nsca_wrapper
-SEND_NSCA="<%=send_nsca%>"
+SEND_NSCA="<%=@send_nsca%>"
 
 # This should be the path to your send_nsca.cfg or equivalent config. This
 # config is necessary to tell the send_nsca program how to connect to your
 # NSCA daemon on your Nagios server. It contains the port and the connection 
 # password. If you do not set this, this script will look for send_nsca.cfg 
 # in the same directory as this script is located. 
-SEND_NSCA_CONFIG="<%=send_nsca_cfg%>"
+SEND_NSCA_CONFIG="<%=@send_nsca_cfg%>"
 
 
 usage(){

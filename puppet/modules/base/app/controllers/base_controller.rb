@@ -1,17 +1,13 @@
 class BaseController < InitrController
-  unloadable
 
   menu_item :initr
-  before_filter :find_base, :authorize
+  before_action :find_base, :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes(params[:base])
         flash[:notice] = "Configuration successfully updated."
-        redirect_to :controller => 'klass', :action => 'list', :id => @node
-      else
-        render :action => 'configure'
       end
     end
   end

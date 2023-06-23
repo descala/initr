@@ -1,0 +1,24 @@
+<%= klass_menu "Dyndns" %>
+
+<%= labelled_form_for(@klass, :url=>{:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
+
+  <p><%= error_messages_for 'klass' %></p>
+
+  <% unless @klass.ddns_domain.blank? -%>
+    <p>current: <%= "#{@node.fqdn}.#{@klass.ddns_domain}" %></p>
+  <% end -%>
+
+  <p><%= f.text_field "ddns_domain" %></p>
+
+  <% if @nagios -%>
+  <p><%= f.check_box "skip_nagios_check" %></p>
+  <% end -%>
+
+  <p><%= submit_tag("Send")%></p>
+
+<% end -%>
+
+
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+

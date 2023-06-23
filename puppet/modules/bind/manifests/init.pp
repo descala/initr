@@ -16,7 +16,7 @@ class bind($bind_masterzones={},$nameservers=[],
 
   $osavn = "$lsbdistid$lsbdistrelease"
   case $operatingsystem {
-    Debian,Ubuntu: {
+    "Debian", "Ubuntu": {
       $etc_dir = '/etc/bind'
       $var_dir = $etc_dir
       include bind::debian
@@ -88,6 +88,23 @@ class bind($bind_masterzones={},$nameservers=[],
         owner   => root, group => root, mode => '0700',
         content => template('bind/nagios_check_dig.sh.erb');
     }
+
+    nagios::service {
+      "check_dig_master_zones":
+        checkfreshness => "1",
+        freshness => "1800",
+        ensure => present,
+        notifications_enabled => "0";
+    }
+
+    nagios::service {
+      "check_dig_slave_zones":
+        checkfreshness => "1",
+        freshness => "1800",
+        ensure => present,
+        notifications_enabled => "0";
+    }
+
     cron {
       'check dig all domains':
         ensure  => present,

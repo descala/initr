@@ -1,8 +1,10 @@
 <tr class="<%= cycle('odd', 'even') %> issue">
-<td><%= os_img(node) %></td>
+  <td><%= os_img(node) %><span class="initr_os_version"><%= node.os_release.split('.').first rescue nil %></span></td>
+  <td><span title="<%= node.puppetversion %>"><%= node.puppetversion.split('.').first rescue nil %></span></td>
 <td class="subject">
-  <%= image_tag("warning.png",:title=>"Node has configuration errors") if node.puppet_fact('puppet_classes') and node.puppet_fact('puppet_classes').include? 'common::configuration_errors' %>
-  <%= link_to node.fqdn, :controller => 'klass', :action => 'list', :id => node %>
+  <span title="<%= node.name %>">
+    <%= link_to node.fqdn, :controller => 'klass', :action => 'list', :id => node %>
+  </span>
 </td>
 <td class="subject">
   <%=

@@ -1,0 +1,6 @@
+Tests should be run from Redmine's base directory:
+
+ rake test:plugins:units PLUGIN=initr
+
+
+TODO: tests with fixtures doesn't work as of Redmine svn 2697

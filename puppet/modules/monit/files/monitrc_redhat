@@ -1,0 +1,21 @@
+#########################
+#     Puppet Managed    #
+#########################
+#
+# monit control file
+#
+
+set daemon 120 # Poll at 2-minute intervals
+set logfile "/var/log/monit.log"
+
+# uid, gid, size, nonexist, data, icmp, instance, invalid, exec,
+# changed, timeout, resource, checksum, match, timestamp,
+# connection, permission
+set alert lluis@ingent.net but not on { changed, instance, match, resource }
+set alert descala@ingent.net but not on { changed, instance, match, resource }set httpd port 2812 and use address 127.0.0.1
+set httpd port 2812 and use address 127.0.0.1
+allow localhost   # Allow localhost to connect
+allow admin:ingent # Allow Basic Auth
+
+INCLUDE "/etc/monit.d/enabled/*"
+

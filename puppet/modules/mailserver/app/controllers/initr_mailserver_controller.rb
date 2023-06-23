@@ -1,18 +1,14 @@
 class InitrMailserverController < InitrController
-  unloadable
 
   menu_item :initr
-  before_filter :find_mailserver
-  before_filter :authorize
+  before_action :find_mailserver
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes(params[:initr_mailserver])
         flash[:notice] = "Configuration successfully updated."
-        redirect_to :controller => 'klass', :action => 'list', :id => @node
-      else
-        render :action => 'configure'
       end
     end
   end

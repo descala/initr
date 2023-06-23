@@ -1,0 +1,18 @@
+##################
+# Puppet managed #
+##################
+base dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc
+uri ldap://127.0.0.1/
+rootbinddn cn=manager,dc=<%= scope.lookupvar('::smbdomain') %>,dc=loc
+
+timelimit 50
+bind_timelimit 50
+idle_timelimit 3600
+
+# Reconnect policy: hard (default) will retry connecting to
+# the software with exponential backoff, soft will fail
+# immediately.
+bind_policy soft
+
+# Just assume that there are no supplemental groups for these named users
+nss_initgroups_ignoreusers root,ldap,named,avahi,haldaemon,dbus,radvd,tomcat,radiusd,news,mailman,nscd,gdm

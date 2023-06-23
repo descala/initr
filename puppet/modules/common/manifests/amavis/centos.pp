@@ -21,7 +21,7 @@ class common::amavis::centos inherits common::amavis::common {
 
   file {
     "/etc/amavisd/amavisd.conf":
-      mode => 644,
+      mode => "0644",
       content => template("common/amavis/amavisd.conf.erb"),
       require => Package["amavisd-new"],
       notify => Service["amavisd"];
@@ -29,7 +29,7 @@ class common::amavis::centos inherits common::amavis::common {
       source => "puppet:///modules/common/amavis/sysconfig_clamd.amavisd",
       notify => Service["clamd"];
     "/etc/clamd.d/amavisd.conf":
-      mode => 644,
+      mode => "0644",
       source => "puppet:///modules/common/amavis/clamd_amavisd.conf",
       require => Package["clamav"],
       notify => Service["clamd"];

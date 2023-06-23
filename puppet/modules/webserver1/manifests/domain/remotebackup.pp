@@ -33,8 +33,8 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $use
 
   @@ssh_authorized_key { "backups for $name":
     ensure => $ensure,
-    key => $sshdsakey,
-    type => "dsa",
+    key => $sshrsakey,
+    type => "rsa",
     options => "no-port-forwarding",
     user => $username,
     target => "$backups_path/webservers/$name/.ssh/authorized_keys",
@@ -58,16 +58,16 @@ define webserver1::domain::remotebackup($web_backups_server, $backups_path, $use
         ensure => directory,
         owner => $username,
         group => $username,
-        mode => 750,
+        mode => "0750",
         require => [User[$username],File["$backups_path/webservers"]],
         tag => "${web_backups_server}_web_backups_client";
       "$backups_path/webservers/$name/.ssh/authorized_keys":
         owner => $username,
-        mode => 0640,
+        mode => "0640",
         tag => "${web_backups_server}_web_backups_client";
       "$backups_path/webservers/$name/.ssh":
         owner => $username,
-        mode => 0700,
+        mode => "0700",
         tag => "${web_backups_server}_web_backups_client";
     }
   }

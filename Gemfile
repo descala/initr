@@ -1,4 +1,5 @@
 gem 'facter', :require => false
+gem 'puppetdb-ruby'
 
 # Load initr plugins' Gemfiles
 Dir.glob File.expand_path("../puppet/modules/*/Gemfile", __FILE__) do |file|

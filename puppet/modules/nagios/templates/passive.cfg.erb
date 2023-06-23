@@ -16,8 +16,8 @@ define service {
     normal_check_interval       5
     retry_check_interval        1
     check_freshness             0
-<% if admin_contactgroup -%>
-    contact_groups              <%= admin_contactgroup %>
+<% if @admin_contactgroup -%>
+    contact_groups              <%= @admin_contactgroup %>
 <% end -%>
     check_command               check_dummy!0
     notification_interval       30
@@ -35,8 +35,8 @@ define host {
         check_command                   check_stale!2!'This host is stale'
         max_check_attempts              1
         register                        0
-<% if admin_contactgroup -%>
-        contact_groups              <%= admin_contactgroup %>
+<% if @admin_contactgroup -%>
+        contact_groups              <%= @admin_contactgroup %>
 <% end -%>
         notification_interval           30
         notification_period             24x7

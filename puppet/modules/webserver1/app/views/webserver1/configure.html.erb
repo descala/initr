@@ -9,6 +9,7 @@
     <th>Bind</th>
     <th>Stastics</th>
     <th>Ftp</th>
+    <th>Backups</th>
     <th></th>
   </tr>
   <% end -%>
@@ -24,6 +25,7 @@
     </td>
     <td><%= link_to "http://#{"www." if domain.awstats_www}#{domain.name}/awstats", "http://#{domain.user_awstats}:#{domain.password_awstats}@#{"www." if domain.awstats_www}#{domain.name}/awstats", :target => 'blank' %></td>
     <td><%= link_to "ftp://#{domain.name}", "ftp://#{domain.user_ftp}@#{domain.name}", :target => 'blank' %></td>
+    <td><%= domain.web_backups_server.address rescue "" %></td>
     <td><%= link_to image_tag("cross.gif", :plugin => "initr", :border => 0), {:action => 'rm_domain', :id => domain}, :confirm => "Delete #{domain.name}?", :method => :post %></td>
   </tr>
 <% end -%>
@@ -69,6 +71,7 @@
 <fieldset>
   <legend>FTP</legend>
   <p><%= f.check_box :allow_anonymous_ftp %></p>
+  <p><%= f.check_box :allow_writeable_chroot %></p>
 </fieldset>
 
   <p><%= submit_tag("Save")%></p>

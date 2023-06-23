@@ -36,21 +36,18 @@ module InitrHelper
   end
   
   def list_facts_like(obj,name='ipaddress_')
-    facts = []
-    if obj.is_a? Initr::Node and host=obj.puppet_host
-      facts = host.fact_values.find(:all, :include => :fact_name,
-                                    :conditions => "fact_names.name LIKE '#{name}%'")
-    end
     out = ""
-    facts.each do |fv|
-      out << "#{fv.fact_name.name} = #{fv.value} <br/>"
+    if obj.is_a? Initr::Node
+      obj.facts.select {|k,v| k =~ /#{name}/ }.each do |fact, val|
+        out << "#{fact} = #{val} <br/>"
+      end
     end
     out
   end
 
   def klass_list_tabs
     tabs = []
-    if @node.is_a? Initr::NodeInstance and @node.puppet_host.nil?
+    if @node.is_a? Initr::NodeInstance and @node.facts.empty?
       tabs << {:name => 'install', :partial => 'node/node', :label => :label_install }
     end
     tabs << {:name => 'klasses', :partial => 'node/klasses', :label => :label_klasses}
@@ -59,7 +56,7 @@ module InitrHelper
       tabs << {:name => 'exported_resources', :partial => 'node/exported_resources', :label => :label_exported_resources}
       tabs << {:name => 'facts', :partial => 'node/facts', :label => :label_facts}
       tabs << {:name => 'reports', :partial => 'node/reports', :label => :label_reports}
-      unless @node.puppet_host.nil?
+      if @node.facts.any?
         tabs << {:name => 'install', :partial => 'node/node', :label => :label_reinstall }
       end
     end

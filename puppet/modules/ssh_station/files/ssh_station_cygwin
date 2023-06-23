@@ -1,0 +1,10 @@
+#!/bin/sh
+
+while [ 1 ]
+do
+echo -e "\n--" >> /var/log/ssh_station
+date >> /var/log/ssh_station
+sleep 5
+ssh -N initr >> /var/log/ssh_station 2>&1
+
+done

@@ -4,6 +4,10 @@ Initr - A fronted for puppet modules
 Copyright (C) 2009-2012  David Escala
 https://github.com/descala/initr
 
+== 2017-12-07 v0.2
+
+* Five years gap
+
 == 2012-10-25 v0.1
 
 * Adds redmine 1.4 and ruby 1.9 support

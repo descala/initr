@@ -1,6 +1,6 @@
 class common::dovecot::debian7 inherits common::dovecot::debian {
 
-  $dovecot_sql_package = $dovecot::db_backend ? {
+  $dovecot_sql_package = $db_backend ? {
     'postgres' => 'dovecot-pgsql',
     default    => 'dovecot-mysql'
   }

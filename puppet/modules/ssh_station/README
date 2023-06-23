@@ -1,0 +1,26 @@
+== how keys are exported from each node ==
+
+Client ---> Server
+------------------
+* /etc/ssh/ssh_host_rsa_key.pub ---> /etc/ssh/ssh_known_hosts
+fact sshrsakey passed to server via exported resource
+@@sshkey { "ssh_station_client_$fqdn": alias => $fqdn, type => rsa, key => $sshrsakey, tag => "ssh_station_clients_for_$ssh_station_server" }
+
+* /home/ssh_station/.ssh/id_rsa.pub ---> /home/ssh_station/.ssh/authorized_keys
+fact ssh_station_sshrsakey, passed to server via get_host_definition and used in a template (ssh_station_server_authorized_keys.erb)
+
+
+Server ---> Client
+------------------
+* /etc/ssh/ssh_host_rsa_key.pub ---> /home/ssh_station/.ssh/known_hosts
+server has a fact sshrsakey, passed to clients via exported resource
+@@sshkey { "ssh_station_server_$fqdn": alias => $fqdn, type => rsa, key => $sshrsakey, tag => "ssh_station_server_$fqdn" }
+
+* /home/ssh_station_operators/initr_XXX/.ssh/id_rsa.pub ---> /home/ssh_station/.ssh/authorized_keys
+fact for each operator (initr_XXX_operator_key), passed to clients via get_host_definition and used in a template (operator_client_authorized_keys.erb)
+
+
+
+Redmine ---> Server
+-------------------
+Redmine users paste his rsa public key on redmine, them are passed to server via get_host_definition and used on a ssh_authorized_key puppet type

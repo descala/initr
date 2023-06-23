@@ -1,0 +1,14 @@
+# openssh version 3 sshd_config
+
+##################
+# puppet managed #
+##################
+
+Protocol 2
+SyslogFacility AUTHPRIV
+PermitRootLogin no
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+GatewayPorts yes
+ClientAliveInterval 60
+ClientAliveCountMax 4

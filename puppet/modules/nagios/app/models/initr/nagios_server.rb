@@ -1,16 +1,14 @@
 class Initr::NagiosServer < Initr::Klass
-
-  unloadable
-
   has_many :nagios, :class_name => "Initr::Nagios", :foreign_key => "klass_id"
   validates_presence_of :address, :on => :update
   validates_presence_of :nagiosadmin_password, :on => :update
   validates_confirmation_of :password, :allow_nil => true
   validate :admin_contactgroup_belongs_to_user
   before_validation :set_password
-  attr_accessor :password, :password_confirmation
 
-  self.accessors_for(["address","nagiosadmin_password","nsca_decryption_password","admin_contactgroup"])
+  self.accessors_for(["address","nagiosadmin_password",
+                      "nsca_decryption_password","admin_contactgroup",
+                      "nagios_webserver"])
 
   def set_password
     self.nagiosadmin_password = password.crypt(random_string(2)) unless password.blank?
@@ -38,7 +36,8 @@ class Initr::NagiosServer < Initr::Klass
       "nagiosadmin_password" => nagiosadmin_password,
       "nagios_users" => nagios_users,
       "nsca_decryption_password" => nsca_decryption_password,
-      "admin_contactgroup" => admin_contactgroup }
+      "admin_contactgroup" => admin_contactgroup,
+      "nagios_webserver" => nagios_webserver }
   end
 
   def print_parameters
@@ -60,7 +59,11 @@ class Initr::NagiosServer < Initr::Klass
       next unless project.nodes.size > 0
       allowed_roles.each do |role|
         project.users.collect do |user|
-          contacts[user.login] = { 'email' => user.mail, 'nagiosalias' => user.name } if user.roles_for_project(project).include?(role) and user.active?
+          contacts[user.login] = {
+            'email' => user.mail,
+            # https://tickets.puppetlabs.com/browse/PUP-3368
+            'nagiosalias' => user.name.to_s.gsub(/\P{ASCII}/, '')
+          } if user.roles_for_project(project).include?(role) and user.active?
         end
       end
     end
@@ -77,7 +80,7 @@ class Initr::NagiosServer < Initr::Klass
       # WARNING
       # TODO passwords are usernames TODO
       # WARNING
-      nagios_users[username] = username.crypt(random_string(2))
+      nagios_users[username] = username.crypt('asdfsecret')
     end
     nagios_users
   end
@@ -132,7 +135,11 @@ class Initr::NagiosServer < Initr::Klass
       next unless p.active?
       members = nagios_hosts_for(p).collect {|n| n.fqdn }.join(', ')
       next if members.blank?
-      groups[p.identifier] = { 'nagiosalias' => p.name ,'members' => members }
+      groups[p.identifier] = {
+        # https://tickets.puppetlabs.com/browse/PUP-3368
+        'nagiosalias' => p.name.to_s.gsub(/\P{ASCII}/, ''),
+        'members' => members
+      }
     end
     groups
   end
@@ -240,14 +247,20 @@ class Initr::NagiosServer < Initr::Klass
   # if we return here a host that is not defined in nagios_host.cfg, nagios will fail to restart
   def nagios_hosts_for(proj)
     members = []
-    proj.nodes.collect do |n|
-      next if n.puppet_host.nil?
-      # check that node has a Nagios_host exported resource with server tag
-      exported_resources = n.puppet_host.resources.find(:all, :conditions => "exported=true and restype='Nagios_host'")
-      exported_resources.each do |r|
-        if r.puppet_tags.collect {|pt| pt.name}.include? address
-          members << n
+    proj.nodes.each do |n|
+      exported_resources = Initr.puppetdb.request('', "resources {certname = '#{n.name}' and type = 'Nagios_host' and exported = true }").data rescue {}
+      if exported_resources.empty?
+        # try with ActiveRecord instead of PuppetDB
+        next unless n.is_a? Initr::NodeInstance
+        next if n.puppet_host.nil?
+        exported_resources = n.puppet_host.resources.where("exported=true and restype='Nagios_host'")
+        exported_resources.each do |r|
+          if r.puppet_tags.collect {|pt| pt.name}.include? address
+            members << n
+          end
         end
+      else
+        members << n if exported_resources[0]['parameters']['tag'] == address
       end
     end
     members
@@ -267,8 +280,7 @@ class Initr::NagiosServer < Initr::Klass
   def admin_contactgroup_belongs_to_user
     return true if User.current.admin? or config["admin_contactgroup"].blank?
     unless User.current.projects.collect {|p| p.identifier}.include?(config["admin_contactgroup"])
-      errors.add_to_base l(:invalid_admin_contactgroup)
+      errors.add :base, l(:invalid_admin_contactgroup)
     end
   end
-
 end

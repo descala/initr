@@ -1,0 +1,19 @@
+##################
+# Puppet managed #
+##################
+
+# GLOBAL OPTIONS
+
+#motd file=/etc/motd
+#log file=/var/log/rsyncd
+# for pid file, do not use /var/run/rsync.pid if
+# you are going to run rsync out of the init.d script.
+pid file=/var/run/rsyncd.pid
+#syslog facility=daemon
+#socket options=
+secrets file = /etc/rsyncd.secrets
+
+# MODULE OPTIONS
+<% [@rsyncd_modules].flatten.each do |mod| -%>
+<%= mod %>
+<% end -%>

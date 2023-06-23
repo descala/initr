@@ -1,10 +1,9 @@
 class CustomKlassController < InitrController
-  unloadable
 
   menu_item :initr
-  before_filter :find_node,         :only => [:new,:create]
-  before_filter :find_custom_klass, :only => [:configure]
-  before_filter :authorize
+  before_action :find_node,         :only => [:new,:create]
+  before_action :find_custom_klass, :only => [:configure]
+  before_action :authorize
 
   def new
     @klass = Initr::CustomKlass.new(:node=>@node)
@@ -27,12 +26,9 @@ class CustomKlassController < InitrController
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes(params[:custom_klass])
         flash[:notice]='Configuration saved'
-        redirect_to :controller => 'klass', :action => 'list', :id => @node.id, :tab => 'klasses'
-      else
-        render :action => 'configure'
       end
     end
   end

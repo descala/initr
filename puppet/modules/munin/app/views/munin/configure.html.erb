@@ -1,0 +1,26 @@
+<%= klass_menu "Munin" %>
+
+<%= labelled_form_for(:munin, @klass, :url => {:action=>'configure'}, :html=>{:class=>'tabular'}) do |f| -%>
+  <p><%= f.select("server_id", @munin_servers.collect {|s| [s,s.id.to_s]}, :include_blank=>true) %></p>
+
+  <h3>Munin Graphics</h3>
+
+  <p><%=f.check_box "munin_manual", :onclick => "Element.toggle('munin_checks');"%></p>
+
+  <div id="munin_checks" <%= @klass.munin_manual == "1" ? "style='display: none;'" : "" %>>
+  <p><%=f.check_box "munin_system"%></p>
+  <p><%=f.check_box "munin_apache"%></p>
+  <p><%=f.check_box "munin_squid"%></p>
+  <p><%=f.check_box "munin_postfix"%></p>
+  <p><%=f.check_box "munin_sendmail"%></p>
+  <p><%=f.check_box "munin_mysql"%></p>
+  <p><%=f.check_box "munin_network"%></p>
+  <p><%=f.check_box "munin_gateway"%></p>
+  </div>
+
+  <p><%= submit_tag "Save" %></p>
+
+<% end -%>
+<hr />
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+

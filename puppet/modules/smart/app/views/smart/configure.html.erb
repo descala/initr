@@ -1,0 +1,27 @@
+<%= klass_menu "Hard disks configuration" %>
+
+<%= labelled_form_for(:smart, @klass, :url => {:action => 'configure'} ) do |f| -%>
+
+  <%= error_messages_for 'klass' %>
+
+  <div id="drives">
+    <% @klass.drives.transpose.each do |drive,mode| -%>
+      Drive <%=text_field_tag("smart[drives][drive][]",drive)%>
+      Mode <%=text_field_tag("smart[drives][mode][]",mode)%> #TODO: a remove button<br />
+    <% end -%>
+  </div>
+  <%= add_drive_link() %>
+
+  <p><%= submit_tag("Save")%></p>
+
+<% end -%>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>
+
+<%=
+  content_for :header_tags do
+    javascript_include_tag('ftp_server.js', :plugin => 'ftp_server')
+  end
+%>

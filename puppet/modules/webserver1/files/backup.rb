@@ -69,7 +69,7 @@ class Backup
       command += " --exclude-from=#{@excludes} --delete-excluded"        # excludes
     end
     command += " --chmod=Du+w" # set u+w on directories on destination
-    command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_dsa_key'"      # ssh options
+    command += " -e 'ssh -p #{@port} -i /etc/ssh/ssh_host_rsa_key'"      # ssh options
     command += " /var/www/#{@domain}/htdocs /var/www/#{@domain}/backups" # origin
     command += " #{@remote_user}@#{@server}:incremental"                 # destination
     `#{command}`

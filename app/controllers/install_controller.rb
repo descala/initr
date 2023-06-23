@@ -1,14 +1,15 @@
 class InstallController < InitrController
-  unloadable
 
-  before_filter :find_node
-  before_filter :render_text, :except=>'can_sign'
+  before_action :find_node
+  before_action :render_text, :except=>'can_sign'
   menu_item :initr
   layout false
+
+  skip_before_action :check_if_login_required, only: [:can_sign]
   
   # Used by puppet/sign_request.sh to find out if cert should be signed
   def can_sign
-    render :text => true
+    render plain: 'true'
   end
 
   def ssl_required?

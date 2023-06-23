@@ -1,0 +1,33 @@
+echo "Setting up initr node `hostname`..."
+
+export PUPPET_AGENT_VERSION="5.5.0"
+export DEBIAN_CODENAME="jessie"
+export PATH=$PATH:/opt/puppetlabs/bin/
+
+echo 'export PATH=$PATH:/opt/puppetlabs/bin/' | tee /root/.bashrc_local
+
+wget https://apt.puppetlabs.com/puppet5-release-"$DEBIAN_CODENAME".deb && \
+dpkg -i puppet5-release-"$DEBIAN_CODENAME".deb && \
+rm puppet5-release-"$DEBIAN_CODENAME".deb && \
+apt-get update && \
+apt-get install --no-install-recommends -y puppet-agent="$PUPPET_AGENT_VERSION"-1"$DEBIAN_CODENAME" lsb-release
+
+mkdir -p /etc/puppet
+ln -s /etc/puppetlabs/puppet/puppet.conf /etc/puppet/puppet.conf
+
+cat << FI > /etc/puppet/puppet.conf
+[main]
+    vardir = /var/lib/puppet
+    logdir = /var/log/puppet
+    rundir = /var/run/puppet
+    ssldir = /var/lib/puppet/ssl
+[agent]
+    server = <%=Setting.plugin_initr['puppetmaster']%>
+    masterport = <%=Setting.plugin_initr['puppetmaster_port']%>
+    classfile = /var/lib/puppet/state/classes.txt
+    pluginsync = true
+    report = true
+    certname = <%=@node.name%>
+FI
+
+puppet agent --test

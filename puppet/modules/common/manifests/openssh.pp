@@ -1,6 +1,6 @@
 class common::openssh {
 
-  package { $ssh:
+  package { $ssh_package:
     ensure => installed,
   }
 

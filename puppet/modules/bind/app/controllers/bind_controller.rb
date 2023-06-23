@@ -1,41 +1,39 @@
 class BindController < InitrController
-  unloadable
 
   menu_item :initr
-  before_filter :find_bind, :except => [:edit_zone,:destroy_zone]
-  before_filter :find_bind_zone, :only => [:edit_zone,:destroy_zone]
-  before_filter :authorize
+  before_action :find_bind, :except => [:edit_zone,:destroy_zone]
+  before_action :find_bind_zone, :only => [:edit_zone,:destroy_zone]
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
     @eligible_masters = eligible_masters
-    if request.post? or request.put?
+    if request.patch?
       params["bind"] ||= {}
       if @klass.update_attributes(params["bind"])
         flash[:notice]='Configuration saved'
-        redirect_to :action=>'configure'
-      else
-        render :action=>'configure'
       end
-    end
-    respond_to do |format|
-      format.html
-      format.csv do
-        export = FCSV.generate(:col_sep => l(:general_csv_separator)) do |csv|
-          csv << ["Name","Notes","Invoice Type","Client","Domain owner","Expire date","Active DNS"]
-          @klass.bind_zones.sort.each do |z|
-            csv << [
-              z.domain,
-              [z.info,(z.invoice.number rescue nil)].join(' '),
-              (z.invoice.class rescue nil),
-              (z.invoice.client.name rescue nil),
-              z.registrant,
-              z.expires_on,
-              z.active_ns
-            ]
+    else
+      respond_to do |format|
+        format.html
+        format.csv do
+          export = CSV.generate(
+            :headers => ["Name","Notes","Invoice Type","Client","Domain owner","Expire date","Active DNS"],
+            :write_headers => true ) do |csv|
+            @klass.bind_zones.sort.each do |z|
+              csv << [
+                z.domain,
+                [z.info,(z.invoice.number rescue nil)].join(' '),
+                (z.invoice.class rescue nil),
+                (z.invoice.client.name rescue nil),
+                z.registrant,
+                z.expires_on,
+                z.active_ns
+              ]
+            end
           end
+          send_data(export, :type => 'text/csv; header=present', :filename => 'domains.csv')
         end
-        send_data(export, :type => 'text/csv; header=present', :filename => 'domains.csv')
       end
     end
   end
@@ -44,7 +42,7 @@ class BindController < InitrController
     @bind_zone = Initr::BindZone.new(params[:bind_zone])
     @bind_zone.bind = @klass
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
-    if request.post? or request.put?
+    if request.post?
       if @bind_zone.save
         flash[:notice]="Bind zone saved"
         redirect_to :action => 'configure', :id => @klass, :anchor => @bind_zone.domain
@@ -56,7 +54,7 @@ class BindController < InitrController
 
   def edit_zone
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
-    if request.post? or request.put?
+    if request.patch?
       if @bind_zone.update_attributes(params[:bind_zone])
         @bind_zone.query_registry
         @bind_zone.update_active_ns
@@ -119,7 +117,7 @@ class BindController < InitrController
     user_projects = Project.all if User.current.login == "admin"
     Initr::Bind.all.collect { |bind|
       next if @klass.masters.include?(bind) or bind == @klass
-      bind if user_projects.include? bind.node.project
+      bind if bind.node and user_projects.include?(bind.node.project)
     }.compact
   end
 

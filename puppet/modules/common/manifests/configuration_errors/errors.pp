@@ -1,4 +1,4 @@
-define configuration_errors::errors() {
+define common::configuration_errors::errors() {
 
   # log at server side
   err("$fqdn: $name")

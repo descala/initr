@@ -1,0 +1,6 @@
+<% if User.current.allowed_to?({:controller=>'ssh_station',:action=>'my_ssh_config'},nil,{:global=>true}) and @project -%>
+  <h3>SSH config</h3>
+  <ul>
+    <li><%=link_to "My .ssh/config", {:controller => 'ssh_station', :action => 'my_ssh_config', :id => @project} %></li>
+  </ul>
+<% end-%>

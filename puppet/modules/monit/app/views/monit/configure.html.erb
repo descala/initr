@@ -1,0 +1,17 @@
+<%= klass_menu "Monit configuration" %>
+
+<%= labelled_form_for(:monit, @klass, :url => {:action => 'configure'}, :html=>{:class=>'tabular'} ) do |f| -%>
+
+  <%= error_messages_for 'klass' %>
+
+  <% ["apache","crond","mysql","postfix","puppet","samba","sshd","syslogd"].each do |service| -%>
+    <p><%=f.label_for_field("monit_monit_checks_",:label=>service)%><%= check_box_tag("monit[monit_checks][]", service, @klass.monit_checks.include?(service)) %><p/>
+  <% end -%>
+
+  <p><%= submit_tag("Save")%></p>
+
+<% end -%>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

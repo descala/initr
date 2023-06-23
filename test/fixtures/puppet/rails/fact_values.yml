@@ -1,0 +1,4 @@
+host_001_fqdn:
+  host: host_001
+  fact_name: host_001_fqdn
+  value: google-public-dns-a.google.com

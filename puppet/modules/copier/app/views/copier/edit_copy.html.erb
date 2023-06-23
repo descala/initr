@@ -1,0 +1,9 @@
+<h2>Edit copy for <%=@node.fqdn%></h2>
+<%= labelled_form_for(:copy, @copy, :url => {:action => 'edit_copy'}, :html => { :method => 'post',:class=>'tabular'}) do |f|%>
+  <p><%= error_messages_for 'copy' %></p>
+
+  <%= render :partial => 'copy', :locals=>{:f=>f} %>
+
+  <p><%= link_to("Cancel", { :action => 'configure', :id => @klass }) %></p>
+  <p><%= submit_tag "Save" %></p>
+<% end -%>

@@ -17,13 +17,13 @@ u_sure() {
 }
 
 case "$DOMAIN" in
-<% webserver_domains.each do |k,v| -%>
+<% @webserver_domains.each do |k,v| -%>
   <%= v['name'] %>)
     SERVER=<%= v['web_backups_server'] %>
     u_sure
-    <%= "rsync --delete -rlt -v -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/backups/ /var/www/$DOMAIN/restores/" %>
+    <%= "rsync --delete -rlt -v -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_rsa_key' $DOMAIN@$SERVER:incremental/backups/ /var/www/$DOMAIN/restores/" %>
     chown -R "<%= v['user_ftp'] %>":"<%= v['user_ftp'] %>" /var/www/$DOMAIN/htdocs
-    <%= "rsync --delete -rlt -v --backup --backup-dir=/var/www/$DOMAIN/backups/old_htdocs -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_dsa_key' $DOMAIN@$SERVER:incremental/htdocs/ /var/www/$DOMAIN/htdocs/" %>
+    <%= "rsync --delete -rlt -v --backup --backup-dir=/var/www/$DOMAIN/backups/old_htdocs -e 'ssh -p #{v['web_backups_server_port']||22} -i /etc/ssh/ssh_host_rsa_key' $DOMAIN@$SERVER:incremental/htdocs/ /var/www/$DOMAIN/htdocs/" %>
     <%= "chown -R #{v['user_ftp']}. /var/www/$DOMAIN/htdocs/" %>
 <% if v['database'] != "" -%>
     echo -e '\n--\nUse this command if you also want to restore the database:'

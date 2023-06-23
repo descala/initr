@@ -1,0 +1,6 @@
+---
+node_001:
+  id: 1
+  type: Initr::NodeInstance
+  name: node_001
+  project_id: 2

@@ -4,3 +4,5 @@ ca:
   field_packages_from_wheezy: "Paquets del repositori de Wheezy (separats per comes)"
   field_packages_from_jessie: "Paquets del repositori de Jessie (separats per comes)"
   field_packages_from_stretch: "Paquets del repositori de Stretch (separats per comes)"
+  field_packages_from_buster: "Paquets del repositori de Buster (separats per comes)"
+  field_packages_from_bullseye: "Paquets del repositori de Bullseye (separats per comes)"

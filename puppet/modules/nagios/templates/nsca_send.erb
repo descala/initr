@@ -3,16 +3,16 @@
 # Puppet Managed #
 ##################
 #
-# send_nsca from this host '<%= fqdn %>'
+# send_nsca from this host '<%= @fqdn %>'
 # to the correct SERVER
 #
 # usage:
 #  nsca_send <svc_description>[tab]<return_code>[tab]<plugin_output>[newline]
 #  nsca_send <return_code>[tab]<plugin_output>[newline]
 
-SEND_NSCA=<%=send_nsca%>
-CONF=<%=send_nsca_cfg%>
-SERVER=<%=nagios_server%>
+SEND_NSCA=<%=@send_nsca%>
+CONF=<%=@send_nsca_cfg%>
+SERVER=<%=@nagios_server%>
 PORT=5667
 
-echo -e "<%= fqdn -%>\t$1" | $SEND_NSCA -H $SERVER -p $PORT -c $CONF
+echo -e "<%= @fqdn -%>\t$1" | $SEND_NSCA -H $SERVER -p $PORT -c $CONF

@@ -11,7 +11,7 @@ Alias /phpmyadmin /usr/share/phpmyadmin
         Options Indexes FollowSymLinks
         DirectoryIndex index.php
 
-        <% if accessible_phpmyadmin -%>
+        <% if @accessible_phpmyadmin -%>
           Order Deny,Allow
           Allow from all
         <% else -%>

@@ -1,0 +1,18 @@
+##################
+# Puppet managed #
+##################
+StrictHostKeyChecking yes
+GlobalKnownHostsFile /etc/ssh/ssh_known_hosts
+
+Host *
+    ControlPath ~/.ssh/master-%r@%h:%p
+    ControlMaster auto
+
+<% @ssh_info.sort {|node1,node2| node1[0] <=> node2[0] }.each do |node,port,key| -%>
+Host <%= node %>
+  HostName localhost
+  User ssh_station
+  Port <%= port %>
+  HostKeyAlias <%= node %>
+
+<% end -%>

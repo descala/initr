@@ -5,7 +5,6 @@ class Initr::Klass < ActiveRecord::Base
   # (see parameters method in Initr::Node class)
   class ConfigurationError < StandardError ; end
 
-  unloadable
 
   belongs_to :node, :class_name => "Initr::Node"
   has_one :project, :through => :node
@@ -146,7 +145,7 @@ class Initr::Klass < ActiveRecord::Base
   end
 
   def installed?
-    self.node.puppet_fact('puppet_classes','').split.include? self.puppetname
+    self.node.fact('puppet_classes','').split.include? self.puppetname
   end
 
   def active?

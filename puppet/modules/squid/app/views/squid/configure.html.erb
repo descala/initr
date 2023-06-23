@@ -1,0 +1,32 @@
+<%= klass_menu "Squid configuration" %>
+
+<%= form_for( @klass, :url => {:action => 'configure'}, :html => { "id" => "squid" } ) do |f| -%>
+
+  <%= error_messages_for 'klass' %>
+
+  <table>
+    <tr>
+      <td><%= f.label "squid_cache", "Cache size in MB" %></td>
+      <td><%= f.text_field "squid_cache" %></td>
+    </tr>
+    <tr>
+      <td valign="top"><%= f.label("squid_config", "squid.conf additional options") %></td>
+      <td><%= f.text_area("squid_config", :cols => 60, :rows => 15) %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <pre># Warning: if you remove all acls here,
+# nobody will be able to access internet through this proxy.
+http_access deny all
+        </pre>
+      </td>
+    </tr>
+  </table>
+  <p><%= submit_tag("Save")%></p>
+
+<% end -%>
+
+<hr />
+
+<p><%= link_to "Back", :controller => 'klass', :action => 'list', :id => @node %></p>

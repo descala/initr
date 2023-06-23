@@ -1,0 +1,39 @@
+##################
+# Puppet Managed #
+##################
+allow bind_v2
+include         /etc/ldap/schema/core.schema
+include         /etc/ldap/schema/cosine.schema
+include         /etc/ldap/schema/nis.schema
+include         /etc/ldap/schema/inetorgperson.schema
+include         /etc/ldap/schema/samba.schema
+pidfile         /var/run/slapd/slapd.pid
+argsfile        /var/run/slapd/slapd.args
+loglevel        none
+modulepath      /usr/lib/ldap
+moduleload      back_bdb
+sizelimit 500
+tool-threads 1
+backend         bdb
+database        bdb
+suffix          "dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc"
+rootdn          "cn=manager,dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc"
+rootpw          <%=scope.lookupvar('::ldappasswd')%>
+directory       "/var/lib/ldap"
+dbconfig set_cachesize 0 2097152 0
+dbconfig set_lk_max_objects 1500
+dbconfig set_lk_max_locks 1500
+dbconfig set_lk_max_lockers 1500
+index           objectClass eq
+index           sambaSID,gidNumber,uid,sambaSIDList,cn,displayName,memberUid,uniqueMember,uidNumber,sambaGroupType eq
+lastmod         on
+checkpoint      512 30
+access to attrs=userPassword,shadowLastChange
+        by dn="cn=manager,dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc" write
+        by anonymous auth
+        by self write
+        by * none
+access to dn.base="" by * read
+access to *
+        by dn="cn=manager,dc=<%=scope.lookupvar('::smbdomain')%>,dc=loc" write
+        by * read

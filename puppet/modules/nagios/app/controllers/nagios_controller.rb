@@ -1,22 +1,18 @@
 class NagiosController < InitrController
-  unloadable
 
   menu_item :initr
-  before_filter :find_nagios, :except => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
-  before_filter :find_nagios_check, :only => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
-  before_filter :authorize
+  before_action :find_nagios, :except => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
+  before_action :find_nagios_check, :only => [:edit_check, :update_check, :destroy_check, :before_destroy_check]
+  before_action :authorize
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
     @nagios_servers = Initr::NagiosServer.all.collect {|ns|
       ns if User.current.projects.include? ns.node.project or User.current.admin?
     }.compact
-    if request.post? or request.put?
+    if request.patch?
       if @klass.update_attributes(params[:nagios])
         flash[:notice] = 'Configuration successfully updated.'
-        redirect_to :action => 'configure'
-      else
-        render :action => 'configure'
       end
     end
   end

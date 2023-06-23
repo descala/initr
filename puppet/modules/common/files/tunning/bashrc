@@ -21,7 +21,8 @@ fi
 export HISTSIZE=9999
 
 # don't put duplicate lines in the history. See bash(1) for more options
-export HISTCONTROL=ignoredups
+# lines which begin with a space character are not saved in the history list
+export HISTCONTROL=ignoreboth
 
 # default editor vim
 export EDITOR=/usr/bin/vim
@@ -48,7 +49,18 @@ fi
 
 export FACTERLIB=/var/lib/puppet/lib/facter
 
-alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias myip='dig -4 +short myip.opendns.com @resolver1.opendns.com'
+
+# copia de seguretat de .bash_history
+if [ ! -e "/.bash_history.back" ]; then
+  cp ~/.bash_history ~/.bash_history.back
+elif [ "`wc -l ~/.bash_history | cut -d\" \" -f1`" -ge "`wc -l ~/.bash_history.back | cut -d\" \" -f1`" ]; then
+  cp ~/.bash_history ~/.bash_history.back
+else
+  echo "warning! .bash_history is bigger than .bash_history.back - skipping copy"
+  wc -l ~/.bash_history
+  wc -l ~/.bash_history.back
+fi
 
 # local stuff
 if [ -f ~/.bashrc_local ]; then

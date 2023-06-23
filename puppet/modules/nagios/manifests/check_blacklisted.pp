@@ -2,7 +2,7 @@ class nagios::check_blacklisted {
   include common::perl
   file {
     "$nagios_plugins_dir/check_bl":
-      mode => 755,
+      mode => "0755",
       source => "puppet:///modules/nagios/check_bl";
   }
   if $check_bl_ip {
