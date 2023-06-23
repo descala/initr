@@ -229,21 +229,7 @@ class NodeController < InitrController
     nodes = Project.all.collect {|p| p.node_instances }.flatten.compact
     nodes.each do |n|
       unless n.facts["services_list"].blank?
-        services = JSON.parse n.facts["services_list"]
-        services.each do |s|
-          unless s.empty?
-            invoice_template = InvoiceTemplate.includes(:invoice_lines).references(:invoice_lines)
-              .where('invoices.date < ?', 5.year.from_now)
-              .where("invoices.extra_info like ? or invoice_lines.description like ? or invoice_lines.notes like ?", *["%#{s['service_id']}%"]*3).first
-
-            if invoice_template.present?
-              s['client_name'] = invoice_template.client&.name
-              # s['next_invoice_date_at'] = invoice_template.date
-              # s['frequency'] = invoice_template.frequency
-            end
-            @services << s
-          end
-        end
+        @services = JSON.parse n.facts["services_list"]
       end
     end
 

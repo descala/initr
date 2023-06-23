@@ -16,35 +16,6 @@ class Initr::BindZone < ActiveRecord::Base
   # Uses package "apt-get install bind9utils"
   validate :named_checkzone
 
-  if Initr.haltr?
-    belongs_to :invoice_line
-    has_one :invoice, :through => :invoice_line
-    before_save :link_to_invoice
-
-    def search_invoice_lines(invoice_class='InvoiceTemplate')
-      like = "%#{domain}%"
-      project.invoice_lines.where("invoices.type = ? and invoice_lines.description like ? or invoice_lines.notes like ?",invoice_class,like,like).order('date')
-    end
-
-    def search_invoices
-      like = "%#{domain}%"
-      project.invoices.where("extra_info like ?",like).order('date')
-    end
-
-    # Search a matching invoice_line in haltr templates
-    def link_to_invoice
-      if Initr.haltr? and project
-        self.invoice_line = search_invoice_lines('InvoiceTemplate').last
-        unless invoice_line
-          self.invoice_line = search_invoice_lines('IssuedInvoice').last
-        end
-        unless invoice_line
-          self.invoice_line = search_invoices.last.invoice_lines.first rescue nil
-        end
-      end
-    end
-  end
-
   after_initialize do
     self.ttl ||= "300"
   end

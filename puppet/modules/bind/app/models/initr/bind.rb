@@ -79,16 +79,6 @@ class Initr::Bind < Initr::Klass
     end
   end
 
-  def link_to_invoices
-    num = 0
-    bind_zones.each do |z|
-      z.link_to_invoice
-      num = num + 1 if z.changed?
-      z.save
-    end
-    return num
-  end
-
   def nicline_client
     @nicline_client ||= Savon.client(wsdl: "https://webservice.nicline.com/WebServices/ws_apinl.php?wsdl", log: false)
   end

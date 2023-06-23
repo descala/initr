@@ -18,14 +18,11 @@ class BindController < InitrController
         format.html
         format.csv do
           export = CSV.generate(
-            :headers => ["Name","Notes","Invoice Type","Client","Domain owner","Expire date","Active DNS"],
+            :headers => ["Name","Domain owner","Expire date","Active DNS"],
             :write_headers => true ) do |csv|
             @klass.bind_zones.sort.each do |z|
               csv << [
                 z.domain,
-                [z.info,(z.invoice.number rescue nil)].join(' '),
-                (z.invoice.class rescue nil),
-                (z.invoice.client.name rescue nil),
                 z.registrant,
                 z.expires_on,
                 z.active_ns
@@ -101,12 +98,6 @@ class BindController < InitrController
   def query_registry
     @klass.query_registry
     flash[:notice]="Registry information has been updated"
-    redirect_to :action => 'configure', :id => @klass
-  end
-
-  def link_to_invoices
-    num = @klass.link_to_invoices
-    flash[:notice]="#{num} invoice links have been updated"
     redirect_to :action => 'configure', :id => @klass
   end
 

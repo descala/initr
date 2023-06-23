@@ -2,12 +2,6 @@
 
   <p><%= error_messages_for 'bind_zone' %></p>
 
-  <% if Initr.haltr? -%>
-    <p>
-    <%= link_to @bind_zone.invoice_line, invoice_path(@bind_zone.invoice_line.invoice) if @bind_zone.invoice_line %>
-    </p>
-  <% end -%>
-
   <%= render :partial => 'bind_zone', :locals => {:f => f} %>
 
   <%= submit_tag("Save")%><br />
