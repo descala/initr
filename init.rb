@@ -1,17 +1,63 @@
 require 'redmine'
+require 'byebug'
 
 Rails.logger.info 'Starting initr plugin for Redmine'
 
-require 'initr'
-require 'initr/plugin'
-require 'initr/klass_definition'
-require 'access_control_patch'
+require File.expand_path('plugins/initr/lib/initr')
+require File.expand_path('plugins/initr/lib/initr/plugin')
+require File.expand_path('plugins/initr/lib/initr/klass_definition')
+require File.expand_path('plugins/initr/lib/redmine')
 
-require 'project_patch'
-require 'user_patch'
-require 'redmine_plugin_patch'
+require File.expand_path('plugins/initr/lib/project_initr_patch')
+require File.expand_path('plugins/initr/lib/user_initr_patch')
+require File.expand_path('plugins/initr/lib/redmine_plugin_patch')
 
-Rails.configuration.to_prepare do
+# puppet
+
+require File.expand_path('plugins/initr/puppet/modules/base/app/models/initr/base')
+require File.expand_path('plugins/initr/puppet/modules/bind/app/models/initr/bind')
+require File.expand_path('plugins/initr/puppet/modules/bind/app/models/initr/bind_zone')
+require File.expand_path('plugins/initr/puppet/modules/borg_backup/app/models/initr/borg_backup')
+require File.expand_path('plugins/initr/puppet/modules/copier/app/models/initr/copier')
+  require File.expand_path('plugins/initr/puppet/modules/copier/app/models/initr/copy')
+require File.expand_path('plugins/initr/puppet/modules/custom_klasses/app/models/initr/custom_klass')
+  require File.expand_path('plugins/initr/puppet/modules/custom_klasses/app/models/initr/custom_klass_conf')
+require File.expand_path('plugins/initr/puppet/modules/dyndns/app/models/initr/dyndns')
+require File.expand_path('plugins/initr/puppet/modules/fail2ban/app/models/initr/fail2ban')
+require File.expand_path('plugins/initr/puppet/modules/ftp_server/app/models/initr/ftp_server')
+  require File.expand_path('plugins/initr/puppet/modules/ftp_server/app/models/initr/ftp_user')
+require File.expand_path('plugins/initr/puppet/modules/link_klass/app/models/initr/link_klass')
+require File.expand_path('plugins/initr/puppet/modules/mailserver/app/models/initr_mailserver')
+require File.expand_path('plugins/initr/puppet/modules/monit/app/models/initr/monit')
+require File.expand_path('plugins/initr/puppet/modules/munin/app/models/initr/munin')
+  require File.expand_path('plugins/initr/puppet/modules/munin/app/models/initr/munin_server')
+require File.expand_path('plugins/initr/puppet/modules/nagios/app/models/initr/nagios')
+  require File.expand_path('plugins/initr/puppet/modules/nagios/app/models/initr/nagios_check')
+  require File.expand_path('plugins/initr/puppet/modules/nagios/app/models/initr/nagios_server')
+require File.expand_path('plugins/initr/puppet/modules/package_manager/app/models/initr/package_manager')
+require File.expand_path('plugins/initr/puppet/modules/rsyncd/app/models/initr/rsyncd')
+require File.expand_path('plugins/initr/puppet/modules/samba/app/models/initr/samba')
+require File.expand_path('plugins/initr/puppet/modules/smart/app/models/initr/smart')
+require File.expand_path('plugins/initr/puppet/modules/squid/app/models/initr/squid')
+require File.expand_path('plugins/initr/puppet/modules/ssh_station/app/models/initr/ssh_station')
+  require File.expand_path('plugins/initr/puppet/modules/ssh_station/app/models/initr/ssh_station_port')
+  require File.expand_path('plugins/initr/puppet/modules/ssh_station/app/models/initr/ssh_station_server')
+require File.expand_path('plugins/initr/puppet/modules/webserver1/app/models/initr/webserver1')
+  require File.expand_path('plugins/initr/puppet/modules/webserver1/app/models/initr/web_backups_server')
+  require File.expand_path('plugins/initr/puppet/modules/webserver1/app/models/initr/webserver1_domain')
+
+require File.expand_path('plugins/initr/puppet/modules/munin/app/controllers/munin_controller')
+require File.expand_path('plugins/initr/puppet/modules/ssh_station/app/controllers/ssh_station_controller')
+
+
+
+# loader = Zeitwerk::Loader.new
+# loader.push_dir('plugins/initr/puppet/modules')
+# loader.setup # ready!
+
+
+
+Rails.configuration.after_initialize do
   Project.send(:include, ProjectInitrPatch)
   User.send(:include, UserInitrPatch)
   Redmine::Plugin.send(:include,RedminePluginPatch)

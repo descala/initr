@@ -21,7 +21,7 @@ class Initr::NodeInstance < Initr::Node
   end
 
   def update_fact_cache
-    update_attributes(
+    update(
       fqdn: fact('fqdn'),
       lsbdistid: fact('lsbdistid'),
       lsbdistrelease: fact('lsbdistrelease'),

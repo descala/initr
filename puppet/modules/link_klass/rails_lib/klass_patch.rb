@@ -1,5 +1,3 @@
-require_dependency 'initr/klass'
-
 # Patches Initr's Klasss dynamically.
 module KlassPatch
   def self.included(base) # :nodoc:
