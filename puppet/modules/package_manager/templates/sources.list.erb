@@ -16,11 +16,9 @@ deb http://archive.debian.org/debian-archive/debian wheezy main contrib non-free
 deb http://archive.debian.org/debian-security wheezy/updates main contrib non-free
 
 <% elsif scope.lookupvar("::lsbdistcodename") == "jessie" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "8") -%>
-# debian jessie
-deb http://http.debian.net/debian jessie main contrib non-free
-
-# jessie-updates ja no esta als repos..
-#deb http://http.debian.net/debian jessie-updates main
+# debian 8 jessie
+deb http://archive.debian.org/debian-archive/debian jessie main contrib non-free
+deb http://archive.debian.org/debian-security jessie/updates main contrib non-free
 
 <% elsif scope.lookupvar("::lsbdistcodename") == "stretch" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "9") -%>
 # debian 9 stretch
