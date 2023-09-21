@@ -229,11 +229,17 @@ class NodeController < InitrController
     nodes = Project.all.collect {|p| p.node_instances }.flatten.compact
     nodes.each do |n|
       unless n.facts["services_list"].blank?
-        @services = JSON.parse n.facts["services_list"]
+        services = JSON.parse n.facts["services_list"]
+        services.each do |s|
+          unless s.empty?
+            @services << s
+          end
+        end
       end
     end
 
-    @services.sort_by! {|h| h["service_id"]+h["service"]}
+    @services.sort_by! {|h| h["service_id"]}
+    @services.sort_by! {|h| h["service"]}
 
     respond_to do |format|
       format.html {render "get_nodes"}
