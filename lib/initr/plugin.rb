@@ -33,37 +33,15 @@ module Initr #:nodoc:
       klass_names
     end
 
-    def self.update_klass_names
-      klass_names.each do |kn|
-        updated = Initr::KlassDefinition.find_by_name(kn.name)
-        updated = Initr::KlassDefinition.new(kn.name) if updated.nil?
-        updated.description = kn.description
-      end
-    end
-
     def add_permission(name, actions)
       Redmine::AccessControl.permission(name).add_actions(actions) unless Redmine::AccessControl.permission(name).nil?
     end
 
-    # override lib_path to rename lib to rails_lib,
-    # since lib is used by puppet on pluginsync
-    # http://docs.puppetlabs.com/guides/plugins_in_modules.html#module_structure_for_025x
     def self.load
-      Dir.glob(File.join(self.directory, '*')).sort.each do |directory|
-        if File.directory?(directory)
-          lib = File.join(directory, "rails_lib")
-          if File.directory?(lib)
-            $:.unshift lib
-            ActiveSupport::Dependencies.autoload_paths += [lib]
-          end
-          initializer = File.join(directory, "init.rb")
-          if File.file?(initializer)
-            require initializer
-          end
-        end
-      end
+      puts "**********"
+      puts "instead of loading sub-plugins, symlink them to the puppet modules directory:"
+      puts "ln -s initr/puppet/modules/* ."
+      puts "**********"
     end
-
-
   end
 end

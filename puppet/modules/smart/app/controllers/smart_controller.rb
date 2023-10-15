@@ -11,7 +11,7 @@ class SmartController < InitrController
         params["smart"]["drives"] = [params["smart"]["drives"]["drive"],params["smart"]["drives"]["mode"]]
       end
       params["smart"]["drives"] ||= [[],[]] if params["smart"]
-      if @klass.update_attributes params["smart"]
+      if @klass.update params["smart"]
         flash[:notice]='Configuration saved'
         redirect_to :controller => 'klass', :action => 'list', :id => @node
       else

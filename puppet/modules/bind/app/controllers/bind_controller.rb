@@ -10,7 +10,7 @@ class BindController < InitrController
     @eligible_masters = eligible_masters
     if request.patch?
       params["bind"] ||= {}
-      if @klass.update_attributes(params["bind"])
+      if @klass.update(params["bind"])
         flash[:notice]='Configuration saved'
       end
     else
@@ -52,7 +52,7 @@ class BindController < InitrController
   def edit_zone
     @zone_header = render_to_string(:partial=>'zone_header',:locals=>{:zone=>@bind_zone})
     if request.patch?
-      if @bind_zone.update_attributes(params[:bind_zone])
+      if @bind_zone.update(params[:bind_zone])
         @bind_zone.query_registry
         @bind_zone.update_active_ns
         @bind_zone.save

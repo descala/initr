@@ -10,7 +10,7 @@ class SshStationController < InitrController
     @html_title=[@node.fqdn, @klass.name]
     @ssh_station_servers = ssh_station_servers_for_current_user
     if request.post?
-      if @klass.update_attributes(params[:initr_ssh_station])
+      if @klass.update(params[:initr_ssh_station])
         flash[:notice] = 'Configuration successfully updated.'
         redirect_to :action => 'configure'
       else
@@ -34,7 +34,7 @@ class SshStationController < InitrController
 
   def edit_port
     if request.patch?
-      if @port.update_attributes(params[:initr_ssh_station_port])
+      if @port.update(params[:initr_ssh_station_port])
         flash[:notice] = 'Port successfully updated.'
         redirect_to :action => 'configure', :id => @klass
       else

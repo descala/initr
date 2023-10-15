@@ -189,6 +189,23 @@ class Initr::Klass < ActiveRecord::Base
     end
   end
 
+  def check_if_linked
+    Initr::LinkKlass.all.each do |ck|
+      if ck.copied_klass_id == self.id.to_s
+        errors.add :base, "Cannot delete klass, linked on node #{ck.node.fqdn}"
+        return false
+      end
+    end
+  end
+
+  def linked_klasses
+    lks = []
+    Initr::LinkKlass.all.each do |lk|
+      lks << lk if lk.copied_klass_id == self.id.to_s
+    end
+    lks
+  end
+
   private
 
   def self.adds_klass(*args)

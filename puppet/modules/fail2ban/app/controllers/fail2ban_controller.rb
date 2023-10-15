@@ -10,7 +10,7 @@ class Fail2banController < InitrController
     if request.patch?
       params["fail2ban"] ||= {}
       params["fail2ban"]["jails"] ||= {}
-      if @klass.update_attributes(params["fail2ban"])
+      if @klass.update(params["fail2ban"])
         flash[:notice]='Configuration saved'
       end
     end

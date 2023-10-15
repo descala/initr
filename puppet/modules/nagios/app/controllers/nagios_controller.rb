@@ -11,7 +11,7 @@ class NagiosController < InitrController
       ns if User.current.projects.include? ns.node.project or User.current.admin?
     }.compact
     if request.patch?
-      if @klass.update_attributes(params[:nagios])
+      if @klass.update(params[:nagios])
         flash[:notice] = 'Configuration successfully updated.'
       end
     end
@@ -34,7 +34,7 @@ class NagiosController < InitrController
   end
 
   def update_check
-    if @nagios_check.update_attributes(params[:nagios_check])
+    if @nagios_check.update(params[:nagios_check])
       flash[:notice] = "Nagios check successfully updated."
       redirect_to :action => 'configure', :id => @klass
     else

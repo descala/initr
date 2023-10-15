@@ -23,7 +23,7 @@ class MuninController < InitrController
     @html_title=[@node.fqdn, @klass.name]
     @munin_servers = munin_servers_for_current_user
     if request.patch?
-      if @klass.update_attributes params[:munin]
+      if @klass.update params[:munin]
         redirect_to :controller => "klass", :action => "list", :id => @node
       else
         render :action => "configure", :id => @klass

@@ -27,7 +27,7 @@ class CustomKlassController < InitrController
   def configure
     @html_title=[@node.fqdn, @klass.name]
     if request.patch?
-      if @klass.update_attributes(params[:custom_klass])
+      if @klass.update(params[:custom_klass])
         flash[:notice]='Configuration saved'
       end
     end

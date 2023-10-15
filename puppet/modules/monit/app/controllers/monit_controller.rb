@@ -9,7 +9,7 @@ class MonitController < InitrController
     if request.patch?
       params["monit"] ||= {}
       params["monit"]["monit_checks"] ||= []
-      if @klass.update_attributes(params["monit"])
+      if @klass.update(params["monit"])
         flash[:notice]='Configuration saved'
         redirect_to :controller=>'klass', :action=>'list', :id=>@node
       else

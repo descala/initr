@@ -9,7 +9,7 @@ class BorgBackupController < InitrController
     @html_title=[@node.fqdn, @klass.name]
     if request.patch?
       params['borg_backup'] ||= {}
-      if @klass.update_attributes(params['borg_backup'])
+      if @klass.update(params['borg_backup'])
         flash.now[:notice] = 'Configuration saved'
       end
     else

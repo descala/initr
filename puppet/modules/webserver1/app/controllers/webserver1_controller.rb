@@ -25,7 +25,7 @@ class Webserver1Controller < InitrController
     @bind = Initr::Bind.for_node @node
     @bind_zone = @bind.bind_zones.where("domain=?",@domain.name).first if @bind
     if request.patch?
-      if @domain.update_attributes(params["webserver1_domain"])
+      if @domain.update(params["webserver1_domain"])
         redirect_to :action => 'configure', :id => @klass
       else
         render :action => 'edit_domain'

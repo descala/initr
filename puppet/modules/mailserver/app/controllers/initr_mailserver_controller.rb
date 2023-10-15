@@ -7,7 +7,7 @@ class InitrMailserverController < InitrController
   def configure
     @html_title=[@node.fqdn, @klass.name]
     if request.patch?
-      if @klass.update_attributes(params[:initr_mailserver])
+      if @klass.update(params[:initr_mailserver])
         flash[:notice] = "Configuration successfully updated."
       end
     end

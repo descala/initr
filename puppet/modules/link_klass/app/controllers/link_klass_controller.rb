@@ -29,7 +29,7 @@ class LinkKlassController < InitrController
     @html_title=[@node.fqdn, "#{@klass.name} (link klass)"]
     if request.patch?
       params["link_klass"] ||= {}
-      if @klass.update_attributes(params["link_klass"])
+      if @klass.update(params["link_klass"])
         flash[:notice]='Configuration saved'
       end
     end

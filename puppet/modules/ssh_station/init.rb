@@ -27,5 +27,3 @@ begin
 rescue
   # redmine database has not been migrated yet
 end
-
-require File.join(File.dirname(__FILE__), 'rails_lib/initr/public_key')

@@ -1,7 +1,6 @@
 class Initr::Webserver1 < Initr::Klass
   has_many :webserver1_domains, :dependent => :destroy, :class_name => "Initr::Webserver1Domain"
   belongs_to :node, :class_name => 'Initr::Node'
-  validates_confirmation_of :password, :allow_nil => true
   validates_format_of :webserver_default_domain, :with => /http(|s):\/\/(.*)/, :on => :update 
   self.accessors_for(%w(accessible_phpmyadmin blowfish_secret manage_php
                      allow_anonymous_ftp manage_default_domain
@@ -16,10 +15,6 @@ class Initr::Webserver1 < Initr::Klass
     config["allow_writeable_chroot"]||= "0"
     config["manage_default_domain"] ||= "1"
   }
-
-  before_validation do |ws|
-    (ws.admin_password = password unless password.blank? or password != password_confirmation) rescue nil
-  end
 
   def name
     "webserver1"

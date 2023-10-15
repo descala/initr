@@ -25,7 +25,7 @@ class CopierController < InitrController
 
   def edit_copy
     if request.post?
-      if @copy.update_attributes(params[:copy])
+      if @copy.update(params[:copy])
         flash[:notice] = 'Configuration successfully updated.'
         redirect_to :action => 'configure', :id => @klass
       else
