@@ -69,7 +69,7 @@ end
 def find_email_in_docker(service)
   # nomes funciona en el ruug
 
-  items = `docker exec mailcowdockerized_dovecot-mailcow_1 ls /var/vmail`.split("\n")
+  items = `docker exec mailcowdockerized-dovecot-mailcow-1 ls /var/vmail`.split("\n")
 
   items.each do |item|
     next unless item =~ /^([a-zA-Z0-9-]{1,61}\.)?[a-zA-Z0-9-]{1,61}\.[a-zA-Z]{2,}$/ # nomes noms tipus abcd0.abcd0.abcd
@@ -195,10 +195,10 @@ find_domain_names()
 
 # hosting
 if @config['services'] == 'hosting'
-  find_webs('/etc/apache2/sites-enabled', 'apache.hosting.standard')
-  find_webs('/etc/nginx/sites-enabled', 'nginx.hosting.standard')
-  find_email('/var/vmail', 'mail.versio1')
-  find_email_in_docker('mail.versio2')
+  find_webs('/etc/apache2/sites-enabled', 'hosting.standard')
+  find_webs('/etc/nginx/sites-enabled', 'hosting.standard')
+  find_email('/var/vmail', 'mail.standard')
+  find_email_in_docker('mail.standard')
 end
 
 # ingent network
