@@ -1,7 +1,9 @@
 #!/bin/sh
 
 # check if node has been configured
-if grep -sq "^Service\[ssh_station\]:$" /var/lib/puppet/state/state.yaml; then
+# /home/ssh_station/.ssh/id_rsa has to exist
+
+if [ -f /home/ssh_station/.ssh/id_rsa ]; then
 
   sleep 5
   logger -i $$ -t ssh_station -- "Connecting to <%= @ssh_station_server %> (using <%=@ssh_station_server_ip%>)"
