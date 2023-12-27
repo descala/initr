@@ -107,7 +107,7 @@ def find_domain_names
     begin
       url = 'https://api.gandi.net/v5/domain/domains'
       params = {}
-      headers = { :Authorization => @config['api-key-gandi'].to_s }
+      headers = { authorization: "Bearer #{@config['api-key-gandi']}" }
 
       response = RestClient.get url, headers
       data = JSON.parse response
