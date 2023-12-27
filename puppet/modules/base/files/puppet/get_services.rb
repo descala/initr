@@ -102,7 +102,6 @@ def find_domain_names
 
   if @config['api-key-gandi'] != '' and !@config['api-key-gandi'].nil?
 
-    @config['api-key-gandi'] = "Apikey " + @config['api-key-gandi']
     require 'rest-client'
     begin
       url = 'https://api.gandi.net/v5/domain/domains'
@@ -115,8 +114,8 @@ def find_domain_names
       data.each do |d|
         @found_services << { 'service' => 'service.' + d['tld'], 'service_id' => d['fqdn'], 'host' => @host }
       end
-    rescue StandardError
-      # warn 'Error al accedir API gandi'
+    rescue StandardError => e
+      warn "Error al accedir API gandi: #{e}"
     end
   end
 
