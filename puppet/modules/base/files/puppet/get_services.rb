@@ -147,7 +147,7 @@ def find_servers()
     require 'rest-client'
     begin
       api_keys = @config['api-keys-hetzner'].split("%")
-      url = 'https://api.hetzner.cloud/v1/servers'
+      url = 'https://api.hetzner.cloud/v1/servers?per_page=50'
 
       api_keys.each do |k|
         params = {}
