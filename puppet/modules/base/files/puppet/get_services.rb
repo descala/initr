@@ -46,7 +46,8 @@ def find_webs(path, service)
       ip = lines[1]
     end
 
-    if @my_ips.include?(ip)
+    # IP nostre o d'un WAF
+    if @my_ips.include?(ip) || `host #{ip}` =~ /sucuri.net/
       @found_services << { 'service' => service, 'service_id' => web, 'host' => @host }
     else
       @outdated_webs << { 'service_id' => web, 'ip' => ip }
