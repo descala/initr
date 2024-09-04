@@ -238,6 +238,8 @@ class NodeController < InitrController
       end
     end
 
+    @services = @services.select { |hash| hash["service_id"].include?(params[:has_text]) } if params[:has_text].present?
+
     @services.sort_by! {|h| h["service_id"]}
     @services.sort_by! {|h| h["service"]}
 
