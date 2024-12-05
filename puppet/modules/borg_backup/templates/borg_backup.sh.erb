@@ -99,9 +99,11 @@ echo "Prune files ..."
 # archives of THIS machine. --prefix `hostname`- is very important to
 # limit prune's operation to this machine's archives and not apply to
 # other machine's archives also.
+#
+# Warning: "--prefix" has been deprecated. Use "--glob-archives 'yourprefix*'" (-a) instead.
 
 exec_copy_stderr borg prune -v $REPOSITORY \
-    --prefix {hostname} \
+    --glob-archives "{hostname}-*" \
     --keep-daily=<%=@keep_daily%> \
     --keep-weekly=<%=@keep_weekly%> \
     --keep-monthly=<%=@keep_monthly%> \
