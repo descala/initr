@@ -3,6 +3,10 @@
 # Fa un dump de totes les bases de dades a /backup/mysqldumps
 # crea un fitxer per cada base de dades
 
+if [ -f /etc/skip_mysqldump_de_tot ]; then
+    exit 0
+fi
+
 if command -v mysql &> /dev/null
 then
   mkdir -p /backup/mysqldumps

@@ -3,3 +3,4 @@ server_info.yml
 puppet/modules/b2bnet
 puppet/modules/ingent_common
 puppet/modules/ingent_reports
+.aider*
