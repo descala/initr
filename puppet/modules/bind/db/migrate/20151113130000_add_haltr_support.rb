@@ -1,4 +1,4 @@
-class AddHaltrSupport < ActiveRecord::Migration
+class AddHaltrSupport < ActiveRecord::Migration[5.2]
 
   def change
     add_column :bind_zones, :info, :text

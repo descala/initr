@@ -25,7 +25,12 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def parameters
-    {"zone"=>zone,"ttl"=>ttl,"serial"=>serial}
+    {
+      zone: zone,
+      dnssec: dnssec,
+      ttl: ttl,
+      serial: serial
+    }
   end
 
   def domain_idn

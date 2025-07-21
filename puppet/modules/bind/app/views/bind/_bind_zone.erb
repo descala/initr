@@ -1,5 +1,6 @@
 <p><%= f.text_field "domain" %></p>
 <p><%= f.text_field "ttl" %></p>
+<p><%= f.check_box "dnssec" %> <%= f.label "dnssec" %></p>
 <p><%= f.label_for_field(:zone_header) %><%= text_area_tag "zone_header", @zone_header, :cols=>90, :rows=>5, :readonly=>true %></p>
 <p>
 <%= f.text_area "zone", :cols=>90, :rows=>15 %>

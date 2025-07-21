@@ -1,4 +1,4 @@
-define bind::zone($zone,$ttl,$serial) {
+define bind::zone($zone,$ttl,$serial,$dnssec=undef) {
 
   file {
     "$bind::var_dir/puppet_zones/$name.zone":

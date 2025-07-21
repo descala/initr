@@ -1,4 +1,4 @@
-class CreateBindZonesTable < ActiveRecord::Migration
+class CreateBindZonesTable < ActiveRecord::Migration[5.2]
 
   def self.up
     create_table :bind_zones do |t|
@@ -7,6 +7,8 @@ class CreateBindZonesTable < ActiveRecord::Migration
       t.integer :bind_id
       t.timestamps
     end
+  rescue
+    nil
   end
 
   def self.down
