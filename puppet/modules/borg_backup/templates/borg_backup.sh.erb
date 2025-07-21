@@ -111,6 +111,12 @@ exec_copy_stderr borg prune -v $REPOSITORY \
 
 retval=$?
 
+# Borg exit codes: 0=success, 1=warning, 2+=error
+if [ $retval -eq 1 ]; then
+  echo "Backup completed with warnings (files changed during backup)"
+  retval=0  # Report as success to Nagios
+fi
+
 # print any errors to stderr
 if [ $retval -ne 0 ]; then
   (>&4 echo "[$retval] ERROR borg prune: $ERROR")
