@@ -93,10 +93,10 @@ def find_domain_names
     data = data.split("\n")
 
     data.each do |d|
-      next unless d.split("\t")[0] != 'Dominio'
+      next unless d.split(",")[0] != 'Dominio'
 
-      service_id = d.split("\t")[0]
-      service = 'service.' + d.split("\t")[0].split('.')[1]
+      service_id = d.split(",")[0]
+      service = 'service.' + d.split(",")[0].split('.')[1]
       @found_services << { 'service' => service, 'service_id' => service_id, 'host' => @host }
     end
   end
