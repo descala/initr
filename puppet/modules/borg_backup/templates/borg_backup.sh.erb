@@ -90,7 +90,11 @@ if [ $retval -ne 0 ]; then
 fi
 
 <% if @puppet_classes =~ /nagios::nsca_node/ -%>
-nagios_notify $retval "$ERROR"
+if [ $retval -eq 0 ]; then
+  nagios_notify $retval "Backup completed successfully"
+else
+  nagios_notify $retval "$ERROR"
+fi
 <% end -%>
 
 echo "Prune files ..."
@@ -121,6 +125,14 @@ fi
 if [ $retval -ne 0 ]; then
   (>&4 echo "[$retval] ERROR borg prune: $ERROR")
 fi
+
+<% if @puppet_classes =~ /nagios::nsca_node/ -%>
+if [ $retval -eq 0 ]; then
+  nagios_notify $retval "Backup and prune completed successfully"
+else
+  nagios_notify $retval "$ERROR"
+fi
+<% end -%>
 
 echo "###### Backup ended: $(date) ######"
 echo
