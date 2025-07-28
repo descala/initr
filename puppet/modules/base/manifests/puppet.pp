@@ -36,8 +36,8 @@ class base::puppet {
       command => "/usr/local/sbin/puppet-restart.sh > /dev/null",
       before => Service["puppet"],
       user => root,
-      hour => 5,
-      minute => 10;
+      hour => '5',
+      minute => '10';
     "check_configuration_changes":
       command => "/usr/local/sbin/puppet-run-if-needed.sh > /dev/null 2>&1",
       before => Service["puppet"],
