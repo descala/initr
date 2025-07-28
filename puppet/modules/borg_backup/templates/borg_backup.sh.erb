@@ -107,7 +107,7 @@ echo "Prune files ..."
 # Warning: "--prefix" has been deprecated. Use "--glob-archives 'yourprefix*'" (-a) instead.
 
 exec_copy_stderr borg prune -v $REPOSITORY \
-    --glob-archives "{hostname}-*" \
+    --prefix "{hostname}-" \
     --keep-daily=<%=@keep_daily%> \
     --keep-weekly=<%=@keep_weekly%> \
     --keep-monthly=<%=@keep_monthly%> \
