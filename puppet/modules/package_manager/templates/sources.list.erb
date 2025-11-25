@@ -27,7 +27,8 @@ deb http://archive.debian.org/debian-security stretch/updates main contrib non-f
 
 <% elsif scope.lookupvar("::lsbdistcodename") == "buster" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "10") -%>
 # debian 10 buster
-deb http://deb.debian.org/debian buster main contrib non-free
+deb http://archive.debian.org/debian-archive/debian buster main contrib non-free
+deb http://archive.debian.org/debian-security buster/updates main contrib non-free
 
 <% else -%>
 # debian <%= scope.lookupvar("::lsbdistcodename") %>
