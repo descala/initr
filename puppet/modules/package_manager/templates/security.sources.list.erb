@@ -19,7 +19,8 @@
 # EOL
 # deb http://deb.debian.org/debian-security stretch/updates main contrib non-free
 <% elsif scope.lookupvar("::lsbdistcodename") == "buster" or (scope.lookupvar("::lsbdistcodename") == "n/a" and scope.lookupvar("::lsbmajdistrelease") == "10") -%>
-deb http://deb.debian.org/debian-security buster/updates main contrib non-free
+# EOL
+# deb http://deb.debian.org/debian-security buster/updates main contrib non-free
 <% else -%>
 # moved to /etc/apt/sources.list
 <% end -%>
