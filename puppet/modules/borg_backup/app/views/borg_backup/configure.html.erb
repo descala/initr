@@ -18,6 +18,11 @@
   </p>
 
   <p>
+    <%= f.label 'patterns', 'Patterns from (file content)' %>:<br />
+    <%= f.text_area 'patterns', rows: 3, cols: 50 %>
+  </p>
+
+  <p>
   <%= f.label 'paths', 'Backup paths' %>:<br />
   <%= f.text_area 'paths', rows: 3, cols: 50 %>
   </p>

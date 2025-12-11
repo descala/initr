@@ -1,11 +1,11 @@
 class Initr::BorgBackup < Initr::Klass
 
-  validates_presence_of :borg_passphrase, :repository, :excludes, :paths,
-    :on => :update
+  validates_presence_of :borg_passphrase, :repository, :on => :update
+  validates_presence_of :excludes, :paths, :on => :update, unless: -> { patterns.present? }
 
   # simple getters and setters for serialized attributes
   self.accessors_for(
-    %w(borg_passphrase repository excludes paths keep_daily keep_weekly
+    %w(borg_passphrase repository patterns excludes paths keep_daily keep_weekly
     keep_monthly keep_yearly hour minute)
   )
 
@@ -13,6 +13,7 @@ class Initr::BorgBackup < Initr::Klass
   after_initialize {
     self.borg_passphrase ||= ""
     self.repository      ||= ""
+    self.patterns        ||= ""
     self.excludes        ||= <<EOF
 /dev
 /proc

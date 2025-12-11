@@ -21,6 +21,11 @@ class borg_backup($borg_passphrase,$repository,$excludes,$paths,$hour,$minute,
       owner   => root,
       group   => root,
       content => template('borg_backup/borg_backup.sh.erb');
+    '/usr/local/etc/borgbackup.conf':
+      mode    => '0700',
+      owner   => root,
+      group   => root,
+      content => template('borg_backup/borgbackup.conf');
     '/root/.ssh':
       ensure => directory,
       mode   => '0700',
@@ -45,8 +50,8 @@ class borg_backup($borg_passphrase,$repository,$excludes,$paths,$hour,$minute,
     # TODO: random delay?
     'borg backup':
       command => '/usr/local/sbin/borg_backup.sh',
-      hour    => "$hour",
-      minute  => "$minute,
+      hour    => $hour,
+      minute  => $minute,
       user    => root;
   }
 
