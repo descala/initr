@@ -30,6 +30,11 @@ deb http://archive.debian.org/debian-security stretch/updates main contrib non-f
 deb http://archive.debian.org/debian-archive/debian buster main contrib non-free
 deb http://archive.debian.org/debian-security buster/updates main contrib non-free
 
+<% elsif scope.lookupvar("::lsbdistcodename") == "bullseye" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "11") -%>
+# debian 11 bullseye (LTS until 2026-08-31; no more backports)
+deb http://deb.debian.org/debian bullseye main contrib non-free
+deb http://security.debian.org/debian-security bullseye-security main contrib non-free
+
 <% else -%>
 # debian <%= scope.lookupvar("::lsbdistcodename") %>
 deb http://http.debian.net/debian <%= scope.lookupvar("::lsbdistcodename") %> main contrib non-free
