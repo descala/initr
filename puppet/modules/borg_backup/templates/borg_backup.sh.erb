@@ -75,11 +75,11 @@ echo "Transfer files ..."
 # full server backup
 exec_copy_stderr borg create -v --stats          \
     $REPOSITORY::{hostname}-{now:%Y-%m-%d_%H:%M} \
-<% if @patterns.present? %>
-    --list
+<% if @patterns.present? -%>
+    --list \
     --filter=AME \
-    --patterns-from /usr/local/etc/borgbackup.conf <%= "\\" unless @pahts.empty && @excludes.empty? %>
-<% end %>
+    --patterns-from /usr/local/etc/borgbackup.conf <%= "\\" unless @paths.empty? && @excludes.empty? %>
+<% end -%>
 <% @paths.each do |path| -%>
     <%= path %> <%= "\\" unless @excludes.empty? %>
 <% end -%>
