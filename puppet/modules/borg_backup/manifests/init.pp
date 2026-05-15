@@ -25,7 +25,7 @@ class borg_backup($borg_passphrase,$repository,$excludes,$paths,$hour,$minute,
       mode    => '0700',
       owner   => root,
       group   => root,
-      content => template('borg_backup/borgbackup.conf');
+      content => template('borg_backup/borgbackup.conf.erb');
     '/root/.ssh':
       ensure => directory,
       mode   => '0700',
