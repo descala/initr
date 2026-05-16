@@ -65,6 +65,37 @@ if has("autocmd")
 
   augroup END
 
+  " Auto-decompress gzip-compressed files lacking a .gz extension
+  " (e.g. Maildir messages compressed by the MDA). Binary mode on read
+  " prevents Vim from appending a trailing newline that would make
+  " gunzip emit 'unexpected end of file'.
+  function! s:IsGzipFile(path) abort
+    if empty(a:path) || !filereadable(a:path)
+      return 0
+    endif
+    let l:bytes = readfile(a:path, 'b', 1)
+    return !empty(l:bytes) && l:bytes[0] =~# '^\%x1f\%x8b'
+  endfunction
+
+  function! s:GunzipPre() abort
+    if <SID>IsGzipFile(expand('<afile>:p'))
+      setlocal bin
+    endif
+  endfunction
+
+  function! s:GunzipPost() abort
+    if &bin && getline(1) =~# '^\%x1f\%x8b'
+      silent %!gunzip -c
+      setlocal nobin nomodified readonly
+    endif
+  endfunction
+
+  augroup AutoGunzip
+    autocmd!
+    autocmd BufReadPre  * call <SID>GunzipPre()
+    autocmd BufReadPost * call <SID>GunzipPost()
+  augroup END
+
 else
 
   set autoindent		" always set autoindenting on
