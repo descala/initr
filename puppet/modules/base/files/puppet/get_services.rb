@@ -92,8 +92,7 @@ def find_domain_names
     file.close
     data = data.split("\n")
 
-    data.each do |d|
-      next unless d.split(",")[0] != 'Dominio'
+    data[1..].each do |d|
 
       service_id = d.split(",")[0]
       service = 'service.' + d.split(",")[0].split('.')[1]
