@@ -16,3 +16,12 @@ ca:
   field_whois_ns: Whois NS
   field_registrant: Registrant name
   field_expires_on: Expires on
+  label_dns_assignments: Assignacions DNS
+  label_dns_zones_managed_by: "Zones DNS gestionades per %{name}"
+  label_no_zones_assigned: Aquest usuari encara no té zones assignades.
+  label_add_zone: Afegeix zona
+  label_search_zone: Escriu un domini per cercar…
+  label_my_dns: El meu DNS
+  label_my_dns_zones: Les meves zones DNS
+  label_no_dns_zones_assigned: No tens cap zona DNS assignada.
+  label_records: Registres

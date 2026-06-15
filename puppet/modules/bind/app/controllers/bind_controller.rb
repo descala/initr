@@ -4,6 +4,7 @@ class BindController < InitrController
   before_action :find_bind, :except => [:edit_zone,:destroy_zone]
   before_action :find_bind_zone, :only => [:edit_zone,:destroy_zone]
   before_action :authorize
+  before_action :strip_manager_ids, :only => [:add_zone, :edit_zone]
 
   def configure
     @html_title=[@node.fqdn, @klass.name]
@@ -102,6 +103,16 @@ class BindController < InitrController
   end
 
   private
+
+  # Self-service managers are assigned exclusively via the central "DNS
+  # assignments" admin page (DnsAssignmentsController), never per-zone here. This
+  # plugin disables strong parameters (InitrController#params returns the raw
+  # request.parameters), so the unguarded @bind_zone.update(params[:bind_zone])
+  # / Initr::BindZone.new(params[:bind_zone]) below would otherwise mass-assign a
+  # crafted bind_zone[manager_ids][] even though the UI field is gone. Drop it.
+  def strip_manager_ids
+    params[:bind_zone]&.delete('manager_ids')
+  end
 
   def eligible_masters
     user_projects = User.current.projects

@@ -1,0 +1,33 @@
+<h2><%= l(:button_edit) %> &mdash; <%= @bind_zone.domain %></h2>
+
+<%= labelled_form_for :bind_zone, @bind_zone,
+      :url => { :controller => 'my_zones', :action => 'update', :id => @bind_zone },
+      :html => { :method => :patch, :class => 'tabular' } do |f| %>
+
+  <p><%= error_messages_for 'bind_zone' %></p>
+
+  <p>
+    <label><%= l(:field_domain) %></label>
+    <%= @bind_zone.domain %>
+  </p>
+
+  <p>
+    <label><%= l(:field_ttl) %></label>
+    <%= f.text_field :ttl, :disabled => true %>
+  </p>
+
+  <p>
+    <label><%= l(:field_zone_header) %></label>
+    <%= text_area_tag 'zone_header', @zone_header, :cols => 90, :rows => 8, :disabled => true %>
+  </p>
+
+  <p>
+    <%= f.label :zone, l(:label_records) %><br />
+    <%= f.text_area :zone, :cols => 90, :rows => 20 %>
+  </p>
+
+  <p>
+    <%= submit_tag l(:button_save) %>
+    <%= link_to l(:button_back), { :action => 'index' } %>
+  </p>
+<% end %>

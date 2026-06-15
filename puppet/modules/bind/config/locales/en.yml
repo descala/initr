@@ -16,3 +16,12 @@ en:
   field_whois_ns: Whois NS
   field_registrant: Registrant name
   field_expires_on: Expires on
+  label_dns_assignments: DNS assignments
+  label_dns_zones_managed_by: "DNS zones managed by %{name}"
+  label_no_zones_assigned: No zones assigned to this user yet.
+  label_add_zone: Add zone
+  label_search_zone: Type a domain to search…
+  label_my_dns: My DNS
+  label_my_dns_zones: My DNS zones
+  label_no_dns_zones_assigned: No DNS zones are assigned to you.
+  label_records: Records

@@ -1,3 +1,7 @@
+# STALE (Redmine 2.3 / zeus era) — kept for reference only.
+# The procedure below no longer works on Redmine 5 / Rails 6.1.
+# See "Pointers -> Tests" in CLAUDE.md for the current, verified procedure.
+
 # use this to recreate test database
 
 rake db:drop db:create db:migrate RAILS_ENV=test REDMINE_LANG=en

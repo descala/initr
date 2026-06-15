@@ -1,0 +1,24 @@
+<h2><%= l(:label_my_dns_zones) %></h2>
+
+<% if @bind_zones.any? %>
+<table class="list">
+  <thead>
+    <tr>
+      <th><%= l(:field_domain) %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bind_zones.each do |zone| %>
+      <tr>
+        <td><%= zone.domain %></td>
+        <td class="center">
+          <%= link_to l(:button_edit), { :action => 'edit', :id => zone }, :class => 'icon icon-edit' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+<p class="nodata"><%= l(:label_no_dns_zones_assigned) %></p>
+<% end %>

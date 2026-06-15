@@ -1,4 +1,4 @@
-require File.expand_path('plugins/initr/lib/redmine')
+load File.expand_path('plugins/initr/lib/redmine.rb')
 
 Rails.configuration.after_initialize do
   Project.send(:include, ProjectInitrPatch)

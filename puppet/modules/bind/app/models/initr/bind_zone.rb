@@ -1,18 +1,36 @@
+require 'open3'
+
 class Initr::BindZone < ActiveRecord::Base
 
   include IDN
 
   belongs_to :bind, :class_name => "Initr::Bind"
   has_one :project, :through => :bind
+  has_many :bind_zone_managers, :class_name => "Initr::BindZoneManager", :dependent => :destroy
+  has_many :managers, :through => :bind_zone_managers, :source => :user
   validates_presence_of :domain, :ttl
   validates_uniqueness_of :domain, :scope => 'bind_id'
   validates_numericality_of :ttl
-#  validates_format_of :domain, :with => /\A\w+([\-\.]{1}\w+)*\.[a-z]{2,20}\z/i
-  validates_format_of :domain, :with => /\A[^_]+\.[a-z]{2,20}\z/i
+  # Hostname labels of Unicode letters/digits (IDN allowed), hyphen-joined, dot
+  # separated, ASCII-letter TLD. Crucially excludes whitespace and shell
+  # metacharacters (; $ ( ) ` & | etc.) so a domain can never inject a command.
+  validates_format_of :domain, :with => /\A(?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[a-z]{2,20}\z/i
   after_save :trigger_puppetrun
   after_destroy :trigger_puppetrun
   before_validation :increment_zone_serial
 
+  # Master-file control directives a user must never smuggle into the records
+  # body. $INCLUDE makes named-checkzone open an arbitrary file on the host and
+  # echo fragments of it back through the validation error (authenticated
+  # file-read / info disclosure); $GENERATE can explode the zone into millions
+  # of records (resource exhaustion). A hosted single-zone records body needs
+  # neither. Case-insensitive and whitespace-tolerant because named-checkzone
+  # honors $include/$InClUdE; we reject indented forms too (broader than the
+  # parser is safe — narrower would be a bypass).
+  FORBIDDEN_ZONE_DIRECTIVE = /\A\s*\$(?:INCLUDE|GENERATE)\b/i
+
+  # Must run before named_checkzone so a rejected body never reaches the checker.
+  validate :reject_master_file_directives
   # Uses package "apt-get install bind9utils"
   validate :named_checkzone
 
@@ -22,6 +40,14 @@ class Initr::BindZone < ActiveRecord::Base
 
   def zone
     self[:zone].to_s.gsub(/\r\n?/,"\n")
+  end
+
+  # A zone is editable either by one of its assigned managers (holding the
+  # global :edit_own_bind_zones permission) or by anyone who may edit klasses
+  # in the owning project. Mirrors Initr::Node#editable_by?. Admins always pass.
+  def editable_by?(usr)
+    (managers.include?(usr) && usr.allowed_to?(:edit_own_bind_zones, nil, :global => true)) ||
+      usr.allowed_to?(:edit_klasses, bind&.node&.project)
   end
 
   def parameters
@@ -54,7 +80,10 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def update_active_ns
-    self.active_ns = `dig ns #{domain} +short +time=1 +tries=1 2&>1`.split.sort.join(' ').gsub('. ',' ').gsub(/\.$/,'')
+    # No shell: domain is passed as a discrete argv element, so metacharacters
+    # in it can't be interpreted. capture2e merges stderr (the old broken 2&>1).
+    out, _status = Open3.capture2e('dig', 'ns', domain, '+short', '+time=1', '+tries=1')
+    self.active_ns = out.split.sort.join(' ').gsub('. ',' ').gsub(/\.$/,'')
   end
 
   def query_registry
@@ -85,13 +114,16 @@ class Initr::BindZone < ActiveRecord::Base
   end
 
   def named_checkzone
-    checkzone = "/usr/sbin/named-checkzone"
-    if File.exist?(checkzone)
+    return if forbidden_directive_line   # never feed a control directive to the checker
+    checkzone = named_checkzone_bin
+    if checkzone
       tmpfile = Tempfile.new([domain,'.conf'])
       tmpfile.write(zone_for_check)
       tmpfile.close
-      out = `#{checkzone} #{domain_idn} #{tmpfile.path}`
-      if $? != 0
+      # No shell: each argument is passed discretely to named-checkzone, so a
+      # crafted domain can't break out into a command.
+      out, status = Open3.capture2e(checkzone, domain_idn, tmpfile.path)
+      unless status.success?
         errors.add(:base, "Zone check error: #{out}")
       end
     end
@@ -107,8 +139,29 @@ class Initr::BindZone < ActiveRecord::Base
 
   private
 
+  # The first records line that is a forbidden master-file control directive,
+  # or nil. Shared by the validation and by named_checkzone's guard so the two
+  # can never drift apart.
+  def forbidden_directive_line
+    zone.lines.find { |line| line =~ FORBIDDEN_ZONE_DIRECTIVE }
+  end
+
+  def reject_master_file_directives
+    if forbidden_directive_line
+      errors.add(:zone, "must not contain $INCLUDE or $GENERATE control directives")
+    end
+  end
+
   def trigger_puppetrun
     self.bind.trigger_puppetrun
+  end
+
+  # Locate named-checkzone (bind9-utils). Search PATH plus the usual system
+  # dirs — packaging moved it from /usr/sbin to /usr/bin, and the web server's
+  # PATH often omits the sbin dirs. Returns nil if it isn't installed.
+  def named_checkzone_bin
+    dirs = ENV['PATH'].to_s.split(File::PATH_SEPARATOR) | %w[/usr/bin /usr/sbin /bin /sbin]
+    dirs.map { |dir| File.join(dir, 'named-checkzone') }.find { |path| File.executable?(path) }
   end
 
   def zone_for_check
