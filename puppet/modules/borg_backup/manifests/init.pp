@@ -1,6 +1,7 @@
 # backups amb Borg
 class borg_backup($borg_passphrase,$repository,$excludes,$paths,$hour,$minute,
-                  $keep_daily,$keep_weekly,$keep_monthly,$keep_yearly) {
+                  $keep_daily,$keep_weekly,$keep_monthly,$keep_yearly,
+                  $patterns='' ) {
 
   include copier::mysqldump
 #  include postgres::backup_all
