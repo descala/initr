@@ -46,7 +46,7 @@ class base::puppet {
   if array_includes($classes,"nagios::nsca_node") {
     # Should run every 30 minutes
     nagios::check { "puppet_last_run":
-      command => "check_file_age -w 7200 -c 14400 -f /var/lib/puppet/state/state.yaml",
+      command => "check_file_age -w 7200 -c 14400 -f ${facts['puppet_statedir']}/state.yaml",
       notifications_enabled => 0,
     }
   }

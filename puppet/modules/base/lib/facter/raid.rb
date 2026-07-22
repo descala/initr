@@ -7,7 +7,7 @@ Facter.add("raidtype") do
   ENV["PATH"]="/bin:/sbin:/usr/bin:/usr/sbin"
   setcode do
     raidtype = []
-    if FileTest.exists?("/proc/mdstat")
+    if File.exist?("/proc/mdstat")
       txt = File.read("/proc/mdstat")
       raidtype.push("software") if txt =~ /^md/i
     end
