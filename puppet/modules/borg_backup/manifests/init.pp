@@ -51,8 +51,8 @@ class borg_backup($borg_passphrase,$repository,$excludes,$paths,$hour,$minute,
     # TODO: random delay?
     'borg backup':
       command => '/usr/local/sbin/borg_backup.sh',
-      hour    => $hour,
-      minute  => $minute,
+      hour    => "$hour",
+      minute  => "$minute",
       user    => root;
   }
 
