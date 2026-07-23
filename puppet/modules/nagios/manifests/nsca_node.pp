@@ -13,6 +13,10 @@ class nagios::nsca_node {
     default: { include nagios::nsca_node::redhat }
   }
   # This check supports all RAID types
-  if $raidtype != "" { include nagios::check_raid }
+  if $raidtype != "" {
+    include nagios::check_raid
+  } else {
+    cron { "nagios check_raid": ensure => absent, user => root }
+  }
 }
 
