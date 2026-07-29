@@ -27,7 +27,7 @@ class MyZonesController < InitrController
     # Only the records text are editable here — never the TTL, domain,
     # registrant or whois data. named_checkzone (a BindZone validation) blocks a
     # syntactically broken save; the serial bump and puppetrun fire on success.
-    if @bind_zone.update(:zone => params[:bind_zone][:zone])
+    if @bind_zone.update(:zone => params.dig(:bind_zone, :zone))
       flash[:notice] = l(:notice_successful_update)
       redirect_to :action => 'index'
     else
