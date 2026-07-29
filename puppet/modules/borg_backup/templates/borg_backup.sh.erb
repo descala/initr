@@ -105,14 +105,19 @@ fi
 echo "Prune files ..."
 
 # Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly
-# archives of THIS machine. --prefix `hostname`- is very important to
-# limit prune's operation to this machine's archives and not apply to
-# other machine's archives also.
+# archives of THIS machine. Limiting prune to "{hostname}-" archives is very
+# important so it doesn't apply to other machine's archives in the same repo.
 #
-# Warning: "--prefix" has been deprecated. Use "--glob-archives 'yourprefix*'" (-a) instead.
+# borg >= 1.2 deprecated --prefix in favour of --glob-archives (added in 1.1),
+# and the deprecation warning on stderr masks real errors in the Nagios alert.
+# Old distros ship borg 1.0.x which only knows --prefix.
 
 exec_copy_stderr borg prune -v $REPOSITORY \
+<% if %w(wheezy jessie stretch trusty xenial).include?(@lsbdistcodename.to_s) -%>
     --prefix "{hostname}-" \
+<% else -%>
+    --glob-archives "{hostname}-*" \
+<% end -%>
     --keep-daily=<%=@keep_daily%> \
     --keep-weekly=<%=@keep_weekly%> \
     --keep-monthly=<%=@keep_monthly%> \
