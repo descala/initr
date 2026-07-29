@@ -89,6 +89,13 @@ exec_copy_stderr borg create -v --stats          \
 
 retval=$?
 
+# Borg exit codes: 0=success, 1=warning, 2+=error
+if [ $retval -eq 1 ]; then
+  echo "Backup completed with warnings (files changed during backup)"
+  retval=0  # Report as success to Nagios
+fi
+create_retval=$retval
+
 # print any errors to stderr
 if [ $retval -ne 0 ]; then
   (>&4 echo "[$retval] ERROR borg create: $ERROR")
@@ -138,7 +145,10 @@ fi
 
 <% if @puppet_classes =~ /nagios::nsca_node/ -%>
 if [ $retval -eq 0 ]; then
-  nagios_notify $retval "Backup and prune completed successfully"
+  # don't overwrite a create failure already reported to Nagios
+  if [ $create_retval -eq 0 ]; then
+    nagios_notify $retval "Backup and prune completed successfully"
+  fi
 else
   nagios_notify $retval "$ERROR"
 fi
