@@ -9,6 +9,9 @@
 # No instal·lat també és CRITICAL: als hosts de la farm l'estat desitjat és
 # tallafocs actiu, i un UNKNOWN sovint no arriba a avisar ningú.
 
+# El cron de root corre amb PATH=/usr/bin:/bin i shorewall/iptables són a sbin.
+ENV['PATH'] = "/usr/sbin:/sbin:#{ENV['PATH']}"
+
 status = `shorewall status 2>&1`
 if $?.exitstatus == 127
   puts 'SHOREWALL CRITICAL - shorewall not installed'
