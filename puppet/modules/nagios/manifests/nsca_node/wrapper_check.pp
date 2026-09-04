@@ -7,7 +7,22 @@ define nagios::nsca_node::wrapper_check($command, $checkfreshness="1", $freshnes
     notifications_enabled => $notifications_enabled,
   }
 
-  $nsca_command = "/usr/local/bin/nsca_wrapper -H $fqdn -S '$name' -C '$command' -b $send_nsca -c $send_nsca_cfg $sleep > /dev/null 2>&1"
+  # One script per check in /usr/local/sbin ("check-swap", "check-df", ...) so an
+  # operator can re-run a check by hand, and push a fresh result to Nagios, without
+  # copying the crontab line. cron runs the same script, adding --sleep to spread
+  # the load. Initr only forbids single quotes in check names, so the file name
+  # keeps [A-Za-z0-9._-] and turns anything else (e.g. spaces) into "_".
+  $script_name = regsubst($name, '[^A-Za-z0-9._-]', '_', 'G')
+  $check_script = "/usr/local/sbin/check-${script_name}"
+
+  file { $check_script:
+    ensure  => $ensure,
+    mode    => '0744',
+    content => template("nagios/nsca_check.erb"),
+    require => File["/usr/local/bin/nsca_wrapper"],
+  }
+
+  $nsca_command = "$check_script $sleep > /dev/null 2>&1"
 
   # bug: http://projects.reductivelabs.com/issues/1728
   case $hour {
@@ -16,7 +31,7 @@ define nagios::nsca_node::wrapper_check($command, $checkfreshness="1", $freshnes
         command => $nsca_command,
         user => root,
         minute => $minute,
-        require => File["/usr/local/bin/nsca_wrapper"],
+        require => File[$check_script],
         ensure => $ensure,
       }
     }
@@ -26,10 +41,9 @@ define nagios::nsca_node::wrapper_check($command, $checkfreshness="1", $freshnes
         user => root,
         minute => $minute,
         hour => $hour,
-        require => File["/usr/local/bin/nsca_wrapper"],
+        require => File[$check_script],
         ensure => $ensure,
       }
     }
   }
 }
-

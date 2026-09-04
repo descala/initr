@@ -1,0 +1,16 @@
+#!/bin/bash
+##################
+# Puppet Managed #
+##################
+#
+# Nagios passive check '<%= @name %>' of <%= @fqdn %>: runs the plugin and sends
+# its result to the Nagios server through nsca_wrapper.
+#
+# cron runs "<%= @check_script %> --sleep" at <%= @minute %> <%= @hour %> * * *.
+# Run it by hand to re-check now and push a fresh result. Extra arguments go
+# to nsca_wrapper: --sleep (random 0-59s delay), -q (quiet), -e (exit with the
+# plugin's return code instead of send_nsca's).
+<%# The check command is stored in Initr in crontab syntax, where a literal %
+    is written \% (until this script existed it only ever lived on a crontab
+    line). In a shell script it must be a plain %. -%>
+exec /usr/local/bin/nsca_wrapper -H <%= @fqdn %> -S '<%= @name %>' -C '<%= @command.gsub('\%', '%') %>' -b <%= @send_nsca %> -c <%= @send_nsca_cfg %> "$@"
