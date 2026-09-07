@@ -249,8 +249,15 @@ class Initr::NagiosServer < Initr::Klass
   #
   # All matching exports count, not just the first: a node running nagios::check_router
   # exports both "<fqdn>" and "<fqdn>_router", and which one comes back first is arbitrary.
+  #
+  # Only hosts that actually have a service are returned. The project's serviceescalation
+  # uses service_description "*", and Icinga cannot expand that for a member with no
+  # services: "Could not expand services specified in service escalation" and the daemon
+  # refuses to start. nagios::check_router exports a generic-switch host and no services at
+  # all, so "<fqdn>_router" must stay out of the group.
   def nagios_hosts_for(proj)
     members = []
+    with_services = nagios_hosts_with_services
     proj.nodes.each do |n|
       exported_resources = Initr.puppetdb.request('', "resources {certname = '#{n.name}' and type = 'Nagios_host' and exported = true }").data rescue {}
       if exported_resources.empty?
@@ -259,17 +266,30 @@ class Initr::NagiosServer < Initr::Klass
         next if n.puppet_host.nil?
         exported_resources = n.puppet_host.resources.where("exported=true and restype='Nagios_host'")
         exported_resources.each do |r|
-          if r.puppet_tags.collect {|pt| pt.name}.include? address
+          if r.puppet_tags.collect {|pt| pt.name}.include?(address) and with_services.include?(r.title)
             members << r.title
           end
         end
       else
         exported_resources.each do |r|
-          members << r['title'] if r['parameters']['tag'] == address
+          members << r['title'] if r['parameters']['tag'] == address and with_services.include?(r['title'])
         end
       end
     end
     members.uniq
+  end
+
+  # host_names that have at least one exported Nagios_service tagged for this server, i.e.
+  # the hosts that will actually have services in nagios_service.cfg. One query, memoized:
+  # nagios_hosts_for is called once per project for hostgroups, hostescalations and
+  # serviceescalations.
+  def nagios_hosts_with_services
+    @nagios_hosts_with_services ||= begin
+      exported = Initr.puppetdb.request('', "resources {type = 'Nagios_service' and exported = true }").data rescue []
+      exported.collect do |r|
+        r['parameters']['host_name'] if r['parameters']['tag'] == address
+      end.compact.uniq
+    end
   end
 
   RAND_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
