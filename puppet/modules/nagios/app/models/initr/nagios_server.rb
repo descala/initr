@@ -133,7 +133,7 @@ class Initr::NagiosServer < Initr::Klass
     groups = {}
     Project.all.each do |p|
       next unless p.active?
-      members = nagios_hosts_for(p).collect {|n| n.fqdn }.join(', ')
+      members = nagios_hosts_for(p).join(', ')
       next if members.blank?
       groups[p.identifier] = {
         # https://tickets.puppetlabs.com/browse/PUP-3368
@@ -243,8 +243,12 @@ class Initr::NagiosServer < Initr::Klass
     ret
   end
 
-  # for a project, return all nodes with a "Nagios_host" exported resource with the server tag
+  # for a project, return the host names of all "Nagios_host" exported resources with the
+  # server tag, exactly as nagios_host.cfg spells them.
   # if we return here a host that is not defined in nagios_host.cfg, nagios will fail to restart
+  #
+  # All matching exports count, not just the first: a node running nagios::check_router
+  # exports both "<fqdn>" and "<fqdn>_router", and which one comes back first is arbitrary.
   def nagios_hosts_for(proj)
     members = []
     proj.nodes.each do |n|
@@ -256,14 +260,16 @@ class Initr::NagiosServer < Initr::Klass
         exported_resources = n.puppet_host.resources.where("exported=true and restype='Nagios_host'")
         exported_resources.each do |r|
           if r.puppet_tags.collect {|pt| pt.name}.include? address
-            members << n
+            members << r.title
           end
         end
       else
-        members << n if exported_resources[0]['parameters']['tag'] == address
+        exported_resources.each do |r|
+          members << r['title'] if r['parameters']['tag'] == address
+        end
       end
     end
-    members
+    members.uniq
   end
 
   RAND_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
