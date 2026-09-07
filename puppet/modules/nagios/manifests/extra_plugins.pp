@@ -29,5 +29,7 @@ class nagios::extra_plugins {
       source => "puppet:///modules/nagios/check_disk_forecast.rb";
     "$nagios_plugins_dir/check_nfs_write_canary.rb":
       source => "puppet:///modules/nagios/check_nfs_write_canary.rb";
+    "$nagios_plugins_dir/check_smart.rb":
+      source => "puppet:///modules/nagios/check_smart.rb";
   }
 }

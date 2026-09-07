@@ -8,9 +8,11 @@
 # la mediana en ms. El treball es fa en un fork amb timeout perquè un NFS
 # penjat (D-state) no deixi el check penjat per sempre.
 #
-# Ús: check_nfs_write_canary.rb -d DIR [-w MS] [-c MS] [-t SEGONS] [-n N]
-#   (defectes: -w 25 -c 100 -t 30 -n 5; DIR ha de ser escrivible pel client
-#    — compte amb el root_squash: trieu un directori del propietari app)
+# Ús: check_nfs_write_canary.rb -d DIR [-u USUARI] [-w MS] [-c MS] [-t SEGONS] [-n N]
+#   (defectes: -w 25 -c 100 -t 30 -n 5; DIR ha de ser escrivible pel client.
+#    Amb root_squash al servidor, root escriu com a nobody: -u USUARI fa que el
+#    fill que escriu es converteixi en aquest usuari, p. ex. -u app per a
+#    /srv/live/files/tmp, que és app:app 755 — així no cal cap directori nou)
 #
 # Si el muntatge està penjat de debò, el fill queda en estat D i el KILL no
 # el mata: cada passada en deixa un d'orfe fins que el muntatge torna. És
@@ -18,24 +20,33 @@
 
 require 'optparse'
 require 'socket'
+require 'etc'
 
 dir = nil
+user = nil
 warn_ms = 25.0
 crit_ms = 100.0
 timeout = 30
 iters = 5
 OptionParser.new do |o|
   o.on('-d DIR') { |v| dir = v }
+  o.on('-u USUARI') { |v| user = v }
   o.on('-w MS', Float) { |v| warn_ms = v }
   o.on('-c MS', Float) { |v| crit_ms = v }
   o.on('-t SEGONS', Integer) { |v| timeout = v }
   o.on('-n N', Integer) { |v| iters = v }
 end.parse!
-abort 'usage: check_nfs_write_canary.rb -d DIR [-w ms] [-c ms]' unless dir
+abort 'usage: check_nfs_write_canary.rb -d DIR [-u user] [-w ms] [-c ms]' unless dir
 
 r, w = IO.pipe
 pid = fork do
   r.close
+  if user
+    pw = Etc.getpwnam(user)
+    Process.initgroups(user, pw.gid)
+    Process::GID.change_privilege(pw.gid)
+    Process::UID.change_privilege(pw.uid)
+  end
   data = 'x' * 4096
   times = iters.times.map do |i|
     f = File.join(dir, ".nfs-canary-#{Socket.gethostname.split('.').first}-#{Process.pid}-#{i}")
