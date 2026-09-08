@@ -33,12 +33,15 @@ deb http://archive.debian.org/debian-security buster/updates main contrib non-fr
 <% elsif scope.lookupvar("::lsbdistcodename") == "bullseye" or (scope.lookupvar("::lsbdistcodename") == "n/a" and lsbmajdistrelease == "11") -%>
 # debian 11 bullseye (LTS ended 2026-08-31)
 deb http://archive.debian.org/debian-archive/debian bullseye main contrib non-free
-# The last bullseye-security Release was signed with a Valid-Until one week
-# ahead and is never refreshed again, so from then on apt rejects the whole
-# repository ("Release file ... is expired") unless told not to check it.
-# Point this line at archive.debian.org/debian-security once
+# bullseye-security: the final Release was signed with a Valid-Until one week
+# ahead and is never refreshed, so apt rejects the repository ("Release file
+# ... is expired") unless told not to check it. Then security.debian.org and
+# its mirrors dropped the pool files while still publishing the index (404 on
+# every .deb), before archive.debian.org carried the suite. snapshot.debian.org
+# keeps the final state intact: any timestamp after the last upload resolves
+# to it. Point this line at archive.debian.org/debian-security once
 # dists/bullseye-security exists there (buster took ~6 months to show up).
-deb [check-valid-until=no] http://security.debian.org/debian-security bullseye-security main contrib non-free
+deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20260901T000000Z/ bullseye-security main contrib non-free
 
 <% else -%>
 # debian <%= scope.lookupvar("::lsbdistcodename") %>
