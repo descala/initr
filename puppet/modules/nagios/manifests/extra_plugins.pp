@@ -31,5 +31,9 @@ class nagios::extra_plugins {
       source => "puppet:///modules/nagios/check_nfs_write_canary.rb";
     "$nagios_plugins_dir/check_smart.rb":
       source => "puppet:///modules/nagios/check_smart.rb";
+    "$nagios_plugins_dir/check_apt_security.rb":
+      source => "puppet:///modules/nagios/check_apt_security.rb";
+    "$nagios_plugins_dir/check_reboot_required.rb":
+      source => "puppet:///modules/nagios/check_reboot_required.rb";
   }
 }
