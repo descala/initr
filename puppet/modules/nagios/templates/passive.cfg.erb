@@ -26,6 +26,20 @@ define service {
     stalking_options            w,c,u
 }
 
+# For passive checks whose single result is a sample and not a verdict. With
+# max_check_attempts 1 above, one bad sample is already a hard state, so every
+# blip costs two mails per contact (problem + recovery). Here Icinga waits for
+# 3 consecutive bad results before it tells anybody -- there is no re-check to
+# schedule (active checks are off), the soft attempts advance with each NSCA
+# result that arrives, so ~15 minutes at the usual */5 cron.
+# Used by the ssh check, see nagios::check.
+define service {
+    name                        passive_service_tolerant
+    use                         passive_service
+    max_check_attempts          3
+    register                    0
+}
+
 define host {
         name                            passive-host
         active_checks_enabled           0

@@ -1,6 +1,6 @@
-define nagios::service( $checkfreshness="1", $freshness="1800", $ensure="present", $notifications_enabled="1") {
+define nagios::service( $checkfreshness="1", $freshness="1800", $ensure="present", $notifications_enabled="1", $use="passive_service") {
   @@nagios_service { "${fqdn}_$name":
-    use => "passive_service",
+    use => $use,
     host_name => $fqdn,
     check_freshness => $checkfreshness,
     freshness_threshold => $freshness,

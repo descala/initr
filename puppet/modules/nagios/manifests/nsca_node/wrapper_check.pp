@@ -1,10 +1,11 @@
-define nagios::nsca_node::wrapper_check($command, $checkfreshness="1", $freshness="1800", $minute="*/5", $hour="*", $ensure="present", $notifications_enabled="1",$sleep="--sleep") {
+define nagios::nsca_node::wrapper_check($command, $checkfreshness="1", $freshness="1800", $minute="*/5", $hour="*", $ensure="present", $notifications_enabled="1",$sleep="--sleep", $use="passive_service") {
 
   nagios::service { $name:
     checkfreshness => $checkfreshness,
     freshness => $freshness,
     ensure => $ensure,
     notifications_enabled => $notifications_enabled,
+    use => $use,
   }
 
   # One script per check in /usr/local/sbin ("check-swap", "check-df", ...) so an
