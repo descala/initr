@@ -264,17 +264,17 @@ class EvaluateTest < Minitest::Test
   def test_below_warn_is_warning_and_below_crit_is_critical
     state, line = run_eval([cert('a.example', 24), cert('b.example', 60)])
     assert_equal 1, state
-    assert_match(/^LETSENCRYPT WARNING - 1 expiring: a.example 24d; 1 served certs OK/, line)
+    assert_match(/^LETSENCRYPT WARNING - 1 expiring: a.example 24d / 1 served certs OK/, line)
 
     state, line = run_eval([cert('a.example', 14), cert('b.example', 24)])
     assert_equal 2, state
-    assert_match(/^LETSENCRYPT CRITICAL - 2 expiring: a.example 14d, b.example 24d;/, line)
+    assert_match(/^LETSENCRYPT CRITICAL - 2 expiring: a.example 14d, b.example 24d \//, line)
   end
 
   def test_expired_served_certs_are_critical_and_listed_worst_first
     state, line = run_eval([cert('a.example', 60), cert('old.example', -375), cert('nova.example', -254)])
     assert_equal 2, state
-    assert_match(/^LETSENCRYPT CRITICAL - 2 expired: old.example -375d, nova.example -254d; 1 served certs OK \(min 60d\)/, line)
+    assert_match(/^LETSENCRYPT CRITICAL - 2 expired: old.example -375d, nova.example -254d / 1 served certs OK \(min 60d\)/, line)
     assert_match(/expired=2 .*min_days=-375$/, line)
   end
 
@@ -283,26 +283,26 @@ class EvaluateTest < Minitest::Test
     # vida i certbot ni el mirava (cas real del 08/2026).
     state, line = run_eval([cert('moved.example', 57, conf: false), cert('b.example', 60)])
     assert_equal 1, state
-    assert_match(/1 without renewal conf: moved.example 57d;/, line)
+    assert_match(/1 without renewal conf: moved.example 57d \//, line)
     assert_match(/noconf=1/, line)
   end
 
   def test_missing_or_unreadable_file_is_critical
     state, line = run_eval([cert('gone.example', nil, error: 'not found'), cert('b.example', 60)])
     assert_equal 2, state
-    assert_match(/1 unreadable: gone.example \(not found\);/, line)
+    assert_match(/1 unreadable: gone.example \(not found\) \//, line)
   end
 
   def test_inactive_timer_is_warning
     state, line = run_eval([cert('a.example', 60)], timer_active: false)
     assert_equal 1, state
-    assert_match(/certbot.timer not active;/, line)
+    assert_match(/certbot.timer not active \//, line)
   end
 
   def test_notes_from_collection_are_warnings
     state, line = run_eval([cert('a.example', 60)], notes: ['nginx -t fails, parsed sites-enabled'])
     assert_equal 1, state
-    assert_match(/nginx -t fails, parsed sites-enabled;/, line)
+    assert_match(/nginx -t fails, parsed sites-enabled \//, line)
   end
 
   def test_unused_lineages_are_informational_only
@@ -313,14 +313,14 @@ class EvaluateTest < Minitest::Test
               { name: 'failing.example', days: 20 }, { name: 'nopem.example', days: nil }]
     state, line = run_eval([cert('a.example', 60)], unused: unused)
     assert_equal 0, state
-    assert_match(/^LETSENCRYPT OK - 1 served certs OK \(min 60d\); 4 unused lineages, 3 failing renewal: dead.example -261d, failing.example 20d, nopem.example no cert/, line)
+    assert_match(/^LETSENCRYPT OK - 1 served certs OK \(min 60d\) / 4 unused lineages, 3 failing renewal: dead.example -261d, failing.example 20d, nopem.example no cert/, line)
     assert_match(/unused_failing=3/, line)
   end
 
   def test_long_lists_are_truncated
     certs = (1..9).map { |i| cert("site#{i}.example", -i) }
     _, line = run_eval(certs)
-    assert_match(/9 expired: site9.example -9d, site8.example -8d, site7.example -7d, site6.example -6d, site5.example -5d, site4.example -4d, \+3 more;/, line)
+    assert_match(/9 expired: site9.example -9d, site8.example -8d, site7.example -7d, site6.example -6d, site5.example -5d, site4.example -4d, \+3 more \//, line)
   end
 
   def test_nothing_served_is_unknown
@@ -331,9 +331,10 @@ class EvaluateTest < Minitest::Test
 
   def test_output_is_one_line_without_shell_globs
     # nsca_wrapper fa `echo $output` sense cometes: un * o ? s'expandiria al host.
+    # I Icinga converteix els ; en : (delimitador de la comanda externa).
     unused = [{ name: 'dead.example', days: -1 }]
     _, line = run_eval([cert('a.example', 5), cert('b.example', -3), cert('c', nil, error: 'x')],
                        unused: unused, timer_active: false, notes: ['note'])
-    refute_match(/[\n*?\[]/, line)
+    refute_match(/[\n*?\[;]/, line)
   end
 end

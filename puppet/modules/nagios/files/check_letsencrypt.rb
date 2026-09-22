@@ -176,6 +176,7 @@ end
 
 # Retorna [codi de sortida, línia de sortida]. Cap `*`, `?`, `[` ni salt de
 # línia a la sortida: nsca_wrapper la passa per `echo $output` sense cometes.
+# Ni `;`, que Icinga converteix en `:`.
 def evaluate(certs, unused, warn:, crit:, timer_active:, notes: [])
   return [3, 'LETSENCRYPT UNKNOWN - no served certificates found (no nginx/apache ssl_certificate directives)'] if certs.empty?
 
@@ -227,7 +228,9 @@ def evaluate(certs, unused, warn:, crit:, timer_active:, notes: [])
   label = %w[OK WARNING CRITICAL][state]
   perf = "served=#{certs.size} expired=#{expired.size} expiring=#{expiring.size} noconf=#{noconf.size} " \
          "unused_failing=#{failing.size} min_days=#{min_days.nil? ? 'U' : min_days}"
-  [state, "LETSENCRYPT #{label} - #{parts.join('; ')} | #{perf}".tr("\n*?[", '    ').squeeze(' ')]
+  # Icinga substitueix els `;` de la sortida per `:` (és el separador de la
+  # comanda externa PROCESS_SERVICE_CHECK_RESULT): separador ` / ` en lloc de `; `.
+  [state, "LETSENCRYPT #{label} - #{parts.join(' / ')} | #{perf}".tr("\n*?[;", '     ').squeeze(' ')]
 end
 
 # ---------------------------------------------------------------- main
