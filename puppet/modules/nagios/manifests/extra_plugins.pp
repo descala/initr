@@ -35,5 +35,9 @@ class nagios::extra_plugins {
       source => "puppet:///modules/nagios/check_apt_security.rb";
     "$nagios_plugins_dir/check_reboot_required.rb":
       source => "puppet:///modules/nagios/check_reboot_required.rb";
+    # Hosting web compartit: certificats servits per nginx/Apache que caduquen o
+    # que certbot no renovarà. Master: aquest repo (test a ../test/).
+    "$nagios_plugins_dir/check_letsencrypt.rb":
+      source => "puppet:///modules/nagios/check_letsencrypt.rb";
   }
 }
