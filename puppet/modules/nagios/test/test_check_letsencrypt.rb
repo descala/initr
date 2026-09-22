@@ -264,7 +264,7 @@ class EvaluateTest < Minitest::Test
   def test_below_warn_is_warning_and_below_crit_is_critical
     state, line = run_eval([cert('a.example', 24), cert('b.example', 60)])
     assert_equal 1, state
-    assert_match(/^LETSENCRYPT WARNING - 1 expiring: a.example 24d / 1 served certs OK/, line)
+    assert_match(/^LETSENCRYPT WARNING - 1 expiring: a.example 24d \/ 1 served certs OK/, line)
 
     state, line = run_eval([cert('a.example', 14), cert('b.example', 24)])
     assert_equal 2, state
@@ -274,7 +274,7 @@ class EvaluateTest < Minitest::Test
   def test_expired_served_certs_are_critical_and_listed_worst_first
     state, line = run_eval([cert('a.example', 60), cert('old.example', -375), cert('nova.example', -254)])
     assert_equal 2, state
-    assert_match(/^LETSENCRYPT CRITICAL - 2 expired: old.example -375d, nova.example -254d / 1 served certs OK \(min 60d\)/, line)
+    assert_match(/^LETSENCRYPT CRITICAL - 2 expired: old.example -375d, nova.example -254d \/ 1 served certs OK \(min 60d\)/, line)
     assert_match(/expired=2 .*min_days=-375$/, line)
   end
 
@@ -313,7 +313,7 @@ class EvaluateTest < Minitest::Test
               { name: 'failing.example', days: 20 }, { name: 'nopem.example', days: nil }]
     state, line = run_eval([cert('a.example', 60)], unused: unused)
     assert_equal 0, state
-    assert_match(/^LETSENCRYPT OK - 1 served certs OK \(min 60d\) / 4 unused lineages, 3 failing renewal: dead.example -261d, failing.example 20d, nopem.example no cert/, line)
+    assert_match(/^LETSENCRYPT OK - 1 served certs OK \(min 60d\) \/ 4 unused lineages, 3 failing renewal: dead.example -261d, failing.example 20d, nopem.example no cert/, line)
     assert_match(/unused_failing=3/, line)
   end
 
