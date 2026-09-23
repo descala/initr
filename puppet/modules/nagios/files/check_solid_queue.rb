@@ -44,6 +44,8 @@ def plural(n, word)
   "#{n} #{word}#{n == 1 ? '' : 's'}"
 end
 
+# Les troballes es separen amb " / ": un | faria que Nagios tallés el missatge i prengués la
+# resta per perfdata.
 def nagios(code, msg)
   [code, "SOLID_QUEUE #{%w[OK WARNING CRITICAL UNKNOWN][code]} - #{msg}"]
 end
@@ -81,7 +83,7 @@ def backlog_result(rows, paused, warn:, crit:)
   end
 
   code = late.first[1] >= crit ? 2 : 1
-  nagios(code, late.map { |q, age, n| "#{q} oldest #{age}s (#{n} ready)" }.join(' | ') + tail)
+  nagios(code, late.map { |q, age, n| "#{q} oldest #{age}s (#{n} ready)" }.join(' / ') + tail)
 end
 
 # rows: [[kind, hostname, segons des de l'últim heartbeat]]
@@ -102,8 +104,8 @@ def processes_result(rows, expected_workers:, stale:)
   end
   warn << "#{plural(dead, 'stale process')} (heartbeat > #{stale}s)" if dead.positive?
 
-  return nagios(2, (crit + warn).join(' | ')) if crit.any?
-  return nagios(1, warn.join(' | ')) if warn.any?
+  return nagios(2, (crit + warn).join(' / ')) if crit.any?
+  return nagios(1, warn.join(' / ')) if warn.any?
 
   nagios(0, "supervisor, dispatcher and #{workers}/#{expected_workers} workers alive")
 end
