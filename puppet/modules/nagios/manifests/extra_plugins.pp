@@ -39,5 +39,7 @@ class nagios::extra_plugins {
     # que certbot no renovarà. Master: aquest repo (test a ../test/).
     "$nagios_plugins_dir/check_letsencrypt.rb":
       source => "puppet:///modules/nagios/check_letsencrypt.rb";
+    "$nagios_plugins_dir/check_solid_queue.rb":
+      source => "puppet:///modules/nagios/check_solid_queue.rb";
   }
 }
