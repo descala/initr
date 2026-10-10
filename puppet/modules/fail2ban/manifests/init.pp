@@ -23,6 +23,14 @@ class fail2ban($jails=[],$mailto="",$custom_jails="") {
       source => "puppet:///modules/fail2ban/mail.conf",
       require => Package["fail2ban"],
       notify => Service["fail2ban"];
+    # used from $custom_jails, see the filter header
+    "/etc/fail2ban/filter.d/apache-req-flood.conf":
+      mode => '0644',
+      owner => root,
+      group => root,
+      source => "puppet:///modules/fail2ban/apache-req-flood.conf",
+      require => Package["fail2ban"],
+      notify => Service["fail2ban"];
     "/etc/fail2ban/jail.local":
       mode => '0644',
       owner => root,

@@ -19,6 +19,23 @@ Fail2ban class accepts 3 parameters:
 
 * mailto: email to send notifications to, if any
 
+Extra filters
+-------------
+
+The module also installs filters that are not used by any jail of the template, to be referenced from custom_jails:
+
+* apache-req-flood: one match per non-static request in a combined access log. Bans scanners that fire hundreds of PHP requests per minute. Test: ``ruby test/test_apache_req_flood.rb`` (needs fail2ban-regex). Example::
+
+    [apache-req-flood]
+    enabled  = true
+    filter   = apache-req-flood
+    logpath  = /var/www/*/logs/access_log
+    port     = http,https
+    maxretry = 150
+    findtime = 60
+    bantime  = 3600
+    bantime.increment = true
+
 Example of usage on site.pp
 ---------------------------
 
