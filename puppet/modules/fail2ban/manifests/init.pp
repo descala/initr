@@ -4,8 +4,9 @@
 # $custom_jails are additional custom jails
 class fail2ban($jails=[],$mailto="",$custom_jails="") {
 
+  # sense gamin: Debian 13 ja no el té i fail2ban en prescindeix (backend auto)
   package {
-    [ "fail2ban", "gamin", "iptables" ]:
+    [ "fail2ban", "iptables" ]:
       ensure => installed;
   }
 

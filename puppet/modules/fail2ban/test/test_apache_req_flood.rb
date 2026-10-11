@@ -60,6 +60,12 @@ class TestApacheReqFlood < Minitest::Test
     ].each { |req| refute matches?(log_line(req)), req }
   end
 
+  # el plugin Converter for Media serveix cada imatge per PHP quan no hi ha
+  # regles de rewrite (nginx): una pàgina amb 200 imatges són 200 peticions
+  def test_ignores_webp_converter_passthru
+    refute matches?(log_line('GET /wp-content/webpc-passthru.php?src=https://x.example/wp-content/uploads/2020/10/02.jpg&nocache=1 HTTP/2.0'))
+  end
+
   # una extensió estàtica a la query no fa estàtica la petició
   def test_static_extension_in_query_still_counts
     assert matches?(log_line('GET /index.php?f=style.css HTTP/1.1'))
