@@ -1,6 +1,13 @@
 # Classe per a totes les Debian
 class gnulinux::debian inherits gnulinux {
 
+  # trixie ja no té el paquet "ntp": només existeix com a transicional a les
+  # màquines actualitzades des de bookworm, que depèn de ntpsec
+  $ntp_package = ($operatingsystem == 'Debian' and versioncmp("${lsbmajdistrelease}", '13') >= 0) ? {
+    true    => 'ntpsec',
+    default => 'ntp',
+  }
+
   package {
     "lsb-release":
       ensure => present;
@@ -8,7 +15,7 @@ class gnulinux::debian inherits gnulinux {
       ensure => installed;
     "debian-archive-keyring":
       ensure => latest;
-    "ntp":
+    $ntp_package:
       ensure => installed;
     'curl':
       ensure => installed;
