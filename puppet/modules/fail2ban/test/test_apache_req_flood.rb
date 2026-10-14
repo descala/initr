@@ -72,6 +72,17 @@ class TestApacheReqFlood < Minitest::Test
     refute matches?(log_line('GET /_/assets/abc123?key=directus-small-crop HTTP/1.1'))
   end
 
+  # les miniatures de CKFinder no compten: obrir una carpeta d'imatges en
+  # demana un centenar, i l'editor quedaria banejat
+  def test_ignores_ckfinder_thumbnails
+    refute matches?(log_line('GET /admin/ckfinder/core/connector/php/connector.php?command=Thumbnail&type=Images&currentFolder=%2Fblog%2F&FileName=foto.jpg HTTP/1.1'))
+  end
+
+  # la resta d'ordres de CKFinder (pujar, esborrar, llistar) sí que compten
+  def test_counts_other_ckfinder_commands
+    assert matches?(log_line('POST /admin/ckfinder/core/connector/php/connector.php?command=FileUpload&type=Images HTTP/1.1'))
+  end
+
   # una extensió estàtica a la query no fa estàtica la petició
   def test_static_extension_in_query_still_counts
     assert matches?(log_line('GET /index.php?f=style.css HTTP/1.1'))
