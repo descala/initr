@@ -66,6 +66,12 @@ class TestApacheReqFlood < Minitest::Test
     refute matches?(log_line('GET /wp-content/webpc-passthru.php?src=https://x.example/wp-content/uploads/2020/10/02.jpg&nocache=1 HTTP/2.0'))
   end
 
+  # les imatges del CMS Directus (/_/assets/) no compten: en obrir un llistat
+  # se'n demana un centenar, i l'editor quedaria banejat
+  def test_ignores_directus_assets
+    refute matches?(log_line('GET /_/assets/abc123?key=directus-small-crop HTTP/1.1'))
+  end
+
   # una extensió estàtica a la query no fa estàtica la petició
   def test_static_extension_in_query_still_counts
     assert matches?(log_line('GET /index.php?f=style.css HTTP/1.1'))
