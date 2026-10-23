@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# cron runs with PATH=/usr/bin:/bin. Without systemd the init script calls
+# start-stop-daemon (/sbin): stop fails but removes the pidfile, start fails,
+# and the next puppet run starts a new daemon while the old one keeps running.
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 usage() {
   echo "usage: ${0##*/} [--no-sleep]"
   exit 3
