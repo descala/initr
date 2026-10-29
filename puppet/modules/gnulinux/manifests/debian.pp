@@ -8,6 +8,15 @@ class gnulinux::debian inherits gnulinux {
     default => 'ntp',
   }
 
+  # el "dnsutils" que queda a les màquines actualitzades des de bookworm és el
+  # transicional de bookworm: amb fonts de bookworm rep actualitzacions de
+  # seguretat que unattended-upgrades no instal·larà mai
+  if $operatingsystem == 'Debian' and versioncmp("${lsbmajdistrelease}", '13') >= 0 {
+    package { 'dnsutils':
+      ensure => purged;
+    }
+  }
+
   package {
     "lsb-release":
       ensure => present;

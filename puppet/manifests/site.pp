@@ -287,8 +287,13 @@ $httpd_logdir = $operatingsystem ? {
   /Debian|Ubuntu/ => "/var/log/apache2",
   default => "/var/log/httpd"
 }
+# trixie ja no té "dnsutils": és un nom virtual que proveeix bind9-dnsutils
 $dnsutils = $operatingsystem ? {
-  /Debian|Ubuntu/ => dnsutils,
+  'Debian' => (versioncmp("${lsbmajdistrelease}", '13') >= 0) ? {
+    true    => 'bind9-dnsutils',
+    default => 'dnsutils',
+  },
+  'Ubuntu' => dnsutils,
   /Gentoo/ => bind-tools,
   default => bind-utils
 }
