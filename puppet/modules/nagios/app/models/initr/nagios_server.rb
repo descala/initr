@@ -55,8 +55,7 @@ class Initr::NagiosServer < Initr::Klass
       role if role.has_permission?(:nagios_alerts)
     end.compact
     Project.all.each do |project|
-      next unless project.active?
-      next unless project.nodes.size > 0
+      next unless needs_contactgroups?(project)
       allowed_roles.each do |role|
         project.users.collect do |user|
           contacts[user.login] = {
@@ -95,8 +94,7 @@ class Initr::NagiosServer < Initr::Klass
       r if r.has_permission?(:nagios_alerts)
     }.compact
     Project.all.each do |p|
-      next unless p.active?
-      next unless p.nodes.size > 0
+      next unless needs_contactgroups?(p)
       allowed_roles.each do |r|
         logins = p.users.collect do |u|
           u.login if u.roles_for_project(p).include?(r) and u.active?
@@ -112,17 +110,12 @@ class Initr::NagiosServer < Initr::Klass
     ncgs
   end
 
+  # The templates point every generic object at this group, so it is only
+  # returned when nagios_contactgroups really defines it: the project is active
+  # and has an admin user with nagios_alerts permission.
   def admin_contactgroup
-    if config["admin_contactgroup"]
-      proj = Project.find_by_identifier(config["admin_contactgroup"])
-      return nil unless proj and proj.active?
-      allowed_roles_for_project_users(proj) do |role|
-        # return admin_contactgroup only if has an admin user with
-        # nagios_alerts permission
-        return config["admin_contactgroup"] if role.id == 3
-      end
-    end
-    return nil
+    group = config["admin_contactgroup"]
+    group if group.present? and nagios_contactgroups.key?(group)
   end
 
   # nagios_hostgroups:
@@ -230,6 +223,42 @@ class Initr::NagiosServer < Initr::Klass
 
   private
 
+  # Icinga refuses to start if any object names a contact group that is not
+  # defined, so a project's groups (and their contacts) must exist for as long
+  # as something points at them, not only while the project has nodes.
+  def needs_contactgroups?(project)
+    return false unless project.active?
+    project.nodes.size > 0 or referenced_contact_groups.include?(project.identifier)
+  end
+
+  # Contact group names the Icinga config points at from outside this class:
+  #
+  # * admin_contactgroup, used by the templates;
+  # * "contact_groups" of the Nagios_host / Nagios_service resources the nodes
+  #   export (Initr::Nagios#nagios_contact_groups). Those only change when the
+  #   node itself runs Puppet again, so after a node moves to another project
+  #   they keep naming the old project's group for a while, or for good if the
+  #   node no longer runs Puppet.
+  def referenced_contact_groups
+    @referenced_contact_groups ||= begin
+      groups = [config["admin_contactgroup"]]
+      (exported_nagios_resources('Nagios_host') + exported_nagios_resources('Nagios_service')).each do |r|
+        groups.concat r['parameters']['contact_groups'].to_s.split(',').collect(&:strip)
+      end
+      groups.reject(&:blank?).uniq
+    end
+  end
+
+  # Exported resources of a type tagged for this server. One PuppetDB query per
+  # type, memoized: hostgroups, escalations and contact groups all need them.
+  def exported_nagios_resources(type)
+    @exported_nagios_resources ||= {}
+    @exported_nagios_resources[type] ||= begin
+      exported = Initr.puppetdb.request('', "resources {type = '#{type}' and exported = true }").data rescue []
+      exported.select { |r| r['parameters']['tag'] == address }
+    end
+  end
+
   def allowed_roles_for_project_users(project)
     ret = []
     allowed_roles = Role.all.collect {|r| r if r.has_permission?(:nagios_alerts)}.compact
@@ -280,16 +309,11 @@ class Initr::NagiosServer < Initr::Klass
   end
 
   # host_names that have at least one exported Nagios_service tagged for this server, i.e.
-  # the hosts that will actually have services in nagios_service.cfg. One query, memoized:
-  # nagios_hosts_for is called once per project for hostgroups, hostescalations and
-  # serviceescalations.
+  # the hosts that will actually have services in nagios_service.cfg.
   def nagios_hosts_with_services
-    @nagios_hosts_with_services ||= begin
-      exported = Initr.puppetdb.request('', "resources {type = 'Nagios_service' and exported = true }").data rescue []
-      exported.collect do |r|
-        r['parameters']['host_name'] if r['parameters']['tag'] == address
-      end.compact.uniq
-    end
+    exported_nagios_resources('Nagios_service').collect do |r|
+      r['parameters']['host_name']
+    end.compact.uniq
   end
 
   RAND_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
