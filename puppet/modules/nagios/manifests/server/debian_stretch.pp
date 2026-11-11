@@ -11,6 +11,12 @@ class nagios::server::debian_stretch inherits nagios::server::common {
       ensure => running,
       hasstatus => true,
       hasrestart => true,
+      # Validate first. The init script stops the daemon and only then runs its
+      # own pre-flight check, so a restart with a broken config (e.g. an object
+      # pointing at a contact group that no longer exists) leaves monitoring
+      # down. This way the running daemon keeps the old config and Puppet
+      # reports the failed refresh, with the icinga -v output in the log.
+      restart => "/usr/sbin/icinga -v /etc/icinga/icinga.cfg && /bin/systemctl restart icinga",
       alias => nagios;
     "nsca":
       enable => true,
