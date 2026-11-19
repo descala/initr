@@ -64,16 +64,20 @@
 <pre style="padding: 10px;">
 USER=<%= @klass.repository.split('@').first %>
 RPATH=/srv/<%= @node.project.identifier %>/<%= @node.fqdn %>
+GROUP=<%= @node.project.identifier %>
+getent group $GROUP || addgroup $GROUP
 
-adduser --ingroup <%= @node.project.identifier %> --home $RPATH --disabled-password --gecos "<%= @node.fqdn %> borg backup" $USER
-cd $RPATH
-mkdir .ssh
-cat << EOF > .ssh/authorized_keys
+if adduser --ingroup $GROUP --home $RPATH --disabled-password --comment "<%= @node.fqdn %> borg backup" $USER && cd $RPATH; then
+  mkdir .ssh
+  cat << EOF > .ssh/authorized_keys
 command="borg serve --restrict-to-path $RPATH",restrict ssh-rsa <%= @node.facts['sshrsakey'] %>
 EOF
-chown -R $USER. .ssh/
-chmod 700 .ssh
-chmod 600 .ssh/authorized_keys
+  chown -R $USER: .ssh
+  chmod 700 .ssh
+  chmod 600 .ssh/authorized_keys
+else
+  echo "ERROR: nothing written"
+fi
 </pre>
 <h3>On client</h3>
 <pre style="padding: 10px;">

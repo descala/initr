@@ -1,5 +1,7 @@
 class nagios::nsca_node::debian  inherits nagios::nsca_node::common {
 
+  include nagios::extra_plugins
+
   cron {
     "heartbeat":
       command => "/usr/lib/nagios/plugins/heartbeat > /dev/null 2>&1",
