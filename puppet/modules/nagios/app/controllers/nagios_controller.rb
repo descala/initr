@@ -54,7 +54,7 @@ class NagiosController < InitrController
   end
 
   def add_check
-    check = @klass.recomended_checks[params["check"]]
+    check = @klass.recomended_checks[params["check"]] || @klass.web_server_checks[params["check"]]
     @nagios_check = Initr::NagiosCheck.new(:name=>params["check"],:command=>check)
     render :action => 'new_check'
   end

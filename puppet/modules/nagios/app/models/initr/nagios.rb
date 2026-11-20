@@ -63,6 +63,17 @@ class Initr::Nagios < Initr::Klass
     dc
   end
 
+  # checks de servidor web: no son per a tots els nodes
+  WEB_SERVER_CHECKS = {
+    "mysql"         => 'check_mysql',
+    "localhost_www" => 'check_http -I 127.0.0.1 -e HTTP/1.',
+    "letsencrypt"   => 'check_letsencrypt.rb',
+  }
+
+  def web_server_checks
+    WEB_SERVER_CHECKS.reject {|name,command| active_checks.any? {|ac| ac.name == name or ac.command == command } }
+  end
+
   # per defecte nomes assignem el contactgroup dels administradors,
   # si te usuaris que puguin rebre alertes
   def nagios_contact_groups

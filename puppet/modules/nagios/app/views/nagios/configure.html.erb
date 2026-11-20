@@ -51,6 +51,19 @@
   </table>
 <% end -%>
 
+<% if @klass.web_server_checks.size > 0 -%>
+  <h3>Web server checks</h3>
+
+  <table>
+  <% @klass.web_server_checks.each do |name,command| -%>
+    <tr class="<%=cycle("odd","even")%>">
+      <td><%= name %></td>
+      <td align="center" style="padding-left:40px"><%= link_to "Add this check", :controller => 'nagios', :action => 'add_check', :id => @klass, :check => name %></td>
+    </tr>
+  <% end -%>
+  </table>
+<% end -%>
+
 <br />
 <%= link_to "Add check", :controller => 'nagios', :action => 'new_check', :id => @klass %>
 
